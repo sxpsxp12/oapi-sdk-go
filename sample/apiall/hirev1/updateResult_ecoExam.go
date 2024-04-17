@@ -22,27 +22,23 @@ import (
 )
 
 // POST /open-apis/hire/v1/eco_exams/:exam_id/update_result
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewUpdateResultEcoExamReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewUpdateResultEcoExamReqBuilder().
 		ExamId("7178536692385679677").
-		
-	   EcoExamResult(larkhire.NewEcoExamResultBuilder().
+		EcoExamResult(larkhire.NewEcoExamResultBuilder().
 			Result("60.5").
-			
 			ResultTime("1658676234053").
-			
 			ReportList([]*larkhire.EcoExamResultReport{larkhire.NewEcoExamResultReportBuilder().Build()}).
 			DetailList([]*larkhire.EcoExamResultDetail{larkhire.NewEcoExamResultDetailBuilder().Build()}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.EcoExam.UpdateResult(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.EcoExam.UpdateResult(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -57,4 +53,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

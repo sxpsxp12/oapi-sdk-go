@@ -22,20 +22,18 @@ import (
 )
 
 // GET /open-apis/contact/v3/work_cities
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcontact.NewListWorkCityReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcontact.NewListWorkCityReqBuilder().
 		PageSize(10).
 		PageToken("").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Contact.V3.WorkCity.List(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Contact.V3.WorkCity.List(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -50,4 +48,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

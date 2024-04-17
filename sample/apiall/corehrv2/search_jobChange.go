@@ -22,37 +22,29 @@ import (
 )
 
 // POST /open-apis/corehr/v2/job_changes/search
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewSearchJobChangeReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewSearchJobChangeReqBuilder().
 		PageSize(100).
 		PageToken("6891251722631890445").
-		
 		UserIdType("open_id").
-		
 		DepartmentIdType("open_department_id").
-		
-	   Body(larkcorehr.NewSearchJobChangeReqBodyBuilder().
+		Body(larkcorehr.NewSearchJobChangeReqBodyBuilder().
 			EmploymentIds([]string{}).
 			JobChangeIds([]string{}).
 			Statuses([]string{}).
 			EffectiveDateStart("2022-01-01").
-			
 			EffectiveDateEnd("2022-01-01").
-			
 			UpdatedTimeStart("1704084635000").
-			
 			UpdatedTimeEnd("1704084635000").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.JobChange.Search(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.JobChange.Search(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -67,4 +59,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

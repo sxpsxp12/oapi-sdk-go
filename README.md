@@ -4,45 +4,43 @@
 
 ## 目录
 
-
 <!-- toc -->
 
 - [安装](#安装)
 - [API Client](#api-client)
-  - [创建API Client](#创建api-client)
-  - [配置API Client](#配置api-client)
+    - [创建API Client](#创建api-client)
+    - [配置API Client](#配置api-client)
 
 - [API调用](#api调用)
-  - [基本用法](#基本用法)
-  - [设置请求选项](#设置请求选项)
-  - [原生API调用方式](#原生api调用方式)
+    - [基本用法](#基本用法)
+    - [设置请求选项](#设置请求选项)
+    - [原生API调用方式](#原生api调用方式)
 
 - [处理消息事件回调](#处理消息事件回调)
-  - [基本用法](#基本用法-1)
-  - [消息处理器内给对应租户发消息](#消息处理器内给对应租户发消息)
-  - [集成gin框架](#集成gin框架)
-    - [安装集成包](#安装集成包)
-    - [集成示例](#集成示例)
-  - [集成hertz框架](#集成hertz框架)
+    - [基本用法](#基本用法-1)
+    - [消息处理器内给对应租户发消息](#消息处理器内给对应租户发消息)
+    - [集成gin框架](#集成gin框架)
+        - [安装集成包](#安装集成包)
+        - [集成示例](#集成示例)
+    - [集成hertz框架](#集成hertz框架)
 
 - [处理卡片行为回调](#处理卡片行为回调)
-  - [基本用法](#基本用法-2)
-  - [返回卡片消息](#返回卡片消息)
-  - [返回自定义消息](#返回自定义消息)
-  - [卡片行为处理器内给对应租户发消息](#卡片行为处理器内给对应租户发消息)
-  - [集成gin框架](#集成gin框架)
-    - [安装集成包](#安装集成包)
-    - [集成示例](#集成示例)
-  - [ 集成hertz框架](#集成hertz框架-1)
+    - [基本用法](#基本用法-2)
+    - [返回卡片消息](#返回卡片消息)
+    - [返回自定义消息](#返回自定义消息)
+    - [卡片行为处理器内给对应租户发消息](#卡片行为处理器内给对应租户发消息)
+    - [集成gin框架](#集成gin框架)
+        - [安装集成包](#安装集成包)
+        - [集成示例](#集成示例)
+    - [ 集成hertz框架](#集成hertz框架-1)
 - [加入答疑群](#加入答疑群)
-
 
 <!-- tocstop -->
 
 ## 安装
 
 ```shell
-go get -u github.com/larksuite/oapi-sdk-go/v3@v3.2.2
+go get -u github.com/larksuite/oapi-sdk-go/v3@v3.2.3
 ```
 
 ## API Client
@@ -57,7 +55,8 @@ go get -u github.com/larksuite/oapi-sdk-go/v3@v3.2.2
 var client = lark.NewClient("appID", "appSecret") // 默认配置为自建应用
 ```
 
-- 对于商店应用，需在创建 API Client 时，使用 lark.WithMarketplaceApp 方法指定 AppType 为商店应用。商店应用开发指南可 [点击这里查看](https://bytedance.feishu.cn/docx/DljadpCH3oMlnLxo1kpcS1vmnbg)
+- 对于商店应用，需在创建 API Client 时，使用 lark.WithMarketplaceApp 方法指定 AppType
+  为商店应用。商店应用开发指南可 [点击这里查看](https://bytedance.feishu.cn/docx/DljadpCH3oMlnLxo1kpcS1vmnbg)
 
 ```go
 var client = lark.NewClient("appID", "appSecret",lark.WithMarketplaceApp()) // 设置App为商店应用
@@ -273,12 +272,14 @@ type HttpClient interface {
 </table>
 
 ## API调用
+
 创建完毕 API Client，我们可以使用 ``Client.业务域.资源.方法名称`` 来定位具体的 API 方法，然后对具体的 API 发起调用。
 商店应用开发指南可 [点击这里查看](https://bytedance.feishu.cn/docx/DljadpCH3oMlnLxo1kpcS1vmnbg)
 
 ![](doc/find_method.jpg)
 
-飞书开放平台开放的所有 API 列表，可点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uYTM5UjL2ETO14iNxkTN/server-api-list)
+飞书开放平台开放的所有 API
+列表，可点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uYTM5UjL2ETO14iNxkTN/server-api-list)
 
 ### 基本用法
 
@@ -516,12 +517,15 @@ func main() {
 更多 API 调用示例：[./sample/callrawapi/api.go](./sample/callrawapi/api.go)
 
 ## 处理消息事件回调
+
 关于消息订阅相关的知识，可以点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM)
 
 飞书开放平台开放的所有事件列表，可点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uYDNxYjL2QTM24iN0EjN/event-list)
+
 ### 基本用法
 
-开发者订阅消息事件后，可以使用下面代码，对飞书开放平台推送的消息事件进行处理，如下代码基于 go-sdk 原生 http server 启动一个 httpServer：
+开发者订阅消息事件后，可以使用下面代码，对飞书开放平台推送的消息事件进行处理，如下代码基于 go-sdk 原生 http server 启动一个
+httpServer：
 
 ```go
 import (
@@ -563,24 +567,28 @@ func main() {
 
 ```
 
-其中 NewEventDispatcher 方法的参数用于签名验证和消息解密使用，默认可以传递为空串；但是如果开发者的应用在 [控制台](https://open.feishu.cn/app?lang=zh-CN) 的【事件订阅】里面开启了加密，则必须传递控制台上提供的值。
+其中 NewEventDispatcher
+方法的参数用于签名验证和消息解密使用，默认可以传递为空串；但是如果开发者的应用在 [控制台](https://open.feishu.cn/app?lang=zh-CN)
+的【事件订阅】里面开启了加密，则必须传递控制台上提供的值。
 
 ![Console](doc/console.jpeg)
 
-需要注意的是注册处理器时，比如使用 OnP2MessageReceiveV1 注册接受消息事件回调时，其中的P2为消息协议版本，当前飞书开放平台存在 [两种消息协议](https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM#8f960a4b) ，分别为1.0和2.0。
+需要注意的是注册处理器时，比如使用 OnP2MessageReceiveV1
+注册接受消息事件回调时，其中的P2为消息协议版本，当前飞书开放平台存在 [两种消息协议](https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM#8f960a4b)
+，分别为1.0和2.0。
 
-如下图开发者在注册消息处理器时，需从 [事件列表](https://open.feishu.cn/document/ukTMukTMukTM/uYDNxYjL2QTM24iN0EjN/event-list) 中查看自己需要的是哪种协议的事件。
+如下图开发者在注册消息处理器时，需从 [事件列表](https://open.feishu.cn/document/ukTMukTMukTM/uYDNxYjL2QTM24iN0EjN/event-list)
+中查看自己需要的是哪种协议的事件。
 如果是1.0的消息协议，则注册处理器时，需要找以OnP1xxxx开头的。如果是2.0的消息协议，则注册处理器时，需要找以OnP2xxxx开头的。
-
-
-
 
 ![Console](doc/event_protocol.jpeg)
 
 更多事件订阅示例：[./sample/event/event.go](./sample/event/event.go)
 
 ## 消息处理器内给对应租户发消息
-针对 ISV 开发者，如果想在消息处理器内给对应租户的用户发送消息，则需先从消息事件内获取租户 key,然后使用下面方式调用消息 API 进行消息发送：
+
+针对 ISV 开发者，如果想在消息处理器内给对应租户的用户发送消息，则需先从消息事件内获取租户 key,然后使用下面方式调用消息 API
+进行消息发送：
 
 ```go
 
@@ -641,12 +649,12 @@ func main() {
 
 ```
 
-
 更多事件订阅示例：[./sample/event/event.go](./sample/event/event.go)
 
-
 ### 集成Gin框架
-如果开发者当前应用使用的是 Gin Web 框架，并且不想要使用 Go-Sdk 提供的原生的 Http Server，则可使用下面方式，把当前应用的 Gin 服务与 SDK进行集成。
+
+如果开发者当前应用使用的是 Gin Web 框架，并且不想要使用 Go-Sdk 提供的原生的 Http Server，则可使用下面方式，把当前应用的 Gin
+服务与 SDK进行集成。
 
 要想把 SDK 集成已有 Gin 框架，开发者需要引入集成包 [oapi-sdk-gin](https://github.com/larksuite/oapi-sdk-gin)
 
@@ -695,17 +703,18 @@ func main() {
 }
 ```
 
-
 ### 集成hertz框架
-[集成hertz框架](https://github.com/hertz-contrib/lark-hertz)
 
+[集成hertz框架](https://github.com/hertz-contrib/lark-hertz)
 
 ## 处理卡片行为回调
 
 关于卡片行为相关的知识，可点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uczM3QjL3MzN04yNzcDN)
+
 ### 基本用法
 
-开发者配置消息卡片回调地址后，可以使用下面代码，对飞书开放平台推送的卡片行为进行处理，如下代码基于go-sdk原生http server启动一个httpServer：
+开发者配置消息卡片回调地址后，可以使用下面代码，对飞书开放平台推送的卡片行为进行处理，如下代码基于go-sdk原生http
+server启动一个httpServer：
 
 ```go
 import (
@@ -845,11 +854,10 @@ func main() {
 
 更多卡片行为处理示例：[./sample/card/card.go](./sample/card/card.go)
 
-
 ### 卡片行为处理器内给对应租户发消息
 
-针对 ISV 开发者，如果想在卡片行为处理器内给对应租户的用户发送消息，则需先从卡片行为内获取租户 key ,然后使用下面方式调用消息 API 进行消息发送：
-
+针对 ISV 开发者，如果想在卡片行为处理器内给对应租户的用户发送消息，则需先从卡片行为内获取租户 key ,然后使用下面方式调用消息
+API 进行消息发送：
 
 ```go
 import (
@@ -902,10 +910,10 @@ func main() {
 
 更多卡片行为处理示例：[./sample/card/card.go](./sample/card/card.go)
 
-
 ### 集成gin框架
 
-如果开发者当前应用使用的是 Gin Web 框架，并且不想要使用 Go-Sdk 提供的原生的 Http Server，则可使用下面方式，把当前应用的 Gin 服务与 SDK进行集成。
+如果开发者当前应用使用的是 Gin Web 框架，并且不想要使用 Go-Sdk 提供的原生的 Http Server，则可使用下面方式，把当前应用的 Gin
+服务与 SDK进行集成。
 
 要想把 SDK 集成已有 Gin 框架，开发者需要引入集成包 [oapi-sdk-gin](https://github.com/larksuite/oapi-sdk-gin)
 
@@ -945,29 +953,34 @@ func main() {
 ```
 
 ### 集成hertz框架
+
 [集成hertz框架](https://github.com/hertz-contrib/lark-hertz)
 
 ## 扩展示例
+
 我们还基于 SDK 封装了常用的 API 组合调用及业务场景示例，如：
+
 * 消息
-  * [发送文件消息](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/im/send_file.go)
-  * [发送图片消息](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/im/send_image.go)
+    * [发送文件消息](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/im/send_file.go)
+    * [发送图片消息](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/im/send_image.go)
 * 通讯录
-  * [获取部门下所有用户列表](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/contact/list_user_by_department.go)
+    * [获取部门下所有用户列表](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/contact/list_user_by_department.go)
 * 多维表格
-  * [创建多维表格同时添加数据表](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/base/create_app_and_tables.go)
+    * [创建多维表格同时添加数据表](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/base/create_app_and_tables.go)
 * 电子表格
-  * [复制粘贴某个范围的单元格数据](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/sheets/copy_and_paste_by_range.go)
-  * [下载指定范围单元格的所有素材列表](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/sheets/download_media_by_range.go)
+    * [复制粘贴某个范围的单元格数据](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/sheets/copy_and_paste_by_range.go)
+    * [下载指定范围单元格的所有素材列表](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/composite_api/sheets/download_media_by_range.go)
 * 教程
-  * [机器人自动拉群报警](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/quick_start/robot) ([开发教程](https://open.feishu.cn/document/home/message-development-tutorial/introduction))
+    * [机器人自动拉群报警](https://github.com/larksuite/oapi-sdk-go-demo/blob/main/quick_start/robot) ([开发教程](https://open.feishu.cn/document/home/message-development-tutorial/introduction))
 
 更多示例可参考：https://github.com/larksuite/oapi-sdk-go-demo
 
 ## 加入答疑群
+
 [单击加入答疑群](https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=985nb30c-787a-4fbb-904d-2cf945534078)
 
 ## License
+
 使用 MIT
 
 

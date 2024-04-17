@@ -22,26 +22,22 @@ import (
 )
 
 // POST /open-apis/drive/v1/files/:file_token/comments
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkdrive.NewCreateFileCommentReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkdrive.NewCreateFileCommentReqBuilder().
 		FileToken("doccnGp4UK1UskrOEJwBXd3****").
-		
 		FileType("doc").
-		
 		UserIdType("user_id").
-		
-	   FileComment(larkdrive.NewFileCommentBuilder().
+		FileComment(larkdrive.NewFileCommentBuilder().
 			ReplyList(larkdrive.NewReplyListBuilder().Build()).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Drive.V1.FileComment.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Drive.V1.FileComment.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,4 +52,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

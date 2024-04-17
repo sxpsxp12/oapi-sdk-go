@@ -22,25 +22,21 @@ import (
 )
 
 // POST /open-apis/task/v2/custom_fields/:custom_field_guid/add
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewAddCustomFieldReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewAddCustomFieldReqBuilder().
 		CustomFieldGuid("0110a4bd-f24b-4a93-8c1a-1732b94f9593").
-		
-	   Body(larktask.NewAddCustomFieldReqBodyBuilder().
+		Body(larktask.NewAddCustomFieldReqBodyBuilder().
 			ResourceType("tasklist").
-			
 			ResourceId("0110a4bd-f24b-4a93-8c1a-1732b94f9593").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.CustomField.Add(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.CustomField.Add(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -55,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

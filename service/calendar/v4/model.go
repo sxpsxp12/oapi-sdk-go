@@ -4084,6 +4084,7 @@ func (builder *MeetingMinuteBuilder) Build() *MeetingMinute {
 type MeetingSettings struct {
 	OwnerId               *string  `json:"owner_id,omitempty"`                // 设置会议 owner
 	JoinMeetingPermission *string  `json:"join_meeting_permission,omitempty"` // 设置入会范围
+	Password              *string  `json:"password,omitempty"`                // 设置会议密码，仅支持 4-9 位数字
 	AssignHosts           []string `json:"assign_hosts,omitempty"`            // 指定主持人
 	AutoRecord            *bool    `json:"auto_record,omitempty"`             // 设置自动录制
 	OpenLobby             *bool    `json:"open_lobby,omitempty"`              // 开启等候室
@@ -4095,6 +4096,8 @@ type MeetingSettingsBuilder struct {
 	ownerIdFlag               bool
 	joinMeetingPermission     string // 设置入会范围
 	joinMeetingPermissionFlag bool
+	password                  string // 设置会议密码，仅支持 4-9 位数字
+	passwordFlag              bool
 	assignHosts               []string // 指定主持人
 	assignHostsFlag           bool
 	autoRecord                bool // 设置自动录制
@@ -4125,6 +4128,15 @@ func (builder *MeetingSettingsBuilder) OwnerId(ownerId string) *MeetingSettingsB
 func (builder *MeetingSettingsBuilder) JoinMeetingPermission(joinMeetingPermission string) *MeetingSettingsBuilder {
 	builder.joinMeetingPermission = joinMeetingPermission
 	builder.joinMeetingPermissionFlag = true
+	return builder
+}
+
+// 设置会议密码，仅支持 4-9 位数字
+//
+// 示例值：971024
+func (builder *MeetingSettingsBuilder) Password(password string) *MeetingSettingsBuilder {
+	builder.password = password
+	builder.passwordFlag = true
 	return builder
 }
 
@@ -4172,6 +4184,10 @@ func (builder *MeetingSettingsBuilder) Build() *MeetingSettings {
 	}
 	if builder.joinMeetingPermissionFlag {
 		req.JoinMeetingPermission = &builder.joinMeetingPermission
+
+	}
+	if builder.passwordFlag {
+		req.Password = &builder.password
 
 	}
 	if builder.assignHostsFlag {
@@ -4542,6 +4558,102 @@ func (builder *MyaiCardStatusBuilder) Build() *MyaiCardStatus {
 	return req
 }
 
+type MyaiDocDetail struct {
+	Title   *string `json:"title,omitempty"`    // 文档标题
+	Url     *string `json:"url,omitempty"`      // 文档链接
+	Token   *string `json:"token,omitempty"`    // 文档Token
+	DocType *string `json:"doc_type,omitempty"` // 文档类型
+	Extra   *string `json:"extra,omitempty"`    // 文档附加信息
+}
+
+type MyaiDocDetailBuilder struct {
+	title       string // 文档标题
+	titleFlag   bool
+	url         string // 文档链接
+	urlFlag     bool
+	token       string // 文档Token
+	tokenFlag   bool
+	docType     string // 文档类型
+	docTypeFlag bool
+	extra       string // 文档附加信息
+	extraFlag   bool
+}
+
+func NewMyaiDocDetailBuilder() *MyaiDocDetailBuilder {
+	builder := &MyaiDocDetailBuilder{}
+	return builder
+}
+
+// 文档标题
+//
+// 示例值：none
+func (builder *MyaiDocDetailBuilder) Title(title string) *MyaiDocDetailBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// 文档链接
+//
+// 示例值：none
+func (builder *MyaiDocDetailBuilder) Url(url string) *MyaiDocDetailBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+// 文档Token
+//
+// 示例值：none
+func (builder *MyaiDocDetailBuilder) Token(token string) *MyaiDocDetailBuilder {
+	builder.token = token
+	builder.tokenFlag = true
+	return builder
+}
+
+// 文档类型
+//
+// 示例值：none
+func (builder *MyaiDocDetailBuilder) DocType(docType string) *MyaiDocDetailBuilder {
+	builder.docType = docType
+	builder.docTypeFlag = true
+	return builder
+}
+
+// 文档附加信息
+//
+// 示例值：none
+func (builder *MyaiDocDetailBuilder) Extra(extra string) *MyaiDocDetailBuilder {
+	builder.extra = extra
+	builder.extraFlag = true
+	return builder
+}
+
+func (builder *MyaiDocDetailBuilder) Build() *MyaiDocDetail {
+	req := &MyaiDocDetail{}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	if builder.tokenFlag {
+		req.Token = &builder.token
+
+	}
+	if builder.docTypeFlag {
+		req.DocType = &builder.docType
+
+	}
+	if builder.extraFlag {
+		req.Extra = &builder.extra
+
+	}
+	return req
+}
+
 type MyaiReply struct {
 	Reply          *string     `json:"reply,omitempty"`           // 返回给myai的自然语言描述
 	StartTime      *string     `json:"start_time,omitempty"`      // 日程开始时间
@@ -4679,6 +4791,100 @@ func (builder *MyaiReplyBuilder) Build() *MyaiReply {
 	}
 	if builder.recurrenceRuleFlag {
 		req.RecurrenceRule = &builder.recurrenceRule
+
+	}
+	return req
+}
+
+type MyaiSearchDocResult struct {
+	DocItems []*MyaiDocDetail `json:"doc_items,omitempty"` // 返回的文档列表
+	Message  *string          `json:"message,omitempty"`   // 返回给AI的信息
+}
+
+type MyaiSearchDocResultBuilder struct {
+	docItems     []*MyaiDocDetail // 返回的文档列表
+	docItemsFlag bool
+	message      string // 返回给AI的信息
+	messageFlag  bool
+}
+
+func NewMyaiSearchDocResultBuilder() *MyaiSearchDocResultBuilder {
+	builder := &MyaiSearchDocResultBuilder{}
+	return builder
+}
+
+// 返回的文档列表
+//
+// 示例值：
+func (builder *MyaiSearchDocResultBuilder) DocItems(docItems []*MyaiDocDetail) *MyaiSearchDocResultBuilder {
+	builder.docItems = docItems
+	builder.docItemsFlag = true
+	return builder
+}
+
+// 返回给AI的信息
+//
+// 示例值：以下是返回的文档内容
+func (builder *MyaiSearchDocResultBuilder) Message(message string) *MyaiSearchDocResultBuilder {
+	builder.message = message
+	builder.messageFlag = true
+	return builder
+}
+
+func (builder *MyaiSearchDocResultBuilder) Build() *MyaiSearchDocResult {
+	req := &MyaiSearchDocResult{}
+	if builder.docItemsFlag {
+		req.DocItems = builder.docItems
+	}
+	if builder.messageFlag {
+		req.Message = &builder.message
+
+	}
+	return req
+}
+
+type OpenEventRsvpInfo struct {
+	FromUserId *UserId `json:"from_user_id,omitempty"` // RSVP操作者
+	RsvpStatus *string `json:"rsvp_status,omitempty"`  // RSVP操作状态
+}
+
+type OpenEventRsvpInfoBuilder struct {
+	fromUserId     *UserId // RSVP操作者
+	fromUserIdFlag bool
+	rsvpStatus     string // RSVP操作状态
+	rsvpStatusFlag bool
+}
+
+func NewOpenEventRsvpInfoBuilder() *OpenEventRsvpInfoBuilder {
+	builder := &OpenEventRsvpInfoBuilder{}
+	return builder
+}
+
+// RSVP操作者
+//
+// 示例值：
+func (builder *OpenEventRsvpInfoBuilder) FromUserId(fromUserId *UserId) *OpenEventRsvpInfoBuilder {
+	builder.fromUserId = fromUserId
+	builder.fromUserIdFlag = true
+	return builder
+}
+
+// RSVP操作状态
+//
+// 示例值：accept
+func (builder *OpenEventRsvpInfoBuilder) RsvpStatus(rsvpStatus string) *OpenEventRsvpInfoBuilder {
+	builder.rsvpStatus = rsvpStatus
+	builder.rsvpStatusFlag = true
+	return builder
+}
+
+func (builder *OpenEventRsvpInfoBuilder) Build() *OpenEventRsvpInfo {
+	req := &OpenEventRsvpInfo{}
+	if builder.fromUserIdFlag {
+		req.FromUserId = builder.fromUserId
+	}
+	if builder.rsvpStatusFlag {
+		req.RsvpStatus = &builder.rsvpStatus
 
 	}
 	return req
@@ -5006,11 +5212,17 @@ type Setting struct {
 
 type SystemInfo struct {
 	SessionId *string `json:"session_id,omitempty"` // session_id
+	Lang      *string `json:"lang,omitempty"`       // 用户问题的语种
+	Locale    *string `json:"locale,omitempty"`     // 请求客户端的语种类
 }
 
 type SystemInfoBuilder struct {
 	sessionId     string // session_id
 	sessionIdFlag bool
+	lang          string // 用户问题的语种
+	langFlag      bool
+	locale        string // 请求客户端的语种类
+	localeFlag    bool
 }
 
 func NewSystemInfoBuilder() *SystemInfoBuilder {
@@ -5027,10 +5239,36 @@ func (builder *SystemInfoBuilder) SessionId(sessionId string) *SystemInfoBuilder
 	return builder
 }
 
+// 用户问题的语种
+//
+// 示例值：zh
+func (builder *SystemInfoBuilder) Lang(lang string) *SystemInfoBuilder {
+	builder.lang = lang
+	builder.langFlag = true
+	return builder
+}
+
+// 请求客户端的语种类
+//
+// 示例值：en_us
+func (builder *SystemInfoBuilder) Locale(locale string) *SystemInfoBuilder {
+	builder.locale = locale
+	builder.localeFlag = true
+	return builder
+}
+
 func (builder *SystemInfoBuilder) Build() *SystemInfo {
 	req := &SystemInfo{}
 	if builder.sessionIdFlag {
 		req.SessionId = &builder.sessionId
+
+	}
+	if builder.langFlag {
+		req.Lang = &builder.lang
+
+	}
+	if builder.localeFlag {
+		req.Locale = &builder.locale
 
 	}
 	return req
@@ -7146,7 +7384,7 @@ func (resp *PatchCalendarEventResp) Success() bool {
 }
 
 type ReplyCalendarEventReqBodyBuilder struct {
-	rsvpStatus     string // rsvp状态
+	rsvpStatus     string // rsvp-日程状态
 	rsvpStatusFlag bool
 }
 
@@ -7155,7 +7393,7 @@ func NewReplyCalendarEventReqBodyBuilder() *ReplyCalendarEventReqBodyBuilder {
 	return builder
 }
 
-// rsvp状态
+// rsvp-日程状态
 //
 // 示例值：accept
 func (builder *ReplyCalendarEventReqBodyBuilder) RsvpStatus(rsvpStatus string) *ReplyCalendarEventReqBodyBuilder {
@@ -7182,7 +7420,7 @@ func NewReplyCalendarEventPathReqBodyBuilder() *ReplyCalendarEventPathReqBodyBui
 	return builder
 }
 
-// rsvp状态
+// rsvp-日程状态
 //
 // 示例值：accept
 func (builder *ReplyCalendarEventPathReqBodyBuilder) RsvpStatus(rsvpStatus string) *ReplyCalendarEventPathReqBodyBuilder {
@@ -7243,7 +7481,7 @@ func (builder *ReplyCalendarEventReqBuilder) Build() *ReplyCalendarEventReq {
 }
 
 type ReplyCalendarEventReqBody struct {
-	RsvpStatus *string `json:"rsvp_status,omitempty"` // rsvp状态
+	RsvpStatus *string `json:"rsvp_status,omitempty"` // rsvp-日程状态
 }
 
 type ReplyCalendarEventReq struct {
@@ -8993,9 +9231,11 @@ func (m *P2CalendarAclDeletedV4) RawReq(req *larkevent.EventReq) {
 }
 
 type P2CalendarEventChangedV4Data struct {
-	CalendarId      *string   `json:"calendar_id,omitempty"`       // 日历id
-	UserIdList      []*UserId `json:"user_id_list,omitempty"`      // 需要推送事件的用户列表
-	CalendarEventId *string   `json:"calendar_event_id,omitempty"` // 发生变更的日程ID
+	CalendarId      *string              `json:"calendar_id,omitempty"`       // 日历id
+	UserIdList      []*UserId            `json:"user_id_list,omitempty"`      // 需要推送事件的用户列表
+	CalendarEventId *string              `json:"calendar_event_id,omitempty"` // 发生变更的日程ID
+	ChangeType      *string              `json:"change_type,omitempty"`       // 变更类型
+	RsvpInfos       []*OpenEventRsvpInfo `json:"rsvp_infos,omitempty"`        // RSVP变更详情
 }
 
 type P2CalendarEventChangedV4 struct {

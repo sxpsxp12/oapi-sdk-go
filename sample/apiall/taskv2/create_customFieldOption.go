@@ -22,29 +22,24 @@ import (
 )
 
 // POST /open-apis/task/v2/custom_fields/:custom_field_guid/options
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewCreateCustomFieldOptionReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewCreateCustomFieldOptionReqBuilder().
 		CustomFieldGuid("b13adf3c-cad6-4e02-8929-550c112b5633").
-		
-	   InputOption(larktask.NewInputOptionBuilder().
+		InputOption(larktask.NewInputOptionBuilder().
 			Name("高优").
-			
 			ColorIndex(10).
 			InsertBefore("2bd905f8-ef38-408b-aa1f-2b2ad33b2913").
-			
 			InsertAfter("b13adf3c-cad6-4e02-8929-550c112b5633").
-			
 			IsHidden(false).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.CustomFieldOption.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.CustomFieldOption.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -59,4 +54,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -22,23 +22,19 @@ import (
 )
 
 // GET /open-apis/corehr/v1/job_datas/:job_data_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewGetJobDataReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewGetJobDataReqBuilder().
 		JobDataId("151515").
-		
 		UserIdType("people_corehr_id").
-		
 		DepartmentIdType("people_corehr_department_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V1.JobData.Get(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V1.JobData.Get(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -53,4 +49,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

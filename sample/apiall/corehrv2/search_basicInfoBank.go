@@ -22,25 +22,25 @@ import (
 )
 
 // POST /open-apis/corehr/v2/basic_info/banks/search
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewSearchBasicInfoBankReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewSearchBasicInfoBankReqBuilder().
 		PageSize(100).
 		PageToken("6891251722631890445").
-		
-	   Body(larkcorehr.NewSearchBasicInfoBankReqBodyBuilder().
+		Body(larkcorehr.NewSearchBasicInfoBankReqBodyBuilder().
 			BankIdList([]string{}).
 			BankNameList([]string{}).
 			StatusList([]int{}).
+			UpdateStartTime("2024-01-01 00:00:00").
+			UpdateEndTime("2024-01-01 00:00:00").
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.BasicInfoBank.Search(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.BasicInfoBank.Search(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -55,4 +55,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

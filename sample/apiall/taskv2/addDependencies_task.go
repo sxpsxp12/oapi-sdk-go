@@ -22,22 +22,20 @@ import (
 )
 
 // POST /open-apis/task/v2/tasks/:task_guid/add_dependencies
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewAddDependenciesTaskReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewAddDependenciesTaskReqBuilder().
 		TaskGuid("93b7bd05-35e6-4371-b3c9-6b7cbd7100c0").
-		
-	   Body(larktask.NewAddDependenciesTaskReqBodyBuilder().
+		Body(larktask.NewAddDependenciesTaskReqBodyBuilder().
 			Dependencies([]*larktask.TaskDependency{larktask.NewTaskDependencyBuilder().Build()}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.Task.AddDependencies(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.Task.AddDependencies(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,4 +50,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

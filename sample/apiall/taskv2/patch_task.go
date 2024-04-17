@@ -22,25 +22,22 @@ import (
 )
 
 // PATCH /open-apis/task/v2/tasks/:task_guid
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewPatchTaskReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewPatchTaskReqBuilder().
 		TaskGuid("e297ddff-06ca-4166-b917-4ce57cd3a7a0").
-		
 		UserIdType("open_id").
-		
-	   Body(larktask.NewPatchTaskReqBodyBuilder().
+		Body(larktask.NewPatchTaskReqBodyBuilder().
 			Task(larktask.NewInputTaskBuilder().Build()).
 			UpdateFields([]string{}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.Task.Patch(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.Task.Patch(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -55,4 +52,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

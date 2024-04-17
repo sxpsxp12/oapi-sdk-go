@@ -22,7 +22,7 @@ type whiteboardNode struct {
 	config *larkcore.Config
 }
 
-// List 
+// List
 //
 // - 列出画板内的节点数据
 //

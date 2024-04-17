@@ -786,6 +786,68 @@ func (builder *AssignedOrganizationBuilder) Build() *AssignedOrganization {
 	return req
 }
 
+type AssignedOrganizationWithCode struct {
+	OrgKey   *string  `json:"org_key,omitempty"`   // 管理对象key
+	OrgIds   []string `json:"org_ids,omitempty"`   // 管理对象id列表
+	OrgCodes []string `json:"org_codes,omitempty"` // 管理对象code列表
+}
+
+type AssignedOrganizationWithCodeBuilder struct {
+	orgKey       string // 管理对象key
+	orgKeyFlag   bool
+	orgIds       []string // 管理对象id列表
+	orgIdsFlag   bool
+	orgCodes     []string // 管理对象code列表
+	orgCodesFlag bool
+}
+
+func NewAssignedOrganizationWithCodeBuilder() *AssignedOrganizationWithCodeBuilder {
+	builder := &AssignedOrganizationWithCodeBuilder{}
+	return builder
+}
+
+// 管理对象key
+//
+// 示例值：department
+func (builder *AssignedOrganizationWithCodeBuilder) OrgKey(orgKey string) *AssignedOrganizationWithCodeBuilder {
+	builder.orgKey = orgKey
+	builder.orgKeyFlag = true
+	return builder
+}
+
+// 管理对象id列表
+//
+// 示例值：
+func (builder *AssignedOrganizationWithCodeBuilder) OrgIds(orgIds []string) *AssignedOrganizationWithCodeBuilder {
+	builder.orgIds = orgIds
+	builder.orgIdsFlag = true
+	return builder
+}
+
+// 管理对象code列表
+//
+// 示例值：
+func (builder *AssignedOrganizationWithCodeBuilder) OrgCodes(orgCodes []string) *AssignedOrganizationWithCodeBuilder {
+	builder.orgCodes = orgCodes
+	builder.orgCodesFlag = true
+	return builder
+}
+
+func (builder *AssignedOrganizationWithCodeBuilder) Build() *AssignedOrganizationWithCode {
+	req := &AssignedOrganizationWithCode{}
+	if builder.orgKeyFlag {
+		req.OrgKey = &builder.orgKey
+
+	}
+	if builder.orgIdsFlag {
+		req.OrgIds = builder.orgIds
+	}
+	if builder.orgCodesFlag {
+		req.OrgCodes = builder.orgCodes
+	}
+	return req
+}
+
 type AttachmentFieldSetting struct {
 	IsMultiple *bool `json:"is_multiple,omitempty"` // 是否支持多个文件
 	FileType   *int  `json:"file_type,omitempty"`   // 文件类型枚举，具体如下：;1. jpeg ;2. png ;3. gif ;4. pdf ;5. docx ;6. doc ;7. csv;8. xls ;9. txt ;10. xlsx;11. mp4 ;12. pptx;13. ppt;14. json;15. zip;16. rar
@@ -6307,16 +6369,147 @@ func (builder *FileBuilder) Build() *File {
 	return req
 }
 
+type FilterCondition struct {
+	Left           *FilterRuleValue `json:"left,omitempty"`             // 左值
+	Right          *FilterRuleValue `json:"right,omitempty"`            // 右值
+	Operator       *int             `json:"operator,omitempty"`         // 操作符
+	RightValueType *int             `json:"right_value_type,omitempty"` // 右值类型
+}
+
+type FilterConditionBuilder struct {
+	left               *FilterRuleValue // 左值
+	leftFlag           bool
+	right              *FilterRuleValue // 右值
+	rightFlag          bool
+	operator           int // 操作符
+	operatorFlag       bool
+	rightValueType     int // 右值类型
+	rightValueTypeFlag bool
+}
+
+func NewFilterConditionBuilder() *FilterConditionBuilder {
+	builder := &FilterConditionBuilder{}
+	return builder
+}
+
+// 左值
+//
+// 示例值：
+func (builder *FilterConditionBuilder) Left(left *FilterRuleValue) *FilterConditionBuilder {
+	builder.left = left
+	builder.leftFlag = true
+	return builder
+}
+
+// 右值
+//
+// 示例值：
+func (builder *FilterConditionBuilder) Right(right *FilterRuleValue) *FilterConditionBuilder {
+	builder.right = right
+	builder.rightFlag = true
+	return builder
+}
+
+// 操作符
+//
+// 示例值：1
+func (builder *FilterConditionBuilder) Operator(operator int) *FilterConditionBuilder {
+	builder.operator = operator
+	builder.operatorFlag = true
+	return builder
+}
+
+// 右值类型
+//
+// 示例值：1
+func (builder *FilterConditionBuilder) RightValueType(rightValueType int) *FilterConditionBuilder {
+	builder.rightValueType = rightValueType
+	builder.rightValueTypeFlag = true
+	return builder
+}
+
+func (builder *FilterConditionBuilder) Build() *FilterCondition {
+	req := &FilterCondition{}
+	if builder.leftFlag {
+		req.Left = builder.left
+	}
+	if builder.rightFlag {
+		req.Right = builder.right
+	}
+	if builder.operatorFlag {
+		req.Operator = &builder.operator
+
+	}
+	if builder.rightValueTypeFlag {
+		req.RightValueType = &builder.rightValueType
+
+	}
+	return req
+}
+
+type FilterExpression struct {
+	Conditions []*FilterCondition `json:"conditions,omitempty"` // 规则
+	Expression *string            `json:"expression,omitempty"` // 表达式
+}
+
+type FilterExpressionBuilder struct {
+	conditions     []*FilterCondition // 规则
+	conditionsFlag bool
+	expression     string // 表达式
+	expressionFlag bool
+}
+
+func NewFilterExpressionBuilder() *FilterExpressionBuilder {
+	builder := &FilterExpressionBuilder{}
+	return builder
+}
+
+// 规则
+//
+// 示例值：
+func (builder *FilterExpressionBuilder) Conditions(conditions []*FilterCondition) *FilterExpressionBuilder {
+	builder.conditions = conditions
+	builder.conditionsFlag = true
+	return builder
+}
+
+// 表达式
+//
+// 示例值：1 and 2
+func (builder *FilterExpressionBuilder) Expression(expression string) *FilterExpressionBuilder {
+	builder.expression = expression
+	builder.expressionFlag = true
+	return builder
+}
+
+func (builder *FilterExpressionBuilder) Build() *FilterExpression {
+	req := &FilterExpression{}
+	if builder.conditionsFlag {
+		req.Conditions = builder.conditions
+	}
+	if builder.expressionFlag {
+		req.Expression = &builder.expression
+
+	}
+	return req
+}
+
 type FilterRuleValue struct {
-	Type  *int    `json:"type,omitempty"`  // 类型
-	Value *string `json:"value,omitempty"` // 对应类型的值
+	Type        *int    `json:"type,omitempty"`         // 规则值类型
+	Value       *string `json:"value,omitempty"`        // 规则值
+	LookupValue *string `json:"lookup_value,omitempty"` // 下钻值
+	LookupType  *string `json:"lookup_type,omitempty"`  // 下钻类型
 }
 
 type FilterRuleValueBuilder struct {
-	type_     int // 类型
-	typeFlag  bool
-	value     string // 对应类型的值
-	valueFlag bool
+	type_           int // 规则值类型
+	typeFlag        bool
+	value           string // 规则值
+	valueFlag       bool
+	lookupValue     string // 下钻值
+	lookupValueFlag bool
+	lookupType      string // 下钻类型
+	lookupTypeFlag  bool
 }
 
 func NewFilterRuleValueBuilder() *FilterRuleValueBuilder {
@@ -6324,7 +6517,7 @@ func NewFilterRuleValueBuilder() *FilterRuleValueBuilder {
 	return builder
 }
 
-// 类型
+// 规则值类型
 //
 // 示例值：1
 func (builder *FilterRuleValueBuilder) Type(type_ int) *FilterRuleValueBuilder {
@@ -6333,12 +6526,30 @@ func (builder *FilterRuleValueBuilder) Type(type_ int) *FilterRuleValueBuilder {
 	return builder
 }
 
-// 对应类型的值
+// 规则值
 //
-// 示例值：company_id
+// 示例值：a
 func (builder *FilterRuleValueBuilder) Value(value string) *FilterRuleValueBuilder {
 	builder.value = value
 	builder.valueFlag = true
+	return builder
+}
+
+// 下钻值
+//
+// 示例值：1
+func (builder *FilterRuleValueBuilder) LookupValue(lookupValue string) *FilterRuleValueBuilder {
+	builder.lookupValue = lookupValue
+	builder.lookupValueFlag = true
+	return builder
+}
+
+// 下钻类型
+//
+// 示例值：user
+func (builder *FilterRuleValueBuilder) LookupType(lookupType string) *FilterRuleValueBuilder {
+	builder.lookupType = lookupType
+	builder.lookupTypeFlag = true
 	return builder
 }
 
@@ -6350,6 +6561,14 @@ func (builder *FilterRuleValueBuilder) Build() *FilterRuleValue {
 	}
 	if builder.valueFlag {
 		req.Value = &builder.value
+
+	}
+	if builder.lookupValueFlag {
+		req.LookupValue = &builder.lookupValue
+
+	}
+	if builder.lookupTypeFlag {
+		req.LookupType = &builder.lookupType
 
 	}
 	return req
@@ -6811,6 +7030,7 @@ type FormFieldVariableListObject struct {
 	FileValue       *FormFieldVariableFileValue       `json:"file_value,omitempty"`       // 文件变量对象
 	I18nValue       *FormFieldVariableI18nValue       `json:"i18n_value,omitempty"`       // i18n变量对象
 	ObjectValue     *FormFieldVariableObjectValue     `json:"object_value,omitempty"`     // 对象变量
+	RecordValue     *FormFieldVariableRecordValue     `json:"record_value,omitempty"`     // 记录对象
 }
 
 type FormFieldVariableListObjectBuilder struct {
@@ -6838,6 +7058,8 @@ type FormFieldVariableListObjectBuilder struct {
 	i18nValueFlag       bool
 	objectValue         *FormFieldVariableObjectValue // 对象变量
 	objectValueFlag     bool
+	recordValue         *FormFieldVariableRecordValue // 记录对象
+	recordValueFlag     bool
 }
 
 func NewFormFieldVariableListObjectBuilder() *FormFieldVariableListObjectBuilder {
@@ -6953,6 +7175,15 @@ func (builder *FormFieldVariableListObjectBuilder) ObjectValue(objectValue *Form
 	return builder
 }
 
+// 记录对象
+//
+// 示例值：
+func (builder *FormFieldVariableListObjectBuilder) RecordValue(recordValue *FormFieldVariableRecordValue) *FormFieldVariableListObjectBuilder {
+	builder.recordValue = recordValue
+	builder.recordValueFlag = true
+	return builder
+}
+
 func (builder *FormFieldVariableListObjectBuilder) Build() *FormFieldVariableListObject {
 	req := &FormFieldVariableListObject{}
 	if builder.textValueFlag {
@@ -6990,6 +7221,9 @@ func (builder *FormFieldVariableListObjectBuilder) Build() *FormFieldVariableLis
 	}
 	if builder.objectValueFlag {
 		req.ObjectValue = builder.objectValue
+	}
+	if builder.recordValueFlag {
+		req.RecordValue = builder.recordValue
 	}
 	return req
 }
@@ -7108,6 +7342,68 @@ func (builder *FormFieldVariableObjectValueBuilder) Build() *FormFieldVariableOb
 	return req
 }
 
+type FormFieldVariableRecordValue struct {
+	Values *FormFieldVariableRecordValueExample `json:"values,omitempty"` // 注意：这个值是一个map，key是变量唯一标识，value是变量值（平台限制，没法录入Map类型，这里用object示意一下）
+}
+
+type FormFieldVariableRecordValueBuilder struct {
+	values     *FormFieldVariableRecordValueExample // 注意：这个值是一个map，key是变量唯一标识，value是变量值（平台限制，没法录入Map类型，这里用object示意一下）
+	valuesFlag bool
+}
+
+func NewFormFieldVariableRecordValueBuilder() *FormFieldVariableRecordValueBuilder {
+	builder := &FormFieldVariableRecordValueBuilder{}
+	return builder
+}
+
+// 注意：这个值是一个map，key是变量唯一标识，value是变量值（平台限制，没法录入Map类型，这里用object示意一下）
+//
+// 示例值：
+func (builder *FormFieldVariableRecordValueBuilder) Values(values *FormFieldVariableRecordValueExample) *FormFieldVariableRecordValueBuilder {
+	builder.values = values
+	builder.valuesFlag = true
+	return builder
+}
+
+func (builder *FormFieldVariableRecordValueBuilder) Build() *FormFieldVariableRecordValue {
+	req := &FormFieldVariableRecordValue{}
+	if builder.valuesFlag {
+		req.Values = builder.values
+	}
+	return req
+}
+
+type FormFieldVariableRecordValueExample struct {
+	CountryRegion *FormVariableValueInfoExample `json:"country_region,omitempty"` // 这个属性名称是map的key的示例，属性值是map的value的示例，值和外层的variable_value是的一样的结构。
+}
+
+type FormFieldVariableRecordValueExampleBuilder struct {
+	countryRegion     *FormVariableValueInfoExample // 这个属性名称是map的key的示例，属性值是map的value的示例，值和外层的variable_value是的一样的结构。
+	countryRegionFlag bool
+}
+
+func NewFormFieldVariableRecordValueExampleBuilder() *FormFieldVariableRecordValueExampleBuilder {
+	builder := &FormFieldVariableRecordValueExampleBuilder{}
+	return builder
+}
+
+// 这个属性名称是map的key的示例，属性值是map的value的示例，值和外层的variable_value是的一样的结构。
+//
+// 示例值：
+func (builder *FormFieldVariableRecordValueExampleBuilder) CountryRegion(countryRegion *FormVariableValueInfoExample) *FormFieldVariableRecordValueExampleBuilder {
+	builder.countryRegion = countryRegion
+	builder.countryRegionFlag = true
+	return builder
+}
+
+func (builder *FormFieldVariableRecordValueExampleBuilder) Build() *FormFieldVariableRecordValueExample {
+	req := &FormFieldVariableRecordValueExample{}
+	if builder.countryRegionFlag {
+		req.CountryRegion = builder.countryRegion
+	}
+	return req
+}
+
 type FormFieldVariableTextValue struct {
 	Value *string `json:"value,omitempty"` // 文本类型变量的值
 }
@@ -7185,6 +7481,7 @@ type FormVariableValueInfo struct {
 	I18nValue       *FormFieldVariableI18nValue       `json:"i18n_value,omitempty"`       // i18n变量对象
 	ObjectValue     *FormFieldVariableObjectValue     `json:"object_value,omitempty"`     // 对象变量
 	ListValue       *FormFieldVariableListValue       `json:"list_value,omitempty"`       // 列表对象
+	RecordValue     *FormFieldVariableRecordValue     `json:"record_value,omitempty"`     // 记录对象
 }
 
 type FormVariableValueInfoBuilder struct {
@@ -7214,6 +7511,8 @@ type FormVariableValueInfoBuilder struct {
 	objectValueFlag     bool
 	listValue           *FormFieldVariableListValue // 列表对象
 	listValueFlag       bool
+	recordValue         *FormFieldVariableRecordValue // 记录对象
+	recordValueFlag     bool
 }
 
 func NewFormVariableValueInfoBuilder() *FormVariableValueInfoBuilder {
@@ -7338,6 +7637,15 @@ func (builder *FormVariableValueInfoBuilder) ListValue(listValue *FormFieldVaria
 	return builder
 }
 
+// 记录对象
+//
+// 示例值：
+func (builder *FormVariableValueInfoBuilder) RecordValue(recordValue *FormFieldVariableRecordValue) *FormVariableValueInfoBuilder {
+	builder.recordValue = recordValue
+	builder.recordValueFlag = true
+	return builder
+}
+
 func (builder *FormVariableValueInfoBuilder) Build() *FormVariableValueInfo {
 	req := &FormVariableValueInfo{}
 	if builder.textValueFlag {
@@ -7378,6 +7686,40 @@ func (builder *FormVariableValueInfoBuilder) Build() *FormVariableValueInfo {
 	}
 	if builder.listValueFlag {
 		req.ListValue = builder.listValue
+	}
+	if builder.recordValueFlag {
+		req.RecordValue = builder.recordValue
+	}
+	return req
+}
+
+type FormVariableValueInfoExample struct {
+	ObjectValue *FormFieldVariableObjectValue `json:"object_value,omitempty"` // 示例的国家地区变量对象
+}
+
+type FormVariableValueInfoExampleBuilder struct {
+	objectValue     *FormFieldVariableObjectValue // 示例的国家地区变量对象
+	objectValueFlag bool
+}
+
+func NewFormVariableValueInfoExampleBuilder() *FormVariableValueInfoExampleBuilder {
+	builder := &FormVariableValueInfoExampleBuilder{}
+	return builder
+}
+
+// 示例的国家地区变量对象
+//
+// 示例值：
+func (builder *FormVariableValueInfoExampleBuilder) ObjectValue(objectValue *FormFieldVariableObjectValue) *FormVariableValueInfoExampleBuilder {
+	builder.objectValue = objectValue
+	builder.objectValueFlag = true
+	return builder
+}
+
+func (builder *FormVariableValueInfoExampleBuilder) Build() *FormVariableValueInfoExample {
+	req := &FormVariableValueInfoExample{}
+	if builder.objectValueFlag {
+		req.ObjectValue = builder.objectValue
 	}
 	return req
 }
@@ -11694,6 +12036,70 @@ func (builder *OffboardingReasonBuilder) Build() *OffboardingReason {
 	return req
 }
 
+type OrgTruncation struct {
+	OrgKey *string `json:"org_key,omitempty"` // 组织名称
+	Type   *int    `json:"type,omitempty"`    // 下钻类型
+	Depth  *int    `json:"depth,omitempty"`   // 下钻深度
+}
+
+type OrgTruncationBuilder struct {
+	orgKey     string // 组织名称
+	orgKeyFlag bool
+	type_      int // 下钻类型
+	typeFlag   bool
+	depth      int // 下钻深度
+	depthFlag  bool
+}
+
+func NewOrgTruncationBuilder() *OrgTruncationBuilder {
+	builder := &OrgTruncationBuilder{}
+	return builder
+}
+
+// 组织名称
+//
+// 示例值：department
+func (builder *OrgTruncationBuilder) OrgKey(orgKey string) *OrgTruncationBuilder {
+	builder.orgKey = orgKey
+	builder.orgKeyFlag = true
+	return builder
+}
+
+// 下钻类型
+//
+// 示例值：0
+func (builder *OrgTruncationBuilder) Type(type_ int) *OrgTruncationBuilder {
+	builder.type_ = type_
+	builder.typeFlag = true
+	return builder
+}
+
+// 下钻深度
+//
+// 示例值：0
+func (builder *OrgTruncationBuilder) Depth(depth int) *OrgTruncationBuilder {
+	builder.depth = depth
+	builder.depthFlag = true
+	return builder
+}
+
+func (builder *OrgTruncationBuilder) Build() *OrgTruncation {
+	req := &OrgTruncation{}
+	if builder.orgKeyFlag {
+		req.OrgKey = &builder.orgKey
+
+	}
+	if builder.typeFlag {
+		req.Type = &builder.type_
+
+	}
+	if builder.depthFlag {
+		req.Depth = &builder.depth
+
+	}
+	return req
+}
+
 type PermissionDetail struct {
 	Role                     *SecurityGroup             `json:"role,omitempty"`                       // 角色
 	AssignedOrganizationList [][]*AssignedOrganization  `json:"assigned_organization_list,omitempty"` // 指定管理对象列表，如果该值为null，则使用设置数据权限
@@ -11772,8 +12178,9 @@ func (builder *PermissionDetailBuilder) Build() *PermissionDetail {
 }
 
 type PermissionSecurityGroup struct {
-	RuleDimension *RuleDimension `json:"rule_dimension,omitempty"` // 管理维度
-	RuleType      *int           `json:"rule_type,omitempty"`      // 管理类型
+	RuleDimension *RuleDimension    `json:"rule_dimension,omitempty"` // 管理维度
+	RuleType      *int              `json:"rule_type,omitempty"`      // 管理类型
+	Expression    *FilterExpression `json:"expression,omitempty"`     // 规则
 }
 
 type PermissionSecurityGroupBuilder struct {
@@ -11781,6 +12188,8 @@ type PermissionSecurityGroupBuilder struct {
 	ruleDimensionFlag bool
 	ruleType          int // 管理类型
 	ruleTypeFlag      bool
+	expression        *FilterExpression // 规则
+	expressionFlag    bool
 }
 
 func NewPermissionSecurityGroupBuilder() *PermissionSecurityGroupBuilder {
@@ -11806,6 +12215,15 @@ func (builder *PermissionSecurityGroupBuilder) RuleType(ruleType int) *Permissio
 	return builder
 }
 
+// 规则
+//
+// 示例值：
+func (builder *PermissionSecurityGroupBuilder) Expression(expression *FilterExpression) *PermissionSecurityGroupBuilder {
+	builder.expression = expression
+	builder.expressionFlag = true
+	return builder
+}
+
 func (builder *PermissionSecurityGroupBuilder) Build() *PermissionSecurityGroup {
 	req := &PermissionSecurityGroup{}
 	if builder.ruleDimensionFlag {
@@ -11814,6 +12232,9 @@ func (builder *PermissionSecurityGroupBuilder) Build() *PermissionSecurityGroup 
 	if builder.ruleTypeFlag {
 		req.RuleType = &builder.ruleType
 
+	}
+	if builder.expressionFlag {
+		req.Expression = builder.expression
 	}
 	return req
 }
@@ -14076,27 +14497,30 @@ func (builder *RuleDimensionBuilder) Build() *RuleDimension {
 }
 
 type SecurityGroup struct {
-	Id           *string `json:"id,omitempty"`            // 角色ID
-	Code         *string `json:"code,omitempty"`          // 角色code，通常用于与其他系统进行交互
-	Name         *Name   `json:"name,omitempty"`          // 角色名称
-	ActiveStatus *int    `json:"active_status,omitempty"` // 状态，1 = Inactive / 停用，;2 = Active / 启用，3 = TobeActivated / 待启用
-	Description  *Name   `json:"description,omitempty"`   // 角色描述
-	UpdateTime   *string `json:"update_time,omitempty"`   // 更新时间
+	Id            *string          `json:"id,omitempty"`             // 角色ID
+	Code          *string          `json:"code,omitempty"`           // 角色code，通常用于与其他系统进行交互
+	Name          *Name            `json:"name,omitempty"`           // 角色名称
+	ActiveStatus  *int             `json:"active_status,omitempty"`  // 状态，1 = Inactive / 停用，;2 = Active / 启用，3 = TobeActivated / 待启用
+	Description   *Name            `json:"description,omitempty"`    // 角色描述
+	UpdateTime    *string          `json:"update_time,omitempty"`    // 更新时间
+	OrgTruncation []*OrgTruncation `json:"org_truncation,omitempty"` // 组织管理维度
 }
 
 type SecurityGroupBuilder struct {
-	id               string // 角色ID
-	idFlag           bool
-	code             string // 角色code，通常用于与其他系统进行交互
-	codeFlag         bool
-	name             *Name // 角色名称
-	nameFlag         bool
-	activeStatus     int // 状态，1 = Inactive / 停用，;2 = Active / 启用，3 = TobeActivated / 待启用
-	activeStatusFlag bool
-	description      *Name // 角色描述
-	descriptionFlag  bool
-	updateTime       string // 更新时间
-	updateTimeFlag   bool
+	id                string // 角色ID
+	idFlag            bool
+	code              string // 角色code，通常用于与其他系统进行交互
+	codeFlag          bool
+	name              *Name // 角色名称
+	nameFlag          bool
+	activeStatus      int // 状态，1 = Inactive / 停用，;2 = Active / 启用，3 = TobeActivated / 待启用
+	activeStatusFlag  bool
+	description       *Name // 角色描述
+	descriptionFlag   bool
+	updateTime        string // 更新时间
+	updateTimeFlag    bool
+	orgTruncation     []*OrgTruncation // 组织管理维度
+	orgTruncationFlag bool
 }
 
 func NewSecurityGroupBuilder() *SecurityGroupBuilder {
@@ -14158,6 +14582,15 @@ func (builder *SecurityGroupBuilder) UpdateTime(updateTime string) *SecurityGrou
 	return builder
 }
 
+// 组织管理维度
+//
+// 示例值：
+func (builder *SecurityGroupBuilder) OrgTruncation(orgTruncation []*OrgTruncation) *SecurityGroupBuilder {
+	builder.orgTruncation = orgTruncation
+	builder.orgTruncationFlag = true
+	return builder
+}
+
 func (builder *SecurityGroupBuilder) Build() *SecurityGroup {
 	req := &SecurityGroup{}
 	if builder.idFlag {
@@ -14181,6 +14614,9 @@ func (builder *SecurityGroupBuilder) Build() *SecurityGroup {
 	if builder.updateTimeFlag {
 		req.UpdateTime = &builder.updateTime
 
+	}
+	if builder.orgTruncationFlag {
+		req.OrgTruncation = builder.orgTruncation
 	}
 	return req
 }
@@ -23628,15 +24064,16 @@ func (m *P2JobUpdatedV1) RawReq(req *larkevent.EventReq) {
 }
 
 type P2JobChangeUpdatedV1Data struct {
-	EmploymentId                 *string `json:"employment_id,omitempty"`                   // 雇员ID
-	TargetUserId                 *UserId `json:"target_user_id,omitempty"`                  // 用户 ID
-	JobChangeId                  *string `json:"job_change_id,omitempty"`                   // 异动记录 id
-	TransferMode                 *int    `json:"transfer_mode,omitempty"`                   // 异动属性/方式
-	TransferTypeUniqueIdentifier *string `json:"transfer_type_unique_identifier,omitempty"` // 异动类型唯一标识
-	ProcessId                    *string `json:"process_id,omitempty"`                      // 异动发起后的审批流程 id，如果是直接异动，则无需要审批流程id
-	EffectiveDate                *string `json:"effective_date,omitempty"`                  // 异动生效日期
-	Status                       *int    `json:"status,omitempty"`                          // 异动状态
-	TransferKey                  *string `json:"transfer_key,omitempty"`                    // 异动记录标识符
+	EmploymentId                   *string `json:"employment_id,omitempty"`                     // 雇员ID
+	TargetUserId                   *UserId `json:"target_user_id,omitempty"`                    // 用户 ID
+	JobChangeId                    *string `json:"job_change_id,omitempty"`                     // 异动记录 id
+	TransferMode                   *int    `json:"transfer_mode,omitempty"`                     // 异动属性/方式
+	TransferTypeUniqueIdentifier   *string `json:"transfer_type_unique_identifier,omitempty"`   // 异动类型唯一标识
+	TransferReasonUniqueIdentifier *string `json:"transfer_reason_unique_identifier,omitempty"` // 异动原因唯一标识
+	ProcessId                      *string `json:"process_id,omitempty"`                        // 异动发起后的审批流程 id，如果是直接异动，则无需要审批流程id
+	EffectiveDate                  *string `json:"effective_date,omitempty"`                    // 异动生效日期
+	Status                         *int    `json:"status,omitempty"`                            // 异动状态
+	TransferKey                    *string `json:"transfer_key,omitempty"`                      // 异动记录标识符
 }
 
 type P2JobChangeUpdatedV1 struct {

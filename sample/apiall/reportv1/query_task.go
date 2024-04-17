@@ -22,30 +22,25 @@ import (
 )
 
 // POST /open-apis/report/v1/tasks/query
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkreport.NewQueryTaskReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkreport.NewQueryTaskReqBuilder().
 		UserIdType("user_id").
-		
-	   Body(larkreport.NewQueryTaskReqBodyBuilder().
+		Body(larkreport.NewQueryTaskReqBodyBuilder().
 			CommitStartTime(1622427266).
 			CommitEndTime(1622427266).
 			RuleId("6894419345318182932").
-			
 			UserId("ou_133f0b6d0f097cf7d7ba00b38fffb110").
-			
 			PageToken("6895699275733778451").
-			
 			PageSize(10).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Report.V1.Task.Query(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Report.V1.Task.Query(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -60,4 +55,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

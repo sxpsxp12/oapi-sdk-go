@@ -22,23 +22,20 @@ import (
 )
 
 // POST /open-apis/auth/v3/app_ticket/resend
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkauth.NewResendAppTicketReqBuilder().
-	   Body(larkauth.NewResendAppTicketReqBodyBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkauth.NewResendAppTicketReqBuilder().
+		Body(larkauth.NewResendAppTicketReqBodyBuilder().
 			AppId("cli_slkdjalasdkjasd").
-			
 			AppSecret("dskLLdkasdjlasdKK").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Auth.V3.AppTicket.Resend(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Auth.V3.AppTicket.Resend(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -53,4 +50,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -22,21 +22,18 @@ import (
 )
 
 // DELETE /open-apis/task/v2/tasklists/:tasklist_guid/activity_subscriptions/:activity_subscription_guid
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewDeleteTasklistActivitySubscriptionReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewDeleteTasklistActivitySubscriptionReqBuilder().
 		TasklistGuid("f5ca6747-5ac3-422e-a97e-972c1b2c24f3").
-		
 		ActivitySubscriptionGuid("d19e3a2a-edc0-4e4e-b7cc-950e162b53ae").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.TasklistActivitySubscription.Delete(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.TasklistActivitySubscription.Delete(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -51,4 +48,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

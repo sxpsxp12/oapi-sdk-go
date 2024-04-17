@@ -68,6 +68,13 @@ const (
 )
 
 const (
+	UserIdTypeQueryReviewUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeQueryReviewUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeQueryReviewOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeQueryReviewPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
 	UserIdTypeListUserOkrUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeListUserOkrUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeListUserOkrOpenId        = "open_id"         // 以open_id来识别用户
@@ -6436,6 +6443,72 @@ type UpdateProgressRecordResp struct {
 }
 
 func (resp *UpdateProgressRecordResp) Success() bool {
+	return resp.Code == 0
+}
+
+type QueryReviewReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewQueryReviewReqBuilder() *QueryReviewReqBuilder {
+	builder := &QueryReviewReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *QueryReviewReqBuilder) UserIdType(userIdType string) *QueryReviewReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 目标用户id列表，最多5个
+//
+// 示例值：ou_e6139117c300506837def50545420c6a
+func (builder *QueryReviewReqBuilder) UserIds(userIds []string) *QueryReviewReqBuilder {
+	for _, v := range userIds {
+		builder.apiReq.QueryParams.Add("user_ids", fmt.Sprint(v))
+	}
+	return builder
+}
+
+// period_id列表，最多5个
+//
+// 示例值：7067724095781142548
+func (builder *QueryReviewReqBuilder) PeriodIds(periodIds []string) *QueryReviewReqBuilder {
+	for _, v := range periodIds {
+		builder.apiReq.QueryParams.Add("period_ids", fmt.Sprint(v))
+	}
+	return builder
+}
+
+func (builder *QueryReviewReqBuilder) Build() *QueryReviewReq {
+	req := &QueryReviewReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type QueryReviewReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type QueryReviewRespData struct {
+	ReviewList []*OkrReview `json:"review_list,omitempty"` // OKR复盘 列表
+}
+
+type QueryReviewResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *QueryReviewRespData `json:"data"` // 业务数据
+}
+
+func (resp *QueryReviewResp) Success() bool {
 	return resp.Code == 0
 }
 

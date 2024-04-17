@@ -22,32 +22,26 @@ import (
 )
 
 // POST /open-apis/drive/v1/permissions/:token/members/transfer_owner
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkdrive.NewTransferOwnerPermissionMemberReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkdrive.NewTransferOwnerPermissionMemberReqBuilder().
 		Token("doccnBKgoMyY5OMbUG6FioTXuBe").
-		
 		Type("doc").
-		
 		NeedNotification(true).
 		RemoveOldOwner(false).
 		StayPut(false).
 		OldOwnerPerm("full_access").
-		
-	   Owner(larkdrive.NewOwnerBuilder().
+		Owner(larkdrive.NewOwnerBuilder().
 			MemberType("openid").
-			
 			MemberId("string").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Drive.V1.PermissionMember.TransferOwner(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Drive.V1.PermissionMember.TransferOwner(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -62,4 +56,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

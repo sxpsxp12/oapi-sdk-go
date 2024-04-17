@@ -22,32 +22,26 @@ import (
 )
 
 // PUT /open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkbitable.NewUpdateAppTableFieldReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkbitable.NewUpdateAppTableFieldReqBuilder().
 		AppToken("appbcbWCzen6D8dezhoCH2RpMAh").
-		
 		TableId("tblsRc9GRRXKqhvW").
-		
 		FieldId("fldPTb0U2y").
-		
-	   AppTableField(larkbitable.NewAppTableFieldBuilder().
+		AppTableField(larkbitable.NewAppTableFieldBuilder().
 			FieldName("字段名称").
-			
 			Type(0).
 			Property(larkbitable.NewAppTableFieldPropertyBuilder().Build()).
 			Description(larkbitable.NewAppTableFieldDescriptionBuilder().Build()).
 			UiType("Progress").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Bitable.V1.AppTableField.Update(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Bitable.V1.AppTableField.Update(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -62,4 +56,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

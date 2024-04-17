@@ -22,24 +22,21 @@ import (
 )
 
 // POST /open-apis/personal_settings/v1/system_statuses/:system_status_id/batch_open
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkpersonal_settings.NewBatchOpenSystemStatusReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkpersonal_settings.NewBatchOpenSystemStatusReqBuilder().
 		SystemStatusId("7101214603622940672").
-		
 		UserIdType("open_id").
-		
-	   Body(larkpersonal_settings.NewBatchOpenSystemStatusReqBodyBuilder().
+		Body(larkpersonal_settings.NewBatchOpenSystemStatusReqBodyBuilder().
 			UserList([]*larkpersonal_settings.SystemStatusUserOpenParam{larkpersonal_settings.NewSystemStatusUserOpenParamBuilder().Build()}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.PersonalSettings.V1.SystemStatus.BatchOpen(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.PersonalSettings.V1.SystemStatus.BatchOpen(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -54,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

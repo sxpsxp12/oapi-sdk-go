@@ -22,32 +22,25 @@ import (
 )
 
 // POST /open-apis/drive/v1/permissions/:token/members
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkdrive.NewCreatePermissionMemberReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkdrive.NewCreatePermissionMemberReqBuilder().
 		Token("doccnBKgoMyY5OMbUG6FioTXuBe").
-		
 		Type("doc").
-		
 		NeedNotification(false).
-	   BaseMember(larkdrive.NewBaseMemberBuilder().
+		BaseMember(larkdrive.NewBaseMemberBuilder().
 			MemberType("openid").
-			
 			MemberId("string").
-			
 			Perm("view").
-			
 			Type("user").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Drive.V1.PermissionMember.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Drive.V1.PermissionMember.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -62,4 +55,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

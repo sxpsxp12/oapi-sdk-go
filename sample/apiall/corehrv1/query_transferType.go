@@ -22,19 +22,18 @@ import (
 )
 
 // GET /open-apis/corehr/v1/transfer_types/query
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewQueryTransferTypeReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewQueryTransferTypeReqBuilder().
 		Active(true).
 		TransferTypeUniqueIdentifier([]string{}).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V1.TransferType.Query(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V1.TransferType.Query(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -49,4 +48,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

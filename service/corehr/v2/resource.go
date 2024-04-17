@@ -1207,6 +1207,40 @@ func (p *preHire) Create(ctx context.Context, req *CreatePreHireReq, options ...
 	return resp, err
 }
 
+// Search
+//
+// - 根据部门 ID，上级部门查询部门列表
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=search&project=corehr&resource=pre_hire&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/search_preHire.go
+func (p *preHire) Search(ctx context.Context, req *SearchPreHireReq, options ...larkcore.RequestOptionFunc) (*SearchPreHireResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pre_hires/search"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &SearchPreHireResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (p *preHire) SearchByIterator(ctx context.Context, req *SearchPreHireReq, options ...larkcore.RequestOptionFunc) (*SearchPreHireIterator, error) {
+	return &SearchPreHireIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: p.Search,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
 // EnableDisableAssessment
 //
 // -

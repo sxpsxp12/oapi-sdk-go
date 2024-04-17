@@ -4,7 +4,6 @@
 
 ## 目录
 
-
 <!-- toc -->
 
 - [安装](#安装)
@@ -269,11 +268,13 @@ type HttpClient interface {
 </table>
 
 ## API调用
+
 创建完毕 API Client，我们可以使用 ``Client.业务域.资源.方法名称`` 来定位具体的 API 方法，然后对具体的 API 发起调用。
 
 ![](doc/find_method.jpg)
 
-飞书开放平台开放的所有 API 列表，可点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uYTM5UjL2ETO14iNxkTN/server-api-list)
+飞书开放平台开放的所有 API
+列表，可点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uYTM5UjL2ETO14iNxkTN/server-api-list)
 
 ### 基本用法
 
@@ -513,12 +514,15 @@ func main() {
 更多 API 调用示例：[./sample/callrawapi/api.go](./sample/callrawapi/api.go)
 
 ## 处理消息事件回调
+
 关于消息订阅相关的知识，可以点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM)
 
 飞书开放平台开放的所有事件列表，可点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uYDNxYjL2QTM24iN0EjN/event-list)
+
 ### 基本用法
 
-开发者订阅消息事件后，可以使用下面代码，对飞书开放平台推送的消息事件进行处理，如下代码基于 go-sdk 原生 http server 启动一个 httpServer：
+开发者订阅消息事件后，可以使用下面代码，对飞书开放平台推送的消息事件进行处理，如下代码基于 go-sdk 原生 http server 启动一个
+httpServer：
 
 ```go
 import (
@@ -561,24 +565,28 @@ func main() {
 
 ```
 
-其中 NewEventDispatcher 方法的参数用于签名验证和消息解密使用，默认可以传递为空串；但是如果开发者的应用在 [控制台](https://open.feishu.cn/app?lang=zh-CN) 的【事件订阅】里面开启了加密，则必须传递控制台上提供的值。
+其中 NewEventDispatcher
+方法的参数用于签名验证和消息解密使用，默认可以传递为空串；但是如果开发者的应用在 [控制台](https://open.feishu.cn/app?lang=zh-CN)
+的【事件订阅】里面开启了加密，则必须传递控制台上提供的值。
 
 ![Console](doc/console.jpeg)
 
-需要注意的是注册处理器时，比如使用 OnP2MessageReceiveV1 注册接受消息事件回调时，其中的P2为消息协议版本，当前飞书开放平台存在 [两种消息协议](https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM#8f960a4b) ，分别为1.0和2.0。
+需要注意的是注册处理器时，比如使用 OnP2MessageReceiveV1
+注册接受消息事件回调时，其中的P2为消息协议版本，当前飞书开放平台存在 [两种消息协议](https://open.feishu.cn/document/ukTMukTMukTM/uUTNz4SN1MjL1UzM#8f960a4b)
+，分别为1.0和2.0。
 
-如下图开发者在注册消息处理器时，需从 [事件列表](https://open.feishu.cn/document/ukTMukTMukTM/uYDNxYjL2QTM24iN0EjN/event-list) 中查看自己需要的是哪种协议的事件。
+如下图开发者在注册消息处理器时，需从 [事件列表](https://open.feishu.cn/document/ukTMukTMukTM/uYDNxYjL2QTM24iN0EjN/event-list)
+中查看自己需要的是哪种协议的事件。
 如果是1.0的消息协议，则注册处理器时，需要找以OnP1xxxx开头的。如果是2.0的消息协议，则注册处理器时，需要找以OnP2xxxx开头的。
-
-
-
 
 ![Console](doc/event_protocol.jpeg)
 
 更多事件订阅示例：[./sample/event/event.go](./sample/event/event.go)
 
 ## 消息处理器内给对应租户发消息
-针对 ISV 开发者，如果想在消息处理器内给对应租户的用户发送消息，则需先从消息事件内获取租户 key,然后使用下面方式调用消息 API 进行消息发送：
+
+针对 ISV 开发者，如果想在消息处理器内给对应租户的用户发送消息，则需先从消息事件内获取租户 key,然后使用下面方式调用消息 API
+进行消息发送：
 
 ```go
 import (
@@ -631,12 +639,12 @@ func main() {
 
 ```
 
-
 更多事件订阅示例：[./sample/event/event.go](./sample/event/event.go)
 
-
 ### 集成Gin框架
-如果开发者当前应用使用的是 Gin Web 框架，并且不想要使用 Go-Sdk 提供的原生的 Http Server，则可使用下面方式，把当前应用的 Gin 服务与 SDK进行集成。
+
+如果开发者当前应用使用的是 Gin Web 框架，并且不想要使用 Go-Sdk 提供的原生的 Http Server，则可使用下面方式，把当前应用的 Gin
+服务与 SDK进行集成。
 
 要想把 SDK 集成已有 Gin 框架，开发者需要引入集成包 [oapi-sdk-gin](https://github.com/larksuite/oapi-sdk-gin)
 
@@ -685,13 +693,14 @@ func main() {
 }
 ```
 
-
 ## 处理卡片行为回调
 
 关于卡片行为相关的知识，可点击[这里查看](https://open.feishu.cn/document/ukTMukTMukTM/uczM3QjL3MzN04yNzcDN)
+
 ### 基本用法
 
-开发者配置消息卡片回调地址后，可以使用下面代码，对飞书开放平台推送的卡片行为进行处理，如下代码基于go-sdk原生http server启动一个httpServer：
+开发者配置消息卡片回调地址后，可以使用下面代码，对飞书开放平台推送的卡片行为进行处理，如下代码基于go-sdk原生http
+server启动一个httpServer：
 
 ```go
 import (
@@ -831,11 +840,10 @@ func main() {
 
 更多卡片行为处理示例：[./sample/card/card.go](./sample/card/card.go)
 
-
 ### 卡片行为处理器内给对应租户发消息
 
-针对 ISV 开发者，如果想在卡片行为处理器内给对应租户的用户发送消息，则需先从卡片行为内获取租户 key ,然后使用下面方式调用消息 API 进行消息发送：
-
+针对 ISV 开发者，如果想在卡片行为处理器内给对应租户的用户发送消息，则需先从卡片行为内获取租户 key ,然后使用下面方式调用消息
+API 进行消息发送：
 
 ```go
 import (
@@ -888,10 +896,10 @@ func main() {
 
 更多卡片行为处理示例：[./sample/card/card.go](./sample/card/card.go)
 
-
 ### 集成gin框架
 
-如果开发者当前应用使用的是 Gin Web 框架，并且不想要使用 Go-Sdk 提供的原生的 Http Server，则可使用下面方式，把当前应用的 Gin 服务与 SDK进行集成。
+如果开发者当前应用使用的是 Gin Web 框架，并且不想要使用 Go-Sdk 提供的原生的 Http Server，则可使用下面方式，把当前应用的 Gin
+服务与 SDK进行集成。
 
 要想把 SDK 集成已有 Gin 框架，开发者需要引入集成包 [oapi-sdk-gin](https://github.com/larksuite/oapi-sdk-gin)
 
@@ -931,6 +939,7 @@ func main() {
 ```
 
 ## License
+
 使用 MIT
 
 

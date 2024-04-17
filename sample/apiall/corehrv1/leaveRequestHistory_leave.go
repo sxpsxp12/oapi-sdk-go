@@ -22,48 +22,35 @@ import (
 )
 
 // GET /open-apis/corehr/v1/leaves/leave_request_history
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewLeaveRequestHistoryLeaveReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewLeaveRequestHistoryLeaveReqBuilder().
 		PageToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9").
-		
 		PageSize("100").
-		
 		EmploymentIdList([]string{}).
 		InitiatorIdList([]string{}).
 		LeaveRequestStatus([]string{}).
 		LeaveTypeIdList([]string{}).
 		LeaveStartDateMin("2022-07-20 morning").
-		
 		LeaveStartDateMax("2022-07-20 morning").
-		
 		LeaveEndDateMin("2022-07-20 morning").
-		
 		LeaveEndDateMax("2022-07-20 morning").
-		
 		LeaveSubmitDateMin("2022-07-20 morning").
-		
 		LeaveSubmitDateMax("2022-07-20 morning").
-		
 		UserIdType("people_corehr_id").
-		
 		LeaveUpdateTimeMin("2022-10-24 10:00:00").
-		
 		LeaveUpdateTimeMax("2022-10-24 10:00:00").
-		
 		ReturnDetail(false).
 		LeaveTermType(0).
 		TimeZone("Asia/Shanghai").
-		
 		DataSource(1).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V1.Leave.LeaveRequestHistory(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V1.Leave.LeaveRequestHistory(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -78,4 +65,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

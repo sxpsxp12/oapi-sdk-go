@@ -22,19 +22,17 @@ import (
 )
 
 // GET /open-apis/board/v1/whiteboards/:whiteboard_id/nodes
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkboard.NewListWhiteboardNodeReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkboard.NewListWhiteboardNodeReqBuilder().
 		WhiteboardId("Ru8nwrWFOhEmaFbEU2VbPRsHcxb").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Board.V1.WhiteboardNode.List(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Board.V1.WhiteboardNode.List(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -49,4 +47,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

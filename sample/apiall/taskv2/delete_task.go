@@ -22,19 +22,17 @@ import (
 )
 
 // DELETE /open-apis/task/v2/tasks/:task_guid
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewDeleteTaskReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewDeleteTaskReqBuilder().
 		TaskGuid("e297ddff-06ca-4166-b917-4ce57cd3a7a0").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.Task.Delete(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.Task.Delete(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -49,4 +47,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

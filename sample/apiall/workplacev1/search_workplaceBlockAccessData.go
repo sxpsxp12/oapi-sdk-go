@@ -22,26 +22,21 @@ import (
 )
 
 // POST /open-apis/workplace/v1/workplace_block_access_data/search
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkworkplace.NewSearchWorkplaceBlockAccessDataReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkworkplace.NewSearchWorkplaceBlockAccessDataReqBuilder().
 		FromDate("2023-02-01").
-		
 		ToDate("2023-03-02").
-		
 		PageSize(20).
 		PageToken("ddowkdkl9w2d").
-		
 		BlockId("283438293839422334").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Workplace.V1.WorkplaceBlockAccessData.Search(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Workplace.V1.WorkplaceBlockAccessData.Search(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -22,26 +22,21 @@ import (
 )
 
 // GET /open-apis/application/v6/applications/:app_id/contacts_range_configuration
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkapplication.NewContactsRangeConfigurationApplicationReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkapplication.NewContactsRangeConfigurationApplicationReqBuilder().
 		AppId("cli_9b445f5258795107").
-		
 		PageSize(50).
 		PageToken("new-e3c5a0627cdf0c2e057da7257b90376a").
-		
 		DepartmentIdType("open_department_id").
-		
 		UserIdType("user_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Application.V6.Application.ContactsRangeConfiguration(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Application.V6.Application.ContactsRangeConfiguration(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

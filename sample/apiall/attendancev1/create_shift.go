@@ -22,14 +22,13 @@ import (
 )
 
 // POST /open-apis/attendance/v1/shifts
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkattendance.NewCreateShiftReqBuilder().
-	   Shift(larkattendance.NewShiftBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkattendance.NewCreateShiftReqBuilder().
+		Shift(larkattendance.NewShiftBuilder().
 			ShiftName("早班").
-			
 			PunchTimes(1).
 			SubShiftLeaderIds([]string{}).
 			IsFlexible(false).
@@ -43,12 +42,11 @@ func main(){
 			DayType(60).
 			OvertimeRestTimeRule([]*larkattendance.RestRule{larkattendance.NewRestRuleBuilder().Build()}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Attendance.V1.Shift.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Attendance.V1.Shift.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -63,4 +61,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

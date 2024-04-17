@@ -38,6 +38,14 @@ const (
 const (
 	MeetingStatusTypeOngoing = 1 // 进行中
 	MeetingStatusTypePast    = 2 // 已结束
+	MeetingStatusTypeFuture  = 3 // 待召开
+
+)
+
+const (
+	MeetingTypeAll         = 1 // 全部类型（默认）
+	MeetingTypeMeeting     = 2 // 视频会议
+	MeetingTypeShareScreen = 3 // 本地投屏
 
 )
 
@@ -50,6 +58,7 @@ const (
 const (
 	MeetingStatusTypeParticipantListExportOngoing = 1 // 进行中
 	MeetingStatusTypeParticipantListExportPast    = 2 // 已结束
+	MeetingStatusTypeParticipantListExportFuture  = 3 // 待召开
 
 )
 
@@ -104,6 +113,14 @@ const (
 const (
 	MeetingStatusTypeGetMeetingListOngoing = 1 // 进行中
 	MeetingStatusTypeGetMeetingListPast    = 2 // 已结束
+	MeetingStatusTypeGetMeetingListFuture  = 3 // 待召开
+
+)
+
+const (
+	MeetingTypeGetMeetingListAll         = 1 // 全部类型（默认）
+	MeetingTypeGetMeetingListMeeting     = 2 // 视频会议
+	MeetingTypeGetMeetingListShareScreen = 3 // 本地投屏
 
 )
 
@@ -116,6 +133,7 @@ const (
 const (
 	MeetingStatusTypeGetParticipantListOngoing = 1 // 进行中
 	MeetingStatusTypeGetParticipantListPast    = 2 // 已结束
+	MeetingStatusTypeGetParticipantListFuture  = 3 // 待召开
 
 )
 
@@ -1421,6 +1439,7 @@ type Meeting struct {
 	Topic                       *string               `json:"topic,omitempty"`                         // 会议主题
 	Url                         *string               `json:"url,omitempty"`                           // 会议链接（飞书用户可通过点击会议链接快捷入会）
 	MeetingNo                   *string               `json:"meeting_no,omitempty"`                    // 会议号
+	Password                    *string               `json:"password,omitempty"`                      // 会议密码
 	CreateTime                  *string               `json:"create_time,omitempty"`                   // 会议创建时间（unix时间，单位sec）
 	StartTime                   *string               `json:"start_time,omitempty"`                    // 会议开始时间（unix时间，单位sec）
 	EndTime                     *string               `json:"end_time,omitempty"`                      // 会议结束时间（unix时间，单位sec）
@@ -1441,6 +1460,8 @@ type MeetingBuilder struct {
 	urlFlag                         bool
 	meetingNo                       string // 会议号
 	meetingNoFlag                   bool
+	password                        string // 会议密码
+	passwordFlag                    bool
 	createTime                      string // 会议创建时间（unix时间，单位sec）
 	createTimeFlag                  bool
 	startTime                       string // 会议开始时间（unix时间，单位sec）
@@ -1499,6 +1520,15 @@ func (builder *MeetingBuilder) Url(url string) *MeetingBuilder {
 func (builder *MeetingBuilder) MeetingNo(meetingNo string) *MeetingBuilder {
 	builder.meetingNo = meetingNo
 	builder.meetingNoFlag = true
+	return builder
+}
+
+// 会议密码
+//
+// 示例值：971024
+func (builder *MeetingBuilder) Password(password string) *MeetingBuilder {
+	builder.password = password
+	builder.passwordFlag = true
 	return builder
 }
 
@@ -1599,6 +1629,10 @@ func (builder *MeetingBuilder) Build() *Meeting {
 	}
 	if builder.meetingNoFlag {
 		req.MeetingNo = &builder.meetingNo
+
+	}
+	if builder.passwordFlag {
+		req.Password = &builder.password
 
 	}
 	if builder.createTimeFlag {
@@ -1830,15 +1864,18 @@ func (builder *MeetingAbilityBuilder) Build() *MeetingAbility {
 }
 
 type MeetingEventMeeting struct {
-	Id              *string           `json:"id,omitempty"`                // 会议ID（视频会议的唯一标识，视频会议开始后才会产生）
-	Topic           *string           `json:"topic,omitempty"`             // 会议主题
-	MeetingNo       *string           `json:"meeting_no,omitempty"`        // 9位会议号（飞书用户可通过输入9位会议号快捷入会）
-	MeetingSource   *int              `json:"meeting_source,omitempty"`    // 会议创建源
-	StartTime       *string           `json:"start_time,omitempty"`        // 会议开始时间（unix时间，单位sec）
-	EndTime         *string           `json:"end_time,omitempty"`          // 会议结束时间（unix时间，单位sec）
-	HostUser        *MeetingEventUser `json:"host_user,omitempty"`         // 会议主持人
-	Owner           *MeetingEventUser `json:"owner,omitempty"`             // 会议拥有者
-	CalendarEventId *string           `json:"calendar_event_id,omitempty"` // 日程实体的唯一标志
+	Id              *string                 `json:"id,omitempty"`                // 会议ID（视频会议的唯一标识，视频会议开始后才会产生）
+	Topic           *string                 `json:"topic,omitempty"`             // 会议主题
+	MeetingNo       *string                 `json:"meeting_no,omitempty"`        // 9位会议号（飞书用户可通过输入9位会议号快捷入会）
+	MeetingSource   *int                    `json:"meeting_source,omitempty"`    // 会议创建源
+	StartTime       *string                 `json:"start_time,omitempty"`        // 会议开始时间（unix时间，单位sec）
+	EndTime         *string                 `json:"end_time,omitempty"`          // 会议结束时间（unix时间，单位sec）
+	HostUser        *MeetingEventUser       `json:"host_user,omitempty"`         // 会议主持人
+	Owner           *MeetingEventUser       `json:"owner,omitempty"`             // 会议拥有者
+	CalendarEventId *string                 `json:"calendar_event_id,omitempty"` // 日程实体的唯一标志
+	MeetingSubType  *int                    `json:"meeting_sub_type,omitempty"`  // 会议子类型
+	SecuritySetting *MeetingSecuritySetting `json:"security_setting,omitempty"`  // 会议安全设置
+	WebinarSetting  *MeetingWebinarSetting  `json:"webinar_setting,omitempty"`   // 研讨会相关设置
 }
 
 type MeetingEventMeetingBuilder struct {
@@ -1860,6 +1897,12 @@ type MeetingEventMeetingBuilder struct {
 	ownerFlag           bool
 	calendarEventId     string // 日程实体的唯一标志
 	calendarEventIdFlag bool
+	meetingSubType      int // 会议子类型
+	meetingSubTypeFlag  bool
+	securitySetting     *MeetingSecuritySetting // 会议安全设置
+	securitySettingFlag bool
+	webinarSetting      *MeetingWebinarSetting // 研讨会相关设置
+	webinarSettingFlag  bool
 }
 
 func NewMeetingEventMeetingBuilder() *MeetingEventMeetingBuilder {
@@ -1948,6 +1991,33 @@ func (builder *MeetingEventMeetingBuilder) CalendarEventId(calendarEventId strin
 	return builder
 }
 
+// 会议子类型
+//
+// 示例值：1
+func (builder *MeetingEventMeetingBuilder) MeetingSubType(meetingSubType int) *MeetingEventMeetingBuilder {
+	builder.meetingSubType = meetingSubType
+	builder.meetingSubTypeFlag = true
+	return builder
+}
+
+// 会议安全设置
+//
+// 示例值：
+func (builder *MeetingEventMeetingBuilder) SecuritySetting(securitySetting *MeetingSecuritySetting) *MeetingEventMeetingBuilder {
+	builder.securitySetting = securitySetting
+	builder.securitySettingFlag = true
+	return builder
+}
+
+// 研讨会相关设置
+//
+// 示例值：
+func (builder *MeetingEventMeetingBuilder) WebinarSetting(webinarSetting *MeetingWebinarSetting) *MeetingEventMeetingBuilder {
+	builder.webinarSetting = webinarSetting
+	builder.webinarSettingFlag = true
+	return builder
+}
+
 func (builder *MeetingEventMeetingBuilder) Build() *MeetingEventMeeting {
 	req := &MeetingEventMeeting{}
 	if builder.idFlag {
@@ -1983,6 +2053,16 @@ func (builder *MeetingEventMeetingBuilder) Build() *MeetingEventMeeting {
 	if builder.calendarEventIdFlag {
 		req.CalendarEventId = &builder.calendarEventId
 
+	}
+	if builder.meetingSubTypeFlag {
+		req.MeetingSubType = &builder.meetingSubType
+
+	}
+	if builder.securitySettingFlag {
+		req.SecuritySetting = builder.securitySetting
+	}
+	if builder.webinarSettingFlag {
+		req.WebinarSetting = builder.webinarSetting
 	}
 	return req
 }
@@ -2051,23 +2131,27 @@ func (builder *MeetingEventUserBuilder) Build() *MeetingEventUser {
 }
 
 type MeetingInfo struct {
-	MeetingId            *string `json:"meeting_id,omitempty"`             // 9位会议号
-	MeetingTopic         *string `json:"meeting_topic,omitempty"`          // 会议主题
-	Organizer            *string `json:"organizer,omitempty"`              // 组织者
-	Department           *string `json:"department,omitempty"`             // 部门
-	UserId               *string `json:"user_id,omitempty"`                // 用户ID
-	EmployeeId           *string `json:"employee_id,omitempty"`            // 工号
-	Email                *string `json:"email,omitempty"`                  // 邮箱
-	Mobile               *string `json:"mobile,omitempty"`                 // 手机
-	MeetingStartTime     *string `json:"meeting_start_time,omitempty"`     // 会议开始时间
-	MeetingEndTime       *string `json:"meeting_end_time,omitempty"`       // 会议结束时间
-	MeetingDuration      *string `json:"meeting_duration,omitempty"`       // 会议持续时间
-	NumberOfParticipants *string `json:"number_of_participants,omitempty"` // 参会人数
-	Audio                *bool   `json:"audio,omitempty"`                  // 音频
-	Video                *bool   `json:"video,omitempty"`                  // 视频
-	Sharing              *bool   `json:"sharing,omitempty"`                // 共享
-	Recording            *bool   `json:"recording,omitempty"`              // 录制
-	Telephone            *bool   `json:"telephone,omitempty"`              // 电话
+	MeetingId            *string         `json:"meeting_id,omitempty"`             // 9位会议号
+	MeetingTopic         *string         `json:"meeting_topic,omitempty"`          // 会议主题
+	MeetingType          *int            `json:"meeting_type,omitempty"`           // 会议类型
+	Organizer            *string         `json:"organizer,omitempty"`              // 组织者
+	Department           *string         `json:"department,omitempty"`             // 部门
+	UserId               *string         `json:"user_id,omitempty"`                // 用户ID
+	EmployeeId           *string         `json:"employee_id,omitempty"`            // 工号
+	Email                *string         `json:"email,omitempty"`                  // 邮箱
+	Mobile               *string         `json:"mobile,omitempty"`                 // 手机
+	MeetingStartTime     *string         `json:"meeting_start_time,omitempty"`     // 会议开始时间
+	MeetingEndTime       *string         `json:"meeting_end_time,omitempty"`       // 会议结束时间
+	MeetingDuration      *string         `json:"meeting_duration,omitempty"`       // 会议持续时间
+	NumberOfParticipants *string         `json:"number_of_participants,omitempty"` // 参会人数
+	NumberOfDevices      *string         `json:"number_of_devices,omitempty"`      // 累计入会设备数
+	Audio                *bool           `json:"audio,omitempty"`                  // 音频
+	Video                *bool           `json:"video,omitempty"`                  // 视频
+	Sharing              *bool           `json:"sharing,omitempty"`                // 共享
+	Recording            *bool           `json:"recording,omitempty"`              // 录制
+	Telephone            *bool           `json:"telephone,omitempty"`              // 电话
+	ReservedRooms        []*ReservedRoom `json:"reserved_rooms,omitempty"`         // 关联会议室列表
+	HasRelatedDocument   *bool           `json:"has_related_document,omitempty"`   // 是否有关联文档和纪要
 }
 
 type MeetingInfoBuilder struct {
@@ -2075,6 +2159,8 @@ type MeetingInfoBuilder struct {
 	meetingIdFlag            bool
 	meetingTopic             string // 会议主题
 	meetingTopicFlag         bool
+	meetingType              int // 会议类型
+	meetingTypeFlag          bool
 	organizer                string // 组织者
 	organizerFlag            bool
 	department               string // 部门
@@ -2095,6 +2181,8 @@ type MeetingInfoBuilder struct {
 	meetingDurationFlag      bool
 	numberOfParticipants     string // 参会人数
 	numberOfParticipantsFlag bool
+	numberOfDevices          string // 累计入会设备数
+	numberOfDevicesFlag      bool
 	audio                    bool // 音频
 	audioFlag                bool
 	video                    bool // 视频
@@ -2105,6 +2193,10 @@ type MeetingInfoBuilder struct {
 	recordingFlag            bool
 	telephone                bool // 电话
 	telephoneFlag            bool
+	reservedRooms            []*ReservedRoom // 关联会议室列表
+	reservedRoomsFlag        bool
+	hasRelatedDocument       bool // 是否有关联文档和纪要
+	hasRelatedDocumentFlag   bool
 }
 
 func NewMeetingInfoBuilder() *MeetingInfoBuilder {
@@ -2127,6 +2219,15 @@ func (builder *MeetingInfoBuilder) MeetingId(meetingId string) *MeetingInfoBuild
 func (builder *MeetingInfoBuilder) MeetingTopic(meetingTopic string) *MeetingInfoBuilder {
 	builder.meetingTopic = meetingTopic
 	builder.meetingTopicFlag = true
+	return builder
+}
+
+// 会议类型
+//
+// 示例值：1
+func (builder *MeetingInfoBuilder) MeetingType(meetingType int) *MeetingInfoBuilder {
+	builder.meetingType = meetingType
+	builder.meetingTypeFlag = true
 	return builder
 }
 
@@ -2220,6 +2321,15 @@ func (builder *MeetingInfoBuilder) NumberOfParticipants(numberOfParticipants str
 	return builder
 }
 
+// 累计入会设备数
+//
+// 示例值：1
+func (builder *MeetingInfoBuilder) NumberOfDevices(numberOfDevices string) *MeetingInfoBuilder {
+	builder.numberOfDevices = numberOfDevices
+	builder.numberOfDevicesFlag = true
+	return builder
+}
+
 // 音频
 //
 // 示例值：true
@@ -2265,6 +2375,24 @@ func (builder *MeetingInfoBuilder) Telephone(telephone bool) *MeetingInfoBuilder
 	return builder
 }
 
+// 关联会议室列表
+//
+// 示例值：
+func (builder *MeetingInfoBuilder) ReservedRooms(reservedRooms []*ReservedRoom) *MeetingInfoBuilder {
+	builder.reservedRooms = reservedRooms
+	builder.reservedRoomsFlag = true
+	return builder
+}
+
+// 是否有关联文档和纪要
+//
+// 示例值：false
+func (builder *MeetingInfoBuilder) HasRelatedDocument(hasRelatedDocument bool) *MeetingInfoBuilder {
+	builder.hasRelatedDocument = hasRelatedDocument
+	builder.hasRelatedDocumentFlag = true
+	return builder
+}
+
 func (builder *MeetingInfoBuilder) Build() *MeetingInfo {
 	req := &MeetingInfo{}
 	if builder.meetingIdFlag {
@@ -2273,6 +2401,10 @@ func (builder *MeetingInfoBuilder) Build() *MeetingInfo {
 	}
 	if builder.meetingTopicFlag {
 		req.MeetingTopic = &builder.meetingTopic
+
+	}
+	if builder.meetingTypeFlag {
+		req.MeetingType = &builder.meetingType
 
 	}
 	if builder.organizerFlag {
@@ -2315,6 +2447,10 @@ func (builder *MeetingInfoBuilder) Build() *MeetingInfo {
 		req.NumberOfParticipants = &builder.numberOfParticipants
 
 	}
+	if builder.numberOfDevicesFlag {
+		req.NumberOfDevices = &builder.numberOfDevices
+
+	}
 	if builder.audioFlag {
 		req.Audio = &builder.audio
 
@@ -2333,6 +2469,13 @@ func (builder *MeetingInfoBuilder) Build() *MeetingInfo {
 	}
 	if builder.telephoneFlag {
 		req.Telephone = &builder.telephone
+
+	}
+	if builder.reservedRoomsFlag {
+		req.ReservedRooms = builder.reservedRooms
+	}
+	if builder.hasRelatedDocumentFlag {
+		req.HasRelatedDocument = &builder.hasRelatedDocument
 
 	}
 	return req
@@ -2626,6 +2769,99 @@ func (builder *MeetingParticipantResultBuilder) Build() *MeetingParticipantResul
 	return req
 }
 
+type MeetingSecuritySetting struct {
+	SecurityLevel                  *int      `json:"security_level,omitempty"`                      // 安全级别
+	GroupIds                       []string  `json:"group_ids,omitempty"`                           // 允许入会的群组ID列表
+	UserIds                        []*UserId `json:"user_ids,omitempty"`                            // 允许入会的用户ID列表
+	RoomIds                        []string  `json:"room_ids,omitempty"`                            // 允许入会的会议室ID列表
+	HasSetSecurityContactsAndGroup *bool     `json:"has_set_security_contacts_and_group,omitempty"` // 是否设置了仅指定联系人和群组可参会
+}
+
+type MeetingSecuritySettingBuilder struct {
+	securityLevel                      int // 安全级别
+	securityLevelFlag                  bool
+	groupIds                           []string // 允许入会的群组ID列表
+	groupIdsFlag                       bool
+	userIds                            []*UserId // 允许入会的用户ID列表
+	userIdsFlag                        bool
+	roomIds                            []string // 允许入会的会议室ID列表
+	roomIdsFlag                        bool
+	hasSetSecurityContactsAndGroup     bool // 是否设置了仅指定联系人和群组可参会
+	hasSetSecurityContactsAndGroupFlag bool
+}
+
+func NewMeetingSecuritySettingBuilder() *MeetingSecuritySettingBuilder {
+	builder := &MeetingSecuritySettingBuilder{}
+	return builder
+}
+
+// 安全级别
+//
+// 示例值：1
+func (builder *MeetingSecuritySettingBuilder) SecurityLevel(securityLevel int) *MeetingSecuritySettingBuilder {
+	builder.securityLevel = securityLevel
+	builder.securityLevelFlag = true
+	return builder
+}
+
+// 允许入会的群组ID列表
+//
+// 示例值：
+func (builder *MeetingSecuritySettingBuilder) GroupIds(groupIds []string) *MeetingSecuritySettingBuilder {
+	builder.groupIds = groupIds
+	builder.groupIdsFlag = true
+	return builder
+}
+
+// 允许入会的用户ID列表
+//
+// 示例值：
+func (builder *MeetingSecuritySettingBuilder) UserIds(userIds []*UserId) *MeetingSecuritySettingBuilder {
+	builder.userIds = userIds
+	builder.userIdsFlag = true
+	return builder
+}
+
+// 允许入会的会议室ID列表
+//
+// 示例值：
+func (builder *MeetingSecuritySettingBuilder) RoomIds(roomIds []string) *MeetingSecuritySettingBuilder {
+	builder.roomIds = roomIds
+	builder.roomIdsFlag = true
+	return builder
+}
+
+// 是否设置了仅指定联系人和群组可参会
+//
+// 示例值：true
+func (builder *MeetingSecuritySettingBuilder) HasSetSecurityContactsAndGroup(hasSetSecurityContactsAndGroup bool) *MeetingSecuritySettingBuilder {
+	builder.hasSetSecurityContactsAndGroup = hasSetSecurityContactsAndGroup
+	builder.hasSetSecurityContactsAndGroupFlag = true
+	return builder
+}
+
+func (builder *MeetingSecuritySettingBuilder) Build() *MeetingSecuritySetting {
+	req := &MeetingSecuritySetting{}
+	if builder.securityLevelFlag {
+		req.SecurityLevel = &builder.securityLevel
+
+	}
+	if builder.groupIdsFlag {
+		req.GroupIds = builder.groupIds
+	}
+	if builder.userIdsFlag {
+		req.UserIds = builder.userIds
+	}
+	if builder.roomIdsFlag {
+		req.RoomIds = builder.roomIds
+	}
+	if builder.hasSetSecurityContactsAndGroupFlag {
+		req.HasSetSecurityContactsAndGroup = &builder.hasSetSecurityContactsAndGroup
+
+	}
+	return req
+}
+
 type MeetingUser struct {
 	Id       *string `json:"id,omitempty"`        // 用户ID
 	UserType *int    `json:"user_type,omitempty"` // 用户类型
@@ -2669,6 +2905,38 @@ func (builder *MeetingUserBuilder) Build() *MeetingUser {
 	}
 	if builder.userTypeFlag {
 		req.UserType = &builder.userType
+
+	}
+	return req
+}
+
+type MeetingWebinarSetting struct {
+	WebinarType *int `json:"webinar_type,omitempty"` // 网络研讨会类型
+}
+
+type MeetingWebinarSettingBuilder struct {
+	webinarType     int // 网络研讨会类型
+	webinarTypeFlag bool
+}
+
+func NewMeetingWebinarSettingBuilder() *MeetingWebinarSettingBuilder {
+	builder := &MeetingWebinarSettingBuilder{}
+	return builder
+}
+
+// 网络研讨会类型
+//
+// 示例值：1
+func (builder *MeetingWebinarSettingBuilder) WebinarType(webinarType int) *MeetingWebinarSettingBuilder {
+	builder.webinarType = webinarType
+	builder.webinarTypeFlag = true
+	return builder
+}
+
+func (builder *MeetingWebinarSettingBuilder) Build() *MeetingWebinarSetting {
+	req := &MeetingWebinarSetting{}
+	if builder.webinarTypeFlag {
+		req.WebinarType = &builder.webinarType
 
 	}
 	return req
@@ -4540,6 +4808,7 @@ type Participant struct {
 	LeaveTime       *string `json:"leave_time,omitempty"`       // 离会时间
 	TimeInMeeting   *string `json:"time_in_meeting,omitempty"`  // 参会时长
 	LeaveReason     *string `json:"leave_reason,omitempty"`     // 离会原因
+	AcceptStatus    *int    `json:"accept_status,omitempty"`    // 日程响应状态
 }
 
 type ParticipantBuilder struct {
@@ -4593,6 +4862,8 @@ type ParticipantBuilder struct {
 	timeInMeetingFlag   bool
 	leaveReason         string // 离会原因
 	leaveReasonFlag     bool
+	acceptStatus        int // 日程响应状态
+	acceptStatusFlag    bool
 }
 
 func NewParticipantBuilder() *ParticipantBuilder {
@@ -4825,6 +5096,15 @@ func (builder *ParticipantBuilder) LeaveReason(leaveReason string) *ParticipantB
 	return builder
 }
 
+// 日程响应状态
+//
+// 示例值：
+func (builder *ParticipantBuilder) AcceptStatus(acceptStatus int) *ParticipantBuilder {
+	builder.acceptStatus = acceptStatus
+	builder.acceptStatusFlag = true
+	return builder
+}
+
 func (builder *ParticipantBuilder) Build() *Participant {
 	req := &Participant{}
 	if builder.participantNameFlag {
@@ -4925,6 +5205,10 @@ func (builder *ParticipantBuilder) Build() *Participant {
 	}
 	if builder.leaveReasonFlag {
 		req.LeaveReason = &builder.leaveReason
+
+	}
+	if builder.acceptStatusFlag {
+		req.AcceptStatus = &builder.acceptStatus
 
 	}
 	return req
@@ -5983,6 +6267,7 @@ func (builder *ReportTopUserBuilder) Build() *ReportTopUser {
 type Reserve struct {
 	Id              *string                `json:"id,omitempty"`               // 预约ID（预约的唯一标识）
 	MeetingNo       *string                `json:"meeting_no,omitempty"`       // 9位会议号（飞书用户可通过输入9位会议号快捷入会）
+	Password        *string                `json:"password,omitempty"`         // 会议密码
 	Url             *string                `json:"url,omitempty"`              // 会议链接（飞书用户可通过点击会议链接快捷入会）
 	AppLink         *string                `json:"app_link,omitempty"`         // APPLink用于唤起飞书APP入会。"{?}"为占位符，用于配置入会参数，使用时需替换具体值：0表示关闭，1表示打开。preview为入会前的设置页，mic为麦克风，speaker为扬声器，camera为摄像头
 	LiveLink        *string                `json:"live_link,omitempty"`        // 会议转直播链接
@@ -5997,6 +6282,8 @@ type ReserveBuilder struct {
 	idFlag              bool
 	meetingNo           string // 9位会议号（飞书用户可通过输入9位会议号快捷入会）
 	meetingNoFlag       bool
+	password            string // 会议密码
+	passwordFlag        bool
 	url                 string // 会议链接（飞书用户可通过点击会议链接快捷入会）
 	urlFlag             bool
 	appLink             string // APPLink用于唤起飞书APP入会。"{?}"为占位符，用于配置入会参数，使用时需替换具体值：0表示关闭，1表示打开。preview为入会前的设置页，mic为麦克风，speaker为扬声器，camera为摄像头
@@ -6033,6 +6320,15 @@ func (builder *ReserveBuilder) Id(id string) *ReserveBuilder {
 func (builder *ReserveBuilder) MeetingNo(meetingNo string) *ReserveBuilder {
 	builder.meetingNo = meetingNo
 	builder.meetingNoFlag = true
+	return builder
+}
+
+// 会议密码
+//
+// 示例值：971024
+func (builder *ReserveBuilder) Password(password string) *ReserveBuilder {
+	builder.password = password
+	builder.passwordFlag = true
 	return builder
 }
 
@@ -6107,6 +6403,10 @@ func (builder *ReserveBuilder) Build() *Reserve {
 	}
 	if builder.meetingNoFlag {
 		req.MeetingNo = &builder.meetingNo
+
+	}
+	if builder.passwordFlag {
+		req.Password = &builder.password
 
 	}
 	if builder.urlFlag {
@@ -6509,6 +6809,7 @@ type ReserveMeetingSetting struct {
 	CallSetting        *ReserveCallSetting        `json:"call_setting,omitempty"`         // 1v1呼叫相关参数
 	AutoRecord         *bool                      `json:"auto_record,omitempty"`          // 使用飞书视频会议时，是否开启自动录制，默认false
 	AssignHostList     []*ReserveAssignHost       `json:"assign_host_list,omitempty"`     // 指定主持人列表
+	Password           *string                    `json:"password,omitempty"`             // 设置会议密码，仅支持 4-9 位数字
 }
 
 type ReserveMeetingSettingBuilder struct {
@@ -6524,6 +6825,8 @@ type ReserveMeetingSettingBuilder struct {
 	autoRecordFlag         bool
 	assignHostList         []*ReserveAssignHost // 指定主持人列表
 	assignHostListFlag     bool
+	password               string // 设置会议密码，仅支持 4-9 位数字
+	passwordFlag           bool
 }
 
 func NewReserveMeetingSettingBuilder() *ReserveMeetingSettingBuilder {
@@ -6585,6 +6888,15 @@ func (builder *ReserveMeetingSettingBuilder) AssignHostList(assignHostList []*Re
 	return builder
 }
 
+// 设置会议密码，仅支持 4-9 位数字
+//
+// 示例值：971024
+func (builder *ReserveMeetingSettingBuilder) Password(password string) *ReserveMeetingSettingBuilder {
+	builder.password = password
+	builder.passwordFlag = true
+	return builder
+}
+
 func (builder *ReserveMeetingSettingBuilder) Build() *ReserveMeetingSetting {
 	req := &ReserveMeetingSetting{}
 	if builder.topicFlag {
@@ -6607,6 +6919,10 @@ func (builder *ReserveMeetingSettingBuilder) Build() *ReserveMeetingSetting {
 	}
 	if builder.assignHostListFlag {
 		req.AssignHostList = builder.assignHostList
+	}
+	if builder.passwordFlag {
+		req.Password = &builder.password
+
 	}
 	return req
 }
@@ -6810,6 +7126,54 @@ func (builder *ReserveScopeConfigEventBuilder) Build() *ReserveScopeConfigEvent 
 	}
 	if builder.allowDeptsFlag {
 		req.AllowDepts = builder.allowDepts
+	}
+	return req
+}
+
+type ReservedRoom struct {
+	RoomId   *string `json:"room_id,omitempty"`   // 会议室ID
+	RoomName *string `json:"room_name,omitempty"` // 会议室名称
+}
+
+type ReservedRoomBuilder struct {
+	roomId       string // 会议室ID
+	roomIdFlag   bool
+	roomName     string // 会议室名称
+	roomNameFlag bool
+}
+
+func NewReservedRoomBuilder() *ReservedRoomBuilder {
+	builder := &ReservedRoomBuilder{}
+	return builder
+}
+
+// 会议室ID
+//
+// 示例值：omm_12381298739
+func (builder *ReservedRoomBuilder) RoomId(roomId string) *ReservedRoomBuilder {
+	builder.roomId = roomId
+	builder.roomIdFlag = true
+	return builder
+}
+
+// 会议室名称
+//
+// 示例值：room123
+func (builder *ReservedRoomBuilder) RoomName(roomName string) *ReservedRoomBuilder {
+	builder.roomName = roomName
+	builder.roomNameFlag = true
+	return builder
+}
+
+func (builder *ReservedRoomBuilder) Build() *ReservedRoom {
+	req := &ReservedRoom{}
+	if builder.roomIdFlag {
+		req.RoomId = &builder.roomId
+
+	}
+	if builder.roomNameFlag {
+		req.RoomName = &builder.roomName
+
 	}
 	return req
 }
@@ -8817,6 +9181,8 @@ type MeetingListExportReqBodyBuilder struct {
 	userIdFlag        bool
 	roomId            string // 按参会Rooms筛选（最多一个筛选条件）
 	roomIdFlag        bool
+	meetingType       int // 按会议类型筛选（最多一个筛选条件）
+	meetingTypeFlag   bool
 }
 
 func NewMeetingListExportReqBodyBuilder() *MeetingListExportReqBodyBuilder {
@@ -8878,6 +9244,15 @@ func (builder *MeetingListExportReqBodyBuilder) RoomId(roomId string) *MeetingLi
 	return builder
 }
 
+// 按会议类型筛选（最多一个筛选条件）
+//
+// 示例值：2
+func (builder *MeetingListExportReqBodyBuilder) MeetingType(meetingType int) *MeetingListExportReqBodyBuilder {
+	builder.meetingType = meetingType
+	builder.meetingTypeFlag = true
+	return builder
+}
+
 func (builder *MeetingListExportReqBodyBuilder) Build() *MeetingListExportReqBody {
 	req := &MeetingListExportReqBody{}
 	if builder.startTimeFlag {
@@ -8898,6 +9273,9 @@ func (builder *MeetingListExportReqBodyBuilder) Build() *MeetingListExportReqBod
 	if builder.roomIdFlag {
 		req.RoomId = &builder.roomId
 	}
+	if builder.meetingTypeFlag {
+		req.MeetingType = &builder.meetingType
+	}
 	return req
 }
 
@@ -8914,6 +9292,8 @@ type MeetingListExportPathReqBodyBuilder struct {
 	userIdFlag        bool
 	roomId            string
 	roomIdFlag        bool
+	meetingType       int
+	meetingTypeFlag   bool
 }
 
 func NewMeetingListExportPathReqBodyBuilder() *MeetingListExportPathReqBodyBuilder {
@@ -8975,6 +9355,15 @@ func (builder *MeetingListExportPathReqBodyBuilder) RoomId(roomId string) *Meeti
 	return builder
 }
 
+// 按会议类型筛选（最多一个筛选条件）
+//
+// 示例值：2
+func (builder *MeetingListExportPathReqBodyBuilder) MeetingType(meetingType int) *MeetingListExportPathReqBodyBuilder {
+	builder.meetingType = meetingType
+	builder.meetingTypeFlag = true
+	return builder
+}
+
 func (builder *MeetingListExportPathReqBodyBuilder) Build() (*MeetingListExportReqBody, error) {
 	req := &MeetingListExportReqBody{}
 	if builder.startTimeFlag {
@@ -8994,6 +9383,9 @@ func (builder *MeetingListExportPathReqBodyBuilder) Build() (*MeetingListExportR
 	}
 	if builder.roomIdFlag {
 		req.RoomId = &builder.roomId
+	}
+	if builder.meetingTypeFlag {
+		req.MeetingType = &builder.meetingType
 	}
 	return req, nil
 }
@@ -9041,6 +9433,7 @@ type MeetingListExportReqBody struct {
 	MeetingNo     *string `json:"meeting_no,omitempty"`     // 按9位会议号筛选（最多一个筛选条件）
 	UserId        *string `json:"user_id,omitempty"`        // 按参会Lark用户筛选（最多一个筛选条件）
 	RoomId        *string `json:"room_id,omitempty"`        // 按参会Rooms筛选（最多一个筛选条件）
+	MeetingType   *int    `json:"meeting_type,omitempty"`   // 按会议类型筛选（最多一个筛选条件）
 }
 
 type MeetingListExportReq struct {
@@ -10830,6 +11223,14 @@ func (builder *GetMeetingListReqBuilder) UserId(userId string) *GetMeetingListRe
 // 示例值：omm_eada1d61a550955240c28757e7dec3af
 func (builder *GetMeetingListReqBuilder) RoomId(roomId string) *GetMeetingListReqBuilder {
 	builder.apiReq.QueryParams.Set("room_id", fmt.Sprint(roomId))
+	return builder
+}
+
+// 按会议类型筛选（最多一个筛选条件）
+//
+// 示例值：2
+func (builder *GetMeetingListReqBuilder) MeetingType(meetingType int) *GetMeetingListReqBuilder {
+	builder.apiReq.QueryParams.Set("meeting_type", fmt.Sprint(meetingType))
 	return builder
 }
 

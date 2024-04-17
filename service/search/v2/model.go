@@ -1170,6 +1170,8 @@ type DialogSearchRequest struct {
 	ToolRawInstruction           *string          `json:"tool_raw_instruction,omitempty"`            // 用户问题
 	ScenarioContextSchemaVersion *string          `json:"scenario_context_schema_version,omitempty"` // 场景上下文的schema版本号
 	ScenarioContext              *ScenarioContext `json:"scenario_context,omitempty"`                // 场景上下文
+	AgentType                    *int             `json:"agent_type,omitempty"`                      // agent类型
+	ResponseType                 *int             `json:"response_type,omitempty"`                   // 返回结果的数据类型
 }
 
 type DialogSearchRequestBuilder struct {
@@ -1179,6 +1181,10 @@ type DialogSearchRequestBuilder struct {
 	scenarioContextSchemaVersionFlag bool
 	scenarioContext                  *ScenarioContext // 场景上下文
 	scenarioContextFlag              bool
+	agentType                        int // agent类型
+	agentTypeFlag                    bool
+	responseType                     int // 返回结果的数据类型
+	responseTypeFlag                 bool
 }
 
 func NewDialogSearchRequestBuilder() *DialogSearchRequestBuilder {
@@ -1213,6 +1219,24 @@ func (builder *DialogSearchRequestBuilder) ScenarioContext(scenarioContext *Scen
 	return builder
 }
 
+// agent类型
+//
+// 示例值：1
+func (builder *DialogSearchRequestBuilder) AgentType(agentType int) *DialogSearchRequestBuilder {
+	builder.agentType = agentType
+	builder.agentTypeFlag = true
+	return builder
+}
+
+// 返回结果的数据类型
+//
+// 示例值：1
+func (builder *DialogSearchRequestBuilder) ResponseType(responseType int) *DialogSearchRequestBuilder {
+	builder.responseType = responseType
+	builder.responseTypeFlag = true
+	return builder
+}
+
 func (builder *DialogSearchRequestBuilder) Build() *DialogSearchRequest {
 	req := &DialogSearchRequest{}
 	if builder.toolRawInstructionFlag {
@@ -1225,6 +1249,14 @@ func (builder *DialogSearchRequestBuilder) Build() *DialogSearchRequest {
 	}
 	if builder.scenarioContextFlag {
 		req.ScenarioContext = builder.scenarioContext
+	}
+	if builder.agentTypeFlag {
+		req.AgentType = &builder.agentType
+
+	}
+	if builder.responseTypeFlag {
+		req.ResponseType = &builder.responseType
+
 	}
 	return req
 }
@@ -1904,6 +1936,38 @@ func (builder *ItemRecordBuilder) Build() *ItemRecord {
 	}
 	if builder.updatedAtFlag {
 		req.UpdatedAt = &builder.updatedAt
+
+	}
+	return req
+}
+
+type LingoPassageParam struct {
+	Searchable *bool `json:"searchable,omitempty"` // 是否搜索lingo
+}
+
+type LingoPassageParamBuilder struct {
+	searchable     bool // 是否搜索lingo
+	searchableFlag bool
+}
+
+func NewLingoPassageParamBuilder() *LingoPassageParamBuilder {
+	builder := &LingoPassageParamBuilder{}
+	return builder
+}
+
+// 是否搜索lingo
+//
+// 示例值：true
+func (builder *LingoPassageParamBuilder) Searchable(searchable bool) *LingoPassageParamBuilder {
+	builder.searchable = searchable
+	builder.searchableFlag = true
+	return builder
+}
+
+func (builder *LingoPassageParamBuilder) Build() *LingoPassageParam {
+	req := &LingoPassageParam{}
+	if builder.searchableFlag {
+		req.Searchable = &builder.searchable
 
 	}
 	return req
@@ -2667,6 +2731,132 @@ func (builder *PresentBuilder) Build() *Present {
 	}
 	if builder.cardVariablesFlag {
 		req.CardVariables = builder.cardVariables
+	}
+	return req
+}
+
+type RagAnswerResponse struct {
+	Answer   *string    `json:"answer,omitempty"`   // 模型总结的结果
+	Passages []*Passage `json:"passages,omitempty"` // 召回的passage列表
+	Probe    *RagProbe  `json:"probe,omitempty"`    // 返回结果提示
+}
+
+type RagAnswerResponseBuilder struct {
+	answer       string // 模型总结的结果
+	answerFlag   bool
+	passages     []*Passage // 召回的passage列表
+	passagesFlag bool
+	probe        *RagProbe // 返回结果提示
+	probeFlag    bool
+}
+
+func NewRagAnswerResponseBuilder() *RagAnswerResponseBuilder {
+	builder := &RagAnswerResponseBuilder{}
+	return builder
+}
+
+// 模型总结的结果
+//
+// 示例值：总结
+func (builder *RagAnswerResponseBuilder) Answer(answer string) *RagAnswerResponseBuilder {
+	builder.answer = answer
+	builder.answerFlag = true
+	return builder
+}
+
+// 召回的passage列表
+//
+// 示例值：
+func (builder *RagAnswerResponseBuilder) Passages(passages []*Passage) *RagAnswerResponseBuilder {
+	builder.passages = passages
+	builder.passagesFlag = true
+	return builder
+}
+
+// 返回结果提示
+//
+// 示例值：
+func (builder *RagAnswerResponseBuilder) Probe(probe *RagProbe) *RagAnswerResponseBuilder {
+	builder.probe = probe
+	builder.probeFlag = true
+	return builder
+}
+
+func (builder *RagAnswerResponseBuilder) Build() *RagAnswerResponse {
+	req := &RagAnswerResponse{}
+	if builder.answerFlag {
+		req.Answer = &builder.answer
+
+	}
+	if builder.passagesFlag {
+		req.Passages = builder.passages
+	}
+	if builder.probeFlag {
+		req.Probe = builder.probe
+	}
+	return req
+}
+
+type RagProbe struct {
+	HitAuthority      *bool `json:"hit_authority,omitempty"`       // 是否命中了权威小库
+	HitConfidenceWarn *bool `json:"hit_confidence_warn,omitempty"` // 是否命中了低置信度提示
+	HitLlmReject      *bool `json:"hit_llm_reject,omitempty"`      // 是否命中了模型拒答
+}
+
+type RagProbeBuilder struct {
+	hitAuthority          bool // 是否命中了权威小库
+	hitAuthorityFlag      bool
+	hitConfidenceWarn     bool // 是否命中了低置信度提示
+	hitConfidenceWarnFlag bool
+	hitLlmReject          bool // 是否命中了模型拒答
+	hitLlmRejectFlag      bool
+}
+
+func NewRagProbeBuilder() *RagProbeBuilder {
+	builder := &RagProbeBuilder{}
+	return builder
+}
+
+// 是否命中了权威小库
+//
+// 示例值：false
+func (builder *RagProbeBuilder) HitAuthority(hitAuthority bool) *RagProbeBuilder {
+	builder.hitAuthority = hitAuthority
+	builder.hitAuthorityFlag = true
+	return builder
+}
+
+// 是否命中了低置信度提示
+//
+// 示例值：false
+func (builder *RagProbeBuilder) HitConfidenceWarn(hitConfidenceWarn bool) *RagProbeBuilder {
+	builder.hitConfidenceWarn = hitConfidenceWarn
+	builder.hitConfidenceWarnFlag = true
+	return builder
+}
+
+// 是否命中了模型拒答
+//
+// 示例值：1
+func (builder *RagProbeBuilder) HitLlmReject(hitLlmReject bool) *RagProbeBuilder {
+	builder.hitLlmReject = hitLlmReject
+	builder.hitLlmRejectFlag = true
+	return builder
+}
+
+func (builder *RagProbeBuilder) Build() *RagProbe {
+	req := &RagProbe{}
+	if builder.hitAuthorityFlag {
+		req.HitAuthority = &builder.hitAuthority
+
+	}
+	if builder.hitConfidenceWarnFlag {
+		req.HitConfidenceWarn = &builder.hitConfidenceWarn
+
+	}
+	if builder.hitLlmRejectFlag {
+		req.HitLlmReject = &builder.hitLlmReject
+
 	}
 	return req
 }

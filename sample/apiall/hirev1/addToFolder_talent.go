@@ -22,22 +22,20 @@ import (
 )
 
 // POST /open-apis/hire/v1/talents/add_to_folder
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewAddToFolderTalentReqBuilder().
-	   Body(larkhire.NewAddToFolderTalentReqBodyBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewAddToFolderTalentReqBuilder().
+		Body(larkhire.NewAddToFolderTalentReqBodyBuilder().
 			TalentIdList([]string{}).
 			FolderId("7039620186502138156").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.Talent.AddToFolder(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.Talent.AddToFolder(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,4 +50,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

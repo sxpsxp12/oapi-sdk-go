@@ -2062,18 +2062,21 @@ func (builder *HkmMainlandTravelPermitEntityBuilder) Build() *HkmMainlandTravelP
 }
 
 type IdCard struct {
-	Entities []*IdEntity `json:"entities,omitempty"` // 识别的实体列表
-	Side     *int        `json:"side,omitempty"`     // 正反面，1为身份证-姓名页，0为身份证-国徽页
-	Conners  []int       `json:"conners,omitempty"`  // 四角坐标[x0,y0,x1,y1,x2,y2,x3,y3]
+	Entities    []*IdEntity `json:"entities,omitempty"`     // 识别的实体列表
+	Side        *int        `json:"side,omitempty"`         // 正反面，1为身份证-姓名页，0为身份证-国徽页
+	Conners     []int       `json:"conners,omitempty"`      // 四角坐标[x0,y0,x1,y1,x2,y2,x3,y3]
+	FaceConners []int       `json:"face_conners,omitempty"` // 人像四角坐标[x0,y0,x1,y1,x2,y2,x3,y3]
 }
 
 type IdCardBuilder struct {
-	entities     []*IdEntity // 识别的实体列表
-	entitiesFlag bool
-	side         int // 正反面，1为身份证-姓名页，0为身份证-国徽页
-	sideFlag     bool
-	conners      []int // 四角坐标[x0,y0,x1,y1,x2,y2,x3,y3]
-	connersFlag  bool
+	entities        []*IdEntity // 识别的实体列表
+	entitiesFlag    bool
+	side            int // 正反面，1为身份证-姓名页，0为身份证-国徽页
+	sideFlag        bool
+	conners         []int // 四角坐标[x0,y0,x1,y1,x2,y2,x3,y3]
+	connersFlag     bool
+	faceConners     []int // 人像四角坐标[x0,y0,x1,y1,x2,y2,x3,y3]
+	faceConnersFlag bool
 }
 
 func NewIdCardBuilder() *IdCardBuilder {
@@ -2108,6 +2111,15 @@ func (builder *IdCardBuilder) Conners(conners []int) *IdCardBuilder {
 	return builder
 }
 
+// 人像四角坐标[x0,y0,x1,y1,x2,y2,x3,y3]
+//
+// 示例值：
+func (builder *IdCardBuilder) FaceConners(faceConners []int) *IdCardBuilder {
+	builder.faceConners = faceConners
+	builder.faceConnersFlag = true
+	return builder
+}
+
 func (builder *IdCardBuilder) Build() *IdCard {
 	req := &IdCard{}
 	if builder.entitiesFlag {
@@ -2119,6 +2131,9 @@ func (builder *IdCardBuilder) Build() *IdCard {
 	}
 	if builder.connersFlag {
 		req.Conners = builder.conners
+	}
+	if builder.faceConnersFlag {
+		req.FaceConners = builder.faceConners
 	}
 	return req
 }

@@ -22,29 +22,23 @@ import (
 )
 
 // GET /open-apis/task/v2/sections/:section_guid/tasks
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewTasksSectionReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewTasksSectionReqBuilder().
 		SectionGuid("9842501a-9f47-4ff5-a622-d319eeecb97f").
-		
 		PageSize(50).
 		PageToken("aWQ9NzEwMjMzMjMxMDE=").
-		
 		Completed(true).
 		CreatedFrom("1675742789470").
-		
 		CreatedTo("1675742789470").
-		
 		UserIdType("open_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.Section.Tasks(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.Section.Tasks(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -59,4 +53,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

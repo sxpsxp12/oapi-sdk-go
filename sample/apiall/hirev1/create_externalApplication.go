@@ -22,37 +22,29 @@ import (
 )
 
 // POST /open-apis/hire/v1/external_applications
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewCreateExternalApplicationReqBuilder().
-	   ExternalApplication(larkhire.NewExternalApplicationBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewCreateExternalApplicationReqBuilder().
+		ExternalApplication(larkhire.NewExternalApplicationBuilder().
 			ExternalId("123").
-			
 			JobRecruitmentType(1).
 			JobTitle("高级Java").
-			
 			ResumeSource("lagou").
-			
 			Stage("1").
-			
 			TalentId("6960663240925956459").
-			
 			TerminationReason("不合适").
-			
 			DeliveryType(1).
 			ModifyTime(1618500278645).
 			CreateTime(1618500278644).
 			TerminationType("health").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.ExternalApplication.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.ExternalApplication.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -67,4 +59,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

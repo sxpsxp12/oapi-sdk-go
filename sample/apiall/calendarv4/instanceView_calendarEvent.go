@@ -22,25 +22,20 @@ import (
 )
 
 // GET /open-apis/calendar/v4/calendars/:calendar_id/events/instance_view
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcalendar.NewInstanceViewCalendarEventReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcalendar.NewInstanceViewCalendarEventReqBuilder().
 		CalendarId("feishu.cn_HF9U2MbibE8PPpjro6xjqa@group.calendar.feishu.cn").
-		
 		StartTime("1631777271").
-		
 		EndTime("1631777271").
-		
 		UserIdType("user_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Calendar.V4.CalendarEvent.InstanceView(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Calendar.V4.CalendarEvent.InstanceView(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -55,4 +50,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

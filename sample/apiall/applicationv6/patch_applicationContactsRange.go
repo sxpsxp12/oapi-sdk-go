@@ -22,29 +22,24 @@ import (
 )
 
 // PATCH /open-apis/application/v6/applications/:app_id/contacts_range
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkapplication.NewPatchApplicationContactsRangeReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkapplication.NewPatchApplicationContactsRangeReqBuilder().
 		AppId("cli_dsfjksdfee1").
-		
 		UserIdType("open_id").
-		
 		DepartmentIdType("open_department_id").
-		
-	   Body(larkapplication.NewPatchApplicationContactsRangeReqBodyBuilder().
+		Body(larkapplication.NewPatchApplicationContactsRangeReqBodyBuilder().
 			ContactsRangeType("some").
-			
 			AddVisibleList(larkapplication.NewAppContactsRangeIdListBuilder().Build()).
 			DelVisibleList(larkapplication.NewAppContactsRangeIdListBuilder().Build()).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Application.V6.ApplicationContactsRange.Patch(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Application.V6.ApplicationContactsRange.Patch(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -59,4 +54,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

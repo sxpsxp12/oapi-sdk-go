@@ -22,23 +22,20 @@ import (
 )
 
 // POST /open-apis/auth/v3/app_access_token/internal
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkauth.NewInternalAppAccessTokenReqBuilder().
-	   Body(larkauth.NewInternalAppAccessTokenReqBodyBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkauth.NewInternalAppAccessTokenReqBuilder().
+		Body(larkauth.NewInternalAppAccessTokenReqBodyBuilder().
 			AppId("cli_hsjeriogfkd93jf84").
-			
 			AppSecret("jdsfslkjdg8e73hdf9237enbd").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Auth.V3.AppAccessToken.Internal(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Auth.V3.AppAccessToken.Internal(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -53,4 +50,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -341,7 +341,7 @@ func (c *compensationStandard) Match(ctx context.Context, req *MatchCompensation
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/corehr/v1/compensation_standards/match"
 	apiReq.HttpMethod = http.MethodGet
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
 	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
 	if err != nil {
 		return nil, err

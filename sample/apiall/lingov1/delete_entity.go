@@ -22,23 +22,19 @@ import (
 )
 
 // DELETE /open-apis/lingo/v1/entities/:entity_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larklingo.NewDeleteEntityReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larklingo.NewDeleteEntityReqBuilder().
 		EntityId("enterprise_43742132363").
-		
 		Provider("星云").
-		
 		OuterId("123aaa").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Lingo.V1.Entity.Delete(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Lingo.V1.Entity.Delete(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -53,4 +49,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

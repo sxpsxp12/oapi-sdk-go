@@ -22,25 +22,23 @@ import (
 )
 
 // POST /open-apis/corehr/v2/basic_info/country_region_subdivisions/search
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewSearchBasicInfoCountryRegionSubdivisionReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewSearchBasicInfoCountryRegionSubdivisionReqBuilder().
 		PageSize(100).
 		PageToken("6891251722631890445").
-		
-	   Body(larkcorehr.NewSearchBasicInfoCountryRegionSubdivisionReqBodyBuilder().
+		Body(larkcorehr.NewSearchBasicInfoCountryRegionSubdivisionReqBodyBuilder().
 			CountryRegionIdList([]string{}).
 			CountryRegionSubdivisionIdList([]string{}).
 			StatusList([]int{}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.BasicInfoCountryRegionSubdivision.Search(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.BasicInfoCountryRegionSubdivision.Search(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -55,4 +53,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

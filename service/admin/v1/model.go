@@ -54,6 +54,13 @@ const (
 )
 
 const (
+	UserTypeAll          = 0 // 互联网上的任何人
+	UserTypeNormalUser   = 1 // 组织内成员
+	UserTypeExternalUser = 2 // 组织外成员
+
+)
+
+const (
 	GrantTypeManual   = 0 // 手动选择有效期
 	GrantTypeJoinTime = 1 // 匹配系统入职时间
 
@@ -2212,6 +2219,7 @@ type AuditInfo struct {
 	OperatorAppName *string                 `json:"operator_app_name,omitempty"` // 第三方isv名称
 	CommonDrawers   *ApiAuditCommonDrawers  `json:"common_drawers,omitempty"`    // 扩展字段信息
 	AuditDetail     *AuditDetail            `json:"audit_detail,omitempty"`      // 日志扩展信息
+	OperatorTenant  *string                 `json:"operator_tenant,omitempty"`   // 操作人企业编号
 }
 
 type AuditInfoBuilder struct {
@@ -2249,6 +2257,8 @@ type AuditInfoBuilder struct {
 	commonDrawersFlag   bool
 	auditDetail         *AuditDetail // 日志扩展信息
 	auditDetailFlag     bool
+	operatorTenant      string // 操作人企业编号
+	operatorTenantFlag  bool
 }
 
 func NewAuditInfoBuilder() *AuditInfoBuilder {
@@ -2409,6 +2419,15 @@ func (builder *AuditInfoBuilder) AuditDetail(auditDetail *AuditDetail) *AuditInf
 	return builder
 }
 
+// 操作人企业编号
+//
+// 示例值：F2823442
+func (builder *AuditInfoBuilder) OperatorTenant(operatorTenant string) *AuditInfoBuilder {
+	builder.operatorTenant = operatorTenant
+	builder.operatorTenantFlag = true
+	return builder
+}
+
 func (builder *AuditInfoBuilder) Build() *AuditInfo {
 	req := &AuditInfo{}
 	if builder.eventIdFlag {
@@ -2471,6 +2490,10 @@ func (builder *AuditInfoBuilder) Build() *AuditInfo {
 	}
 	if builder.auditDetailFlag {
 		req.AuditDetail = builder.auditDetail
+	}
+	if builder.operatorTenantFlag {
+		req.OperatorTenant = &builder.operatorTenant
+
 	}
 	return req
 }
@@ -6244,6 +6267,14 @@ func (builder *ListAdminDeptStatReqBuilder) PageToken(pageToken string) *ListAdm
 	return builder
 }
 
+// 跨域访问的geo
+//
+// 示例值：cn
+func (builder *ListAdminDeptStatReqBuilder) TargetGeo(targetGeo string) *ListAdminDeptStatReqBuilder {
+	builder.apiReq.QueryParams.Set("target_geo", fmt.Sprint(targetGeo))
+	return builder
+}
+
 func (builder *ListAdminDeptStatReqBuilder) Build() *ListAdminDeptStatReq {
 	req := &ListAdminDeptStatReq{}
 	req.apiReq = &larkcore.ApiReq{}
@@ -6345,6 +6376,14 @@ func (builder *ListAdminUserStatReqBuilder) PageSize(pageSize int) *ListAdminUse
 // 示例值：2
 func (builder *ListAdminUserStatReqBuilder) PageToken(pageToken string) *ListAdminUserStatReqBuilder {
 	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 跨域访问的geo
+//
+// 示例值：cn
+func (builder *ListAdminUserStatReqBuilder) TargetGeo(targetGeo string) *ListAdminUserStatReqBuilder {
+	builder.apiReq.QueryParams.Set("target_geo", fmt.Sprint(targetGeo))
 	return builder
 }
 
@@ -6464,6 +6503,14 @@ func (builder *ListAuditInfoReqBuilder) PageToken(pageToken string) *ListAuditIn
 // 示例值：20
 func (builder *ListAuditInfoReqBuilder) PageSize(pageSize int) *ListAuditInfoReqBuilder {
 	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 用户类型
+//
+// 示例值：
+func (builder *ListAuditInfoReqBuilder) UserType(userType int) *ListAuditInfoReqBuilder {
+	builder.apiReq.QueryParams.Set("user_type", fmt.Sprint(userType))
 	return builder
 }
 

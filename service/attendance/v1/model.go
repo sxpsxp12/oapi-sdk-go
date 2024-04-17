@@ -273,6 +273,229 @@ func (builder *ApprovalInfoBuilder) Build() *ApprovalInfo {
 	return req
 }
 
+type ArchiveFieldData struct {
+	Code  *string `json:"code,omitempty"`  // 字段编码(查询归档报表表头返回)
+	Type  *string `json:"type,omitempty"`  // 字段类型
+	Value *string `json:"value,omitempty"` // 字段结果值
+}
+
+type ArchiveFieldDataBuilder struct {
+	code      string // 字段编码(查询归档报表表头返回)
+	codeFlag  bool
+	type_     string // 字段类型
+	typeFlag  bool
+	value     string // 字段结果值
+	valueFlag bool
+}
+
+func NewArchiveFieldDataBuilder() *ArchiveFieldDataBuilder {
+	builder := &ArchiveFieldDataBuilder{}
+	return builder
+}
+
+// 字段编码(查询归档报表表头返回)
+//
+// 示例值：abd754f7
+func (builder *ArchiveFieldDataBuilder) Code(code string) *ArchiveFieldDataBuilder {
+	builder.code = code
+	builder.codeFlag = true
+	return builder
+}
+
+// 字段类型
+//
+// 示例值：int
+func (builder *ArchiveFieldDataBuilder) Type(type_ string) *ArchiveFieldDataBuilder {
+	builder.type_ = type_
+	builder.typeFlag = true
+	return builder
+}
+
+// 字段结果值
+//
+// 示例值：1
+func (builder *ArchiveFieldDataBuilder) Value(value string) *ArchiveFieldDataBuilder {
+	builder.value = value
+	builder.valueFlag = true
+	return builder
+}
+
+func (builder *ArchiveFieldDataBuilder) Build() *ArchiveFieldData {
+	req := &ArchiveFieldData{}
+	if builder.codeFlag {
+		req.Code = &builder.code
+
+	}
+	if builder.typeFlag {
+		req.Type = &builder.type_
+
+	}
+	if builder.valueFlag {
+		req.Value = &builder.value
+
+	}
+	return req
+}
+
+type ArchiveReportData struct {
+	MemberId   *string             `json:"member_id,omitempty"`   // 用户ID
+	StartTime  *string             `json:"start_time,omitempty"`  // 考勤开始时间
+	EndTime    *string             `json:"end_time,omitempty"`    // 考勤结束时间
+	FieldDatas []*ArchiveFieldData `json:"field_datas,omitempty"` // 字段结果(不超过200个)
+}
+
+type ArchiveReportDataBuilder struct {
+	memberId       string // 用户ID
+	memberIdFlag   bool
+	startTime      string // 考勤开始时间
+	startTimeFlag  bool
+	endTime        string // 考勤结束时间
+	endTimeFlag    bool
+	fieldDatas     []*ArchiveFieldData // 字段结果(不超过200个)
+	fieldDatasFlag bool
+}
+
+func NewArchiveReportDataBuilder() *ArchiveReportDataBuilder {
+	builder := &ArchiveReportDataBuilder{}
+	return builder
+}
+
+// 用户ID
+//
+// 示例值：1aaxxd
+func (builder *ArchiveReportDataBuilder) MemberId(memberId string) *ArchiveReportDataBuilder {
+	builder.memberId = memberId
+	builder.memberIdFlag = true
+	return builder
+}
+
+// 考勤开始时间
+//
+// 示例值：2021-01-09
+func (builder *ArchiveReportDataBuilder) StartTime(startTime string) *ArchiveReportDataBuilder {
+	builder.startTime = startTime
+	builder.startTimeFlag = true
+	return builder
+}
+
+// 考勤结束时间
+//
+// 示例值：2021-01-09
+func (builder *ArchiveReportDataBuilder) EndTime(endTime string) *ArchiveReportDataBuilder {
+	builder.endTime = endTime
+	builder.endTimeFlag = true
+	return builder
+}
+
+// 字段结果(不超过200个)
+//
+// 示例值：
+func (builder *ArchiveReportDataBuilder) FieldDatas(fieldDatas []*ArchiveFieldData) *ArchiveReportDataBuilder {
+	builder.fieldDatas = fieldDatas
+	builder.fieldDatasFlag = true
+	return builder
+}
+
+func (builder *ArchiveReportDataBuilder) Build() *ArchiveReportData {
+	req := &ArchiveReportData{}
+	if builder.memberIdFlag {
+		req.MemberId = &builder.memberId
+
+	}
+	if builder.startTimeFlag {
+		req.StartTime = &builder.startTime
+
+	}
+	if builder.endTimeFlag {
+		req.EndTime = &builder.endTime
+
+	}
+	if builder.fieldDatasFlag {
+		req.FieldDatas = builder.fieldDatas
+	}
+	return req
+}
+
+type ArchiveReportMeta struct {
+	ReportId        *string `json:"report_id,omitempty"`         // 引用报表 ID
+	ReportName      *string `json:"report_name,omitempty"`       // 引用报表name
+	ArchiveRuleId   *string `json:"archive_rule_id,omitempty"`   // 归档报表规则id
+	ArchiveRuleName *string `json:"archive_rule_name,omitempty"` // 归档报表name
+}
+
+type ArchiveReportMetaBuilder struct {
+	reportId            string // 引用报表 ID
+	reportIdFlag        bool
+	reportName          string // 引用报表name
+	reportNameFlag      bool
+	archiveRuleId       string // 归档报表规则id
+	archiveRuleIdFlag   bool
+	archiveRuleName     string // 归档报表name
+	archiveRuleNameFlag bool
+}
+
+func NewArchiveReportMetaBuilder() *ArchiveReportMetaBuilder {
+	builder := &ArchiveReportMetaBuilder{}
+	return builder
+}
+
+// 引用报表 ID
+//
+// 示例值：7341290237441605652
+func (builder *ArchiveReportMetaBuilder) ReportId(reportId string) *ArchiveReportMetaBuilder {
+	builder.reportId = reportId
+	builder.reportIdFlag = true
+	return builder
+}
+
+// 引用报表name
+//
+// 示例值：月报汇总
+func (builder *ArchiveReportMetaBuilder) ReportName(reportName string) *ArchiveReportMetaBuilder {
+	builder.reportName = reportName
+	builder.reportNameFlag = true
+	return builder
+}
+
+// 归档报表规则id
+//
+// 示例值：7341290237441605652
+func (builder *ArchiveReportMetaBuilder) ArchiveRuleId(archiveRuleId string) *ArchiveReportMetaBuilder {
+	builder.archiveRuleId = archiveRuleId
+	builder.archiveRuleIdFlag = true
+	return builder
+}
+
+// 归档报表name
+//
+// 示例值：归档全员
+func (builder *ArchiveReportMetaBuilder) ArchiveRuleName(archiveRuleName string) *ArchiveReportMetaBuilder {
+	builder.archiveRuleName = archiveRuleName
+	builder.archiveRuleNameFlag = true
+	return builder
+}
+
+func (builder *ArchiveReportMetaBuilder) Build() *ArchiveReportMeta {
+	req := &ArchiveReportMeta{}
+	if builder.reportIdFlag {
+		req.ReportId = &builder.reportId
+
+	}
+	if builder.reportNameFlag {
+		req.ReportName = &builder.reportName
+
+	}
+	if builder.archiveRuleIdFlag {
+		req.ArchiveRuleId = &builder.archiveRuleId
+
+	}
+	if builder.archiveRuleNameFlag {
+		req.ArchiveRuleName = &builder.archiveRuleName
+
+	}
+	return req
+}
+
 type Area struct {
 	Type   *string       `json:"type,omitempty"`   // 区域类型
 	Center *Coordinate   `json:"center,omitempty"` // 中心点
@@ -884,6 +1107,53 @@ func (builder *FileBuilder) Build() *File {
 	if builder.fileIdFlag {
 		req.FileId = &builder.fileId
 
+	}
+	return req
+}
+
+type FilterItem struct {
+	FilterType *string  `json:"filter_type,omitempty"` // 筛选类型
+	FilterIds  []string `json:"filter_ids,omitempty"`  // 筛选的ID
+}
+
+type FilterItemBuilder struct {
+	filterType     string // 筛选类型
+	filterTypeFlag bool
+	filterIds      []string // 筛选的ID
+	filterIdsFlag  bool
+}
+
+func NewFilterItemBuilder() *FilterItemBuilder {
+	builder := &FilterItemBuilder{}
+	return builder
+}
+
+// 筛选类型
+//
+// 示例值：
+func (builder *FilterItemBuilder) FilterType(filterType string) *FilterItemBuilder {
+	builder.filterType = filterType
+	builder.filterTypeFlag = true
+	return builder
+}
+
+// 筛选的ID
+//
+// 示例值：
+func (builder *FilterItemBuilder) FilterIds(filterIds []string) *FilterItemBuilder {
+	builder.filterIds = filterIds
+	builder.filterIdsFlag = true
+	return builder
+}
+
+func (builder *FilterItemBuilder) Build() *FilterItem {
+	req := &FilterItem{}
+	if builder.filterTypeFlag {
+		req.FilterType = &builder.filterType
+
+	}
+	if builder.filterIdsFlag {
+		req.FilterIds = builder.filterIds
 	}
 	return req
 }
@@ -4414,6 +4684,149 @@ func (builder *PunchTimeRuleBuilder) Build() *PunchTimeRule {
 	return req
 }
 
+type PunchTimeSimpleRule struct {
+	OnTime  *string `json:"on_time,omitempty"`  // 上班时间
+	OffTime *string `json:"off_time,omitempty"` // 下班时间
+}
+
+type PunchTimeSimpleRuleBuilder struct {
+	onTime      string // 上班时间
+	onTimeFlag  bool
+	offTime     string // 下班时间
+	offTimeFlag bool
+}
+
+func NewPunchTimeSimpleRuleBuilder() *PunchTimeSimpleRuleBuilder {
+	builder := &PunchTimeSimpleRuleBuilder{}
+	return builder
+}
+
+// 上班时间
+//
+// 示例值：9：00
+func (builder *PunchTimeSimpleRuleBuilder) OnTime(onTime string) *PunchTimeSimpleRuleBuilder {
+	builder.onTime = onTime
+	builder.onTimeFlag = true
+	return builder
+}
+
+// 下班时间
+//
+// 示例值：18：00， 第二天凌晨2点， 26：00
+func (builder *PunchTimeSimpleRuleBuilder) OffTime(offTime string) *PunchTimeSimpleRuleBuilder {
+	builder.offTime = offTime
+	builder.offTimeFlag = true
+	return builder
+}
+
+func (builder *PunchTimeSimpleRuleBuilder) Build() *PunchTimeSimpleRule {
+	req := &PunchTimeSimpleRule{}
+	if builder.onTimeFlag {
+		req.OnTime = &builder.onTime
+
+	}
+	if builder.offTimeFlag {
+		req.OffTime = &builder.offTime
+
+	}
+	return req
+}
+
+type ReportData struct {
+	UserId    *string                 `json:"user_id,omitempty"`    // 用户ID
+	FieldData map[string]*ReportValue `json:"field_data,omitempty"` // 字段对应的zhi
+}
+
+type ReportDataBuilder struct {
+	userId        string // 用户ID
+	userIdFlag    bool
+	fieldData     map[string]*ReportValue // 字段对应的zhi
+	fieldDataFlag bool
+}
+
+func NewReportDataBuilder() *ReportDataBuilder {
+	builder := &ReportDataBuilder{}
+	return builder
+}
+
+// 用户ID
+//
+// 示例值：
+func (builder *ReportDataBuilder) UserId(userId string) *ReportDataBuilder {
+	builder.userId = userId
+	builder.userIdFlag = true
+	return builder
+}
+
+// 字段对应的zhi
+//
+// 示例值：
+func (builder *ReportDataBuilder) FieldData(fieldData map[string]*ReportValue) *ReportDataBuilder {
+	builder.fieldData = fieldData
+	builder.fieldDataFlag = true
+	return builder
+}
+
+func (builder *ReportDataBuilder) Build() *ReportData {
+	req := &ReportData{}
+	if builder.userIdFlag {
+		req.UserId = &builder.userId
+
+	}
+	if builder.fieldDataFlag {
+		req.FieldData = builder.fieldData
+	}
+	return req
+}
+
+type ReportValue struct {
+	Value   *string `json:"value,omitempty"`    // 结果值
+	FieldId *string `json:"field_id,omitempty"` // 字段ID
+}
+
+type ReportValueBuilder struct {
+	value       string // 结果值
+	valueFlag   bool
+	fieldId     string // 字段ID
+	fieldIdFlag bool
+}
+
+func NewReportValueBuilder() *ReportValueBuilder {
+	builder := &ReportValueBuilder{}
+	return builder
+}
+
+// 结果值
+//
+// 示例值：1
+func (builder *ReportValueBuilder) Value(value string) *ReportValueBuilder {
+	builder.value = value
+	builder.valueFlag = true
+	return builder
+}
+
+// 字段ID
+//
+// 示例值：1
+func (builder *ReportValueBuilder) FieldId(fieldId string) *ReportValueBuilder {
+	builder.fieldId = fieldId
+	builder.fieldIdFlag = true
+	return builder
+}
+
+func (builder *ReportValueBuilder) Build() *ReportValue {
+	req := &ReportValue{}
+	if builder.valueFlag {
+		req.Value = &builder.value
+
+	}
+	if builder.fieldIdFlag {
+		req.FieldId = &builder.fieldId
+
+	}
+	return req
+}
+
 type RestRule struct {
 	RestBeginTime *string `json:"rest_begin_time,omitempty"` // 休息开始
 	RestEndTime   *string `json:"rest_end_time,omitempty"`   // 休息结束
@@ -4987,6 +5400,86 @@ func (builder *ShiftGroupUserBuilder) Build() *ShiftGroupUser {
 	}
 	if builder.userIdFlag {
 		req.UserId = &builder.userId
+
+	}
+	return req
+}
+
+type StatisticsField struct {
+	FieldId      *string `json:"field_id,omitempty"`      // 字段ID
+	FieldContent *string `json:"field_content,omitempty"` // 字段公式
+	Title        *string `json:"title,omitempty"`         // 字段名称
+	FieldDesc    *string `json:"field_desc,omitempty"`    // 字段描述
+}
+
+type StatisticsFieldBuilder struct {
+	fieldId          string // 字段ID
+	fieldIdFlag      bool
+	fieldContent     string // 字段公式
+	fieldContentFlag bool
+	title            string // 字段名称
+	titleFlag        bool
+	fieldDesc        string // 字段描述
+	fieldDescFlag    bool
+}
+
+func NewStatisticsFieldBuilder() *StatisticsFieldBuilder {
+	builder := &StatisticsFieldBuilder{}
+	return builder
+}
+
+// 字段ID
+//
+// 示例值：1111111
+func (builder *StatisticsFieldBuilder) FieldId(fieldId string) *StatisticsFieldBuilder {
+	builder.fieldId = fieldId
+	builder.fieldIdFlag = true
+	return builder
+}
+
+// 字段公式
+//
+// 示例值：1
+func (builder *StatisticsFieldBuilder) FieldContent(fieldContent string) *StatisticsFieldBuilder {
+	builder.fieldContent = fieldContent
+	builder.fieldContentFlag = true
+	return builder
+}
+
+// 字段名称
+//
+// 示例值：计薪天数
+func (builder *StatisticsFieldBuilder) Title(title string) *StatisticsFieldBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// 字段描述
+//
+// 示例值：测试
+func (builder *StatisticsFieldBuilder) FieldDesc(fieldDesc string) *StatisticsFieldBuilder {
+	builder.fieldDesc = fieldDesc
+	builder.fieldDescFlag = true
+	return builder
+}
+
+func (builder *StatisticsFieldBuilder) Build() *StatisticsField {
+	req := &StatisticsField{}
+	if builder.fieldIdFlag {
+		req.FieldId = &builder.fieldId
+
+	}
+	if builder.fieldContentFlag {
+		req.FieldContent = &builder.fieldContent
+
+	}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.fieldDescFlag {
+		req.FieldDesc = &builder.fieldDesc
 
 	}
 	return req
@@ -7358,6 +7851,101 @@ func (builder *UserTaskRemedyBuilder) Build() *UserTaskRemedy {
 	if builder.updateTimeFlag {
 		req.UpdateTime = &builder.updateTime
 
+	}
+	return req
+}
+
+type UserTmpDailyShift struct {
+	GroupId              *string                `json:"group_id,omitempty"`                // 考勤组 ID
+	UserId               *string                `json:"user_id,omitempty"`                 // 用户 ID
+	Date                 *int                   `json:"date,omitempty"`                    // 日期
+	ShiftName            *string                `json:"shift_name,omitempty"`              // 班次名称
+	PunchTimeSimpleRules []*PunchTimeSimpleRule `json:"punch_time_simple_rules,omitempty"` // 打卡规则
+}
+
+type UserTmpDailyShiftBuilder struct {
+	groupId                  string // 考勤组 ID
+	groupIdFlag              bool
+	userId                   string // 用户 ID
+	userIdFlag               bool
+	date                     int // 日期
+	dateFlag                 bool
+	shiftName                string // 班次名称
+	shiftNameFlag            bool
+	punchTimeSimpleRules     []*PunchTimeSimpleRule // 打卡规则
+	punchTimeSimpleRulesFlag bool
+}
+
+func NewUserTmpDailyShiftBuilder() *UserTmpDailyShiftBuilder {
+	builder := &UserTmpDailyShiftBuilder{}
+	return builder
+}
+
+// 考勤组 ID
+//
+// 示例值：6737202939523236110
+func (builder *UserTmpDailyShiftBuilder) GroupId(groupId string) *UserTmpDailyShiftBuilder {
+	builder.groupId = groupId
+	builder.groupIdFlag = true
+	return builder
+}
+
+// 用户 ID
+//
+// 示例值：abd754f7
+func (builder *UserTmpDailyShiftBuilder) UserId(userId string) *UserTmpDailyShiftBuilder {
+	builder.userId = userId
+	builder.userIdFlag = true
+	return builder
+}
+
+// 日期
+//
+// 示例值：20240120
+func (builder *UserTmpDailyShiftBuilder) Date(date int) *UserTmpDailyShiftBuilder {
+	builder.date = date
+	builder.dateFlag = true
+	return builder
+}
+
+// 班次名称
+//
+// 示例值：临时早班
+func (builder *UserTmpDailyShiftBuilder) ShiftName(shiftName string) *UserTmpDailyShiftBuilder {
+	builder.shiftName = shiftName
+	builder.shiftNameFlag = true
+	return builder
+}
+
+// 打卡规则
+//
+// 示例值：
+func (builder *UserTmpDailyShiftBuilder) PunchTimeSimpleRules(punchTimeSimpleRules []*PunchTimeSimpleRule) *UserTmpDailyShiftBuilder {
+	builder.punchTimeSimpleRules = punchTimeSimpleRules
+	builder.punchTimeSimpleRulesFlag = true
+	return builder
+}
+
+func (builder *UserTmpDailyShiftBuilder) Build() *UserTmpDailyShift {
+	req := &UserTmpDailyShift{}
+	if builder.groupIdFlag {
+		req.GroupId = &builder.groupId
+
+	}
+	if builder.userIdFlag {
+		req.UserId = &builder.userId
+
+	}
+	if builder.dateFlag {
+		req.Date = &builder.date
+
+	}
+	if builder.shiftNameFlag {
+		req.ShiftName = &builder.shiftName
+
+	}
+	if builder.punchTimeSimpleRulesFlag {
+		req.PunchTimeSimpleRules = builder.punchTimeSimpleRules
 	}
 	return req
 }

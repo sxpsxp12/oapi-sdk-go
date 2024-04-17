@@ -22,26 +22,21 @@ import (
 )
 
 // GET /open-apis/lingo/v1/entities
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larklingo.NewListEntityReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larklingo.NewListEntityReqBuilder().
 		PageSize(20).
 		PageToken("408ecac018b2e3518db37275e812aad7bb8ad3e755fc886f322ac6c430ba").
-		
 		Provider("星云").
-		
 		RepoId("7152790921053274113").
-		
 		UserIdType("user_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Lingo.V1.Entity.List(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Lingo.V1.Entity.List(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

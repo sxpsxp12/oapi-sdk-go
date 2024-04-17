@@ -22,26 +22,22 @@ import (
 )
 
 // POST /open-apis/hire/v1/eco_background_checks/update_result
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewUpdateResultEcoBackgroundCheckReqBuilder().
-	   Body(larkhire.NewUpdateResultEcoBackgroundCheckReqBodyBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewUpdateResultEcoBackgroundCheckReqBuilder().
+		Body(larkhire.NewUpdateResultEcoBackgroundCheckReqBodyBuilder().
 			BackgroundCheckId("6931286400470354183").
-			
 			Result("无差异").
-			
 			ResultTime("1660123456789").
-			
 			ReportFileList([]*larkhire.EcoBackgroundCheckReportFile{larkhire.NewEcoBackgroundCheckReportFileBuilder().Build()}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.EcoBackgroundCheck.UpdateResult(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.EcoBackgroundCheck.UpdateResult(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,4 +52,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

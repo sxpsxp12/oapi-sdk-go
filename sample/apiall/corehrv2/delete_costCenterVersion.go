@@ -22,25 +22,21 @@ import (
 )
 
 // DELETE /open-apis/corehr/v2/cost_centers/:cost_center_id/versions/:version_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewDeleteCostCenterVersionReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewDeleteCostCenterVersionReqBuilder().
 		CostCenterId("6862995757234914824").
-		
 		VersionId("6862995757234914824").
-		
-	   Body(larkcorehr.NewDeleteCostCenterVersionReqBodyBuilder().
+		Body(larkcorehr.NewDeleteCostCenterVersionReqBodyBuilder().
 			OperationReason("随着组织架构调整，该成本中心不再使用").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.CostCenterVersion.Delete(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.CostCenterVersion.Delete(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -55,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

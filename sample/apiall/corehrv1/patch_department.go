@@ -22,41 +22,31 @@ import (
 )
 
 // PATCH /open-apis/corehr/v1/departments/:department_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewPatchDepartmentReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewPatchDepartmentReqBuilder().
 		DepartmentId("6969828847121885087").
-		
 		ClientToken("12454646").
-		
 		UserIdType("people_corehr_id").
-		
 		DepartmentIdType("people_corehr_department_id").
-		
-	   Department(larkcorehr.NewDepartmentBuilder().
+		Department(larkcorehr.NewDepartmentBuilder().
 			Id("4719456877659520852").
-			
 			SubType(larkcorehr.NewEnumBuilder().Build()).
 			Manager("6893013238632416776").
-			
 			IsConfidential(true).
 			HiberarchyCommon(larkcorehr.NewHiberarchyCommonBuilder().Build()).
 			EffectiveTime("2020-05-01 00:00:00").
-			
-			
 			CustomFields([]*larkcorehr.ObjectFieldData{larkcorehr.NewObjectFieldDataBuilder().Build()}).
 			CostCenterId("7142384817131652652").
-			
 			StaffingModel(larkcorehr.NewEnumBuilder().Build()).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V1.Department.Patch(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V1.Department.Patch(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -71,4 +61,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

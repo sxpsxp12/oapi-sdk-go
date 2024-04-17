@@ -22,22 +22,20 @@ import (
 )
 
 // POST /open-apis/acs/v1/visitors
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkacs.NewCreateVisitorReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkacs.NewCreateVisitorReqBuilder().
 		UserIdType("user_id").
-		
-	   Body(larkacs.NewCreateVisitorReqBodyBuilder().
+		Body(larkacs.NewCreateVisitorReqBodyBuilder().
 			User(larkacs.NewUserExternalBuilder().Build()).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Acs.V1.Visitor.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Acs.V1.Visitor.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,4 +50,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

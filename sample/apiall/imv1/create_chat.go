@@ -22,58 +22,40 @@ import (
 )
 
 // POST /open-apis/im/v1/chats
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkim.NewCreateChatReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkim.NewCreateChatReqBuilder().
 		UserIdType("open_id").
-		
 		SetBotManager(false).
 		Uuid("b13g2t38-1jd2-458b-8djf-dtbca5104204").
-		
-	   Body(larkim.NewCreateChatReqBodyBuilder().
+		Body(larkim.NewCreateChatReqBodyBuilder().
 			Avatar("default-avatar_44ae0ca3-e140-494b-956f-78091e348435").
-			
 			Name("测试群名称").
-			
 			Description("测试群描述").
-			
 			I18nNames(larkim.NewI18nNamesBuilder().Build()).
 			OwnerId("4d7a3c6g").
-			
 			UserIdList([]string{}).
 			BotIdList([]string{}).
 			GroupMessageType("chat").
-			
 			ChatMode("group").
-			
 			ChatType("private").
-			
-			
 			JoinMessageVisibility("all_members").
-			
 			LeaveMessageVisibility("all_members").
-			
 			MembershipApproval("no_approval_required").
-			
-			
-			
 			RestrictedModeSetting(larkim.NewRestrictedModeSettingBuilder().Build()).
 			UrgentSetting("all_members").
-			
 			VideoConferenceSetting("all_members").
-			
 			EditPermission("all_members").
-			
-			
+			PinManageSetting("all_members").
+			HideMemberCountSetting("all_members").
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Im.V1.Chat.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Im.V1.Chat.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -88,4 +70,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

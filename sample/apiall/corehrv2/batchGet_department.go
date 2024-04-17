@@ -22,26 +22,23 @@ import (
 )
 
 // POST /open-apis/corehr/v2/departments/batch_get
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewBatchGetDepartmentReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewBatchGetDepartmentReqBuilder().
 		UserIdType("open_id").
-		
 		DepartmentIdType("open_department_id").
-		
-	   Body(larkcorehr.NewBatchGetDepartmentReqBodyBuilder().
+		Body(larkcorehr.NewBatchGetDepartmentReqBodyBuilder().
 			DepartmentIdList([]string{}).
 			Fields([]string{}).
 			DepartmentNameList([]string{}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.Department.BatchGet(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.Department.BatchGet(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,4 +53,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

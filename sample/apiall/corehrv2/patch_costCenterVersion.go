@@ -22,34 +22,27 @@ import (
 )
 
 // PATCH /open-apis/corehr/v2/cost_centers/:cost_center_id/versions/:version_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewPatchCostCenterVersionReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewPatchCostCenterVersionReqBuilder().
 		CostCenterId("6862995757234914824").
-		
 		VersionId("6862995757234914824").
-		
 		UserIdType("people_corehr_id").
-		
-	   Body(larkcorehr.NewPatchCostCenterVersionReqBodyBuilder().
+		Body(larkcorehr.NewPatchCostCenterVersionReqBodyBuilder().
 			Name([]*larkcorehr.I18n{larkcorehr.NewI18nBuilder().Build()}).
 			ParentCostCenterId("6862995757234914824").
-			
 			Managers([]string{}).
 			Description([]*larkcorehr.I18n{larkcorehr.NewI18nBuilder().Build()}).
 			EffectiveTime("2020-01-01").
-			
 			OperationReason("强行操作").
-			
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.CostCenterVersion.Patch(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.CostCenterVersion.Patch(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -64,4 +57,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -22,26 +22,23 @@ import (
 )
 
 // POST /open-apis/corehr/v2/contracts/search
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewSearchContractReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewSearchContractReqBuilder().
 		PageSize(100).
 		PageToken("6891251722631890445").
-		
 		UserIdType("open_id").
-		
-	   Body(larkcorehr.NewSearchContractReqBodyBuilder().
+		Body(larkcorehr.NewSearchContractReqBodyBuilder().
 			EmploymentIdList([]string{}).
 			ContractIdList([]string{}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.Contract.Search(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.Contract.Search(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -56,4 +53,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -22,24 +22,21 @@ import (
 )
 
 // POST /open-apis/task/v2/tasklists
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewCreateTasklistReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewCreateTasklistReqBuilder().
 		UserIdType("open_id").
-		
-	   InputTasklist(larktask.NewInputTasklistBuilder().
+		InputTasklist(larktask.NewInputTasklistBuilder().
 			Name("年会工作任务清单").
-			
 			Members([]*larktask.Member{larktask.NewMemberBuilder().Build()}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.Tasklist.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.Tasklist.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -54,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -22,19 +22,17 @@ import (
 )
 
 // DELETE /open-apis/corehr/v2/probation/assessments/:assessment_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewDeleteProbationAssessmentReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewDeleteProbationAssessmentReqBuilder().
 		AssessmentId("7140964208476371331").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.ProbationAssessment.Delete(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.ProbationAssessment.Delete(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -49,4 +47,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

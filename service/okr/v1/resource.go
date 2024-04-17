@@ -14,6 +14,7 @@ type V1 struct {
 	Period         *period         // OKR周期
 	PeriodRule     *periodRule     // 周期规则
 	ProgressRecord *progressRecord // OKR进展记录
+	Review         *review         // 复盘（灰度租户可见）
 	UserOkr        *userOkr        // 用户OKR
 }
 
@@ -24,6 +25,7 @@ func New(config *larkcore.Config) *V1 {
 		Period:         &period{config: config},
 		PeriodRule:     &periodRule{config: config},
 		ProgressRecord: &progressRecord{config: config},
+		Review:         &review{config: config},
 		UserOkr:        &userOkr{config: config},
 	}
 }
@@ -41,6 +43,9 @@ type periodRule struct {
 	config *larkcore.Config
 }
 type progressRecord struct {
+	config *larkcore.Config
+}
+type review struct {
 	config *larkcore.Config
 }
 type userOkr struct {
@@ -309,6 +314,32 @@ func (p *progressRecord) Update(ctx context.Context, req *UpdateProgressRecordRe
 	// 反序列响应结果
 	resp := &UpdateProgressRecordResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Query 查询复盘信息
+//
+// - 根据周期和用户查询复盘信息。
+//
+// - 官网API文档链接:https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/review/query
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/okrv1/query_review.go
+func (r *review) Query(ctx context.Context, req *QueryReviewReq, options ...larkcore.RequestOptionFunc) (*QueryReviewResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/okr/v1/reviews/query"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, r.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryReviewResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, r.config)
 	if err != nil {
 		return nil, err
 	}

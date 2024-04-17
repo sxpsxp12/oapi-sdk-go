@@ -51,6 +51,16 @@ const (
 )
 
 const (
+	PinManageSettingTypeOnlyOwner  = "only_owner"  // 仅群主和管理员
+	PinManageSettingTypeAllMembers = "all_members" // 所有成员
+)
+
+const (
+	HideMemberCountSettingTypeAllMembers = "all_members" // 所有群成员可见
+	HideMemberCountSettingTypeOnlyOwner  = "only_owner"  // 仅群主群管理员可见
+)
+
+const (
 	UserIdTypeUserId  = "user_id"  // 以user_id来识别用户
 	UserIdTypeUnionId = "union_id" // 以union_id来识别用户
 	UserIdTypeOpenId  = "open_id"  // 以open_id来识别用户
@@ -98,6 +108,16 @@ const (
 const (
 	VideoConferenceSettingTypeUpdateChatOnlyOwner  = "only_owner"  // 仅群主和管理员
 	VideoConferenceSettingTypeUpdateChatAllMembers = "all_members" // 所有成员
+)
+
+const (
+	PinManageSettingTypeUpdateChatOnlyOwner  = "only_owner"  // 仅群主和管理员
+	PinManageSettingTypeUpdateChatAllMembers = "all_members" // 所有成员
+)
+
+const (
+	HideMemberCountSettingTypeUpdateChatAllMembers = "all_members" // 所有群成员可见
+	HideMemberCountSettingTypeUpdateChatOnlyOwner  = "only_owner"  // 仅群主群管理员可见
 )
 
 const (
@@ -2261,6 +2281,101 @@ func (builder *EventSenderBuilder) Build() *EventSender {
 type File struct {
 }
 
+type FollowUp struct {
+	Content      *string        `json:"content,omitempty"`       // 内容
+	I18nContents []*I18nContent `json:"i18n_contents,omitempty"` // 多语言内容
+}
+
+type FollowUpBuilder struct {
+	content          string // 内容
+	contentFlag      bool
+	i18nContents     []*I18nContent // 多语言内容
+	i18nContentsFlag bool
+}
+
+func NewFollowUpBuilder() *FollowUpBuilder {
+	builder := &FollowUpBuilder{}
+	return builder
+}
+
+// 内容
+//
+// 示例值：你好
+func (builder *FollowUpBuilder) Content(content string) *FollowUpBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+// 多语言内容
+//
+// 示例值：
+func (builder *FollowUpBuilder) I18nContents(i18nContents []*I18nContent) *FollowUpBuilder {
+	builder.i18nContents = i18nContents
+	builder.i18nContentsFlag = true
+	return builder
+}
+
+func (builder *FollowUpBuilder) Build() *FollowUp {
+	req := &FollowUp{}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	if builder.i18nContentsFlag {
+		req.I18nContents = builder.i18nContents
+	}
+	return req
+}
+
+type I18nContent struct {
+	Content  *string `json:"content,omitempty"`  // 内容
+	Language *string `json:"language,omitempty"` // 语言
+}
+
+type I18nContentBuilder struct {
+	content      string // 内容
+	contentFlag  bool
+	language     string // 语言
+	languageFlag bool
+}
+
+func NewI18nContentBuilder() *I18nContentBuilder {
+	builder := &I18nContentBuilder{}
+	return builder
+}
+
+// 内容
+//
+// 示例值：hello
+func (builder *I18nContentBuilder) Content(content string) *I18nContentBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+// 语言
+//
+// 示例值：zh_cn
+func (builder *I18nContentBuilder) Language(language string) *I18nContentBuilder {
+	builder.language = language
+	builder.languageFlag = true
+	return builder
+}
+
+func (builder *I18nContentBuilder) Build() *I18nContent {
+	req := &I18nContent{}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	if builder.languageFlag {
+		req.Language = &builder.language
+
+	}
+	return req
+}
+
 type I18nNames struct {
 	ZhCn *string `json:"zh_cn,omitempty"` // 中文名
 	EnUs *string `json:"en_us,omitempty"` // 英文名
@@ -2690,6 +2805,7 @@ type ListChat struct {
 	External    *bool   `json:"external,omitempty"`      // 是否是外部群
 	TenantKey   *string `json:"tenant_key,omitempty"`    // 租户Key，为租户在飞书上的唯一标识，用来换取对应的tenant_access_token，也可以用作租户在应用中的唯一标识
 
+	ChatStatus *string `json:"chat_status,omitempty"` // 群状态
 }
 
 type ListChatBuilder struct {
@@ -2709,6 +2825,9 @@ type ListChatBuilder struct {
 	externalFlag    bool
 	tenantKey       string // 租户Key，为租户在飞书上的唯一标识，用来换取对应的tenant_access_token，也可以用作租户在应用中的唯一标识
 	tenantKeyFlag   bool
+
+	chatStatus     string // 群状态
+	chatStatusFlag bool
 }
 
 func NewListChatBuilder() *ListChatBuilder {
@@ -2788,6 +2907,15 @@ func (builder *ListChatBuilder) TenantKey(tenantKey string) *ListChatBuilder {
 	return builder
 }
 
+// 群状态
+//
+// 示例值：normal
+func (builder *ListChatBuilder) ChatStatus(chatStatus string) *ListChatBuilder {
+	builder.chatStatus = chatStatus
+	builder.chatStatusFlag = true
+	return builder
+}
+
 func (builder *ListChatBuilder) Build() *ListChat {
 	req := &ListChat{}
 	if builder.chatIdFlag {
@@ -2823,6 +2951,10 @@ func (builder *ListChatBuilder) Build() *ListChat {
 
 	}
 
+	if builder.chatStatusFlag {
+		req.ChatStatus = &builder.chatStatus
+
+	}
 	return req
 }
 
@@ -5121,6 +5253,11 @@ type CreateChatReqBodyBuilder struct {
 	videoConferenceSettingFlag bool
 	editPermission             string // 谁可以编辑群信息
 	editPermissionFlag         bool
+
+	pinManageSetting           string // 谁可以管理置顶
+	pinManageSettingFlag       bool
+	hideMemberCountSetting     string // 隐藏群成员人数设置
+	hideMemberCountSettingFlag bool
 }
 
 func NewCreateChatReqBodyBuilder() *CreateChatReqBodyBuilder {
@@ -5281,6 +5418,24 @@ func (builder *CreateChatReqBodyBuilder) EditPermission(editPermission string) *
 	return builder
 }
 
+// 谁可以管理置顶
+//
+// 示例值：all_members
+func (builder *CreateChatReqBodyBuilder) PinManageSetting(pinManageSetting string) *CreateChatReqBodyBuilder {
+	builder.pinManageSetting = pinManageSetting
+	builder.pinManageSettingFlag = true
+	return builder
+}
+
+// 隐藏群成员人数设置
+//
+// 示例值：all_members
+func (builder *CreateChatReqBodyBuilder) HideMemberCountSetting(hideMemberCountSetting string) *CreateChatReqBodyBuilder {
+	builder.hideMemberCountSetting = hideMemberCountSetting
+	builder.hideMemberCountSettingFlag = true
+	return builder
+}
+
 func (builder *CreateChatReqBodyBuilder) Build() *CreateChatReqBody {
 	req := &CreateChatReqBody{}
 	if builder.avatarFlag {
@@ -5334,6 +5489,12 @@ func (builder *CreateChatReqBodyBuilder) Build() *CreateChatReqBody {
 	if builder.editPermissionFlag {
 		req.EditPermission = &builder.editPermission
 	}
+	if builder.pinManageSettingFlag {
+		req.PinManageSetting = &builder.pinManageSetting
+	}
+	if builder.hideMemberCountSettingFlag {
+		req.HideMemberCountSetting = &builder.hideMemberCountSetting
+	}
 	return req
 }
 
@@ -5380,6 +5541,10 @@ type CreateChatPathReqBodyBuilder struct {
 	editPermissionFlag         bool
 	chatTags                   []string
 	chatTagsFlag               bool
+	pinManageSetting           string
+	pinManageSettingFlag       bool
+	hideMemberCountSetting     string
+	hideMemberCountSettingFlag bool
 }
 
 func NewCreateChatPathReqBodyBuilder() *CreateChatPathReqBodyBuilder {
@@ -5540,6 +5705,24 @@ func (builder *CreateChatPathReqBodyBuilder) EditPermission(editPermission strin
 	return builder
 }
 
+// 谁可以管理置顶
+//
+// 示例值：all_members
+func (builder *CreateChatPathReqBodyBuilder) PinManageSetting(pinManageSetting string) *CreateChatPathReqBodyBuilder {
+	builder.pinManageSetting = pinManageSetting
+	builder.pinManageSettingFlag = true
+	return builder
+}
+
+// 隐藏群成员人数设置
+//
+// 示例值：all_members
+func (builder *CreateChatPathReqBodyBuilder) HideMemberCountSetting(hideMemberCountSetting string) *CreateChatPathReqBodyBuilder {
+	builder.hideMemberCountSetting = hideMemberCountSetting
+	builder.hideMemberCountSettingFlag = true
+	return builder
+}
+
 func (builder *CreateChatPathReqBodyBuilder) Build() (*CreateChatReqBody, error) {
 	req := &CreateChatReqBody{}
 	if builder.avatarFlag {
@@ -5592,6 +5775,12 @@ func (builder *CreateChatPathReqBodyBuilder) Build() (*CreateChatReqBody, error)
 	}
 	if builder.editPermissionFlag {
 		req.EditPermission = &builder.editPermission
+	}
+	if builder.pinManageSettingFlag {
+		req.PinManageSetting = &builder.pinManageSetting
+	}
+	if builder.hideMemberCountSettingFlag {
+		req.HideMemberCountSetting = &builder.hideMemberCountSetting
 	}
 	return req, nil
 }
@@ -5669,6 +5858,8 @@ type CreateChatReqBody struct {
 	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"` // 谁可以发起视频会议
 	EditPermission         *string                `json:"edit_permission,omitempty"`          // 谁可以编辑群信息
 
+	PinManageSetting       *string `json:"pin_manage_setting,omitempty"`        // 谁可以管理置顶
+	HideMemberCountSetting *string `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
 }
 
 type CreateChatReq struct {
@@ -5686,6 +5877,7 @@ type CreateChatRespData struct {
 	OwnerIdType            *string    `json:"owner_id_type,omitempty"`            // 群主 ID 对应的ID类型，与查询参数中的 ==user_id_type== 相同。取值为：`open_id`、`user_id`、`union_id`其中之一;;**注意**：当群主是机器人时，该字段不返回
 	UrgentSetting          *string    `json:"urgent_setting,omitempty"`           // 谁可以加急
 	VideoConferenceSetting *string    `json:"video_conference_setting,omitempty"` // 谁可以发起视频会议
+	PinManageSetting       *string    `json:"pin_manage_setting,omitempty"`       // 谁可以管理置顶
 	AddMemberPermission    *string    `json:"add_member_permission,omitempty"`    // 拉 用户或机器人 入群权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员
 	ShareCardPermission    *string    `json:"share_card_permission,omitempty"`    // 群分享权限;;**可选值有**：;- `allowed`：允许;- `not_allowed`：不允许
 	AtAllPermission        *string    `json:"at_all_permission,omitempty"`        // at 所有人权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员
@@ -5701,7 +5893,8 @@ type CreateChatRespData struct {
 	MembershipApproval     *string    `json:"membership_approval,omitempty"`      // 加群审批;;**可选值有**：;- `no_approval_required`：无需审批;- `approval_required`：需要审批
 	ModerationPermission   *string    `json:"moderation_permission,omitempty"`    // 发言权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员;- `moderator_list`：指定群成员
 
-	RestrictedModeSetting *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"` // 防泄密模式设置
+	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`   // 防泄密模式设置
+	HideMemberCountSetting *string                `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
 }
 
 type CreateChatResp struct {
@@ -5822,9 +6015,12 @@ type GetChatRespData struct {
 	UserCount              *string    `json:"user_count,omitempty"`               // 群成员人数
 	BotCount               *string    `json:"bot_count,omitempty"`                // 群机器人数
 
-	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`  // 防泄密模式设置
-	UrgentSetting          *string                `json:"urgent_setting,omitempty"`           // 谁可以加急
-	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"` // 谁可以发起视频会议
+	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`   // 防泄密模式设置
+	UrgentSetting          *string                `json:"urgent_setting,omitempty"`            // 谁可以加急
+	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"`  // 谁可以发起视频会议
+	PinManageSetting       *string                `json:"pin_manage_setting,omitempty"`        // 谁可以管理置顶
+	HideMemberCountSetting *string                `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
+	ChatStatus             *string                `json:"chat_status,omitempty"`               // 群状态
 }
 
 type GetChatResp struct {
@@ -6152,6 +6348,10 @@ type UpdateChatReqBodyBuilder struct {
 	urgentSettingFlag          bool
 	videoConferenceSetting     string // 谁可以发起视频会议
 	videoConferenceSettingFlag bool
+	pinManageSetting           string // 谁可以管理置顶
+	pinManageSettingFlag       bool
+	hideMemberCountSetting     string // 隐藏群成员人数设置
+	hideMemberCountSettingFlag bool
 }
 
 func NewUpdateChatReqBodyBuilder() *UpdateChatReqBodyBuilder {
@@ -6312,6 +6512,24 @@ func (builder *UpdateChatReqBodyBuilder) VideoConferenceSetting(videoConferenceS
 	return builder
 }
 
+// 谁可以管理置顶
+//
+// 示例值：all_members
+func (builder *UpdateChatReqBodyBuilder) PinManageSetting(pinManageSetting string) *UpdateChatReqBodyBuilder {
+	builder.pinManageSetting = pinManageSetting
+	builder.pinManageSettingFlag = true
+	return builder
+}
+
+// 隐藏群成员人数设置
+//
+// 示例值：all_members
+func (builder *UpdateChatReqBodyBuilder) HideMemberCountSetting(hideMemberCountSetting string) *UpdateChatReqBodyBuilder {
+	builder.hideMemberCountSetting = hideMemberCountSetting
+	builder.hideMemberCountSettingFlag = true
+	return builder
+}
+
 func (builder *UpdateChatReqBodyBuilder) Build() *UpdateChatReqBody {
 	req := &UpdateChatReqBody{}
 	if builder.avatarFlag {
@@ -6365,6 +6583,12 @@ func (builder *UpdateChatReqBodyBuilder) Build() *UpdateChatReqBody {
 	if builder.videoConferenceSettingFlag {
 		req.VideoConferenceSetting = &builder.videoConferenceSetting
 	}
+	if builder.pinManageSettingFlag {
+		req.PinManageSetting = &builder.pinManageSetting
+	}
+	if builder.hideMemberCountSettingFlag {
+		req.HideMemberCountSetting = &builder.hideMemberCountSetting
+	}
 	return req
 }
 
@@ -6407,6 +6631,10 @@ type UpdateChatPathReqBodyBuilder struct {
 	urgentSettingFlag          bool
 	videoConferenceSetting     string
 	videoConferenceSettingFlag bool
+	pinManageSetting           string
+	pinManageSettingFlag       bool
+	hideMemberCountSetting     string
+	hideMemberCountSettingFlag bool
 }
 
 func NewUpdateChatPathReqBodyBuilder() *UpdateChatPathReqBodyBuilder {
@@ -6567,6 +6795,24 @@ func (builder *UpdateChatPathReqBodyBuilder) VideoConferenceSetting(videoConfere
 	return builder
 }
 
+// 谁可以管理置顶
+//
+// 示例值：all_members
+func (builder *UpdateChatPathReqBodyBuilder) PinManageSetting(pinManageSetting string) *UpdateChatPathReqBodyBuilder {
+	builder.pinManageSetting = pinManageSetting
+	builder.pinManageSettingFlag = true
+	return builder
+}
+
+// 隐藏群成员人数设置
+//
+// 示例值：all_members
+func (builder *UpdateChatPathReqBodyBuilder) HideMemberCountSetting(hideMemberCountSetting string) *UpdateChatPathReqBodyBuilder {
+	builder.hideMemberCountSetting = hideMemberCountSetting
+	builder.hideMemberCountSettingFlag = true
+	return builder
+}
+
 func (builder *UpdateChatPathReqBodyBuilder) Build() (*UpdateChatReqBody, error) {
 	req := &UpdateChatReqBody{}
 	if builder.avatarFlag {
@@ -6619,6 +6865,12 @@ func (builder *UpdateChatPathReqBodyBuilder) Build() (*UpdateChatReqBody, error)
 	}
 	if builder.videoConferenceSettingFlag {
 		req.VideoConferenceSetting = &builder.videoConferenceSetting
+	}
+	if builder.pinManageSettingFlag {
+		req.PinManageSetting = &builder.pinManageSetting
+	}
+	if builder.hideMemberCountSettingFlag {
+		req.HideMemberCountSetting = &builder.hideMemberCountSetting
 	}
 	return req, nil
 }
@@ -6682,11 +6934,13 @@ type UpdateChatReqBody struct {
 	LeaveMessageVisibility *string    `json:"leave_message_visibility,omitempty"` // 出群消息可见性;;**可选值有**：;- `only_owner`：仅群主和管理员可见;- `all_members`：所有成员可见;- `not_anyone`：任何人均不可见
 	MembershipApproval     *string    `json:"membership_approval,omitempty"`      // 加群审批;;**可选值有**：;- `no_approval_required`：无需审批;- `approval_required`：需要审批
 
-	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`  // 防泄密模式设置
-	ChatType               *string                `json:"chat_type,omitempty"`                // 群类型;;**可选值有**：;- `private`：私有群;- `public`：公开群
-	GroupMessageType       *string                `json:"group_message_type,omitempty"`       // 群消息模式
-	UrgentSetting          *string                `json:"urgent_setting,omitempty"`           // 谁可以加急
-	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"` // 谁可以发起视频会议
+	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`   // 防泄密模式设置
+	ChatType               *string                `json:"chat_type,omitempty"`                 // 群类型;;**可选值有**：;- `private`：私有群;- `public`：公开群
+	GroupMessageType       *string                `json:"group_message_type,omitempty"`        // 群消息模式
+	UrgentSetting          *string                `json:"urgent_setting,omitempty"`            // 谁可以加急
+	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"`  // 谁可以发起视频会议
+	PinManageSetting       *string                `json:"pin_manage_setting,omitempty"`        // 谁可以管理置顶
+	HideMemberCountSetting *string                `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
 }
 
 type UpdateChatReq struct {

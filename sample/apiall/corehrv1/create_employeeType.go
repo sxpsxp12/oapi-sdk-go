@@ -22,27 +22,24 @@ import (
 )
 
 // POST /open-apis/corehr/v1/employee_types
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewCreateEmployeeTypeReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewCreateEmployeeTypeReqBuilder().
 		ClientToken("12454646").
-		
-	   EmployeeType(larkcorehr.NewEmployeeTypeBuilder().
+		EmployeeType(larkcorehr.NewEmployeeTypeBuilder().
 			Name([]*larkcorehr.I18n{larkcorehr.NewI18nBuilder().Build()}).
 			DefaultEmployeeType(true).
 			Active(true).
 			Code("1245").
-			
 			CustomFields([]*larkcorehr.ObjectFieldData{larkcorehr.NewObjectFieldDataBuilder().Build()}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V1.EmployeeType.Create(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V1.EmployeeType.Create(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -57,4 +54,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

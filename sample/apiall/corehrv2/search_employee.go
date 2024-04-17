@@ -22,58 +22,44 @@ import (
 )
 
 // POST /open-apis/corehr/v2/employees/search
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewSearchEmployeeReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewSearchEmployeeReqBuilder().
 		PageSize(100).
 		PageToken("6891251722631890445").
-		
 		UserIdType("open_id").
-		
 		DepartmentIdType("open_department_id").
-		
-	   Body(larkcorehr.NewSearchEmployeeReqBodyBuilder().
+		Body(larkcorehr.NewSearchEmployeeReqBodyBuilder().
 			Fields([]string{}).
 			EmploymentIdList([]string{}).
 			EmployeeNumberList([]string{}).
 			WorkEmail("13312345678@qq.com").
-			
 			PhoneNumber("16760342300").
-			
 			KeyWord("张三").
-			
 			EmploymentStatus("hired").
-			
 			EmployeeTypeId("6971090097697521314").
-			
 			DepartmentIdList([]string{}).
 			DirectManagerIdList([]string{}).
 			DottedLineManagerIdList([]string{}).
 			RegularEmployeeStartDateStart("2020-01-01").
-			
 			RegularEmployeeStartDateEnd("2020-01-01").
-			
 			EffectiveTimeStart("2020-01-01").
-			
 			EffectiveTimeEnd("2020-01-01").
-			
 			WorkLocationIdListIncludeSub([]string{}).
 			PreferredEnglishFullNameList([]string{}).
 			PreferredLocalFullNameList([]string{}).
 			NationalIdNumberList([]string{}).
 			PhoneNumberList([]string{}).
 			EmailAddressList([]string{}).
-			
 			DepartmentIdListIncludeSub([]string{}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.Employee.Search(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.Employee.Search(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -88,4 +74,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

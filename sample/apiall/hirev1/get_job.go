@@ -22,27 +22,21 @@ import (
 )
 
 // GET /open-apis/hire/v1/jobs/:job_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewGetJobReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewGetJobReqBuilder().
 		JobId("6001").
-		
 		UserIdType("user_id").
-		
 		DepartmentIdType("open_department_id").
-		
 		JobLevelIdType("people_admin_job_level_id").
-		
 		JobFamilyIdType("people_admin_job_category_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.Job.Get(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.Job.Get(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -57,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

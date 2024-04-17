@@ -22,29 +22,24 @@ import (
 )
 
 // GET /open-apis/vc/v1/resource_reservation_list
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkvc.NewGetResourceReservationListReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkvc.NewGetResourceReservationListReqBuilder().
 		RoomLevelId("omb_57c9cc7d9a81e27e54c8fabfd02759e7").
-		
 		NeedTopic(true).
 		StartTime("1655276858").
-		
 		EndTime("1655276858").
-		
 		RoomIds([]string{}).
 		IsExclude(false).
 		PageSize(20).
 		PageToken("").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Vc.V1.ResourceReservationList.Get(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Vc.V1.ResourceReservationList.Get(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -59,4 +54,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

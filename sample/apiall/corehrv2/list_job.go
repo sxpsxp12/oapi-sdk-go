@@ -22,25 +22,20 @@ import (
 )
 
 // GET /open-apis/corehr/v2/jobs
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcorehr.NewListJobReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcorehr.NewListJobReqBuilder().
 		PageToken("1231231987").
-		
 		PageSize("100").
-		
 		Name("keyword").
-		
 		QueryLanguage("zh").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Corehr.V2.Job.List(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Corehr.V2.Job.List(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -55,4 +50,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

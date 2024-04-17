@@ -22,24 +22,21 @@ import (
 )
 
 // POST /open-apis/report/v1/rules/:rule_id/views/remove
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkreport.NewRemoveRuleViewReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkreport.NewRemoveRuleViewReqBuilder().
 		RuleId("6894419345318182122").
-		
 		UserIdType("user_id").
-		
-	   Body(larkreport.NewRemoveRuleViewReqBodyBuilder().
+		Body(larkreport.NewRemoveRuleViewReqBodyBuilder().
 			UserIds([]string{}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Report.V1.RuleView.Remove(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Report.V1.RuleView.Remove(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -54,4 +51,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

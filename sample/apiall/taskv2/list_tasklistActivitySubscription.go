@@ -22,22 +22,19 @@ import (
 )
 
 // GET /open-apis/task/v2/tasklists/:tasklist_guid/activity_subscriptions
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larktask.NewListTasklistActivitySubscriptionReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larktask.NewListTasklistActivitySubscriptionReqBuilder().
 		TasklistGuid("d19e3a2a-edc0-4e4e-b7cc-950e162b53ae").
-		
 		Limit(50).
 		UserIdType("open_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Task.V2.TasklistActivitySubscription.List(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Task.V2.TasklistActivitySubscription.List(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,4 +49,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

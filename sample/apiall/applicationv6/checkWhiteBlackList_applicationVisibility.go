@@ -22,28 +22,24 @@ import (
 )
 
 // POST /open-apis/application/v6/applications/:app_id/visibility/check_white_black_list
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkapplication.NewCheckWhiteBlackListApplicationVisibilityReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkapplication.NewCheckWhiteBlackListApplicationVisibilityReqBuilder().
 		AppId("cli_a3a3d00b40b8d01b").
-		
 		UserIdType("open_id").
-		
 		DepartmentIdType("department_id").
-		
-	   Body(larkapplication.NewCheckWhiteBlackListApplicationVisibilityReqBodyBuilder().
+		Body(larkapplication.NewCheckWhiteBlackListApplicationVisibilityReqBodyBuilder().
 			UserIds([]string{}).
 			DepartmentIds([]string{}).
 			GroupIds([]string{}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Application.V6.ApplicationVisibility.CheckWhiteBlackList(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Application.V6.ApplicationVisibility.CheckWhiteBlackList(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -58,4 +54,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -22,19 +22,17 @@ import (
 )
 
 // POST /open-apis/hire/v1/referral_account/:referral_account_id/deactivate
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewDeactivateReferralAccountReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewDeactivateReferralAccountReqBuilder().
 		ReferralAccountId("6942778198054125570").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.ReferralAccount.Deactivate(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.ReferralAccount.Deactivate(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -49,4 +47,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

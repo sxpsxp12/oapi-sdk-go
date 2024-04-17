@@ -22,29 +22,24 @@ import (
 )
 
 // POST /open-apis/application/v6/app_badge/set
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkapplication.NewSetAppBadgeReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkapplication.NewSetAppBadgeReqBuilder().
 		UserIdType("user_id").
-		
-	   AppBadge(larkapplication.NewAppBadgeBuilder().
+		AppBadge(larkapplication.NewAppBadgeBuilder().
 			UserId("").
-			
 			Version("").
-			
 			Extra("").
-			
 			Pc(larkapplication.NewClientBadgeNumBuilder().Build()).
 			Mobile(larkapplication.NewClientBadgeNumBuilder().Build()).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Application.V6.AppBadge.Set(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Application.V6.AppBadge.Set(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -59,4 +54,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

@@ -22,22 +22,19 @@ import (
 )
 
 // GET /open-apis/hire/v1/talent_folders
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewListTalentFolderReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewListTalentFolderReqBuilder().
 		PageToken("eyJvZmZzZXQiOjEsInRpbWVzdGFtcCI6MTY0MDc2NTYzMjA4OCwiaWQiOm51bGx9").
-		
 		PageSize(10).
 		UserIdType("open_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.TalentFolder.List(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.TalentFolder.List(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,4 +49,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

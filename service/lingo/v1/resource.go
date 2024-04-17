@@ -141,7 +141,7 @@ func (e *entity) Create(ctx context.Context, req *CreateEntityReq, options ...la
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/lingo/v1/entities"
 	apiReq.HttpMethod = http.MethodPost
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, e.config, options...)
 	if err != nil {
 		return nil, err
@@ -339,7 +339,7 @@ func (e *entity) Update(ctx context.Context, req *UpdateEntityReq, options ...la
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/lingo/v1/entities/:entity_id"
 	apiReq.HttpMethod = http.MethodPut
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, e.config, options...)
 	if err != nil {
 		return nil, err

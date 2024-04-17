@@ -22,27 +22,23 @@ import (
 )
 
 // PATCH /open-apis/contact/v3/functional_roles/:role_id/members/scopes
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkcontact.NewScopesFunctionalRoleMemberReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkcontact.NewScopesFunctionalRoleMemberReqBuilder().
 		RoleId("7vrj3vk70xk7v5r").
-		
 		UserIdType("open_id").
-		
 		DepartmentIdType("open_department_id").
-		
-	   Body(larkcontact.NewScopesFunctionalRoleMemberReqBodyBuilder().
+		Body(larkcontact.NewScopesFunctionalRoleMemberReqBodyBuilder().
 			Members([]string{}).
 			Departments([]string{}).
 			Build()).
-	   Build()
-   // 发起请求
-   resp,err := client.Contact.V3.FunctionalRoleMember.Scopes(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Contact.V3.FunctionalRoleMember.Scopes(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -57,4 +53,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

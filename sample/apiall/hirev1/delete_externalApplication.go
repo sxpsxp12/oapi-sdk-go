@@ -22,21 +22,18 @@ import (
 )
 
 // DELETE /open-apis/hire/v1/external_applications/:external_application_id
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewDeleteExternalApplicationReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewDeleteExternalApplicationReqBuilder().
 		ExternalApplicationId("6960663240925956660").
-		
 		TalentId("6960663240925956660").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.ExternalApplication.Delete(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.ExternalApplication.Delete(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -51,4 +48,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

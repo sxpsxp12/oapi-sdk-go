@@ -22,23 +22,19 @@ import (
 )
 
 // GET /open-apis/drive/v1/files/:file_token/get_subscribe
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkdrive.NewGetSubscribeFileReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkdrive.NewGetSubscribeFileReqBuilder().
 		FileToken("doccnxxxxxxxxxxxxxxxxxxxxxx").
-		
 		FileType("新版文档").
-		
 		EventType("file.created_in_folder_v1").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Drive.V1.File.GetSubscribe(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Drive.V1.File.GetSubscribe(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -53,4 +49,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-

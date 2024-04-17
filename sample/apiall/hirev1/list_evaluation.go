@@ -22,28 +22,22 @@ import (
 )
 
 // GET /open-apis/hire/v1/evaluations
-func main(){
-   // 创建 Client
-   client := lark.NewClient("appID", "appSecret")
-   // 创建请求对象
-   req := larkhire.NewListEvaluationReqBuilder().
+func main() {
+	// 创建 Client
+	client := lark.NewClient("appID", "appSecret")
+	// 创建请求对象
+	req := larkhire.NewListEvaluationReqBuilder().
 		PageToken("eyJvZmZzZXQiOjEsInRpbWVzdGFtcCI6MTY0MDc2NTYzMjA4OCwiaWQiOm51bGx9").
-		
 		PageSize(10).
 		ApplicationId("6875569957036738823").
-		
 		UpdateStartTime("1600843767338").
-		
 		UpdateEndTime("1600843938726").
-		
 		UserIdType("open_id").
-		
-	   Build()
-   // 发起请求
-   resp,err := client.Hire.V1.Evaluation.List(context.Background(),req)
+		Build()
+	// 发起请求
+	resp, err := client.Hire.V1.Evaluation.List(context.Background(), req)
 
-
-   // 处理错误
+	// 处理错误
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -58,4 +52,3 @@ func main(){
 	// 业务处理
 	fmt.Println(larkcore.Prettify(resp))
 }
-
