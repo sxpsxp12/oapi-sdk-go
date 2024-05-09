@@ -43,6 +43,8 @@ func main() {
 			Currency(larkcorehr.NewCurrencyBuilder().Build()).
 			Phone(larkcorehr.NewPhoneNumberAndAreaCodeBuilder().Build()).
 			Fax(larkcorehr.NewPhoneNumberAndAreaCodeBuilder().Build()).
+			RegisteredOfficeAddressInfo(larkcorehr.NewAddressBuilder().Build()).
+			OfficeAddressInfo(larkcorehr.NewAddressBuilder().Build()).
 			Build()).
 		Build()
 	// 发起请求

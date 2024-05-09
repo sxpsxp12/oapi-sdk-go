@@ -52,6 +52,7 @@ func main() {
 			NativeRegion("6863326262618752111").
 			HukouType(larkcorehr.NewEnumBuilder().Build()).
 			HukouLocation("山东省平阴县").
+			PoliticalAffiliations([]*larkcorehr.Enum{larkcorehr.NewEnumBuilder().Build()}).
 			TalentId("6863326262618752123").
 			CustomFields([]*larkcorehr.CustomFieldData{larkcorehr.NewCustomFieldDataBuilder().Build()}).
 			BornCountryRegion("中国").

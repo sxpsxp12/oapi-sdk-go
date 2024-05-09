@@ -46,6 +46,11 @@ func main() {
 		LeaveTermType(0).
 		TimeZone("Asia/Shanghai").
 		DataSource(1).
+		DbUpdateTimeMin("2022-10-24 10:00:00").
+		DbUpdateTimeMax("2022-10-24 10:00:00").
+		WdNeedAmountZeroRecords(false).
+		WdNeedDeniedAndCanceledRecord(false).
+		WdPaidType(1).
 		Build()
 	// 发起请求
 	resp, err := client.Corehr.V1.Leave.LeaveRequestHistory(context.Background(), req)

@@ -37,6 +37,8 @@ func main() {
 		PageToken("LC39/f1%2B/Sz9Uv39Gf39/ew/cd5WY0gfGYFdixOW9cVk4bC79ituO/gx0qpPn1bYf92nz/kI0nNJOG3wCwDJKoNU%2BtyaXbpI8pV/9UNDMZT0BNeyanFH17Wv711Qh9anR3l2GjQfc2fUqXtxg1YPp63XyhYY4iRMv54ySRG7r%2BI89iS3zAoPzFuuU1MUJKsf").
 		PageSize(20).
 		UserType(0).
+		ObjectType(1).
+		ObjectValue("55ed16fe").
 		Build()
 	// 发起请求
 	resp, err := client.Admin.V1.AuditInfo.List(context.Background(), req)
