@@ -10042,6 +10042,27 @@ func (m *P2FileBitableFieldChangedV1) RawReq(req *larkevent.EventReq) {
 	m.EventReq = req
 }
 
+type P2FileBitableRecordChangedV1Data struct {
+	FileType         *string                     `json:"file_type,omitempty"`          // 文档类型
+	FileToken        *string                     `json:"file_token,omitempty"`         // 文档token
+	TableId          *string                     `json:"table_id,omitempty"`           // 多维表格数据表ID
+	Revision         *int                        `json:"revision,omitempty"`           // 多维表格数据表的版本号
+	OperatorId       *UserId                     `json:"operator_id,omitempty"`        // 操作者ID
+	ActionList       []*BitableTableRecordAction `json:"action_list,omitempty"`        // 行变更操作列表
+	SubscriberIdList []*UserId                   `json:"subscriber_id_list,omitempty"` // 订阅用户id列表
+	UpdateTime       *int                        `json:"update_time,omitempty"`        // 编辑时间（格式：时间戳；单位：秒）
+}
+
+type P2FileBitableRecordChangedV1 struct {
+	*larkevent.EventV2Base                                   // 事件基础数据
+	*larkevent.EventReq                                      // 请求原生数据
+	Event                  *P2FileBitableRecordChangedV1Data `json:"event"` // 事件内容
+}
+
+func (m *P2FileBitableRecordChangedV1) RawReq(req *larkevent.EventReq) {
+	m.EventReq = req
+}
+
 type P2FileDeletedV1Data struct {
 	FileType         *string   `json:"file_type,omitempty"`          // 文档类型
 	FileToken        *string   `json:"file_token,omitempty"`         // 文档token

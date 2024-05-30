@@ -38,6 +38,26 @@ func (h *P2FileBitableFieldChangedV1Handler) Handle(ctx context.Context, event i
 }
 
 // 消息处理器定义
+type P2FileBitableRecordChangedV1Handler struct {
+	handler func(context.Context, *P2FileBitableRecordChangedV1) error
+}
+
+func NewP2FileBitableRecordChangedV1Handler(handler func(context.Context, *P2FileBitableRecordChangedV1) error) *P2FileBitableRecordChangedV1Handler {
+	h := &P2FileBitableRecordChangedV1Handler{handler: handler}
+	return h
+}
+
+// 返回事件的消息体的实例，用于反序列化用
+func (h *P2FileBitableRecordChangedV1Handler) Event() interface{} {
+	return &P2FileBitableRecordChangedV1{}
+}
+
+// 回调开发者注册的handle
+func (h *P2FileBitableRecordChangedV1Handler) Handle(ctx context.Context, event interface{}) error {
+	return h.handler(ctx, event.(*P2FileBitableRecordChangedV1))
+}
+
+// 消息处理器定义
 type P2FileDeletedV1Handler struct {
 	handler func(context.Context, *P2FileDeletedV1) error
 }

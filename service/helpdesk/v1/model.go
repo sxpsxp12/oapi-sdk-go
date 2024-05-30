@@ -5916,12 +5916,16 @@ func (builder *ListFaqReqBuilder) Search(search string) *ListFaqReqBuilder {
 	return builder
 }
 
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该page_token 获取查询结果
+//
 // 示例值：6856395634652479491
 func (builder *ListFaqReqBuilder) PageToken(pageToken string) *ListFaqReqBuilder {
 	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
 	return builder
 }
 
+// 分页大小
+//
 // 示例值：10
 func (builder *ListFaqReqBuilder) PageSize(pageSize int) *ListFaqReqBuilder {
 	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
@@ -6104,12 +6108,16 @@ func (builder *SearchFaqReqBuilder) Base64(base64 string) *SearchFaqReqBuilder {
 	return builder
 }
 
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该page_token 获取查询结果
+//
 // 示例值：6936004780707807251
 func (builder *SearchFaqReqBuilder) PageToken(pageToken string) *SearchFaqReqBuilder {
 	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
 	return builder
 }
 
+// 分页大小
+//
 // 示例值：10
 func (builder *SearchFaqReqBuilder) PageSize(pageSize int) *SearchFaqReqBuilder {
 	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
@@ -8114,12 +8122,16 @@ func NewListTicketCustomizedFieldReqBuilder() *ListTicketCustomizedFieldReqBuild
 	return builder
 }
 
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该page_token 获取查询结果
+//
 // 示例值：6948728206392295444
 func (builder *ListTicketCustomizedFieldReqBuilder) PageToken(pageToken string) *ListTicketCustomizedFieldReqBuilder {
 	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
 	return builder
 }
 
+// 分页大小
+//
 // 示例值：10；默认为20
 func (builder *ListTicketCustomizedFieldReqBuilder) PageSize(pageSize int) *ListTicketCustomizedFieldReqBuilder {
 	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))

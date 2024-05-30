@@ -38,6 +38,20 @@ const (
 )
 
 const (
+	UserIdTypeGetByParamAuthorizationUserId         = "user_id"          // 以 user_id 来识别用户
+	UserIdTypeGetByParamAuthorizationUnionId        = "union_id"         // 以 union_id 来识别用户
+	UserIdTypeGetByParamAuthorizationOpenId         = "open_id"          // 以 open_id 来识别用户
+	UserIdTypeGetByParamAuthorizationPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
+)
+
+const (
+	UserIdTypeQueryAuthorizationUserId         = "user_id"          // 以 user_id 来识别用户
+	UserIdTypeQueryAuthorizationUnionId        = "union_id"         // 以 union_id 来识别用户
+	UserIdTypeQueryAuthorizationOpenId         = "open_id"          // 以 open_id 来识别用户
+	UserIdTypeQueryAuthorizationPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
+)
+
+const (
 	IdTransformTypeCoreHR2Feishu = 1 // 飞书人事 -> 飞书通讯录
 	IdTransformTypeFeishu2CoreHR = 2 // 飞书通讯录 -> 飞书人事
 	IdTransformTypeAdmin2Feishu  = 3 // people admin -> 飞书人事
@@ -290,29 +304,37 @@ const (
 )
 
 type Address struct {
-	FullAddressLocalScript   *string            `json:"full_address_local_script,omitempty"`   // 完整地址（本地文字）
-	FullAddressWesternScript *string            `json:"full_address_western_script,omitempty"` // 完整地址（西方文字）
-	Id                       *string            `json:"id,omitempty"`                          // 地址ID
-	CountryRegionId          *string            `json:"country_region_id,omitempty"`           // 国家 / 地区
-	RegionId                 *string            `json:"region_id,omitempty"`                   // 主要行政区
-	CityId                   *string            `json:"city_id,omitempty"`                     // 城市
-	DistinctId               *string            `json:"distinct_id,omitempty"`                 // 区/县
-	CityIdV2                 *string            `json:"city_id_v2,omitempty"`                  // 城市，可通过【查询城市信息】接口查询
-	DistrictIdV2             *string            `json:"district_id_v2,omitempty"`              // 区/县，可通过【查询区/县信息】 接口查询
-	LocalAddressLine1        *string            `json:"local_address_line1,omitempty"`         // 地址行 1（非拉丁语系的本地文字）
-	LocalAddressLine2        *string            `json:"local_address_line2,omitempty"`         // 地址行 2（非拉丁语系的本地文字）
-	LocalAddressLine3        *string            `json:"local_address_line3,omitempty"`         // 地址行 3（非拉丁语系的本地文字）
-	LocalAddressLine4        *string            `json:"local_address_line4,omitempty"`         // 地址行 4（非拉丁语系的本地文字）
-	LocalAddressLine5        *string            `json:"local_address_line5,omitempty"`         // 地址行 5（非拉丁语系的本地文字）
-	LocalAddressLine6        *string            `json:"local_address_line6,omitempty"`         // 地址行 6（非拉丁语系的本地文字）
-	LocalAddressLine7        *string            `json:"local_address_line7,omitempty"`         // 地址行 7（非拉丁语系的本地文字）
-	LocalAddressLine8        *string            `json:"local_address_line8,omitempty"`         // 地址行 8（非拉丁语系的本地文字）
-	LocalAddressLine9        *string            `json:"local_address_line9,omitempty"`         // 地址行 9（非拉丁语系的本地文字）
-	PostalCode               *string            `json:"postal_code,omitempty"`                 // 邮政编码
-	AddressTypeList          []*Enum            `json:"address_type_list,omitempty"`           // 地址类型，枚举值可通过文档[【飞书人事枚举常量】](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)地址类型（address_type）枚举定义部分获得
-	IsPrimary                *bool              `json:"is_primary,omitempty"`                  // 是否为主要地址
-	IsPublic                 *bool              `json:"is_public,omitempty"`                   // 是否为公开地址
-	CustomFields             []*ObjectFieldData `json:"custom_fields,omitempty"`               // 自定义字段
+	FullAddressLocalScript   *string `json:"full_address_local_script,omitempty"`   // 完整地址（本地文字）
+	FullAddressWesternScript *string `json:"full_address_western_script,omitempty"` // 完整地址（西方文字）
+	Id                       *string `json:"id,omitempty"`                          // 地址ID
+	CountryRegionId          *string `json:"country_region_id,omitempty"`           // 国家 / 地区
+	RegionId                 *string `json:"region_id,omitempty"`                   // 主要行政区
+	CityId                   *string `json:"city_id,omitempty"`                     // 城市
+	DistinctId               *string `json:"distinct_id,omitempty"`                 // 区/县
+
+	AddressLine1      *string            `json:"address_line1,omitempty"`       // 地址行 1
+	AddressLine2      *string            `json:"address_line2,omitempty"`       // 地址行 2
+	AddressLine3      *string            `json:"address_line3,omitempty"`       // 地址行 3
+	AddressLine4      *string            `json:"address_line4,omitempty"`       // 地址行 4
+	AddressLine5      *string            `json:"address_line5,omitempty"`       // 地址行 5
+	AddressLine6      *string            `json:"address_line6,omitempty"`       // 地址行 6
+	AddressLine7      *string            `json:"address_line7,omitempty"`       // 地址行 7
+	AddressLine8      *string            `json:"address_line8,omitempty"`       // 地址行 8
+	AddressLine9      *string            `json:"address_line9,omitempty"`       // 地址行 9
+	LocalAddressLine1 *string            `json:"local_address_line1,omitempty"` // 地址行 1（非拉丁语系的本地文字）
+	LocalAddressLine2 *string            `json:"local_address_line2,omitempty"` // 地址行 2（非拉丁语系的本地文字）
+	LocalAddressLine3 *string            `json:"local_address_line3,omitempty"` // 地址行 3（非拉丁语系的本地文字）
+	LocalAddressLine4 *string            `json:"local_address_line4,omitempty"` // 地址行 4（非拉丁语系的本地文字）
+	LocalAddressLine5 *string            `json:"local_address_line5,omitempty"` // 地址行 5（非拉丁语系的本地文字）
+	LocalAddressLine6 *string            `json:"local_address_line6,omitempty"` // 地址行 6（非拉丁语系的本地文字）
+	LocalAddressLine7 *string            `json:"local_address_line7,omitempty"` // 地址行 7（非拉丁语系的本地文字）
+	LocalAddressLine8 *string            `json:"local_address_line8,omitempty"` // 地址行 8（非拉丁语系的本地文字）
+	LocalAddressLine9 *string            `json:"local_address_line9,omitempty"` // 地址行 9（非拉丁语系的本地文字）
+	PostalCode        *string            `json:"postal_code,omitempty"`         // 邮政编码
+	AddressTypeList   []*Enum            `json:"address_type_list,omitempty"`   // 地址类型，枚举值可通过文档[【飞书人事枚举常量】](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)地址类型（address_type）枚举定义部分获得
+	IsPrimary         *bool              `json:"is_primary,omitempty"`          // 是否为主要地址
+	IsPublic          *bool              `json:"is_public,omitempty"`           // 是否为公开地址
+	CustomFields      []*ObjectFieldData `json:"custom_fields,omitempty"`       // 自定义字段
 }
 
 type AddressBuilder struct {
@@ -330,38 +352,53 @@ type AddressBuilder struct {
 	cityIdFlag                   bool
 	distinctId                   string // 区/县
 	distinctIdFlag               bool
-	cityIdV2                     string // 城市，可通过【查询城市信息】接口查询
-	cityIdV2Flag                 bool
-	districtIdV2                 string // 区/县，可通过【查询区/县信息】 接口查询
-	districtIdV2Flag             bool
-	localAddressLine1            string // 地址行 1（非拉丁语系的本地文字）
-	localAddressLine1Flag        bool
-	localAddressLine2            string // 地址行 2（非拉丁语系的本地文字）
-	localAddressLine2Flag        bool
-	localAddressLine3            string // 地址行 3（非拉丁语系的本地文字）
-	localAddressLine3Flag        bool
-	localAddressLine4            string // 地址行 4（非拉丁语系的本地文字）
-	localAddressLine4Flag        bool
-	localAddressLine5            string // 地址行 5（非拉丁语系的本地文字）
-	localAddressLine5Flag        bool
-	localAddressLine6            string // 地址行 6（非拉丁语系的本地文字）
-	localAddressLine6Flag        bool
-	localAddressLine7            string // 地址行 7（非拉丁语系的本地文字）
-	localAddressLine7Flag        bool
-	localAddressLine8            string // 地址行 8（非拉丁语系的本地文字）
-	localAddressLine8Flag        bool
-	localAddressLine9            string // 地址行 9（非拉丁语系的本地文字）
-	localAddressLine9Flag        bool
-	postalCode                   string // 邮政编码
-	postalCodeFlag               bool
-	addressTypeList              []*Enum // 地址类型，枚举值可通过文档[【飞书人事枚举常量】](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)地址类型（address_type）枚举定义部分获得
-	addressTypeListFlag          bool
-	isPrimary                    bool // 是否为主要地址
-	isPrimaryFlag                bool
-	isPublic                     bool // 是否为公开地址
-	isPublicFlag                 bool
-	customFields                 []*ObjectFieldData // 自定义字段
-	customFieldsFlag             bool
+
+	addressLine1          string // 地址行 1
+	addressLine1Flag      bool
+	addressLine2          string // 地址行 2
+	addressLine2Flag      bool
+	addressLine3          string // 地址行 3
+	addressLine3Flag      bool
+	addressLine4          string // 地址行 4
+	addressLine4Flag      bool
+	addressLine5          string // 地址行 5
+	addressLine5Flag      bool
+	addressLine6          string // 地址行 6
+	addressLine6Flag      bool
+	addressLine7          string // 地址行 7
+	addressLine7Flag      bool
+	addressLine8          string // 地址行 8
+	addressLine8Flag      bool
+	addressLine9          string // 地址行 9
+	addressLine9Flag      bool
+	localAddressLine1     string // 地址行 1（非拉丁语系的本地文字）
+	localAddressLine1Flag bool
+	localAddressLine2     string // 地址行 2（非拉丁语系的本地文字）
+	localAddressLine2Flag bool
+	localAddressLine3     string // 地址行 3（非拉丁语系的本地文字）
+	localAddressLine3Flag bool
+	localAddressLine4     string // 地址行 4（非拉丁语系的本地文字）
+	localAddressLine4Flag bool
+	localAddressLine5     string // 地址行 5（非拉丁语系的本地文字）
+	localAddressLine5Flag bool
+	localAddressLine6     string // 地址行 6（非拉丁语系的本地文字）
+	localAddressLine6Flag bool
+	localAddressLine7     string // 地址行 7（非拉丁语系的本地文字）
+	localAddressLine7Flag bool
+	localAddressLine8     string // 地址行 8（非拉丁语系的本地文字）
+	localAddressLine8Flag bool
+	localAddressLine9     string // 地址行 9（非拉丁语系的本地文字）
+	localAddressLine9Flag bool
+	postalCode            string // 邮政编码
+	postalCodeFlag        bool
+	addressTypeList       []*Enum // 地址类型，枚举值可通过文档[【飞书人事枚举常量】](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)地址类型（address_type）枚举定义部分获得
+	addressTypeListFlag   bool
+	isPrimary             bool // 是否为主要地址
+	isPrimaryFlag         bool
+	isPublic              bool // 是否为公开地址
+	isPublicFlag          bool
+	customFields          []*ObjectFieldData // 自定义字段
+	customFieldsFlag      bool
 }
 
 func NewAddressBuilder() *AddressBuilder {
@@ -432,21 +469,84 @@ func (builder *AddressBuilder) DistinctId(distinctId string) *AddressBuilder {
 	return builder
 }
 
-// 城市，可通过【查询城市信息】接口查询
+// 地址行 1
 //
-// 示例值：6863333254578046472
-func (builder *AddressBuilder) CityIdV2(cityIdV2 string) *AddressBuilder {
-	builder.cityIdV2 = cityIdV2
-	builder.cityIdV2Flag = true
+// 示例值：丹佛测试地址-纽埃时区
+func (builder *AddressBuilder) AddressLine1(addressLine1 string) *AddressBuilder {
+	builder.addressLine1 = addressLine1
+	builder.addressLine1Flag = true
 	return builder
 }
 
-// 区/县，可通过【查询区/县信息】 接口查询
+// 地址行 2
 //
-// 示例值：6863333516579441141
-func (builder *AddressBuilder) DistrictIdV2(districtIdV2 string) *AddressBuilder {
-	builder.districtIdV2 = districtIdV2
-	builder.districtIdV2Flag = true
+// 示例值：PoewH
+func (builder *AddressBuilder) AddressLine2(addressLine2 string) *AddressBuilder {
+	builder.addressLine2 = addressLine2
+	builder.addressLine2Flag = true
+	return builder
+}
+
+// 地址行 3
+//
+// 示例值：PoewH
+func (builder *AddressBuilder) AddressLine3(addressLine3 string) *AddressBuilder {
+	builder.addressLine3 = addressLine3
+	builder.addressLine3Flag = true
+	return builder
+}
+
+// 地址行 4
+//
+// 示例值：jmwJc
+func (builder *AddressBuilder) AddressLine4(addressLine4 string) *AddressBuilder {
+	builder.addressLine4 = addressLine4
+	builder.addressLine4Flag = true
+	return builder
+}
+
+// 地址行 5
+//
+// 示例值：jmwJc
+func (builder *AddressBuilder) AddressLine5(addressLine5 string) *AddressBuilder {
+	builder.addressLine5 = addressLine5
+	builder.addressLine5Flag = true
+	return builder
+}
+
+// 地址行 6
+//
+// 示例值：jmwJc
+func (builder *AddressBuilder) AddressLine6(addressLine6 string) *AddressBuilder {
+	builder.addressLine6 = addressLine6
+	builder.addressLine6Flag = true
+	return builder
+}
+
+// 地址行 7
+//
+// 示例值：jmwJc
+func (builder *AddressBuilder) AddressLine7(addressLine7 string) *AddressBuilder {
+	builder.addressLine7 = addressLine7
+	builder.addressLine7Flag = true
+	return builder
+}
+
+// 地址行 8
+//
+// 示例值：rafSu
+func (builder *AddressBuilder) AddressLine8(addressLine8 string) *AddressBuilder {
+	builder.addressLine8 = addressLine8
+	builder.addressLine8Flag = true
+	return builder
+}
+
+// 地址行 9
+//
+// 示例值：McPRG
+func (builder *AddressBuilder) AddressLine9(addressLine9 string) *AddressBuilder {
+	builder.addressLine9 = addressLine9
+	builder.addressLine9Flag = true
 	return builder
 }
 
@@ -606,12 +706,41 @@ func (builder *AddressBuilder) Build() *Address {
 		req.DistinctId = &builder.distinctId
 
 	}
-	if builder.cityIdV2Flag {
-		req.CityIdV2 = &builder.cityIdV2
+
+	if builder.addressLine1Flag {
+		req.AddressLine1 = &builder.addressLine1
 
 	}
-	if builder.districtIdV2Flag {
-		req.DistrictIdV2 = &builder.districtIdV2
+	if builder.addressLine2Flag {
+		req.AddressLine2 = &builder.addressLine2
+
+	}
+	if builder.addressLine3Flag {
+		req.AddressLine3 = &builder.addressLine3
+
+	}
+	if builder.addressLine4Flag {
+		req.AddressLine4 = &builder.addressLine4
+
+	}
+	if builder.addressLine5Flag {
+		req.AddressLine5 = &builder.addressLine5
+
+	}
+	if builder.addressLine6Flag {
+		req.AddressLine6 = &builder.addressLine6
+
+	}
+	if builder.addressLine7Flag {
+		req.AddressLine7 = &builder.addressLine7
+
+	}
+	if builder.addressLine8Flag {
+		req.AddressLine8 = &builder.addressLine8
+
+	}
+	if builder.addressLine9Flag {
+		req.AddressLine9 = &builder.addressLine9
 
 	}
 	if builder.localAddressLine1Flag {
@@ -17090,6 +17219,144 @@ func (resp *SearchAssignedUserResp) Success() bool {
 	return resp.Code == 0
 }
 
+type GetByParamAuthorizationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetByParamAuthorizationReqBuilder() *GetByParamAuthorizationReqBuilder {
+	builder := &GetByParamAuthorizationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 雇员 ID
+//
+// 示例值：67489937334909845
+func (builder *GetByParamAuthorizationReqBuilder) EmploymentId(employmentId string) *GetByParamAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("employment_id", fmt.Sprint(employmentId))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：people_corehr_id
+func (builder *GetByParamAuthorizationReqBuilder) UserIdType(userIdType string) *GetByParamAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *GetByParamAuthorizationReqBuilder) Build() *GetByParamAuthorizationReq {
+	req := &GetByParamAuthorizationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type GetByParamAuthorizationReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetByParamAuthorizationRespData struct {
+	RoleAuthorization *RoleAuthorization `json:"role_authorization,omitempty"` // 角色授权信息
+}
+
+type GetByParamAuthorizationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetByParamAuthorizationRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetByParamAuthorizationResp) Success() bool {
+	return resp.Code == 0
+}
+
+type QueryAuthorizationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewQueryAuthorizationReqBuilder() *QueryAuthorizationReqBuilder {
+	builder := &QueryAuthorizationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 员工ID列表，最大100个（不传则默认查询全部员工）
+//
+// 示例值：
+func (builder *QueryAuthorizationReqBuilder) EmploymentIdList(employmentIdList []string) *QueryAuthorizationReqBuilder {
+	for _, v := range employmentIdList {
+		builder.apiReq.QueryParams.Add("employment_id_list", fmt.Sprint(v))
+	}
+	return builder
+}
+
+// 角色 ID 列表，最大 100 个
+//
+// 示例值：
+func (builder *QueryAuthorizationReqBuilder) RoleIdList(roleIdList []string) *QueryAuthorizationReqBuilder {
+	for _, v := range roleIdList {
+		builder.apiReq.QueryParams.Add("role_id_list", fmt.Sprint(v))
+	}
+	return builder
+}
+
+// 页码标识，获取第一页传空，每次查询会返回下一页的page_token
+//
+// 示例值：6969864184272078374
+func (builder *QueryAuthorizationReqBuilder) PageToken(pageToken string) *QueryAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：100
+func (builder *QueryAuthorizationReqBuilder) PageSize(pageSize string) *QueryAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：people_corehr_id
+func (builder *QueryAuthorizationReqBuilder) UserIdType(userIdType string) *QueryAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *QueryAuthorizationReqBuilder) Build() *QueryAuthorizationReq {
+	req := &QueryAuthorizationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type QueryAuthorizationReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type QueryAuthorizationRespData struct {
+	Items     []*RoleAuthorization `json:"items,omitempty"`      // 查询的用户授权信息
+	HasMore   *bool                `json:"has_more,omitempty"`   // 是否有下一页
+	PageToken *string              `json:"page_token,omitempty"` // 下一页页码
+}
+
+type QueryAuthorizationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *QueryAuthorizationRespData `json:"data"` // 业务数据
+}
+
+func (resp *QueryAuthorizationResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ConvertCommonDataIdReqBodyBuilder struct {
 	ids     []string // ID 列表（最多传入 100 个 ID，ID 长度限制 50 个字符）
 	idsFlag bool
@@ -22822,6 +23089,61 @@ func (resp *SubmitOffboardingResp) Success() bool {
 	return resp.Code == 0
 }
 
+type CreatePersonReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	person *Person
+}
+
+func NewCreatePersonReqBuilder() *CreatePersonReqBuilder {
+	builder := &CreatePersonReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 根据client_token是否一致来判断是否为同一请求
+//
+// 示例值：12454646
+func (builder *CreatePersonReqBuilder) ClientToken(clientToken string) *CreatePersonReqBuilder {
+	builder.apiReq.QueryParams.Set("client_token", fmt.Sprint(clientToken))
+	return builder
+}
+
+// 创建人员的个人信息
+func (builder *CreatePersonReqBuilder) Person(person *Person) *CreatePersonReqBuilder {
+	builder.person = person
+	return builder
+}
+
+func (builder *CreatePersonReqBuilder) Build() *CreatePersonReq {
+	req := &CreatePersonReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.person
+	return req
+}
+
+type CreatePersonReq struct {
+	apiReq *larkcore.ApiReq
+	Person *Person `body:""`
+}
+
+type CreatePersonRespData struct {
+	Person *Person `json:"person,omitempty"` // 创建成功返回Person信息
+}
+
+type CreatePersonResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreatePersonRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreatePersonResp) Success() bool {
+	return resp.Code == 0
+}
+
 type DeletePersonReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -22915,6 +23237,70 @@ type GetPersonResp struct {
 }
 
 func (resp *GetPersonResp) Success() bool {
+	return resp.Code == 0
+}
+
+type PatchPersonReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	person *Person
+}
+
+func NewPatchPersonReqBuilder() *PatchPersonReqBuilder {
+	builder := &PatchPersonReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// person的ID
+//
+// 示例值：6969828847931885087
+func (builder *PatchPersonReqBuilder) PersonId(personId string) *PatchPersonReqBuilder {
+	builder.apiReq.PathParams.Set("person_id", fmt.Sprint(personId))
+	return builder
+}
+
+// 根据client_token是否一致来判断是否为同一请求
+//
+// 示例值：12454646
+func (builder *PatchPersonReqBuilder) ClientToken(clientToken string) *PatchPersonReqBuilder {
+	builder.apiReq.QueryParams.Set("client_token", fmt.Sprint(clientToken))
+	return builder
+}
+
+// 更新个人信息
+func (builder *PatchPersonReqBuilder) Person(person *Person) *PatchPersonReqBuilder {
+	builder.person = person
+	return builder
+}
+
+func (builder *PatchPersonReqBuilder) Build() *PatchPersonReq {
+	req := &PatchPersonReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.person
+	return req
+}
+
+type PatchPersonReq struct {
+	apiReq *larkcore.ApiReq
+	Person *Person `body:""`
+}
+
+type PatchPersonRespData struct {
+	Person *Person `json:"person,omitempty"` // 个人信息
+}
+
+type PatchPersonResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *PatchPersonRespData `json:"data"` // 业务数据
+}
+
+func (resp *PatchPersonResp) Success() bool {
 	return resp.Code == 0
 }
 

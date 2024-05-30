@@ -72,6 +72,7 @@ const (
 
 const (
 	UiTypeText         = "Text"         // 多行文本
+	UiTypeEmail        = "Email"        // 邮箱地址
 	UiTypeBarcode      = "Barcode"      // 条码
 	UiTypeNumber       = "Number"       // 数字
 	UiTypeProgress     = "Progress"     // 进度
@@ -123,6 +124,7 @@ const (
 
 const (
 	UiTypeUpdateAppTableFieldText         = "Text"         // 多行文本
+	UiTypeUpdateAppTableFieldEmail        = "Email"        // 邮箱地址
 	UiTypeUpdateAppTableFieldBarcode      = "Barcode"      // 条码
 	UiTypeUpdateAppTableFieldNumber       = "Number"       // 数字
 	UiTypeUpdateAppTableFieldProgress     = "Progress"     // 进度

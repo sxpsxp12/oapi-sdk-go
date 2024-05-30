@@ -34,6 +34,18 @@ func (dispatcher *EventDispatcher) OnP2FileBitableFieldChangedV1(handler func(ct
 
 // -
 //
+// - 事件描述文档链接:
+func (dispatcher *EventDispatcher) OnP2FileBitableRecordChangedV1(handler func(ctx context.Context, event *larkdrive.P2FileBitableRecordChangedV1) error) *EventDispatcher {
+	_, existed := dispatcher.eventType2EventHandler["drive.file.bitable_record_changed_v1"]
+	if existed {
+		panic("event: multiple handler registrations for " + "drive.file.bitable_record_changed_v1")
+	}
+	dispatcher.eventType2EventHandler["drive.file.bitable_record_changed_v1"] = larkdrive.NewP2FileBitableRecordChangedV1Handler(handler)
+	return dispatcher
+}
+
+// -
+//
 // - 事件描述文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/event/file-deleted-completely
 func (dispatcher *EventDispatcher) OnP2FileDeletedV1(handler func(ctx context.Context, event *larkdrive.P2FileDeletedV1) error) *EventDispatcher {
 	_, existed := dispatcher.eventType2EventHandler["drive.file.deleted_v1"]

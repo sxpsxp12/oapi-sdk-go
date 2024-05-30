@@ -39,8 +39,11 @@ func main() {
 			LateOffLateOnRule([]*larkattendance.LateOffLateOnRule{larkattendance.NewLateOffLateOnRuleBuilder().Build()}).
 			RestTimeRule([]*larkattendance.RestRule{larkattendance.NewRestRuleBuilder().Build()}).
 			OvertimeRule([]*larkattendance.OvertimeRule{larkattendance.NewOvertimeRuleBuilder().Build()}).
-			DayType(60).
+			DayType(1).
 			OvertimeRestTimeRule([]*larkattendance.RestRule{larkattendance.NewRestRuleBuilder().Build()}).
+			LateMinutesAsSeriousLate(40).
+			ShiftMiddleTimeRule(larkattendance.NewShiftMiddleTimeRuleBuilder().Build()).
+			LateOffLateOnSetting(larkattendance.NewLateOffLateOnSettingBuilder().Build()).
 			Build()).
 		Build()
 	// 发起请求

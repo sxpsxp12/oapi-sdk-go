@@ -22,6 +22,469 @@ import (
 	"github.com/larksuite/oapi-sdk-go/v3/core"
 )
 
+type AilyKnowledgeDataset struct {
+	ApiName *string `json:"api_name,omitempty"` // 分析表ID
+	Title   *string `json:"title,omitempty"`    // 分析表标题
+}
+
+type AilyKnowledgeDatasetBuilder struct {
+	apiName     string // 分析表ID
+	apiNameFlag bool
+	title       string // 分析表标题
+	titleFlag   bool
+}
+
+func NewAilyKnowledgeDatasetBuilder() *AilyKnowledgeDatasetBuilder {
+	builder := &AilyKnowledgeDatasetBuilder{}
+	return builder
+}
+
+// 分析表ID
+//
+// 示例值：xxx
+func (builder *AilyKnowledgeDatasetBuilder) ApiName(apiName string) *AilyKnowledgeDatasetBuilder {
+	builder.apiName = apiName
+	builder.apiNameFlag = true
+	return builder
+}
+
+// 分析表标题
+//
+// 示例值：title
+func (builder *AilyKnowledgeDatasetBuilder) Title(title string) *AilyKnowledgeDatasetBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+func (builder *AilyKnowledgeDatasetBuilder) Build() *AilyKnowledgeDataset {
+	req := &AilyKnowledgeDataset{}
+	if builder.apiNameFlag {
+		req.ApiName = &builder.apiName
+
+	}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	return req
+}
+
+type AilyKnowledgeDatatable struct {
+	ApiName *string `json:"api_name,omitempty"` // 数据表ID
+	Title   *string `json:"title,omitempty"`    // 数据表标题
+}
+
+type AilyKnowledgeDatatableBuilder struct {
+	apiName     string // 数据表ID
+	apiNameFlag bool
+	title       string // 数据表标题
+	titleFlag   bool
+}
+
+func NewAilyKnowledgeDatatableBuilder() *AilyKnowledgeDatatableBuilder {
+	builder := &AilyKnowledgeDatatableBuilder{}
+	return builder
+}
+
+// 数据表ID
+//
+// 示例值：xxx
+func (builder *AilyKnowledgeDatatableBuilder) ApiName(apiName string) *AilyKnowledgeDatatableBuilder {
+	builder.apiName = apiName
+	builder.apiNameFlag = true
+	return builder
+}
+
+// 数据表标题
+//
+// 示例值：title
+func (builder *AilyKnowledgeDatatableBuilder) Title(title string) *AilyKnowledgeDatatableBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+func (builder *AilyKnowledgeDatatableBuilder) Build() *AilyKnowledgeDatatable {
+	req := &AilyKnowledgeDatatable{}
+	if builder.apiNameFlag {
+		req.ApiName = &builder.apiName
+
+	}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	return req
+}
+
+type AilyKnowledgeDocs struct {
+	Title *string `json:"title,omitempty"` // 标题
+	Type  *string `json:"type,omitempty"`  // 飞书云文档类型
+	Token *string `json:"token,omitempty"` // 飞书云文档标识
+	Url   *string `json:"url,omitempty"`   // 链接
+}
+
+type AilyKnowledgeDocsBuilder struct {
+	title     string // 标题
+	titleFlag bool
+	type_     string // 飞书云文档类型
+	typeFlag  bool
+	token     string // 飞书云文档标识
+	tokenFlag bool
+	url       string // 链接
+	urlFlag   bool
+}
+
+func NewAilyKnowledgeDocsBuilder() *AilyKnowledgeDocsBuilder {
+	builder := &AilyKnowledgeDocsBuilder{}
+	return builder
+}
+
+// 标题
+//
+// 示例值：title
+func (builder *AilyKnowledgeDocsBuilder) Title(title string) *AilyKnowledgeDocsBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// 飞书云文档类型
+//
+// 示例值：docx
+func (builder *AilyKnowledgeDocsBuilder) Type(type_ string) *AilyKnowledgeDocsBuilder {
+	builder.type_ = type_
+	builder.typeFlag = true
+	return builder
+}
+
+// 飞书云文档标识
+//
+// 示例值：xxx
+func (builder *AilyKnowledgeDocsBuilder) Token(token string) *AilyKnowledgeDocsBuilder {
+	builder.token = token
+	builder.tokenFlag = true
+	return builder
+}
+
+// 链接
+//
+// 示例值：xxx
+func (builder *AilyKnowledgeDocsBuilder) Url(url string) *AilyKnowledgeDocsBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+func (builder *AilyKnowledgeDocsBuilder) Build() *AilyKnowledgeDocs {
+	req := &AilyKnowledgeDocs{}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.typeFlag {
+		req.Type = &builder.type_
+
+	}
+	if builder.tokenFlag {
+		req.Token = &builder.token
+
+	}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	return req
+}
+
+type AilyKnowledgeFile struct {
+	Title    *string `json:"title,omitempty"`     // 标题
+	MimeType *string `json:"mime_type,omitempty"` // 文件mime类型
+	Content  *string `json:"content,omitempty"`   // 文件内容
+}
+
+type AilyKnowledgeFileBuilder struct {
+	title        string // 标题
+	titleFlag    bool
+	mimeType     string // 文件mime类型
+	mimeTypeFlag bool
+	content      string // 文件内容
+	contentFlag  bool
+}
+
+func NewAilyKnowledgeFileBuilder() *AilyKnowledgeFileBuilder {
+	builder := &AilyKnowledgeFileBuilder{}
+	return builder
+}
+
+// 标题
+//
+// 示例值：title
+func (builder *AilyKnowledgeFileBuilder) Title(title string) *AilyKnowledgeFileBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// 文件mime类型
+//
+// 示例值：text/plain
+func (builder *AilyKnowledgeFileBuilder) MimeType(mimeType string) *AilyKnowledgeFileBuilder {
+	builder.mimeType = mimeType
+	builder.mimeTypeFlag = true
+	return builder
+}
+
+// 文件内容
+//
+// 示例值：content
+func (builder *AilyKnowledgeFileBuilder) Content(content string) *AilyKnowledgeFileBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+func (builder *AilyKnowledgeFileBuilder) Build() *AilyKnowledgeFile {
+	req := &AilyKnowledgeFile{}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.mimeTypeFlag {
+		req.MimeType = &builder.mimeType
+
+	}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	return req
+}
+
+type AilyKnowledgeFolder struct {
+	Title *string `json:"title,omitempty"` // 文件夹标题
+	Token *string `json:"token,omitempty"` // 文件夹标识
+	Url   *string `json:"url,omitempty"`   // 链接
+}
+
+type AilyKnowledgeFolderBuilder struct {
+	title     string // 文件夹标题
+	titleFlag bool
+	token     string // 文件夹标识
+	tokenFlag bool
+	url       string // 链接
+	urlFlag   bool
+}
+
+func NewAilyKnowledgeFolderBuilder() *AilyKnowledgeFolderBuilder {
+	builder := &AilyKnowledgeFolderBuilder{}
+	return builder
+}
+
+// 文件夹标题
+//
+// 示例值：title
+func (builder *AilyKnowledgeFolderBuilder) Title(title string) *AilyKnowledgeFolderBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// 文件夹标识
+//
+// 示例值：xxx
+func (builder *AilyKnowledgeFolderBuilder) Token(token string) *AilyKnowledgeFolderBuilder {
+	builder.token = token
+	builder.tokenFlag = true
+	return builder
+}
+
+// 链接
+//
+// 示例值：xxx
+func (builder *AilyKnowledgeFolderBuilder) Url(url string) *AilyKnowledgeFolderBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+func (builder *AilyKnowledgeFolderBuilder) Build() *AilyKnowledgeFolder {
+	req := &AilyKnowledgeFolder{}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.tokenFlag {
+		req.Token = &builder.token
+
+	}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	return req
+}
+
+type AilyKnowledgeHelpdesk struct {
+	HelpdeskId *string `json:"helpdesk_id,omitempty"` // 服务台ID
+	Title      *string `json:"title,omitempty"`       // 服务台标题
+}
+
+type AilyKnowledgeHelpdeskBuilder struct {
+	helpdeskId     string // 服务台ID
+	helpdeskIdFlag bool
+	title          string // 服务台标题
+	titleFlag      bool
+}
+
+func NewAilyKnowledgeHelpdeskBuilder() *AilyKnowledgeHelpdeskBuilder {
+	builder := &AilyKnowledgeHelpdeskBuilder{}
+	return builder
+}
+
+// 服务台ID
+//
+// 示例值：123
+func (builder *AilyKnowledgeHelpdeskBuilder) HelpdeskId(helpdeskId string) *AilyKnowledgeHelpdeskBuilder {
+	builder.helpdeskId = helpdeskId
+	builder.helpdeskIdFlag = true
+	return builder
+}
+
+// 服务台标题
+//
+// 示例值：title
+func (builder *AilyKnowledgeHelpdeskBuilder) Title(title string) *AilyKnowledgeHelpdeskBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+func (builder *AilyKnowledgeHelpdeskBuilder) Build() *AilyKnowledgeHelpdesk {
+	req := &AilyKnowledgeHelpdesk{}
+	if builder.helpdeskIdFlag {
+		req.HelpdeskId = &builder.helpdeskId
+
+	}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	return req
+}
+
+type AilyKnowledgeWeb struct {
+	Url   *string `json:"url,omitempty"`   // 链接
+	Title *string `json:"title,omitempty"` // 网页标题
+}
+
+type AilyKnowledgeWebBuilder struct {
+	url       string // 链接
+	urlFlag   bool
+	title     string // 网页标题
+	titleFlag bool
+}
+
+func NewAilyKnowledgeWebBuilder() *AilyKnowledgeWebBuilder {
+	builder := &AilyKnowledgeWebBuilder{}
+	return builder
+}
+
+// 链接
+//
+// 示例值：xxx
+func (builder *AilyKnowledgeWebBuilder) Url(url string) *AilyKnowledgeWebBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+// 网页标题
+//
+// 示例值：title
+func (builder *AilyKnowledgeWebBuilder) Title(title string) *AilyKnowledgeWebBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+func (builder *AilyKnowledgeWebBuilder) Build() *AilyKnowledgeWeb {
+	req := &AilyKnowledgeWeb{}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	return req
+}
+
+type AilyKnowledgeWikiSpace struct {
+	Title   *string              `json:"title,omitempty"`    // 知识空间标题
+	SpaceId *string              `json:"space_id,omitempty"` // 知识空间ID
+	SubDocs []*AilyKnowledgeDocs `json:"sub_docs,omitempty"` // 子节点
+}
+
+type AilyKnowledgeWikiSpaceBuilder struct {
+	title       string // 知识空间标题
+	titleFlag   bool
+	spaceId     string // 知识空间ID
+	spaceIdFlag bool
+	subDocs     []*AilyKnowledgeDocs // 子节点
+	subDocsFlag bool
+}
+
+func NewAilyKnowledgeWikiSpaceBuilder() *AilyKnowledgeWikiSpaceBuilder {
+	builder := &AilyKnowledgeWikiSpaceBuilder{}
+	return builder
+}
+
+// 知识空间标题
+//
+// 示例值：title
+func (builder *AilyKnowledgeWikiSpaceBuilder) Title(title string) *AilyKnowledgeWikiSpaceBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// 知识空间ID
+//
+// 示例值：123
+func (builder *AilyKnowledgeWikiSpaceBuilder) SpaceId(spaceId string) *AilyKnowledgeWikiSpaceBuilder {
+	builder.spaceId = spaceId
+	builder.spaceIdFlag = true
+	return builder
+}
+
+// 子节点
+//
+// 示例值：
+func (builder *AilyKnowledgeWikiSpaceBuilder) SubDocs(subDocs []*AilyKnowledgeDocs) *AilyKnowledgeWikiSpaceBuilder {
+	builder.subDocs = subDocs
+	builder.subDocsFlag = true
+	return builder
+}
+
+func (builder *AilyKnowledgeWikiSpaceBuilder) Build() *AilyKnowledgeWikiSpace {
+	req := &AilyKnowledgeWikiSpace{}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.spaceIdFlag {
+		req.SpaceId = &builder.spaceId
+
+	}
+	if builder.subDocsFlag {
+		req.SubDocs = builder.subDocs
+	}
+	return req
+}
+
 type AilyMention struct {
 	EntityId         *string `json:"entity_id,omitempty"`         // 实体 ID
 	IdentityProvider *string `json:"identity_provider,omitempty"` // 身份提供者
@@ -1524,6 +1987,286 @@ func (builder *KctxBuilder) Build() *Kctx {
 	}
 	if builder.authenticationTypeFlag {
 		req.AuthenticationType = &builder.authenticationType
+
+	}
+	return req
+}
+
+type Knowledge struct {
+	Id              *string                 `json:"id,omitempty"`                // 知识ID
+	KnowledgeBaseId *string                 `json:"knowledge_base_id,omitempty"` // 知识库ID
+	Status          *string                 `json:"status,omitempty"`            // 学习状态
+	Title           *string                 `json:"title,omitempty"`             // 知识标题
+	Type            *string                 `json:"type,omitempty"`              // 知识类型
+	File            *AilyKnowledgeFile      `json:"file,omitempty"`              // 文件信息
+	Docs            *AilyKnowledgeDocs      `json:"docs,omitempty"`              // 飞书云文档信息
+	WikiSpace       *AilyKnowledgeWikiSpace `json:"wiki_space,omitempty"`        // 飞书知识空间信息
+	Folder          *AilyKnowledgeFolder    `json:"folder,omitempty"`            // 飞书文件夹信息
+	Helpdesk        *AilyKnowledgeHelpdesk  `json:"helpdesk,omitempty"`          // 飞书服务台信息
+	Datatable       *AilyKnowledgeDatatable `json:"datatable,omitempty"`         // 智能伙伴数据表
+	Dataset         *AilyKnowledgeDataset   `json:"dataset,omitempty"`           // 智能伙伴分析表
+	Web             *AilyKnowledgeWeb       `json:"web,omitempty"`               // 网页信息
+	ChunkCount      *int                    `json:"chunk_count,omitempty"`       // 切片数量
+	CreateTime      *int                    `json:"create_time,omitempty"`       // 创建时间
+	UpdateTime      *int                    `json:"update_time,omitempty"`       // 更新时间
+	FailMessage     *string                 `json:"fail_message,omitempty"`      // 学习失败提示
+}
+
+type KnowledgeBuilder struct {
+	id                  string // 知识ID
+	idFlag              bool
+	knowledgeBaseId     string // 知识库ID
+	knowledgeBaseIdFlag bool
+	status              string // 学习状态
+	statusFlag          bool
+	title               string // 知识标题
+	titleFlag           bool
+	type_               string // 知识类型
+	typeFlag            bool
+	file                *AilyKnowledgeFile // 文件信息
+	fileFlag            bool
+	docs                *AilyKnowledgeDocs // 飞书云文档信息
+	docsFlag            bool
+	wikiSpace           *AilyKnowledgeWikiSpace // 飞书知识空间信息
+	wikiSpaceFlag       bool
+	folder              *AilyKnowledgeFolder // 飞书文件夹信息
+	folderFlag          bool
+	helpdesk            *AilyKnowledgeHelpdesk // 飞书服务台信息
+	helpdeskFlag        bool
+	datatable           *AilyKnowledgeDatatable // 智能伙伴数据表
+	datatableFlag       bool
+	dataset             *AilyKnowledgeDataset // 智能伙伴分析表
+	datasetFlag         bool
+	web                 *AilyKnowledgeWeb // 网页信息
+	webFlag             bool
+	chunkCount          int // 切片数量
+	chunkCountFlag      bool
+	createTime          int // 创建时间
+	createTimeFlag      bool
+	updateTime          int // 更新时间
+	updateTimeFlag      bool
+	failMessage         string // 学习失败提示
+	failMessageFlag     bool
+}
+
+func NewKnowledgeBuilder() *KnowledgeBuilder {
+	builder := &KnowledgeBuilder{}
+	return builder
+}
+
+// 知识ID
+//
+// 示例值：spring_03c49e32bb__c_sdb_aadgfh
+func (builder *KnowledgeBuilder) Id(id string) *KnowledgeBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 知识库ID
+//
+// 示例值：knowledge_aadgd7ozoxseilqpor
+func (builder *KnowledgeBuilder) KnowledgeBaseId(knowledgeBaseId string) *KnowledgeBuilder {
+	builder.knowledgeBaseId = knowledgeBaseId
+	builder.knowledgeBaseIdFlag = true
+	return builder
+}
+
+// 学习状态
+//
+// 示例值：
+func (builder *KnowledgeBuilder) Status(status string) *KnowledgeBuilder {
+	builder.status = status
+	builder.statusFlag = true
+	return builder
+}
+
+// 知识标题
+//
+// 示例值：title
+func (builder *KnowledgeBuilder) Title(title string) *KnowledgeBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// 知识类型
+//
+// 示例值：
+func (builder *KnowledgeBuilder) Type(type_ string) *KnowledgeBuilder {
+	builder.type_ = type_
+	builder.typeFlag = true
+	return builder
+}
+
+// 文件信息
+//
+// 示例值：
+func (builder *KnowledgeBuilder) File(file *AilyKnowledgeFile) *KnowledgeBuilder {
+	builder.file = file
+	builder.fileFlag = true
+	return builder
+}
+
+// 飞书云文档信息
+//
+// 示例值：
+func (builder *KnowledgeBuilder) Docs(docs *AilyKnowledgeDocs) *KnowledgeBuilder {
+	builder.docs = docs
+	builder.docsFlag = true
+	return builder
+}
+
+// 飞书知识空间信息
+//
+// 示例值：
+func (builder *KnowledgeBuilder) WikiSpace(wikiSpace *AilyKnowledgeWikiSpace) *KnowledgeBuilder {
+	builder.wikiSpace = wikiSpace
+	builder.wikiSpaceFlag = true
+	return builder
+}
+
+// 飞书文件夹信息
+//
+// 示例值：
+func (builder *KnowledgeBuilder) Folder(folder *AilyKnowledgeFolder) *KnowledgeBuilder {
+	builder.folder = folder
+	builder.folderFlag = true
+	return builder
+}
+
+// 飞书服务台信息
+//
+// 示例值：
+func (builder *KnowledgeBuilder) Helpdesk(helpdesk *AilyKnowledgeHelpdesk) *KnowledgeBuilder {
+	builder.helpdesk = helpdesk
+	builder.helpdeskFlag = true
+	return builder
+}
+
+// 智能伙伴数据表
+//
+// 示例值：
+func (builder *KnowledgeBuilder) Datatable(datatable *AilyKnowledgeDatatable) *KnowledgeBuilder {
+	builder.datatable = datatable
+	builder.datatableFlag = true
+	return builder
+}
+
+// 智能伙伴分析表
+//
+// 示例值：
+func (builder *KnowledgeBuilder) Dataset(dataset *AilyKnowledgeDataset) *KnowledgeBuilder {
+	builder.dataset = dataset
+	builder.datasetFlag = true
+	return builder
+}
+
+// 网页信息
+//
+// 示例值：
+func (builder *KnowledgeBuilder) Web(web *AilyKnowledgeWeb) *KnowledgeBuilder {
+	builder.web = web
+	builder.webFlag = true
+	return builder
+}
+
+// 切片数量
+//
+// 示例值：1
+func (builder *KnowledgeBuilder) ChunkCount(chunkCount int) *KnowledgeBuilder {
+	builder.chunkCount = chunkCount
+	builder.chunkCountFlag = true
+	return builder
+}
+
+// 创建时间
+//
+// 示例值：1715247397
+func (builder *KnowledgeBuilder) CreateTime(createTime int) *KnowledgeBuilder {
+	builder.createTime = createTime
+	builder.createTimeFlag = true
+	return builder
+}
+
+// 更新时间
+//
+// 示例值：1715247397
+func (builder *KnowledgeBuilder) UpdateTime(updateTime int) *KnowledgeBuilder {
+	builder.updateTime = updateTime
+	builder.updateTimeFlag = true
+	return builder
+}
+
+// 学习失败提示
+//
+// 示例值：success
+func (builder *KnowledgeBuilder) FailMessage(failMessage string) *KnowledgeBuilder {
+	builder.failMessage = failMessage
+	builder.failMessageFlag = true
+	return builder
+}
+
+func (builder *KnowledgeBuilder) Build() *Knowledge {
+	req := &Knowledge{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.knowledgeBaseIdFlag {
+		req.KnowledgeBaseId = &builder.knowledgeBaseId
+
+	}
+	if builder.statusFlag {
+		req.Status = &builder.status
+
+	}
+	if builder.titleFlag {
+		req.Title = &builder.title
+
+	}
+	if builder.typeFlag {
+		req.Type = &builder.type_
+
+	}
+	if builder.fileFlag {
+		req.File = builder.file
+	}
+	if builder.docsFlag {
+		req.Docs = builder.docs
+	}
+	if builder.wikiSpaceFlag {
+		req.WikiSpace = builder.wikiSpace
+	}
+	if builder.folderFlag {
+		req.Folder = builder.folder
+	}
+	if builder.helpdeskFlag {
+		req.Helpdesk = builder.helpdesk
+	}
+	if builder.datatableFlag {
+		req.Datatable = builder.datatable
+	}
+	if builder.datasetFlag {
+		req.Dataset = builder.dataset
+	}
+	if builder.webFlag {
+		req.Web = builder.web
+	}
+	if builder.chunkCountFlag {
+		req.ChunkCount = &builder.chunkCount
+
+	}
+	if builder.createTimeFlag {
+		req.CreateTime = &builder.createTime
+
+	}
+	if builder.updateTimeFlag {
+		req.UpdateTime = &builder.updateTime
+
+	}
+	if builder.failMessageFlag {
+		req.FailMessage = &builder.failMessage
 
 	}
 	return req

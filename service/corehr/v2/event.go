@@ -18,6 +18,66 @@ import (
 )
 
 // 消息处理器定义
+type P2OffboardingChecklistUpdatedV2Handler struct {
+	handler func(context.Context, *P2OffboardingChecklistUpdatedV2) error
+}
+
+func NewP2OffboardingChecklistUpdatedV2Handler(handler func(context.Context, *P2OffboardingChecklistUpdatedV2) error) *P2OffboardingChecklistUpdatedV2Handler {
+	h := &P2OffboardingChecklistUpdatedV2Handler{handler: handler}
+	return h
+}
+
+// 返回事件的消息体的实例，用于反序列化用
+func (h *P2OffboardingChecklistUpdatedV2Handler) Event() interface{} {
+	return &P2OffboardingChecklistUpdatedV2{}
+}
+
+// 回调开发者注册的handle
+func (h *P2OffboardingChecklistUpdatedV2Handler) Handle(ctx context.Context, event interface{}) error {
+	return h.handler(ctx, event.(*P2OffboardingChecklistUpdatedV2))
+}
+
+// 消息处理器定义
+type P2OffboardingStatusUpdatedV2Handler struct {
+	handler func(context.Context, *P2OffboardingStatusUpdatedV2) error
+}
+
+func NewP2OffboardingStatusUpdatedV2Handler(handler func(context.Context, *P2OffboardingStatusUpdatedV2) error) *P2OffboardingStatusUpdatedV2Handler {
+	h := &P2OffboardingStatusUpdatedV2Handler{handler: handler}
+	return h
+}
+
+// 返回事件的消息体的实例，用于反序列化用
+func (h *P2OffboardingStatusUpdatedV2Handler) Event() interface{} {
+	return &P2OffboardingStatusUpdatedV2{}
+}
+
+// 回调开发者注册的handle
+func (h *P2OffboardingStatusUpdatedV2Handler) Handle(ctx context.Context, event interface{}) error {
+	return h.handler(ctx, event.(*P2OffboardingStatusUpdatedV2))
+}
+
+// 消息处理器定义
+type P2OffboardingUpdatedV2Handler struct {
+	handler func(context.Context, *P2OffboardingUpdatedV2) error
+}
+
+func NewP2OffboardingUpdatedV2Handler(handler func(context.Context, *P2OffboardingUpdatedV2) error) *P2OffboardingUpdatedV2Handler {
+	h := &P2OffboardingUpdatedV2Handler{handler: handler}
+	return h
+}
+
+// 返回事件的消息体的实例，用于反序列化用
+func (h *P2OffboardingUpdatedV2Handler) Event() interface{} {
+	return &P2OffboardingUpdatedV2{}
+}
+
+// 回调开发者注册的handle
+func (h *P2OffboardingUpdatedV2Handler) Handle(ctx context.Context, event interface{}) error {
+	return h.handler(ctx, event.(*P2OffboardingUpdatedV2))
+}
+
+// 消息处理器定义
 type P2ProbationUpdatedV2Handler struct {
 	handler func(context.Context, *P2ProbationUpdatedV2) error
 }

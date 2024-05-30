@@ -18317,6 +18317,54 @@ func (builder *InterviewTaskBuilder) Build() *InterviewTask {
 	return req
 }
 
+type Interviewer struct {
+	UserId       *string `json:"user_id,omitempty"`       // 面试官userID
+	VerifyStatus *int    `json:"verify_status,omitempty"` // 认证状态
+}
+
+type InterviewerBuilder struct {
+	userId           string // 面试官userID
+	userIdFlag       bool
+	verifyStatus     int // 认证状态
+	verifyStatusFlag bool
+}
+
+func NewInterviewerBuilder() *InterviewerBuilder {
+	builder := &InterviewerBuilder{}
+	return builder
+}
+
+// 面试官userID
+//
+// 示例值：ou_7dab8a3d3cdcc9da365777c7ad535d62
+func (builder *InterviewerBuilder) UserId(userId string) *InterviewerBuilder {
+	builder.userId = userId
+	builder.userIdFlag = true
+	return builder
+}
+
+// 认证状态
+//
+// 示例值：1
+func (builder *InterviewerBuilder) VerifyStatus(verifyStatus int) *InterviewerBuilder {
+	builder.verifyStatus = verifyStatus
+	builder.verifyStatusFlag = true
+	return builder
+}
+
+func (builder *InterviewerBuilder) Build() *Interviewer {
+	req := &Interviewer{}
+	if builder.userIdFlag {
+		req.UserId = &builder.userId
+
+	}
+	if builder.verifyStatusFlag {
+		req.VerifyStatus = &builder.verifyStatus
+
+	}
+	return req
+}
+
 type Job struct {
 	Id                 *string              `json:"id,omitempty"`                   // 职位 ID
 	Title              *string              `json:"title,omitempty"`                // 职位名称
@@ -45515,6 +45563,52 @@ type ListResumeSourceResp struct {
 }
 
 func (resp *ListResumeSourceResp) Success() bool {
+	return resp.Code == 0
+}
+
+type GetRoleReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetRoleReqBuilder() *GetRoleReqBuilder {
+	builder := &GetRoleReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 角色ID
+//
+// 示例值：
+func (builder *GetRoleReqBuilder) RoleId(roleId string) *GetRoleReqBuilder {
+	builder.apiReq.PathParams.Set("role_id", fmt.Sprint(roleId))
+	return builder
+}
+
+func (builder *GetRoleReqBuilder) Build() *GetRoleReq {
+	req := &GetRoleReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type GetRoleReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetRoleRespData struct {
+	Role *RoleDetail `json:"role,omitempty"` // 角色详情
+}
+
+type GetRoleResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetRoleRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetRoleResp) Success() bool {
 	return resp.Code == 0
 }
 

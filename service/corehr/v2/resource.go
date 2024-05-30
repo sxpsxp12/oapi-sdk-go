@@ -29,8 +29,10 @@ type V2 struct {
 	Job                               *job                               // job
 	JobChange                         *jobChange                         // job_change
 	JobFamily                         *jobFamily                         // job_family
+	JobGrade                          *jobGrade                          // job_grade
 	JobLevel                          *jobLevel                          // job_level
 	Location                          *location                          // location
+	Offboarding                       *offboarding                       // offboarding
 	Person                            *person                            // person
 	PreHire                           *preHire                           // 待入职
 	Probation                         *probation                         // probation
@@ -64,8 +66,10 @@ func New(config *larkcore.Config) *V2 {
 		Job:                               &job{config: config},
 		JobChange:                         &jobChange{config: config},
 		JobFamily:                         &jobFamily{config: config},
+		JobGrade:                          &jobGrade{config: config},
 		JobLevel:                          &jobLevel{config: config},
 		Location:                          &location{config: config},
+		Offboarding:                       &offboarding{config: config},
 		Person:                            &person{config: config},
 		PreHire:                           &preHire{config: config},
 		Probation:                         &probation{config: config},
@@ -138,10 +142,16 @@ type jobChange struct {
 type jobFamily struct {
 	config *larkcore.Config
 }
+type jobGrade struct {
+	config *larkcore.Config
+}
 type jobLevel struct {
 	config *larkcore.Config
 }
 type location struct {
+	config *larkcore.Config
+}
+type offboarding struct {
 	config *larkcore.Config
 }
 type person struct {
@@ -798,6 +808,32 @@ func (d *department) Parents(ctx context.Context, req *ParentsDepartmentReq, opt
 	return resp, err
 }
 
+// QueryMultiTimeline
+//
+// - 查询任意日期部门信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query_multi_timeline&project=corehr&resource=department&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/queryMultiTimeline_department.go
+func (d *department) QueryMultiTimeline(ctx context.Context, req *QueryMultiTimelineDepartmentReq, options ...larkcore.RequestOptionFunc) (*QueryMultiTimelineDepartmentResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/departments/query_multi_timeline"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, d.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryMultiTimelineDepartmentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, d.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // QueryTimeline
 //
 // - 查询任意日期部门信息
@@ -1101,6 +1137,32 @@ func (j *jobFamily) BatchGet(ctx context.Context, req *BatchGetJobFamilyReq, opt
 	}
 	// 反序列响应结果
 	resp := &BatchGetJobFamilyResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, j.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Query
+//
+// - 查询职等信息
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query&project=corehr&resource=job_grade&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/query_jobGrade.go
+func (j *jobGrade) Query(ctx context.Context, req *QueryJobGradeReq, options ...larkcore.RequestOptionFunc) (*QueryJobGradeResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/job_grades/query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, j.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryJobGradeResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, j.config)
 	if err != nil {
 		return nil, err

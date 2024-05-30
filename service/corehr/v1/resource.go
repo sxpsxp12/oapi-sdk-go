@@ -11,6 +11,7 @@ import (
 
 type V1 struct {
 	AssignedUser            *assignedUser            // assigned_user
+	Authorization           *authorization           // authorization
 	CommonDataId            *commonDataId            // common_data.id
 	Company                 *company                 // 公司
 	CompensationStandard    *compensationStandard    // compensation_standard
@@ -47,6 +48,7 @@ type V1 struct {
 func New(config *larkcore.Config) *V1 {
 	return &V1{
 		AssignedUser:            &assignedUser{config: config},
+		Authorization:           &authorization{config: config},
 		CommonDataId:            &commonDataId{config: config},
 		Company:                 &company{config: config},
 		CompensationStandard:    &compensationStandard{config: config},
@@ -82,6 +84,9 @@ func New(config *larkcore.Config) *V1 {
 }
 
 type assignedUser struct {
+	config *larkcore.Config
+}
+type authorization struct {
 	config *larkcore.Config
 }
 type commonDataId struct {
@@ -197,6 +202,58 @@ func (a *assignedUser) Search(ctx context.Context, req *SearchAssignedUserReq, o
 	}
 	// 反序列响应结果
 	resp := &SearchAssignedUserResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// GetByParam
+//
+// - 根据ID查询单个用户授权
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=get_by_param&project=corehr&resource=authorization&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv1/getByParam_authorization.go
+func (a *authorization) GetByParam(ctx context.Context, req *GetByParamAuthorizationReq, options ...larkcore.RequestOptionFunc) (*GetByParamAuthorizationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v1/authorizations/get_by_param"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &GetByParamAuthorizationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Query
+//
+// - 批量查询用户授权
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query&project=corehr&resource=authorization&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv1/query_authorization.go
+func (a *authorization) Query(ctx context.Context, req *QueryAuthorizationReq, options ...larkcore.RequestOptionFunc) (*QueryAuthorizationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v1/authorizations/query"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryAuthorizationResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, a.config)
 	if err != nil {
 		return nil, err
@@ -2064,6 +2121,32 @@ func (o *offboarding) Submit(ctx context.Context, req *SubmitOffboardingReq, opt
 	return resp, err
 }
 
+// Create 创建个人信息
+//
+// - 创建人员的个人信息
+//
+// - 官网API文档链接:https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/person/create
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv1/create_person.go
+func (p *person) Create(ctx context.Context, req *CreatePersonReq, options ...larkcore.RequestOptionFunc) (*CreatePersonResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v1/persons"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreatePersonResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Delete 删除个人信息
 //
 // - 删除人员的个人信息
@@ -2109,6 +2192,32 @@ func (p *person) Get(ctx context.Context, req *GetPersonReq, options ...larkcore
 	}
 	// 反序列响应结果
 	resp := &GetPersonResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Patch 更新个人信息
+//
+// - 更新个人信息
+//
+// - 官网API文档链接:https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/person/patch
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv1/patch_person.go
+func (p *person) Patch(ctx context.Context, req *PatchPersonReq, options ...larkcore.RequestOptionFunc) (*PatchPersonResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v1/persons/:person_id"
+	apiReq.HttpMethod = http.MethodPatch
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &PatchPersonResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, p.config)
 	if err != nil {
 		return nil, err

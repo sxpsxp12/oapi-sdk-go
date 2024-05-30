@@ -202,6 +202,212 @@ func (builder *BatchItemResultBuilder) Build() *BatchItemResult {
 	return req
 }
 
+type CallbackAction struct {
+	Tag   *string              `json:"tag,omitempty"`   // tag
+	Value *CallbackActionValue `json:"value,omitempty"` // CallbackActionValue
+}
+
+type CallbackActionBuilder struct {
+	tag       string // tag
+	tagFlag   bool
+	value     *CallbackActionValue // CallbackActionValue
+	valueFlag bool
+}
+
+func NewCallbackActionBuilder() *CallbackActionBuilder {
+	builder := &CallbackActionBuilder{}
+	return builder
+}
+
+// tag
+//
+// 示例值：""
+func (builder *CallbackActionBuilder) Tag(tag string) *CallbackActionBuilder {
+	builder.tag = tag
+	builder.tagFlag = true
+	return builder
+}
+
+// CallbackActionValue
+//
+// 示例值：
+func (builder *CallbackActionBuilder) Value(value *CallbackActionValue) *CallbackActionBuilder {
+	builder.value = value
+	builder.valueFlag = true
+	return builder
+}
+
+func (builder *CallbackActionBuilder) Build() *CallbackAction {
+	req := &CallbackAction{}
+	if builder.tagFlag {
+		req.Tag = &builder.tag
+
+	}
+	if builder.valueFlag {
+		req.Value = builder.value
+	}
+	return req
+}
+
+type CallbackActionValue struct {
+	StrategyInfo *string `json:"strategy_info,omitempty"` // strategy_info
+	AgentId      *string `json:"agent_id,omitempty"`      // agent_id
+	AgentType    *int    `json:"agent_type,omitempty"`    // agent_type
+	ResponseType *int    `json:"response_type,omitempty"` // response_type
+}
+
+type CallbackActionValueBuilder struct {
+	strategyInfo     string // strategy_info
+	strategyInfoFlag bool
+	agentId          string // agent_id
+	agentIdFlag      bool
+	agentType        int // agent_type
+	agentTypeFlag    bool
+	responseType     int // response_type
+	responseTypeFlag bool
+}
+
+func NewCallbackActionValueBuilder() *CallbackActionValueBuilder {
+	builder := &CallbackActionValueBuilder{}
+	return builder
+}
+
+// strategy_info
+//
+// 示例值：""
+func (builder *CallbackActionValueBuilder) StrategyInfo(strategyInfo string) *CallbackActionValueBuilder {
+	builder.strategyInfo = strategyInfo
+	builder.strategyInfoFlag = true
+	return builder
+}
+
+// agent_id
+//
+// 示例值：""
+func (builder *CallbackActionValueBuilder) AgentId(agentId string) *CallbackActionValueBuilder {
+	builder.agentId = agentId
+	builder.agentIdFlag = true
+	return builder
+}
+
+// agent_type
+//
+// 示例值：1
+func (builder *CallbackActionValueBuilder) AgentType(agentType int) *CallbackActionValueBuilder {
+	builder.agentType = agentType
+	builder.agentTypeFlag = true
+	return builder
+}
+
+// response_type
+//
+// 示例值：1
+func (builder *CallbackActionValueBuilder) ResponseType(responseType int) *CallbackActionValueBuilder {
+	builder.responseType = responseType
+	builder.responseTypeFlag = true
+	return builder
+}
+
+func (builder *CallbackActionValueBuilder) Build() *CallbackActionValue {
+	req := &CallbackActionValue{}
+	if builder.strategyInfoFlag {
+		req.StrategyInfo = &builder.strategyInfo
+
+	}
+	if builder.agentIdFlag {
+		req.AgentId = &builder.agentId
+
+	}
+	if builder.agentTypeFlag {
+		req.AgentType = &builder.agentType
+
+	}
+	if builder.responseTypeFlag {
+		req.ResponseType = &builder.responseType
+
+	}
+	return req
+}
+
+type CardCallbackRequest struct {
+	OpenChatId    *string         `json:"open_chat_id,omitempty"`    // open_chat_id
+	OpenMessageId *string         `json:"open_message_id,omitempty"` // open_message_id
+	Token         *string         `json:"token,omitempty"`           // token
+	Action        *CallbackAction `json:"action,omitempty"`          // CallbackAction
+}
+
+type CardCallbackRequestBuilder struct {
+	openChatId        string // open_chat_id
+	openChatIdFlag    bool
+	openMessageId     string // open_message_id
+	openMessageIdFlag bool
+	token             string // token
+	tokenFlag         bool
+	action            *CallbackAction // CallbackAction
+	actionFlag        bool
+}
+
+func NewCardCallbackRequestBuilder() *CardCallbackRequestBuilder {
+	builder := &CardCallbackRequestBuilder{}
+	return builder
+}
+
+// open_chat_id
+//
+// 示例值：""
+func (builder *CardCallbackRequestBuilder) OpenChatId(openChatId string) *CardCallbackRequestBuilder {
+	builder.openChatId = openChatId
+	builder.openChatIdFlag = true
+	return builder
+}
+
+// open_message_id
+//
+// 示例值：""
+func (builder *CardCallbackRequestBuilder) OpenMessageId(openMessageId string) *CardCallbackRequestBuilder {
+	builder.openMessageId = openMessageId
+	builder.openMessageIdFlag = true
+	return builder
+}
+
+// token
+//
+// 示例值：""
+func (builder *CardCallbackRequestBuilder) Token(token string) *CardCallbackRequestBuilder {
+	builder.token = token
+	builder.tokenFlag = true
+	return builder
+}
+
+// CallbackAction
+//
+// 示例值：
+func (builder *CardCallbackRequestBuilder) Action(action *CallbackAction) *CardCallbackRequestBuilder {
+	builder.action = action
+	builder.actionFlag = true
+	return builder
+}
+
+func (builder *CardCallbackRequestBuilder) Build() *CardCallbackRequest {
+	req := &CardCallbackRequest{}
+	if builder.openChatIdFlag {
+		req.OpenChatId = &builder.openChatId
+
+	}
+	if builder.openMessageIdFlag {
+		req.OpenMessageId = &builder.openMessageId
+
+	}
+	if builder.tokenFlag {
+		req.Token = &builder.token
+
+	}
+	if builder.actionFlag {
+		req.Action = builder.action
+	}
+	return req
+}
+
 type Chunk struct {
 	ChunkId    *string  `json:"chunk_id,omitempty"`    // 文本块的唯一标识
 	DocId      *string  `json:"doc_id,omitempty"`      // 文档的唯一标识

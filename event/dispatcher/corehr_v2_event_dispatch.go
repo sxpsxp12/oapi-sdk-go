@@ -21,6 +21,42 @@ import (
 // -
 //
 // - 事件描述文档链接:
+func (dispatcher *EventDispatcher) OnP2OffboardingChecklistUpdatedV2(handler func(ctx context.Context, event *larkcorehr.P2OffboardingChecklistUpdatedV2) error) *EventDispatcher {
+	_, existed := dispatcher.eventType2EventHandler["corehr.offboarding.checklist_updated_v2"]
+	if existed {
+		panic("event: multiple handler registrations for " + "corehr.offboarding.checklist_updated_v2")
+	}
+	dispatcher.eventType2EventHandler["corehr.offboarding.checklist_updated_v2"] = larkcorehr.NewP2OffboardingChecklistUpdatedV2Handler(handler)
+	return dispatcher
+}
+
+// -
+//
+// - 事件描述文档链接:
+func (dispatcher *EventDispatcher) OnP2OffboardingStatusUpdatedV2(handler func(ctx context.Context, event *larkcorehr.P2OffboardingStatusUpdatedV2) error) *EventDispatcher {
+	_, existed := dispatcher.eventType2EventHandler["corehr.offboarding.status_updated_v2"]
+	if existed {
+		panic("event: multiple handler registrations for " + "corehr.offboarding.status_updated_v2")
+	}
+	dispatcher.eventType2EventHandler["corehr.offboarding.status_updated_v2"] = larkcorehr.NewP2OffboardingStatusUpdatedV2Handler(handler)
+	return dispatcher
+}
+
+// -
+//
+// - 事件描述文档链接:
+func (dispatcher *EventDispatcher) OnP2OffboardingUpdatedV2(handler func(ctx context.Context, event *larkcorehr.P2OffboardingUpdatedV2) error) *EventDispatcher {
+	_, existed := dispatcher.eventType2EventHandler["corehr.offboarding.updated_v2"]
+	if existed {
+		panic("event: multiple handler registrations for " + "corehr.offboarding.updated_v2")
+	}
+	dispatcher.eventType2EventHandler["corehr.offboarding.updated_v2"] = larkcorehr.NewP2OffboardingUpdatedV2Handler(handler)
+	return dispatcher
+}
+
+// -
+//
+// - 事件描述文档链接:
 func (dispatcher *EventDispatcher) OnP2ProbationUpdatedV2(handler func(ctx context.Context, event *larkcorehr.P2ProbationUpdatedV2) error) *EventDispatcher {
 	_, existed := dispatcher.eventType2EventHandler["corehr.probation.updated_v2"]
 	if existed {

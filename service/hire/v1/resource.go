@@ -43,6 +43,7 @@ type V1 struct {
 	ReferralWebsiteJobPost          *referralWebsiteJobPost          // referral_website.job_post
 	RegistrationSchema              *registrationSchema              // registration_schema
 	ResumeSource                    *resumeSource                    // 简历来源
+	Role                            *role                            // role
 	Talent                          *talent                          // 人才
 	TalentFolder                    *talentFolder                    // talent_folder
 	TalentObject                    *talentObject                    // talent_object
@@ -84,6 +85,7 @@ func New(config *larkcore.Config) *V1 {
 		ReferralWebsiteJobPost:          &referralWebsiteJobPost{config: config},
 		RegistrationSchema:              &registrationSchema{config: config},
 		ResumeSource:                    &resumeSource{config: config},
+		Role:                            &role{config: config},
 		Talent:                          &talent{config: config},
 		TalentFolder:                    &talentFolder{config: config},
 		TalentObject:                    &talentObject{config: config},
@@ -190,6 +192,9 @@ type registrationSchema struct {
 	config *larkcore.Config
 }
 type resumeSource struct {
+	config *larkcore.Config
+}
+type role struct {
 	config *larkcore.Config
 }
 type talent struct {
@@ -2190,6 +2195,32 @@ func (r *resumeSource) ListByIterator(ctx context.Context, req *ListResumeSource
 		listFunc: r.List,
 		options:  options,
 		limit:    req.Limit}, nil
+}
+
+// Get
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=get&project=hire&resource=role&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/get_role.go
+func (r *role) Get(ctx context.Context, req *GetRoleReq, options ...larkcore.RequestOptionFunc) (*GetRoleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/roles/:role_id"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, r.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &GetRoleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, r.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // AddToFolder 将人才加入指定文件夹

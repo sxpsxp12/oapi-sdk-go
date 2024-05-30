@@ -112,6 +112,19 @@ const (
 )
 
 const (
+	UserIdTypeQueryMultiTimelineDepartmentUserId         = "user_id"          // 以 user_id 来识别用户
+	UserIdTypeQueryMultiTimelineDepartmentUnionId        = "union_id"         // 以 union_id 来识别用户
+	UserIdTypeQueryMultiTimelineDepartmentOpenId         = "open_id"          // 以 open_id 来识别用户
+	UserIdTypeQueryMultiTimelineDepartmentPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
+)
+
+const (
+	DepartmentIdTypeQueryMultiTimelineDepartmentOpenDepartmentId         = "open_department_id"          // 以 open_department_id 来标识部门
+	DepartmentIdTypeQueryMultiTimelineDepartmentDepartmentId             = "department_id"               // 以 department_id 来标识部门
+	DepartmentIdTypeQueryMultiTimelineDepartmentPeopleCorehrDepartmentId = "people_corehr_department_id" // 以 people_corehr_department_id 来标识部门
+)
+
+const (
 	UserIdTypeQueryTimelineDepartmentUserId         = "user_id"          // 以 user_id 来识别用户
 	UserIdTypeQueryTimelineDepartmentUnionId        = "union_id"         // 以 union_id 来识别用户
 	UserIdTypeQueryTimelineDepartmentOpenId         = "open_id"          // 以 open_id 来识别用户
@@ -288,20 +301,23 @@ const (
 )
 
 const (
-	UserIdTypeGetProcessUserId  = "user_id"  // 以 user_id 来识别用户
-	UserIdTypeGetProcessUnionId = "union_id" // 以 union_id 来识别用户
-	UserIdTypeGetProcessOpenId  = "open_id"  // 以 open_id 来识别用户
+	UserIdTypeGetProcessUserId         = "user_id"          // 以 user_id 来识别用户
+	UserIdTypeGetProcessUnionId        = "union_id"         // 以 union_id 来识别用户
+	UserIdTypeGetProcessOpenId         = "open_id"          // 以 open_id 来识别用户
+	UserIdTypeGetProcessPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
 )
 
 const (
-	UserIdTypeGetProcessFormVariableDataOpenId  = "open_id"  // 标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。了解更多：如何获取 Open ID
-	UserIdTypeGetProcessFormVariableDataUnionId = "union_id" // 标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。了解更多：如何获取 Union ID？
-	UserIdTypeGetProcessFormVariableDataUserId  = "user_id"  // 标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。了解更多：如何获取 User ID？ 默认值：open_id 当值为 user_id，字段权限要求：获取用户 user ID（仅自建应用）
+	UserIdTypeGetProcessFormVariableDataOpenId         = "open_id"          // 标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。了解更多：如何获取 Open ID
+	UserIdTypeGetProcessFormVariableDataUnionId        = "union_id"         // 标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。了解更多：如何获取 Union ID？
+	UserIdTypeGetProcessFormVariableDataUserId         = "user_id"          // 标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。了解更多：如何获取 User ID？ 默认值：open_id 当值为 user_id，字段权限要求：获取用户 user ID（仅自建应用）
+	UserIdTypeGetProcessFormVariableDataPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
 )
 
 const (
-	DepartmentIdTypeGetProcessFormVariableDataOpenDepartmentId = "open_department_id" // 以 open_department_id 来标识部门
-	DepartmentIdTypeGetProcessFormVariableDataDepartmentId     = "department_id"      // 以 department_id 来标识部门
+	DepartmentIdTypeGetProcessFormVariableDataOpenDepartmentId         = "open_department_id"          // 以 open_department_id 来标识部门
+	DepartmentIdTypeGetProcessFormVariableDataDepartmentId             = "department_id"               // 以 department_id 来标识部门
+	DepartmentIdTypeGetProcessFormVariableDataPeopleCorehrDepartmentId = "people_corehr_department_id" // 以 department_id 来标识部门
 )
 
 type AbnormalReason struct {
@@ -485,8 +501,15 @@ type Address struct {
 	CountryRegionId          *string `json:"country_region_id,omitempty"`           // 国家 / 地区
 	RegionId                 *string `json:"region_id,omitempty"`                   // 主要行政区
 
-	CityIdV2          *string            `json:"city_id_v2,omitempty"`          // 城市
-	DistrictIdV2      *string            `json:"district_id_v2,omitempty"`      // 区/县
+	AddressLine1      *string            `json:"address_line1,omitempty"`       // 地址行 1
+	AddressLine2      *string            `json:"address_line2,omitempty"`       // 地址行 2
+	AddressLine3      *string            `json:"address_line3,omitempty"`       // 地址行 3
+	AddressLine4      *string            `json:"address_line4,omitempty"`       // 地址行 4
+	AddressLine5      *string            `json:"address_line5,omitempty"`       // 地址行 5
+	AddressLine6      *string            `json:"address_line6,omitempty"`       // 地址行 6
+	AddressLine7      *string            `json:"address_line7,omitempty"`       // 地址行 7
+	AddressLine8      *string            `json:"address_line8,omitempty"`       // 地址行 8
+	AddressLine9      *string            `json:"address_line9,omitempty"`       // 地址行 9
 	LocalAddressLine1 *string            `json:"local_address_line1,omitempty"` // 地址行 1（非拉丁语系的本地文字）
 	LocalAddressLine2 *string            `json:"local_address_line2,omitempty"` // 地址行 2（非拉丁语系的本地文字）
 	LocalAddressLine3 *string            `json:"local_address_line3,omitempty"` // 地址行 3（非拉丁语系的本地文字）
@@ -515,10 +538,24 @@ type AddressBuilder struct {
 	regionId                     string // 主要行政区
 	regionIdFlag                 bool
 
-	cityIdV2              string // 城市
-	cityIdV2Flag          bool
-	districtIdV2          string // 区/县
-	districtIdV2Flag      bool
+	addressLine1          string // 地址行 1
+	addressLine1Flag      bool
+	addressLine2          string // 地址行 2
+	addressLine2Flag      bool
+	addressLine3          string // 地址行 3
+	addressLine3Flag      bool
+	addressLine4          string // 地址行 4
+	addressLine4Flag      bool
+	addressLine5          string // 地址行 5
+	addressLine5Flag      bool
+	addressLine6          string // 地址行 6
+	addressLine6Flag      bool
+	addressLine7          string // 地址行 7
+	addressLine7Flag      bool
+	addressLine8          string // 地址行 8
+	addressLine8Flag      bool
+	addressLine9          string // 地址行 9
+	addressLine9Flag      bool
 	localAddressLine1     string // 地址行 1（非拉丁语系的本地文字）
 	localAddressLine1Flag bool
 	localAddressLine2     string // 地址行 2（非拉丁语系的本地文字）
@@ -599,21 +636,84 @@ func (builder *AddressBuilder) RegionId(regionId string) *AddressBuilder {
 	return builder
 }
 
-// 城市
+// 地址行 1
 //
-// 示例值：6863333254578046471
-func (builder *AddressBuilder) CityIdV2(cityIdV2 string) *AddressBuilder {
-	builder.cityIdV2 = cityIdV2
-	builder.cityIdV2Flag = true
+// 示例值：丹佛测试地址-纽埃时区
+func (builder *AddressBuilder) AddressLine1(addressLine1 string) *AddressBuilder {
+	builder.addressLine1 = addressLine1
+	builder.addressLine1Flag = true
 	return builder
 }
 
-// 区/县
+// 地址行 2
 //
-// 示例值：6863333516579440141
-func (builder *AddressBuilder) DistrictIdV2(districtIdV2 string) *AddressBuilder {
-	builder.districtIdV2 = districtIdV2
-	builder.districtIdV2Flag = true
+// 示例值：PoewH
+func (builder *AddressBuilder) AddressLine2(addressLine2 string) *AddressBuilder {
+	builder.addressLine2 = addressLine2
+	builder.addressLine2Flag = true
+	return builder
+}
+
+// 地址行 3
+//
+// 示例值：PoewH
+func (builder *AddressBuilder) AddressLine3(addressLine3 string) *AddressBuilder {
+	builder.addressLine3 = addressLine3
+	builder.addressLine3Flag = true
+	return builder
+}
+
+// 地址行 4
+//
+// 示例值：jmwJc
+func (builder *AddressBuilder) AddressLine4(addressLine4 string) *AddressBuilder {
+	builder.addressLine4 = addressLine4
+	builder.addressLine4Flag = true
+	return builder
+}
+
+// 地址行 5
+//
+// 示例值：jmwJc
+func (builder *AddressBuilder) AddressLine5(addressLine5 string) *AddressBuilder {
+	builder.addressLine5 = addressLine5
+	builder.addressLine5Flag = true
+	return builder
+}
+
+// 地址行 6
+//
+// 示例值：jmwJc
+func (builder *AddressBuilder) AddressLine6(addressLine6 string) *AddressBuilder {
+	builder.addressLine6 = addressLine6
+	builder.addressLine6Flag = true
+	return builder
+}
+
+// 地址行 7
+//
+// 示例值：jmwJc
+func (builder *AddressBuilder) AddressLine7(addressLine7 string) *AddressBuilder {
+	builder.addressLine7 = addressLine7
+	builder.addressLine7Flag = true
+	return builder
+}
+
+// 地址行 8
+//
+// 示例值：rafSu
+func (builder *AddressBuilder) AddressLine8(addressLine8 string) *AddressBuilder {
+	builder.addressLine8 = addressLine8
+	builder.addressLine8Flag = true
+	return builder
+}
+
+// 地址行 9
+//
+// 示例值：McPRG
+func (builder *AddressBuilder) AddressLine9(addressLine9 string) *AddressBuilder {
+	builder.addressLine9 = addressLine9
+	builder.addressLine9Flag = true
 	return builder
 }
 
@@ -766,12 +866,40 @@ func (builder *AddressBuilder) Build() *Address {
 
 	}
 
-	if builder.cityIdV2Flag {
-		req.CityIdV2 = &builder.cityIdV2
+	if builder.addressLine1Flag {
+		req.AddressLine1 = &builder.addressLine1
 
 	}
-	if builder.districtIdV2Flag {
-		req.DistrictIdV2 = &builder.districtIdV2
+	if builder.addressLine2Flag {
+		req.AddressLine2 = &builder.addressLine2
+
+	}
+	if builder.addressLine3Flag {
+		req.AddressLine3 = &builder.addressLine3
+
+	}
+	if builder.addressLine4Flag {
+		req.AddressLine4 = &builder.addressLine4
+
+	}
+	if builder.addressLine5Flag {
+		req.AddressLine5 = &builder.addressLine5
+
+	}
+	if builder.addressLine6Flag {
+		req.AddressLine6 = &builder.addressLine6
+
+	}
+	if builder.addressLine7Flag {
+		req.AddressLine7 = &builder.addressLine7
+
+	}
+	if builder.addressLine8Flag {
+		req.AddressLine8 = &builder.addressLine8
+
+	}
+	if builder.addressLine9Flag {
+		req.AddressLine9 = &builder.addressLine9
 
 	}
 	if builder.localAddressLine1Flag {
@@ -2802,6 +2930,7 @@ type City struct {
 	Name                       []*I18n `json:"name,omitempty"`                          // 城市名称
 	CountryRegionSubdivisionId *string `json:"country_region_subdivision_id,omitempty"` // 所属国家/地区 ID，详细信息可通过【查询国家/地区信息】接口查询获得
 	Code                       *string `json:"code,omitempty"`                          // 城市三字码
+	SubregionCode              *string `json:"subregion_code,omitempty"`                // 行政区代码
 	Status                     *int    `json:"status,omitempty"`                        // 状态
 }
 
@@ -2814,6 +2943,8 @@ type CityBuilder struct {
 	countryRegionSubdivisionIdFlag bool
 	code                           string // 城市三字码
 	codeFlag                       bool
+	subregionCode                  string // 行政区代码
+	subregionCodeFlag              bool
 	status                         int // 状态
 	statusFlag                     bool
 }
@@ -2859,6 +2990,15 @@ func (builder *CityBuilder) Code(code string) *CityBuilder {
 	return builder
 }
 
+// 行政区代码
+//
+// 示例值：110000
+func (builder *CityBuilder) SubregionCode(subregionCode string) *CityBuilder {
+	builder.subregionCode = subregionCode
+	builder.subregionCodeFlag = true
+	return builder
+}
+
 // 状态
 //
 // 示例值：1
@@ -2883,6 +3023,10 @@ func (builder *CityBuilder) Build() *City {
 	}
 	if builder.codeFlag {
 		req.Code = &builder.code
+
+	}
+	if builder.subregionCodeFlag {
+		req.SubregionCode = &builder.subregionCode
 
 	}
 	if builder.statusFlag {
@@ -4033,27 +4177,30 @@ func (builder *CountryRegionSubdivisionBuilder) Build() *CountryRegionSubdivisio
 }
 
 type Currency struct {
-	CurrencyId         *string `json:"currency_id,omitempty"`           // 货币 ID
-	CountryRegionId    *string `json:"country_region_id,omitempty"`     // 货币所属国家/地区 ID，详细信息可通过【查询国家/地区信息】接口查询获得
-	CurrencyName       []*I18n `json:"currency_name,omitempty"`         // 货币名称
-	NumericCode        *int    `json:"numeric_code,omitempty"`          // 数字代码
-	CurrencyAlpha3Code *string `json:"currency_alpha_3_code,omitempty"` // 三位字母代码
-	Status             *int    `json:"status,omitempty"`                // 状态
+	CurrencyId          *string  `json:"currency_id,omitempty"`            // 货币 ID
+	CountryRegionId     *string  `json:"country_region_id,omitempty"`      // 货币所属国家/地区 ID，详细信息可通过【查询国家/地区信息】接口查询获得
+	CountryRegionIdList []string `json:"country_region_id_list,omitempty"` // 货币所属国家/地区 ID，详细信息可通过【查询国家/地区信息】接口查询获得
+	CurrencyName        []*I18n  `json:"currency_name,omitempty"`          // 货币名称
+	NumericCode         *int     `json:"numeric_code,omitempty"`           // 数字代码
+	CurrencyAlpha3Code  *string  `json:"currency_alpha_3_code,omitempty"`  // 三位字母代码
+	Status              *int     `json:"status,omitempty"`                 // 状态
 }
 
 type CurrencyBuilder struct {
-	currencyId             string // 货币 ID
-	currencyIdFlag         bool
-	countryRegionId        string // 货币所属国家/地区 ID，详细信息可通过【查询国家/地区信息】接口查询获得
-	countryRegionIdFlag    bool
-	currencyName           []*I18n // 货币名称
-	currencyNameFlag       bool
-	numericCode            int // 数字代码
-	numericCodeFlag        bool
-	currencyAlpha3Code     string // 三位字母代码
-	currencyAlpha3CodeFlag bool
-	status                 int // 状态
-	statusFlag             bool
+	currencyId              string // 货币 ID
+	currencyIdFlag          bool
+	countryRegionId         string // 货币所属国家/地区 ID，详细信息可通过【查询国家/地区信息】接口查询获得
+	countryRegionIdFlag     bool
+	countryRegionIdList     []string // 货币所属国家/地区 ID，详细信息可通过【查询国家/地区信息】接口查询获得
+	countryRegionIdListFlag bool
+	currencyName            []*I18n // 货币名称
+	currencyNameFlag        bool
+	numericCode             int // 数字代码
+	numericCodeFlag         bool
+	currencyAlpha3Code      string // 三位字母代码
+	currencyAlpha3CodeFlag  bool
+	status                  int // 状态
+	statusFlag              bool
 }
 
 func NewCurrencyBuilder() *CurrencyBuilder {
@@ -4076,6 +4223,15 @@ func (builder *CurrencyBuilder) CurrencyId(currencyId string) *CurrencyBuilder {
 func (builder *CurrencyBuilder) CountryRegionId(countryRegionId string) *CurrencyBuilder {
 	builder.countryRegionId = countryRegionId
 	builder.countryRegionIdFlag = true
+	return builder
+}
+
+// 货币所属国家/地区 ID，详细信息可通过【查询国家/地区信息】接口查询获得
+//
+// 示例值：
+func (builder *CurrencyBuilder) CountryRegionIdList(countryRegionIdList []string) *CurrencyBuilder {
+	builder.countryRegionIdList = countryRegionIdList
+	builder.countryRegionIdListFlag = true
 	return builder
 }
 
@@ -4124,6 +4280,9 @@ func (builder *CurrencyBuilder) Build() *Currency {
 	if builder.countryRegionIdFlag {
 		req.CountryRegionId = &builder.countryRegionId
 
+	}
+	if builder.countryRegionIdListFlag {
+		req.CountryRegionIdList = builder.countryRegionIdList
 	}
 	if builder.currencyNameFlag {
 		req.CurrencyName = builder.currencyName
@@ -5616,19 +5775,23 @@ func (builder *DepartmentParentsBuilder) Build() *DepartmentParents {
 }
 
 type DepartmentTimeline struct {
-	Id                 *string `json:"id,omitempty"`                   // 部门 ID
-	Names              []*I18n `json:"names,omitempty"`                // 部门名称
-	ParentDepartmentId *string `json:"parent_department_id,omitempty"` // 上级部门 ID
-	Manager            *string `json:"manager,omitempty"`              // 部门负责人雇佣 ID，枚举值及详细信息可通过【查询员工信息】接口查询获得
-	Code               *string `json:"code,omitempty"`                 // 编码
-	EffectiveDate      *string `json:"effective_date,omitempty"`       // 生效日期
-	Active             *bool   `json:"active,omitempty"`               // 是否启用
-	Descriptions       []*I18n `json:"descriptions,omitempty"`         // 描述
+	Id                 *string            `json:"id,omitempty"`                   // 部门 ID
+	VersionId          *string            `json:"version_id,omitempty"`           // 部门版本 ID
+	Names              []*I18n            `json:"names,omitempty"`                // 部门名称
+	ParentDepartmentId *string            `json:"parent_department_id,omitempty"` // 上级部门 ID
+	Manager            *string            `json:"manager,omitempty"`              // 部门负责人雇佣 ID，枚举值及详细信息可通过【查询员工信息】接口查询获得
+	Code               *string            `json:"code,omitempty"`                 // 编码
+	EffectiveDate      *string            `json:"effective_date,omitempty"`       // 生效日期
+	Active             *bool              `json:"active,omitempty"`               // 是否启用
+	Descriptions       []*I18n            `json:"descriptions,omitempty"`         // 描述
+	CustomFields       []*CustomFieldData `json:"custom_fields,omitempty"`        // 自定义字段
 }
 
 type DepartmentTimelineBuilder struct {
 	id                     string // 部门 ID
 	idFlag                 bool
+	versionId              string // 部门版本 ID
+	versionIdFlag          bool
 	names                  []*I18n // 部门名称
 	namesFlag              bool
 	parentDepartmentId     string // 上级部门 ID
@@ -5643,6 +5806,8 @@ type DepartmentTimelineBuilder struct {
 	activeFlag             bool
 	descriptions           []*I18n // 描述
 	descriptionsFlag       bool
+	customFields           []*CustomFieldData // 自定义字段
+	customFieldsFlag       bool
 }
 
 func NewDepartmentTimelineBuilder() *DepartmentTimelineBuilder {
@@ -5656,6 +5821,15 @@ func NewDepartmentTimelineBuilder() *DepartmentTimelineBuilder {
 func (builder *DepartmentTimelineBuilder) Id(id string) *DepartmentTimelineBuilder {
 	builder.id = id
 	builder.idFlag = true
+	return builder
+}
+
+// 部门版本 ID
+//
+// 示例值：7238516215202170412
+func (builder *DepartmentTimelineBuilder) VersionId(versionId string) *DepartmentTimelineBuilder {
+	builder.versionId = versionId
+	builder.versionIdFlag = true
 	return builder
 }
 
@@ -5722,10 +5896,23 @@ func (builder *DepartmentTimelineBuilder) Descriptions(descriptions []*I18n) *De
 	return builder
 }
 
+// 自定义字段
+//
+// 示例值：
+func (builder *DepartmentTimelineBuilder) CustomFields(customFields []*CustomFieldData) *DepartmentTimelineBuilder {
+	builder.customFields = customFields
+	builder.customFieldsFlag = true
+	return builder
+}
+
 func (builder *DepartmentTimelineBuilder) Build() *DepartmentTimeline {
 	req := &DepartmentTimeline{}
 	if builder.idFlag {
 		req.Id = &builder.id
+
+	}
+	if builder.versionIdFlag {
+		req.VersionId = &builder.versionId
 
 	}
 	if builder.namesFlag {
@@ -5753,6 +5940,9 @@ func (builder *DepartmentTimelineBuilder) Build() *DepartmentTimeline {
 	}
 	if builder.descriptionsFlag {
 		req.Descriptions = builder.descriptions
+	}
+	if builder.customFieldsFlag {
+		req.CustomFields = builder.customFields
 	}
 	return req
 }
@@ -6306,21 +6496,24 @@ func (builder *DimensionValueBuilder) Build() *DimensionValue {
 }
 
 type District struct {
-	DistrictId *string `json:"district_id,omitempty"` // 区/县 ID
-	Name       []*I18n `json:"name,omitempty"`        // 名称
-	CityId     *string `json:"city_id,omitempty"`     // 所属城市 ID
-	Status     *int    `json:"status,omitempty"`      // 状态
+	DistrictId    *string `json:"district_id,omitempty"`    // 区/县 ID
+	Name          []*I18n `json:"name,omitempty"`           // 名称
+	CityId        *string `json:"city_id,omitempty"`        // 所属城市 ID
+	SubregionCode *string `json:"subregion_code,omitempty"` // 行政区代码
+	Status        *int    `json:"status,omitempty"`         // 状态
 }
 
 type DistrictBuilder struct {
-	districtId     string // 区/县 ID
-	districtIdFlag bool
-	name           []*I18n // 名称
-	nameFlag       bool
-	cityId         string // 所属城市 ID
-	cityIdFlag     bool
-	status         int // 状态
-	statusFlag     bool
+	districtId        string // 区/县 ID
+	districtIdFlag    bool
+	name              []*I18n // 名称
+	nameFlag          bool
+	cityId            string // 所属城市 ID
+	cityIdFlag        bool
+	subregionCode     string // 行政区代码
+	subregionCodeFlag bool
+	status            int // 状态
+	statusFlag        bool
 }
 
 func NewDistrictBuilder() *DistrictBuilder {
@@ -6355,6 +6548,15 @@ func (builder *DistrictBuilder) CityId(cityId string) *DistrictBuilder {
 	return builder
 }
 
+// 行政区代码
+//
+// 示例值：110000
+func (builder *DistrictBuilder) SubregionCode(subregionCode string) *DistrictBuilder {
+	builder.subregionCode = subregionCode
+	builder.subregionCodeFlag = true
+	return builder
+}
+
 // 状态
 //
 // 示例值：1
@@ -6375,6 +6577,10 @@ func (builder *DistrictBuilder) Build() *District {
 	}
 	if builder.cityIdFlag {
 		req.CityId = &builder.cityId
+
+	}
+	if builder.subregionCodeFlag {
+		req.SubregionCode = &builder.subregionCode
 
 	}
 	if builder.statusFlag {
@@ -7021,6 +7227,7 @@ type Employee struct {
 	ServiceCompany   *string `json:"service_company,omitempty"`   // 任职公司
 	CompensationType *Enum   `json:"compensation_type,omitempty"` // 薪资类型
 	WorkShift        *Enum   `json:"work_shift,omitempty"`        // 排班类型
+
 }
 
 type EmployeeBuilder struct {
@@ -7874,6 +8081,7 @@ func (builder *EmployeeBuilder) Build() *Employee {
 	if builder.workShiftFlag {
 		req.WorkShift = builder.workShift
 	}
+
 	return req
 }
 
@@ -11433,6 +11641,7 @@ type JobData struct {
 	CompensationType         *Enum                `json:"compensation_type,omitempty"`           // 薪资类型
 	ServiceCompany           *string              `json:"service_company,omitempty"`             // 任职公司
 
+	CreatedAt *string `json:"created_at,omitempty"` // 创建时间
 }
 
 type JobDataBuilder struct {
@@ -11488,6 +11697,9 @@ type JobDataBuilder struct {
 	compensationTypeFlag         bool
 	serviceCompany               string // 任职公司
 	serviceCompanyFlag           bool
+
+	createdAt     string // 创建时间
+	createdAtFlag bool
 }
 
 func NewJobDataBuilder() *JobDataBuilder {
@@ -11729,6 +11941,15 @@ func (builder *JobDataBuilder) ServiceCompany(serviceCompany string) *JobDataBui
 	return builder
 }
 
+// 创建时间
+//
+// 示例值：2020-05-02 00:00:00
+func (builder *JobDataBuilder) CreatedAt(createdAt string) *JobDataBuilder {
+	builder.createdAt = createdAt
+	builder.createdAtFlag = true
+	return builder
+}
+
 func (builder *JobDataBuilder) Build() *JobData {
 	req := &JobData{}
 	if builder.jobDataIdFlag {
@@ -11828,6 +12049,10 @@ func (builder *JobDataBuilder) Build() *JobData {
 
 	}
 
+	if builder.createdAtFlag {
+		req.CreatedAt = &builder.createdAt
+
+	}
 	return req
 }
 
@@ -24785,6 +25010,305 @@ func (builder *ResidentTaxBuilder) Build() *ResidentTax {
 	return req
 }
 
+type SignatureCustomFieldV1 struct {
+	Key   *string `json:"key,omitempty"`   // 自定义字段的key
+	Value *string `json:"value,omitempty"` // 自定义字段的value
+}
+
+type SignatureCustomFieldV1Builder struct {
+	key       string // 自定义字段的key
+	keyFlag   bool
+	value     string // 自定义字段的value
+	valueFlag bool
+}
+
+func NewSignatureCustomFieldV1Builder() *SignatureCustomFieldV1Builder {
+	builder := &SignatureCustomFieldV1Builder{}
+	return builder
+}
+
+// 自定义字段的key
+//
+// 示例值：ItImqNuDK
+func (builder *SignatureCustomFieldV1Builder) Key(key string) *SignatureCustomFieldV1Builder {
+	builder.key = key
+	builder.keyFlag = true
+	return builder
+}
+
+// 自定义字段的value
+//
+// 示例值：000
+func (builder *SignatureCustomFieldV1Builder) Value(value string) *SignatureCustomFieldV1Builder {
+	builder.value = value
+	builder.valueFlag = true
+	return builder
+}
+
+func (builder *SignatureCustomFieldV1Builder) Build() *SignatureCustomFieldV1 {
+	req := &SignatureCustomFieldV1{}
+	if builder.keyFlag {
+		req.Key = &builder.key
+
+	}
+	if builder.valueFlag {
+		req.Value = &builder.value
+
+	}
+	return req
+}
+
+type SignatureCustomFieldV2 struct {
+	Key   *string                    `json:"key,omitempty"`   // v2自定义字段的key
+	Value *SignatureCustomFieldValue `json:"value,omitempty"` // v2自定义字段的key对应的value(包含了多语)
+}
+
+type SignatureCustomFieldV2Builder struct {
+	key       string // v2自定义字段的key
+	keyFlag   bool
+	value     *SignatureCustomFieldValue // v2自定义字段的key对应的value(包含了多语)
+	valueFlag bool
+}
+
+func NewSignatureCustomFieldV2Builder() *SignatureCustomFieldV2Builder {
+	builder := &SignatureCustomFieldV2Builder{}
+	return builder
+}
+
+// v2自定义字段的key
+//
+// 示例值：test
+func (builder *SignatureCustomFieldV2Builder) Key(key string) *SignatureCustomFieldV2Builder {
+	builder.key = key
+	builder.keyFlag = true
+	return builder
+}
+
+// v2自定义字段的key对应的value(包含了多语)
+//
+// 示例值：
+func (builder *SignatureCustomFieldV2Builder) Value(value *SignatureCustomFieldValue) *SignatureCustomFieldV2Builder {
+	builder.value = value
+	builder.valueFlag = true
+	return builder
+}
+
+func (builder *SignatureCustomFieldV2Builder) Build() *SignatureCustomFieldV2 {
+	req := &SignatureCustomFieldV2{}
+	if builder.keyFlag {
+		req.Key = &builder.key
+
+	}
+	if builder.valueFlag {
+		req.Value = builder.value
+	}
+	return req
+}
+
+type SignatureCustomFieldValue struct {
+	TextValue         *string                                     `json:"text_value,omitempty"`         // 自定义字段的值
+	MultilingualValue *SignatureCustomFieldValueMultilingualValue `json:"multilingual_value,omitempty"` // 自定义字段的值对应的多语value
+}
+
+type SignatureCustomFieldValueBuilder struct {
+	textValue             string // 自定义字段的值
+	textValueFlag         bool
+	multilingualValue     *SignatureCustomFieldValueMultilingualValue // 自定义字段的值对应的多语value
+	multilingualValueFlag bool
+}
+
+func NewSignatureCustomFieldValueBuilder() *SignatureCustomFieldValueBuilder {
+	builder := &SignatureCustomFieldValueBuilder{}
+	return builder
+}
+
+// 自定义字段的值
+//
+// 示例值：test
+func (builder *SignatureCustomFieldValueBuilder) TextValue(textValue string) *SignatureCustomFieldValueBuilder {
+	builder.textValue = textValue
+	builder.textValueFlag = true
+	return builder
+}
+
+// 自定义字段的值对应的多语value
+//
+// 示例值：
+func (builder *SignatureCustomFieldValueBuilder) MultilingualValue(multilingualValue *SignatureCustomFieldValueMultilingualValue) *SignatureCustomFieldValueBuilder {
+	builder.multilingualValue = multilingualValue
+	builder.multilingualValueFlag = true
+	return builder
+}
+
+func (builder *SignatureCustomFieldValueBuilder) Build() *SignatureCustomFieldValue {
+	req := &SignatureCustomFieldValue{}
+	if builder.textValueFlag {
+		req.TextValue = &builder.textValue
+
+	}
+	if builder.multilingualValueFlag {
+		req.MultilingualValue = builder.multilingualValue
+	}
+	return req
+}
+
+type SignatureCustomFieldValueMultilingualValue struct {
+	Zh *string `json:"zh,omitempty"` // 电子签自定义字段(v2)的多语言value的中文
+	En *string `json:"en,omitempty"` // 电子签自定义字段(v2)的多语言value的英文
+}
+
+type SignatureCustomFieldValueMultilingualValueBuilder struct {
+	zh     string // 电子签自定义字段(v2)的多语言value的中文
+	zhFlag bool
+	en     string // 电子签自定义字段(v2)的多语言value的英文
+	enFlag bool
+}
+
+func NewSignatureCustomFieldValueMultilingualValueBuilder() *SignatureCustomFieldValueMultilingualValueBuilder {
+	builder := &SignatureCustomFieldValueMultilingualValueBuilder{}
+	return builder
+}
+
+// 电子签自定义字段(v2)的多语言value的中文
+//
+// 示例值：中文
+func (builder *SignatureCustomFieldValueMultilingualValueBuilder) Zh(zh string) *SignatureCustomFieldValueMultilingualValueBuilder {
+	builder.zh = zh
+	builder.zhFlag = true
+	return builder
+}
+
+// 电子签自定义字段(v2)的多语言value的英文
+//
+// 示例值：英文
+func (builder *SignatureCustomFieldValueMultilingualValueBuilder) En(en string) *SignatureCustomFieldValueMultilingualValueBuilder {
+	builder.en = en
+	builder.enFlag = true
+	return builder
+}
+
+func (builder *SignatureCustomFieldValueMultilingualValueBuilder) Build() *SignatureCustomFieldValueMultilingualValue {
+	req := &SignatureCustomFieldValueMultilingualValue{}
+	if builder.zhFlag {
+		req.Zh = &builder.zh
+
+	}
+	if builder.enFlag {
+		req.En = &builder.en
+
+	}
+	return req
+}
+
+type SignatureEnumInfo struct {
+	Label   *SignatureEnumInfoLabel `json:"label,omitempty"`   //
+	Apiname *string                 `json:"apiname,omitempty"` // 主数据apiname
+	Active  *bool                   `json:"active,omitempty"`  // 是否启用
+}
+
+type SignatureEnumInfoBuilder struct {
+	label       *SignatureEnumInfoLabel //
+	labelFlag   bool
+	apiname     string // 主数据apiname
+	apinameFlag bool
+	active      bool // 是否启用
+	activeFlag  bool
+}
+
+func NewSignatureEnumInfoBuilder() *SignatureEnumInfoBuilder {
+	builder := &SignatureEnumInfoBuilder{}
+	return builder
+}
+
+// 示例值：
+func (builder *SignatureEnumInfoBuilder) Label(label *SignatureEnumInfoLabel) *SignatureEnumInfoBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+// 主数据apiname
+//
+// 示例值：status
+func (builder *SignatureEnumInfoBuilder) Apiname(apiname string) *SignatureEnumInfoBuilder {
+	builder.apiname = apiname
+	builder.apinameFlag = true
+	return builder
+}
+
+// 是否启用
+//
+// 示例值：true
+func (builder *SignatureEnumInfoBuilder) Active(active bool) *SignatureEnumInfoBuilder {
+	builder.active = active
+	builder.activeFlag = true
+	return builder
+}
+
+func (builder *SignatureEnumInfoBuilder) Build() *SignatureEnumInfo {
+	req := &SignatureEnumInfo{}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	if builder.apinameFlag {
+		req.Apiname = &builder.apiname
+
+	}
+	if builder.activeFlag {
+		req.Active = &builder.active
+
+	}
+	return req
+}
+
+type SignatureEnumInfoLabel struct {
+	Zh *string `json:"zh,omitempty"` // zh-CN
+	En *string `json:"en,omitempty"` // en-US
+}
+
+type SignatureEnumInfoLabelBuilder struct {
+	zh     string // zh-CN
+	zhFlag bool
+	en     string // en-US
+	enFlag bool
+}
+
+func NewSignatureEnumInfoLabelBuilder() *SignatureEnumInfoLabelBuilder {
+	builder := &SignatureEnumInfoLabelBuilder{}
+	return builder
+}
+
+// zh-CN
+//
+// 示例值：中文
+func (builder *SignatureEnumInfoLabelBuilder) Zh(zh string) *SignatureEnumInfoLabelBuilder {
+	builder.zh = zh
+	builder.zhFlag = true
+	return builder
+}
+
+// en-US
+//
+// 示例值：英文
+func (builder *SignatureEnumInfoLabelBuilder) En(en string) *SignatureEnumInfoLabelBuilder {
+	builder.en = en
+	builder.enFlag = true
+	return builder
+}
+
+func (builder *SignatureEnumInfoLabelBuilder) Build() *SignatureEnumInfoLabel {
+	req := &SignatureEnumInfoLabel{}
+	if builder.zhFlag {
+		req.Zh = &builder.zh
+
+	}
+	if builder.enFlag {
+		req.En = &builder.en
+
+	}
+	return req
+}
+
 type SignatureFile struct {
 	SignatureFileId    *string `json:"signature_file_id,omitempty"`    // 电子签文件ID
 	Names              []*I18n `json:"names,omitempty"`                // 名称
@@ -24793,6 +25317,8 @@ type SignatureFile struct {
 	EmploymentId       *string `json:"employment_id,omitempty"`        // 雇员 id
 	SignatureFileState *Enum   `json:"signature_file_state,omitempty"` // 电子签文件状态，枚举值可通过文档【飞书人事枚举常量】电子签文件状态（signature_file_state）枚举定义部分获得
 	ContractCode       *string `json:"contract_code,omitempty"`        // 供应商侧的合同编号，作为幂等key
+	EffectiveDate      *string `json:"effective_date,omitempty"`       // 电子签文件生效日期
+	TemplateId         *string `json:"template_id,omitempty"`          // 电子签模板ID
 }
 
 type SignatureFileBuilder struct {
@@ -24810,6 +25336,10 @@ type SignatureFileBuilder struct {
 	signatureFileStateFlag bool
 	contractCode           string // 供应商侧的合同编号，作为幂等key
 	contractCodeFlag       bool
+	effectiveDate          string // 电子签文件生效日期
+	effectiveDateFlag      bool
+	templateId             string // 电子签模板ID
+	templateIdFlag         bool
 }
 
 func NewSignatureFileBuilder() *SignatureFileBuilder {
@@ -24880,6 +25410,24 @@ func (builder *SignatureFileBuilder) ContractCode(contractCode string) *Signatur
 	return builder
 }
 
+// 电子签文件生效日期
+//
+// 示例值：2024-12-01
+func (builder *SignatureFileBuilder) EffectiveDate(effectiveDate string) *SignatureFileBuilder {
+	builder.effectiveDate = effectiveDate
+	builder.effectiveDateFlag = true
+	return builder
+}
+
+// 电子签模板ID
+//
+// 示例值：7147527056140813828
+func (builder *SignatureFileBuilder) TemplateId(templateId string) *SignatureFileBuilder {
+	builder.templateId = templateId
+	builder.templateIdFlag = true
+	return builder
+}
+
 func (builder *SignatureFileBuilder) Build() *SignatureFile {
 	req := &SignatureFile{}
 	if builder.signatureFileIdFlag {
@@ -24906,6 +25454,2226 @@ func (builder *SignatureFileBuilder) Build() *SignatureFile {
 	}
 	if builder.contractCodeFlag {
 		req.ContractCode = &builder.contractCode
+
+	}
+	if builder.effectiveDateFlag {
+		req.EffectiveDate = &builder.effectiveDate
+
+	}
+	if builder.templateIdFlag {
+		req.TemplateId = &builder.templateId
+
+	}
+	return req
+}
+
+type SignatureFileSystemField struct {
+	EffectiveDate      *string  `json:"effective_date,omitempty"`       // 生效日期
+	Deadline           *string  `json:"deadline,omitempty"`             // 过期时间
+	OrderedNodeKeys    []string `json:"ordered_node_keys,omitempty"`    // 签署节点顺序，可以不传，不传会按照默认顺序发起。 如果传了的话 要求值一定和模板的签署方(TemplateInfo.TemplateBriefInfo.SignatoryLabelList表示的是模板的签署方)里的apiname保持一致
+	DeadlineTimestamp  *string  `json:"deadline_timestamp,omitempty"`   // DDL时间戳,精确到秒 10位
+	AutoStampTimestamp *string  `json:"auto_stamp_timestamp,omitempty"` // 自动盖章时间 精确到秒 10位 如1650339376
+	ApprovalRole       *string  `json:"approval_role,omitempty"`        // 审批角色--HR管理员审批
+}
+
+type SignatureFileSystemFieldBuilder struct {
+	effectiveDate          string // 生效日期
+	effectiveDateFlag      bool
+	deadline               string // 过期时间
+	deadlineFlag           bool
+	orderedNodeKeys        []string // 签署节点顺序，可以不传，不传会按照默认顺序发起。 如果传了的话 要求值一定和模板的签署方(TemplateInfo.TemplateBriefInfo.SignatoryLabelList表示的是模板的签署方)里的apiname保持一致
+	orderedNodeKeysFlag    bool
+	deadlineTimestamp      string // DDL时间戳,精确到秒 10位
+	deadlineTimestampFlag  bool
+	autoStampTimestamp     string // 自动盖章时间 精确到秒 10位 如1650339376
+	autoStampTimestampFlag bool
+	approvalRole           string // 审批角色--HR管理员审批
+	approvalRoleFlag       bool
+}
+
+func NewSignatureFileSystemFieldBuilder() *SignatureFileSystemFieldBuilder {
+	builder := &SignatureFileSystemFieldBuilder{}
+	return builder
+}
+
+// 生效日期
+//
+// 示例值：2018-01-02
+func (builder *SignatureFileSystemFieldBuilder) EffectiveDate(effectiveDate string) *SignatureFileSystemFieldBuilder {
+	builder.effectiveDate = effectiveDate
+	builder.effectiveDateFlag = true
+	return builder
+}
+
+// 过期时间
+//
+// 示例值：2018-01-02 11:11:11
+func (builder *SignatureFileSystemFieldBuilder) Deadline(deadline string) *SignatureFileSystemFieldBuilder {
+	builder.deadline = deadline
+	builder.deadlineFlag = true
+	return builder
+}
+
+// 签署节点顺序，可以不传，不传会按照默认顺序发起。 如果传了的话 要求值一定和模板的签署方(TemplateInfo.TemplateBriefInfo.SignatoryLabelList表示的是模板的签署方)里的apiname保持一致
+//
+// 示例值：
+func (builder *SignatureFileSystemFieldBuilder) OrderedNodeKeys(orderedNodeKeys []string) *SignatureFileSystemFieldBuilder {
+	builder.orderedNodeKeys = orderedNodeKeys
+	builder.orderedNodeKeysFlag = true
+	return builder
+}
+
+// DDL时间戳,精确到秒 10位
+//
+// 示例值：1,001,231,231
+func (builder *SignatureFileSystemFieldBuilder) DeadlineTimestamp(deadlineTimestamp string) *SignatureFileSystemFieldBuilder {
+	builder.deadlineTimestamp = deadlineTimestamp
+	builder.deadlineTimestampFlag = true
+	return builder
+}
+
+// 自动盖章时间 精确到秒 10位 如1650339376
+//
+// 示例值：1,023,123,213
+func (builder *SignatureFileSystemFieldBuilder) AutoStampTimestamp(autoStampTimestamp string) *SignatureFileSystemFieldBuilder {
+	builder.autoStampTimestamp = autoStampTimestamp
+	builder.autoStampTimestampFlag = true
+	return builder
+}
+
+// 审批角色--HR管理员审批
+//
+// 示例值：signature_admin_approval
+func (builder *SignatureFileSystemFieldBuilder) ApprovalRole(approvalRole string) *SignatureFileSystemFieldBuilder {
+	builder.approvalRole = approvalRole
+	builder.approvalRoleFlag = true
+	return builder
+}
+
+func (builder *SignatureFileSystemFieldBuilder) Build() *SignatureFileSystemField {
+	req := &SignatureFileSystemField{}
+	if builder.effectiveDateFlag {
+		req.EffectiveDate = &builder.effectiveDate
+
+	}
+	if builder.deadlineFlag {
+		req.Deadline = &builder.deadline
+
+	}
+	if builder.orderedNodeKeysFlag {
+		req.OrderedNodeKeys = builder.orderedNodeKeys
+	}
+	if builder.deadlineTimestampFlag {
+		req.DeadlineTimestamp = &builder.deadlineTimestamp
+
+	}
+	if builder.autoStampTimestampFlag {
+		req.AutoStampTimestamp = &builder.autoStampTimestamp
+
+	}
+	if builder.approvalRoleFlag {
+		req.ApprovalRole = &builder.approvalRole
+
+	}
+	return req
+}
+
+type SignatureFolder struct {
+	BizType                 *Enum                                          `json:"biz_type,omitempty"`                  // 业务 会对应不同的topic
+	OwnerInfo               *SignatureHumanInfo                            `json:"owner_info,omitempty"`                // 归属人信息
+	SignatureTemplateFields []*SignatureTemplateIdWithSystemAndCustomField `json:"signature_template_fields,omitempty"` // 电子签模板字段列表
+	UniqueKey               *int                                           `json:"unique_key,omitempty"`                // 某个业务的唯一key，用于幂等。相同key不会重复发起文件，但会返回对应TaskID，并给发起成功回调
+	BizProcessId            *string                                        `json:"biz_process_id,omitempty"`            // 业务流程对应id 可不传
+}
+
+type SignatureFolderBuilder struct {
+	bizType                     *Enum // 业务 会对应不同的topic
+	bizTypeFlag                 bool
+	ownerInfo                   *SignatureHumanInfo // 归属人信息
+	ownerInfoFlag               bool
+	signatureTemplateFields     []*SignatureTemplateIdWithSystemAndCustomField // 电子签模板字段列表
+	signatureTemplateFieldsFlag bool
+	uniqueKey                   int // 某个业务的唯一key，用于幂等。相同key不会重复发起文件，但会返回对应TaskID，并给发起成功回调
+	uniqueKeyFlag               bool
+	bizProcessId                string // 业务流程对应id 可不传
+	bizProcessIdFlag            bool
+}
+
+func NewSignatureFolderBuilder() *SignatureFolderBuilder {
+	builder := &SignatureFolderBuilder{}
+	return builder
+}
+
+// 业务 会对应不同的topic
+//
+// 示例值：
+func (builder *SignatureFolderBuilder) BizType(bizType *Enum) *SignatureFolderBuilder {
+	builder.bizType = bizType
+	builder.bizTypeFlag = true
+	return builder
+}
+
+// 归属人信息
+//
+// 示例值：
+func (builder *SignatureFolderBuilder) OwnerInfo(ownerInfo *SignatureHumanInfo) *SignatureFolderBuilder {
+	builder.ownerInfo = ownerInfo
+	builder.ownerInfoFlag = true
+	return builder
+}
+
+// 电子签模板字段列表
+//
+// 示例值：
+func (builder *SignatureFolderBuilder) SignatureTemplateFields(signatureTemplateFields []*SignatureTemplateIdWithSystemAndCustomField) *SignatureFolderBuilder {
+	builder.signatureTemplateFields = signatureTemplateFields
+	builder.signatureTemplateFieldsFlag = true
+	return builder
+}
+
+// 某个业务的唯一key，用于幂等。相同key不会重复发起文件，但会返回对应TaskID，并给发起成功回调
+//
+// 示例值：1000
+func (builder *SignatureFolderBuilder) UniqueKey(uniqueKey int) *SignatureFolderBuilder {
+	builder.uniqueKey = uniqueKey
+	builder.uniqueKeyFlag = true
+	return builder
+}
+
+// 业务流程对应id 可不传
+//
+// 示例值：123123232
+func (builder *SignatureFolderBuilder) BizProcessId(bizProcessId string) *SignatureFolderBuilder {
+	builder.bizProcessId = bizProcessId
+	builder.bizProcessIdFlag = true
+	return builder
+}
+
+func (builder *SignatureFolderBuilder) Build() *SignatureFolder {
+	req := &SignatureFolder{}
+	if builder.bizTypeFlag {
+		req.BizType = builder.bizType
+	}
+	if builder.ownerInfoFlag {
+		req.OwnerInfo = builder.ownerInfo
+	}
+	if builder.signatureTemplateFieldsFlag {
+		req.SignatureTemplateFields = builder.signatureTemplateFields
+	}
+	if builder.uniqueKeyFlag {
+		req.UniqueKey = &builder.uniqueKey
+
+	}
+	if builder.bizProcessIdFlag {
+		req.BizProcessId = &builder.bizProcessId
+
+	}
+	return req
+}
+
+type SignatureHumanInfo struct {
+	Id        *string `json:"id,omitempty"`         // 归属人ID
+	HumanType *Enum   `json:"human_type,omitempty"` // 归属人类型
+}
+
+type SignatureHumanInfoBuilder struct {
+	id            string // 归属人ID
+	idFlag        bool
+	humanType     *Enum // 归属人类型
+	humanTypeFlag bool
+}
+
+func NewSignatureHumanInfoBuilder() *SignatureHumanInfoBuilder {
+	builder := &SignatureHumanInfoBuilder{}
+	return builder
+}
+
+// 归属人ID
+//
+// 示例值：12312412413234
+func (builder *SignatureHumanInfoBuilder) Id(id string) *SignatureHumanInfoBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 归属人类型
+//
+// 示例值：
+func (builder *SignatureHumanInfoBuilder) HumanType(humanType *Enum) *SignatureHumanInfoBuilder {
+	builder.humanType = humanType
+	builder.humanTypeFlag = true
+	return builder
+}
+
+func (builder *SignatureHumanInfoBuilder) Build() *SignatureHumanInfo {
+	req := &SignatureHumanInfo{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.humanTypeFlag {
+		req.HumanType = builder.humanType
+	}
+	return req
+}
+
+type SignatureMetaInfo struct {
+	ApiName *string `json:"api_name,omitempty"` // 元数据api_name
+	WkId    *string `json:"wk_id,omitempty"`    // wukong id
+	Label   []*I18n `json:"label,omitempty"`    // 多语描述
+}
+
+type SignatureMetaInfoBuilder struct {
+	apiName     string // 元数据api_name
+	apiNameFlag bool
+	wkId        string // wukong id
+	wkIdFlag    bool
+	label       []*I18n // 多语描述
+	labelFlag   bool
+}
+
+func NewSignatureMetaInfoBuilder() *SignatureMetaInfoBuilder {
+	builder := &SignatureMetaInfoBuilder{}
+	return builder
+}
+
+// 元数据api_name
+//
+// 示例值：status
+func (builder *SignatureMetaInfoBuilder) ApiName(apiName string) *SignatureMetaInfoBuilder {
+	builder.apiName = apiName
+	builder.apiNameFlag = true
+	return builder
+}
+
+// wukong id
+//
+// 示例值：123124124124123
+func (builder *SignatureMetaInfoBuilder) WkId(wkId string) *SignatureMetaInfoBuilder {
+	builder.wkId = wkId
+	builder.wkIdFlag = true
+	return builder
+}
+
+// 多语描述
+//
+// 示例值：
+func (builder *SignatureMetaInfoBuilder) Label(label []*I18n) *SignatureMetaInfoBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+func (builder *SignatureMetaInfoBuilder) Build() *SignatureMetaInfo {
+	req := &SignatureMetaInfo{}
+	if builder.apiNameFlag {
+		req.ApiName = &builder.apiName
+
+	}
+	if builder.wkIdFlag {
+		req.WkId = &builder.wkId
+
+	}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	return req
+}
+
+type SignatureSignatoryLabel struct {
+	TemplateSignatoryType *Enum   `json:"template_signatory_type,omitempty"` // 电子签模板签订人类型
+	Label                 []*I18n `json:"label,omitempty"`                   // 中英文描述
+	Apiname               *string `json:"apiname,omitempty"`                 // 主数据apiname
+}
+
+type SignatureSignatoryLabelBuilder struct {
+	templateSignatoryType     *Enum // 电子签模板签订人类型
+	templateSignatoryTypeFlag bool
+	label                     []*I18n // 中英文描述
+	labelFlag                 bool
+	apiname                   string // 主数据apiname
+	apinameFlag               bool
+}
+
+func NewSignatureSignatoryLabelBuilder() *SignatureSignatoryLabelBuilder {
+	builder := &SignatureSignatoryLabelBuilder{}
+	return builder
+}
+
+// 电子签模板签订人类型
+//
+// 示例值：
+func (builder *SignatureSignatoryLabelBuilder) TemplateSignatoryType(templateSignatoryType *Enum) *SignatureSignatoryLabelBuilder {
+	builder.templateSignatoryType = templateSignatoryType
+	builder.templateSignatoryTypeFlag = true
+	return builder
+}
+
+// 中英文描述
+//
+// 示例值：
+func (builder *SignatureSignatoryLabelBuilder) Label(label []*I18n) *SignatureSignatoryLabelBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+// 主数据apiname
+//
+// 示例值：status
+func (builder *SignatureSignatoryLabelBuilder) Apiname(apiname string) *SignatureSignatoryLabelBuilder {
+	builder.apiname = apiname
+	builder.apinameFlag = true
+	return builder
+}
+
+func (builder *SignatureSignatoryLabelBuilder) Build() *SignatureSignatoryLabel {
+	req := &SignatureSignatoryLabel{}
+	if builder.templateSignatoryTypeFlag {
+		req.TemplateSignatoryType = builder.templateSignatoryType
+	}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	if builder.apinameFlag {
+		req.Apiname = &builder.apiname
+
+	}
+	return req
+}
+
+type SignatureTemplate struct {
+	Id          *string                       `json:"id,omitempty"`           // 电子签模板id
+	BriefInfo   *SignatureTemplateBriefInfo   `json:"brief_info,omitempty"`   // 简略信息
+	ContentInfo *SignatureTemplateContentInfo `json:"content_info,omitempty"` // 模板内容信息
+}
+
+type SignatureTemplateBuilder struct {
+	id              string // 电子签模板id
+	idFlag          bool
+	briefInfo       *SignatureTemplateBriefInfo // 简略信息
+	briefInfoFlag   bool
+	contentInfo     *SignatureTemplateContentInfo // 模板内容信息
+	contentInfoFlag bool
+}
+
+func NewSignatureTemplateBuilder() *SignatureTemplateBuilder {
+	builder := &SignatureTemplateBuilder{}
+	return builder
+}
+
+// 电子签模板id
+//
+// 示例值：12313
+func (builder *SignatureTemplateBuilder) Id(id string) *SignatureTemplateBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 简略信息
+//
+// 示例值：
+func (builder *SignatureTemplateBuilder) BriefInfo(briefInfo *SignatureTemplateBriefInfo) *SignatureTemplateBuilder {
+	builder.briefInfo = briefInfo
+	builder.briefInfoFlag = true
+	return builder
+}
+
+// 模板内容信息
+//
+// 示例值：
+func (builder *SignatureTemplateBuilder) ContentInfo(contentInfo *SignatureTemplateContentInfo) *SignatureTemplateBuilder {
+	builder.contentInfo = contentInfo
+	builder.contentInfoFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateBuilder) Build() *SignatureTemplate {
+	req := &SignatureTemplate{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.briefInfoFlag {
+		req.BriefInfo = builder.briefInfo
+	}
+	if builder.contentInfoFlag {
+		req.ContentInfo = builder.contentInfo
+	}
+	return req
+}
+
+type SignatureTemplateAttachmentInfo struct {
+	Id   *string `json:"id,omitempty"`   // 附件id
+	Name *string `json:"name,omitempty"` // 附件名称
+	Size *int    `json:"size,omitempty"` // 附件大小
+}
+
+type SignatureTemplateAttachmentInfoBuilder struct {
+	id       string // 附件id
+	idFlag   bool
+	name     string // 附件名称
+	nameFlag bool
+	size     int // 附件大小
+	sizeFlag bool
+}
+
+func NewSignatureTemplateAttachmentInfoBuilder() *SignatureTemplateAttachmentInfoBuilder {
+	builder := &SignatureTemplateAttachmentInfoBuilder{}
+	return builder
+}
+
+// 附件id
+//
+// 示例值：131233213
+func (builder *SignatureTemplateAttachmentInfoBuilder) Id(id string) *SignatureTemplateAttachmentInfoBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 附件名称
+//
+// 示例值：附件test
+func (builder *SignatureTemplateAttachmentInfoBuilder) Name(name string) *SignatureTemplateAttachmentInfoBuilder {
+	builder.name = name
+	builder.nameFlag = true
+	return builder
+}
+
+// 附件大小
+//
+// 示例值：1000
+func (builder *SignatureTemplateAttachmentInfoBuilder) Size(size int) *SignatureTemplateAttachmentInfoBuilder {
+	builder.size = size
+	builder.sizeFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateAttachmentInfoBuilder) Build() *SignatureTemplateAttachmentInfo {
+	req := &SignatureTemplateAttachmentInfo{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.nameFlag {
+		req.Name = &builder.name
+
+	}
+	if builder.sizeFlag {
+		req.Size = &builder.size
+
+	}
+	return req
+}
+
+type SignatureTemplateBriefInfo struct {
+	Id                 *string                      `json:"id,omitempty"`                   // id
+	Label              []*I18n                      `json:"label,omitempty"`                // 名称 支持多语
+	Category           *Enum                        `json:"category,omitempty"`             // 模版类别
+	Usage              *Enum                        `json:"usage,omitempty"`                // 模版用法
+	SignatoryLabels    []*SignatureSignatoryLabel   `json:"signatory_labels,omitempty"`     // 模版签署人标签
+	Active             *bool                        `json:"active,omitempty"`               // 是否激活
+	CreateBy           *string                      `json:"create_by,omitempty"`            // 创建人
+	ModifyBy           *string                      `json:"modify_by,omitempty"`            // 修改人
+	Applicability      *Enum                        `json:"applicability,omitempty"`        // 适用范围
+	CreationMethod     *string                      `json:"creation_method,omitempty"`      // 创建方法
+	Version            *string                      `json:"version,omitempty"`              // 版本
+	UpdateTime         *string                      `json:"update_time,omitempty"`          // 更新时间
+	CreateTime         *string                      `json:"create_time,omitempty"`          // 创建时间
+	TemplateSetting    *SignatureTemplateSetting    `json:"template_setting,omitempty"`     // 模板设置，包含开启骑缝章的类型等
+	TemplateRegionInfo *SignatureTemplateRegionInfo `json:"template_region_info,omitempty"` // 模板适用区域
+	TemplateCode       *string                      `json:"template_code,omitempty"`        // 模板编码
+	TemplateDesc       []*I18n                      `json:"template_desc,omitempty"`        // 模板描述 支持多语
+}
+
+type SignatureTemplateBriefInfoBuilder struct {
+	id                     string // id
+	idFlag                 bool
+	label                  []*I18n // 名称 支持多语
+	labelFlag              bool
+	category               *Enum // 模版类别
+	categoryFlag           bool
+	usage                  *Enum // 模版用法
+	usageFlag              bool
+	signatoryLabels        []*SignatureSignatoryLabel // 模版签署人标签
+	signatoryLabelsFlag    bool
+	active                 bool // 是否激活
+	activeFlag             bool
+	createBy               string // 创建人
+	createByFlag           bool
+	modifyBy               string // 修改人
+	modifyByFlag           bool
+	applicability          *Enum // 适用范围
+	applicabilityFlag      bool
+	creationMethod         string // 创建方法
+	creationMethodFlag     bool
+	version                string // 版本
+	versionFlag            bool
+	updateTime             string // 更新时间
+	updateTimeFlag         bool
+	createTime             string // 创建时间
+	createTimeFlag         bool
+	templateSetting        *SignatureTemplateSetting // 模板设置，包含开启骑缝章的类型等
+	templateSettingFlag    bool
+	templateRegionInfo     *SignatureTemplateRegionInfo // 模板适用区域
+	templateRegionInfoFlag bool
+	templateCode           string // 模板编码
+	templateCodeFlag       bool
+	templateDesc           []*I18n // 模板描述 支持多语
+	templateDescFlag       bool
+}
+
+func NewSignatureTemplateBriefInfoBuilder() *SignatureTemplateBriefInfoBuilder {
+	builder := &SignatureTemplateBriefInfoBuilder{}
+	return builder
+}
+
+// id
+//
+// 示例值：1
+func (builder *SignatureTemplateBriefInfoBuilder) Id(id string) *SignatureTemplateBriefInfoBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 名称 支持多语
+//
+// 示例值：
+func (builder *SignatureTemplateBriefInfoBuilder) Label(label []*I18n) *SignatureTemplateBriefInfoBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+// 模版类别
+//
+// 示例值：
+func (builder *SignatureTemplateBriefInfoBuilder) Category(category *Enum) *SignatureTemplateBriefInfoBuilder {
+	builder.category = category
+	builder.categoryFlag = true
+	return builder
+}
+
+// 模版用法
+//
+// 示例值：
+func (builder *SignatureTemplateBriefInfoBuilder) Usage(usage *Enum) *SignatureTemplateBriefInfoBuilder {
+	builder.usage = usage
+	builder.usageFlag = true
+	return builder
+}
+
+// 模版签署人标签
+//
+// 示例值：
+func (builder *SignatureTemplateBriefInfoBuilder) SignatoryLabels(signatoryLabels []*SignatureSignatoryLabel) *SignatureTemplateBriefInfoBuilder {
+	builder.signatoryLabels = signatoryLabels
+	builder.signatoryLabelsFlag = true
+	return builder
+}
+
+// 是否激活
+//
+// 示例值：true
+func (builder *SignatureTemplateBriefInfoBuilder) Active(active bool) *SignatureTemplateBriefInfoBuilder {
+	builder.active = active
+	builder.activeFlag = true
+	return builder
+}
+
+// 创建人
+//
+// 示例值：123123123123123123
+func (builder *SignatureTemplateBriefInfoBuilder) CreateBy(createBy string) *SignatureTemplateBriefInfoBuilder {
+	builder.createBy = createBy
+	builder.createByFlag = true
+	return builder
+}
+
+// 修改人
+//
+// 示例值：123123123123123123
+func (builder *SignatureTemplateBriefInfoBuilder) ModifyBy(modifyBy string) *SignatureTemplateBriefInfoBuilder {
+	builder.modifyBy = modifyBy
+	builder.modifyByFlag = true
+	return builder
+}
+
+// 适用范围
+//
+// 示例值：
+func (builder *SignatureTemplateBriefInfoBuilder) Applicability(applicability *Enum) *SignatureTemplateBriefInfoBuilder {
+	builder.applicability = applicability
+	builder.applicabilityFlag = true
+	return builder
+}
+
+// 创建方法
+//
+// 示例值：online_edit
+func (builder *SignatureTemplateBriefInfoBuilder) CreationMethod(creationMethod string) *SignatureTemplateBriefInfoBuilder {
+	builder.creationMethod = creationMethod
+	builder.creationMethodFlag = true
+	return builder
+}
+
+// 版本
+//
+// 示例值：v1
+func (builder *SignatureTemplateBriefInfoBuilder) Version(version string) *SignatureTemplateBriefInfoBuilder {
+	builder.version = version
+	builder.versionFlag = true
+	return builder
+}
+
+// 更新时间
+//
+// 示例值：31231232123
+func (builder *SignatureTemplateBriefInfoBuilder) UpdateTime(updateTime string) *SignatureTemplateBriefInfoBuilder {
+	builder.updateTime = updateTime
+	builder.updateTimeFlag = true
+	return builder
+}
+
+// 创建时间
+//
+// 示例值：3123123211
+func (builder *SignatureTemplateBriefInfoBuilder) CreateTime(createTime string) *SignatureTemplateBriefInfoBuilder {
+	builder.createTime = createTime
+	builder.createTimeFlag = true
+	return builder
+}
+
+// 模板设置，包含开启骑缝章的类型等
+//
+// 示例值：
+func (builder *SignatureTemplateBriefInfoBuilder) TemplateSetting(templateSetting *SignatureTemplateSetting) *SignatureTemplateBriefInfoBuilder {
+	builder.templateSetting = templateSetting
+	builder.templateSettingFlag = true
+	return builder
+}
+
+// 模板适用区域
+//
+// 示例值：
+func (builder *SignatureTemplateBriefInfoBuilder) TemplateRegionInfo(templateRegionInfo *SignatureTemplateRegionInfo) *SignatureTemplateBriefInfoBuilder {
+	builder.templateRegionInfo = templateRegionInfo
+	builder.templateRegionInfoFlag = true
+	return builder
+}
+
+// 模板编码
+//
+// 示例值：1234
+func (builder *SignatureTemplateBriefInfoBuilder) TemplateCode(templateCode string) *SignatureTemplateBriefInfoBuilder {
+	builder.templateCode = templateCode
+	builder.templateCodeFlag = true
+	return builder
+}
+
+// 模板描述 支持多语
+//
+// 示例值：
+func (builder *SignatureTemplateBriefInfoBuilder) TemplateDesc(templateDesc []*I18n) *SignatureTemplateBriefInfoBuilder {
+	builder.templateDesc = templateDesc
+	builder.templateDescFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateBriefInfoBuilder) Build() *SignatureTemplateBriefInfo {
+	req := &SignatureTemplateBriefInfo{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	if builder.categoryFlag {
+		req.Category = builder.category
+	}
+	if builder.usageFlag {
+		req.Usage = builder.usage
+	}
+	if builder.signatoryLabelsFlag {
+		req.SignatoryLabels = builder.signatoryLabels
+	}
+	if builder.activeFlag {
+		req.Active = &builder.active
+
+	}
+	if builder.createByFlag {
+		req.CreateBy = &builder.createBy
+
+	}
+	if builder.modifyByFlag {
+		req.ModifyBy = &builder.modifyBy
+
+	}
+	if builder.applicabilityFlag {
+		req.Applicability = builder.applicability
+	}
+	if builder.creationMethodFlag {
+		req.CreationMethod = &builder.creationMethod
+
+	}
+	if builder.versionFlag {
+		req.Version = &builder.version
+
+	}
+	if builder.updateTimeFlag {
+		req.UpdateTime = &builder.updateTime
+
+	}
+	if builder.createTimeFlag {
+		req.CreateTime = &builder.createTime
+
+	}
+	if builder.templateSettingFlag {
+		req.TemplateSetting = builder.templateSetting
+	}
+	if builder.templateRegionInfoFlag {
+		req.TemplateRegionInfo = builder.templateRegionInfo
+	}
+	if builder.templateCodeFlag {
+		req.TemplateCode = &builder.templateCode
+
+	}
+	if builder.templateDescFlag {
+		req.TemplateDesc = builder.templateDesc
+	}
+	return req
+}
+
+type SignatureTemplateCombinationFieldInfo struct {
+	TotalApiname *string                                       `json:"total_apiname,omitempty"` // total_apiname
+	Apiname      *string                                       `json:"apiname,omitempty"`       // apiname
+	Title        []*I18n                                       `json:"title,omitempty"`         // 中英文描述
+	Contents     [][]*SignatureTemplateCombinationSubFieldInfo `json:"contents,omitempty"`      // 适用区域名称
+	Source       *Enum                                         `json:"source,omitempty"`        // 电子签模板字段源类型
+}
+
+type SignatureTemplateCombinationFieldInfoBuilder struct {
+	totalApiname     string // total_apiname
+	totalApinameFlag bool
+	apiname          string // apiname
+	apinameFlag      bool
+	title            []*I18n // 中英文描述
+	titleFlag        bool
+	contents         [][]*SignatureTemplateCombinationSubFieldInfo // 适用区域名称
+	contentsFlag     bool
+	source           *Enum // 电子签模板字段源类型
+	sourceFlag       bool
+}
+
+func NewSignatureTemplateCombinationFieldInfoBuilder() *SignatureTemplateCombinationFieldInfoBuilder {
+	builder := &SignatureTemplateCombinationFieldInfoBuilder{}
+	return builder
+}
+
+// total_apiname
+//
+// 示例值：status
+func (builder *SignatureTemplateCombinationFieldInfoBuilder) TotalApiname(totalApiname string) *SignatureTemplateCombinationFieldInfoBuilder {
+	builder.totalApiname = totalApiname
+	builder.totalApinameFlag = true
+	return builder
+}
+
+// apiname
+//
+// 示例值：status
+func (builder *SignatureTemplateCombinationFieldInfoBuilder) Apiname(apiname string) *SignatureTemplateCombinationFieldInfoBuilder {
+	builder.apiname = apiname
+	builder.apinameFlag = true
+	return builder
+}
+
+// 中英文描述
+//
+// 示例值：
+func (builder *SignatureTemplateCombinationFieldInfoBuilder) Title(title []*I18n) *SignatureTemplateCombinationFieldInfoBuilder {
+	builder.title = title
+	builder.titleFlag = true
+	return builder
+}
+
+// 适用区域名称
+//
+// 示例值：
+func (builder *SignatureTemplateCombinationFieldInfoBuilder) Contents(contents [][]*SignatureTemplateCombinationSubFieldInfo) *SignatureTemplateCombinationFieldInfoBuilder {
+	builder.contents = contents
+	builder.contentsFlag = true
+	return builder
+}
+
+// 电子签模板字段源类型
+//
+// 示例值：
+func (builder *SignatureTemplateCombinationFieldInfoBuilder) Source(source *Enum) *SignatureTemplateCombinationFieldInfoBuilder {
+	builder.source = source
+	builder.sourceFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateCombinationFieldInfoBuilder) Build() *SignatureTemplateCombinationFieldInfo {
+	req := &SignatureTemplateCombinationFieldInfo{}
+	if builder.totalApinameFlag {
+		req.TotalApiname = &builder.totalApiname
+
+	}
+	if builder.apinameFlag {
+		req.Apiname = &builder.apiname
+
+	}
+	if builder.titleFlag {
+		req.Title = builder.title
+	}
+	if builder.contentsFlag {
+		req.Contents = builder.contents
+	}
+	if builder.sourceFlag {
+		req.Source = builder.source
+	}
+	return req
+}
+
+type SignatureTemplateCombinationFieldInfoV2 struct {
+	TotalApiname *string `json:"total_apiname,omitempty"` // total_apiname
+	Apiname      *string `json:"apiname,omitempty"`       // apiname
+	Source       *Enum   `json:"source,omitempty"`        // 电子签模板字段源类型
+}
+
+type SignatureTemplateCombinationFieldInfoV2Builder struct {
+	totalApiname     string // total_apiname
+	totalApinameFlag bool
+	apiname          string // apiname
+	apinameFlag      bool
+	source           *Enum // 电子签模板字段源类型
+	sourceFlag       bool
+}
+
+func NewSignatureTemplateCombinationFieldInfoV2Builder() *SignatureTemplateCombinationFieldInfoV2Builder {
+	builder := &SignatureTemplateCombinationFieldInfoV2Builder{}
+	return builder
+}
+
+// total_apiname
+//
+// 示例值：status
+func (builder *SignatureTemplateCombinationFieldInfoV2Builder) TotalApiname(totalApiname string) *SignatureTemplateCombinationFieldInfoV2Builder {
+	builder.totalApiname = totalApiname
+	builder.totalApinameFlag = true
+	return builder
+}
+
+// apiname
+//
+// 示例值：status
+func (builder *SignatureTemplateCombinationFieldInfoV2Builder) Apiname(apiname string) *SignatureTemplateCombinationFieldInfoV2Builder {
+	builder.apiname = apiname
+	builder.apinameFlag = true
+	return builder
+}
+
+// 电子签模板字段源类型
+//
+// 示例值：
+func (builder *SignatureTemplateCombinationFieldInfoV2Builder) Source(source *Enum) *SignatureTemplateCombinationFieldInfoV2Builder {
+	builder.source = source
+	builder.sourceFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateCombinationFieldInfoV2Builder) Build() *SignatureTemplateCombinationFieldInfoV2 {
+	req := &SignatureTemplateCombinationFieldInfoV2{}
+	if builder.totalApinameFlag {
+		req.TotalApiname = &builder.totalApiname
+
+	}
+	if builder.apinameFlag {
+		req.Apiname = &builder.apiname
+
+	}
+	if builder.sourceFlag {
+		req.Source = builder.source
+	}
+	return req
+}
+
+type SignatureTemplateCombinationSubFieldInfo struct {
+	FieldType *Enum                             `json:"field_type,omitempty"` // 字段类型枚举
+	Info      *SignatureTemplateCommonFieldInfo `json:"info,omitempty"`       // 公共字段信息
+	Label     []*I18n                           `json:"label,omitempty"`      // 双语描述
+}
+
+type SignatureTemplateCombinationSubFieldInfoBuilder struct {
+	fieldType     *Enum // 字段类型枚举
+	fieldTypeFlag bool
+	info          *SignatureTemplateCommonFieldInfo // 公共字段信息
+	infoFlag      bool
+	label         []*I18n // 双语描述
+	labelFlag     bool
+}
+
+func NewSignatureTemplateCombinationSubFieldInfoBuilder() *SignatureTemplateCombinationSubFieldInfoBuilder {
+	builder := &SignatureTemplateCombinationSubFieldInfoBuilder{}
+	return builder
+}
+
+// 字段类型枚举
+//
+// 示例值：
+func (builder *SignatureTemplateCombinationSubFieldInfoBuilder) FieldType(fieldType *Enum) *SignatureTemplateCombinationSubFieldInfoBuilder {
+	builder.fieldType = fieldType
+	builder.fieldTypeFlag = true
+	return builder
+}
+
+// 公共字段信息
+//
+// 示例值：
+func (builder *SignatureTemplateCombinationSubFieldInfoBuilder) Info(info *SignatureTemplateCommonFieldInfo) *SignatureTemplateCombinationSubFieldInfoBuilder {
+	builder.info = info
+	builder.infoFlag = true
+	return builder
+}
+
+// 双语描述
+//
+// 示例值：
+func (builder *SignatureTemplateCombinationSubFieldInfoBuilder) Label(label []*I18n) *SignatureTemplateCombinationSubFieldInfoBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateCombinationSubFieldInfoBuilder) Build() *SignatureTemplateCombinationSubFieldInfo {
+	req := &SignatureTemplateCombinationSubFieldInfo{}
+	if builder.fieldTypeFlag {
+		req.FieldType = builder.fieldType
+	}
+	if builder.infoFlag {
+		req.Info = builder.info
+	}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	return req
+}
+
+type SignatureTemplateCommonFieldInfo struct {
+	Source  *Enum   `json:"source,omitempty"`  // 模板字段源类型；枚举值填到enum_name中，如："System" "MainData"
+	Apiname *string `json:"apiname,omitempty"` // 主数据apiname
+}
+
+type SignatureTemplateCommonFieldInfoBuilder struct {
+	source      *Enum // 模板字段源类型；枚举值填到enum_name中，如："System" "MainData"
+	sourceFlag  bool
+	apiname     string // 主数据apiname
+	apinameFlag bool
+}
+
+func NewSignatureTemplateCommonFieldInfoBuilder() *SignatureTemplateCommonFieldInfoBuilder {
+	builder := &SignatureTemplateCommonFieldInfoBuilder{}
+	return builder
+}
+
+// 模板字段源类型；枚举值填到enum_name中，如："System" "MainData"
+//
+// 示例值：
+func (builder *SignatureTemplateCommonFieldInfoBuilder) Source(source *Enum) *SignatureTemplateCommonFieldInfoBuilder {
+	builder.source = source
+	builder.sourceFlag = true
+	return builder
+}
+
+// 主数据apiname
+//
+// 示例值：status
+func (builder *SignatureTemplateCommonFieldInfoBuilder) Apiname(apiname string) *SignatureTemplateCommonFieldInfoBuilder {
+	builder.apiname = apiname
+	builder.apinameFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateCommonFieldInfoBuilder) Build() *SignatureTemplateCommonFieldInfo {
+	req := &SignatureTemplateCommonFieldInfo{}
+	if builder.sourceFlag {
+		req.Source = builder.source
+	}
+	if builder.apinameFlag {
+		req.Apiname = &builder.apiname
+
+	}
+	return req
+}
+
+type SignatureTemplateContentInfo struct {
+	Contents            []*SignatureTemplateContentItem     `json:"contents,omitempty"`              // 模版内容list
+	CustomFields        []*SignatureTemplateCustomField     `json:"custom_fields,omitempty"`         // 自定义字段列表
+	FilterFields        []*SignatureTemplateFilter          `json:"filter_fields,omitempty"`         // 筛选条件列表
+	UsingFields         []*SignatureTemplateCommonFieldInfo `json:"using_fields,omitempty"`          // 模板公共字段信息列表
+	SystemSettingFields []*SignatureTemplateField           `json:"system_setting_fields,omitempty"` // 系统设置字段列表
+}
+
+type SignatureTemplateContentInfoBuilder struct {
+	contents                []*SignatureTemplateContentItem // 模版内容list
+	contentsFlag            bool
+	customFields            []*SignatureTemplateCustomField // 自定义字段列表
+	customFieldsFlag        bool
+	filterFields            []*SignatureTemplateFilter // 筛选条件列表
+	filterFieldsFlag        bool
+	usingFields             []*SignatureTemplateCommonFieldInfo // 模板公共字段信息列表
+	usingFieldsFlag         bool
+	systemSettingFields     []*SignatureTemplateField // 系统设置字段列表
+	systemSettingFieldsFlag bool
+}
+
+func NewSignatureTemplateContentInfoBuilder() *SignatureTemplateContentInfoBuilder {
+	builder := &SignatureTemplateContentInfoBuilder{}
+	return builder
+}
+
+// 模版内容list
+//
+// 示例值：
+func (builder *SignatureTemplateContentInfoBuilder) Contents(contents []*SignatureTemplateContentItem) *SignatureTemplateContentInfoBuilder {
+	builder.contents = contents
+	builder.contentsFlag = true
+	return builder
+}
+
+// 自定义字段列表
+//
+// 示例值：
+func (builder *SignatureTemplateContentInfoBuilder) CustomFields(customFields []*SignatureTemplateCustomField) *SignatureTemplateContentInfoBuilder {
+	builder.customFields = customFields
+	builder.customFieldsFlag = true
+	return builder
+}
+
+// 筛选条件列表
+//
+// 示例值：
+func (builder *SignatureTemplateContentInfoBuilder) FilterFields(filterFields []*SignatureTemplateFilter) *SignatureTemplateContentInfoBuilder {
+	builder.filterFields = filterFields
+	builder.filterFieldsFlag = true
+	return builder
+}
+
+// 模板公共字段信息列表
+//
+// 示例值：
+func (builder *SignatureTemplateContentInfoBuilder) UsingFields(usingFields []*SignatureTemplateCommonFieldInfo) *SignatureTemplateContentInfoBuilder {
+	builder.usingFields = usingFields
+	builder.usingFieldsFlag = true
+	return builder
+}
+
+// 系统设置字段列表
+//
+// 示例值：
+func (builder *SignatureTemplateContentInfoBuilder) SystemSettingFields(systemSettingFields []*SignatureTemplateField) *SignatureTemplateContentInfoBuilder {
+	builder.systemSettingFields = systemSettingFields
+	builder.systemSettingFieldsFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateContentInfoBuilder) Build() *SignatureTemplateContentInfo {
+	req := &SignatureTemplateContentInfo{}
+	if builder.contentsFlag {
+		req.Contents = builder.contents
+	}
+	if builder.customFieldsFlag {
+		req.CustomFields = builder.customFields
+	}
+	if builder.filterFieldsFlag {
+		req.FilterFields = builder.filterFields
+	}
+	if builder.usingFieldsFlag {
+		req.UsingFields = builder.usingFields
+	}
+	if builder.systemSettingFieldsFlag {
+		req.SystemSettingFields = builder.systemSettingFields
+	}
+	return req
+}
+
+type SignatureTemplateContentItem struct {
+	ContentType   *Enum   `json:"content_type,omitempty"`   // 电子签模版内容的类型
+	FilterApiname *string `json:"filter_apiname,omitempty"` // 显示规则左值
+	Content       *string `json:"content,omitempty"`        // 模版内容
+	Label         []*I18n `json:"label,omitempty"`          // 中英文描述
+	ContentDesc   *string `json:"content_desc,omitempty"`   // 内容描述
+}
+
+type SignatureTemplateContentItemBuilder struct {
+	contentType       *Enum // 电子签模版内容的类型
+	contentTypeFlag   bool
+	filterApiname     string // 显示规则左值
+	filterApinameFlag bool
+	content           string // 模版内容
+	contentFlag       bool
+	label             []*I18n // 中英文描述
+	labelFlag         bool
+	contentDesc       string // 内容描述
+	contentDescFlag   bool
+}
+
+func NewSignatureTemplateContentItemBuilder() *SignatureTemplateContentItemBuilder {
+	builder := &SignatureTemplateContentItemBuilder{}
+	return builder
+}
+
+// 电子签模版内容的类型
+//
+// 示例值：
+func (builder *SignatureTemplateContentItemBuilder) ContentType(contentType *Enum) *SignatureTemplateContentItemBuilder {
+	builder.contentType = contentType
+	builder.contentTypeFlag = true
+	return builder
+}
+
+// 显示规则左值
+//
+// 示例值：111
+func (builder *SignatureTemplateContentItemBuilder) FilterApiname(filterApiname string) *SignatureTemplateContentItemBuilder {
+	builder.filterApiname = filterApiname
+	builder.filterApinameFlag = true
+	return builder
+}
+
+// 模版内容
+//
+// 示例值：111
+func (builder *SignatureTemplateContentItemBuilder) Content(content string) *SignatureTemplateContentItemBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+// 中英文描述
+//
+// 示例值：
+func (builder *SignatureTemplateContentItemBuilder) Label(label []*I18n) *SignatureTemplateContentItemBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+// 内容描述
+//
+// 示例值：111
+func (builder *SignatureTemplateContentItemBuilder) ContentDesc(contentDesc string) *SignatureTemplateContentItemBuilder {
+	builder.contentDesc = contentDesc
+	builder.contentDescFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateContentItemBuilder) Build() *SignatureTemplateContentItem {
+	req := &SignatureTemplateContentItem{}
+	if builder.contentTypeFlag {
+		req.ContentType = builder.contentType
+	}
+	if builder.filterApinameFlag {
+		req.FilterApiname = &builder.filterApiname
+
+	}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	if builder.contentDescFlag {
+		req.ContentDesc = &builder.contentDesc
+
+	}
+	return req
+}
+
+type SignatureTemplateCustomField struct {
+	Label           []*I18n                           `json:"label,omitempty"`             // 中英文描述
+	Apiname         *string                           `json:"apiname,omitempty"`           // 主数据apiname
+	CustomFieldType *Enum                             `json:"custom_field_type,omitempty"` // 用户自定义字段类型
+	Used            *bool                             `json:"used,omitempty"`              // 是否使用到
+	IsRequired      *bool                             `json:"is_required,omitempty"`       // 是否需要
+	CustomDesc      *string                           `json:"custom_desc,omitempty"`       // 自定义描述
+	CommonInfo      *SignatureTemplateCommonFieldInfo `json:"common_info,omitempty"`       // 电子签模版公共字段信息
+}
+
+type SignatureTemplateCustomFieldBuilder struct {
+	label               []*I18n // 中英文描述
+	labelFlag           bool
+	apiname             string // 主数据apiname
+	apinameFlag         bool
+	customFieldType     *Enum // 用户自定义字段类型
+	customFieldTypeFlag bool
+	used                bool // 是否使用到
+	usedFlag            bool
+	isRequired          bool // 是否需要
+	isRequiredFlag      bool
+	customDesc          string // 自定义描述
+	customDescFlag      bool
+	commonInfo          *SignatureTemplateCommonFieldInfo // 电子签模版公共字段信息
+	commonInfoFlag      bool
+}
+
+func NewSignatureTemplateCustomFieldBuilder() *SignatureTemplateCustomFieldBuilder {
+	builder := &SignatureTemplateCustomFieldBuilder{}
+	return builder
+}
+
+// 中英文描述
+//
+// 示例值：
+func (builder *SignatureTemplateCustomFieldBuilder) Label(label []*I18n) *SignatureTemplateCustomFieldBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+// 主数据apiname
+//
+// 示例值：status
+func (builder *SignatureTemplateCustomFieldBuilder) Apiname(apiname string) *SignatureTemplateCustomFieldBuilder {
+	builder.apiname = apiname
+	builder.apinameFlag = true
+	return builder
+}
+
+// 用户自定义字段类型
+//
+// 示例值：
+func (builder *SignatureTemplateCustomFieldBuilder) CustomFieldType(customFieldType *Enum) *SignatureTemplateCustomFieldBuilder {
+	builder.customFieldType = customFieldType
+	builder.customFieldTypeFlag = true
+	return builder
+}
+
+// 是否使用到
+//
+// 示例值：
+func (builder *SignatureTemplateCustomFieldBuilder) Used(used bool) *SignatureTemplateCustomFieldBuilder {
+	builder.used = used
+	builder.usedFlag = true
+	return builder
+}
+
+// 是否需要
+//
+// 示例值：
+func (builder *SignatureTemplateCustomFieldBuilder) IsRequired(isRequired bool) *SignatureTemplateCustomFieldBuilder {
+	builder.isRequired = isRequired
+	builder.isRequiredFlag = true
+	return builder
+}
+
+// 自定义描述
+//
+// 示例值：desc
+func (builder *SignatureTemplateCustomFieldBuilder) CustomDesc(customDesc string) *SignatureTemplateCustomFieldBuilder {
+	builder.customDesc = customDesc
+	builder.customDescFlag = true
+	return builder
+}
+
+// 电子签模版公共字段信息
+//
+// 示例值：
+func (builder *SignatureTemplateCustomFieldBuilder) CommonInfo(commonInfo *SignatureTemplateCommonFieldInfo) *SignatureTemplateCustomFieldBuilder {
+	builder.commonInfo = commonInfo
+	builder.commonInfoFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateCustomFieldBuilder) Build() *SignatureTemplateCustomField {
+	req := &SignatureTemplateCustomField{}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	if builder.apinameFlag {
+		req.Apiname = &builder.apiname
+
+	}
+	if builder.customFieldTypeFlag {
+		req.CustomFieldType = builder.customFieldType
+	}
+	if builder.usedFlag {
+		req.Used = &builder.used
+
+	}
+	if builder.isRequiredFlag {
+		req.IsRequired = &builder.isRequired
+
+	}
+	if builder.customDescFlag {
+		req.CustomDesc = &builder.customDesc
+
+	}
+	if builder.commonInfoFlag {
+		req.CommonInfo = builder.commonInfo
+	}
+	return req
+}
+
+type SignatureTemplateField struct {
+	FieldType         *Enum                                    `json:"field_type,omitempty"`          // 模板字段值类型枚举
+	Label             []*I18n                                  `json:"label,omitempty"`               // 双语描述
+	CommonInfo        *SignatureTemplateCommonFieldInfo        `json:"common_info,omitempty"`         // 通用字段信息
+	CombinationInfo   *SignatureTemplateCombinationFieldInfo   `json:"combination_info,omitempty"`    // 组合字段信息
+	Children          *string                                  `json:"children,omitempty"`            // 子模板配置信息列表对应的string，避免循环引用问题
+	CombinationInfoV2 *SignatureTemplateCombinationFieldInfoV2 `json:"combination_info_v2,omitempty"` // 组合字段信息v2
+}
+
+type SignatureTemplateFieldBuilder struct {
+	fieldType             *Enum // 模板字段值类型枚举
+	fieldTypeFlag         bool
+	label                 []*I18n // 双语描述
+	labelFlag             bool
+	commonInfo            *SignatureTemplateCommonFieldInfo // 通用字段信息
+	commonInfoFlag        bool
+	combinationInfo       *SignatureTemplateCombinationFieldInfo // 组合字段信息
+	combinationInfoFlag   bool
+	children              string // 子模板配置信息列表对应的string，避免循环引用问题
+	childrenFlag          bool
+	combinationInfoV2     *SignatureTemplateCombinationFieldInfoV2 // 组合字段信息v2
+	combinationInfoV2Flag bool
+}
+
+func NewSignatureTemplateFieldBuilder() *SignatureTemplateFieldBuilder {
+	builder := &SignatureTemplateFieldBuilder{}
+	return builder
+}
+
+// 模板字段值类型枚举
+//
+// 示例值：
+func (builder *SignatureTemplateFieldBuilder) FieldType(fieldType *Enum) *SignatureTemplateFieldBuilder {
+	builder.fieldType = fieldType
+	builder.fieldTypeFlag = true
+	return builder
+}
+
+// 双语描述
+//
+// 示例值：
+func (builder *SignatureTemplateFieldBuilder) Label(label []*I18n) *SignatureTemplateFieldBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+// 通用字段信息
+//
+// 示例值：
+func (builder *SignatureTemplateFieldBuilder) CommonInfo(commonInfo *SignatureTemplateCommonFieldInfo) *SignatureTemplateFieldBuilder {
+	builder.commonInfo = commonInfo
+	builder.commonInfoFlag = true
+	return builder
+}
+
+// 组合字段信息
+//
+// 示例值：
+func (builder *SignatureTemplateFieldBuilder) CombinationInfo(combinationInfo *SignatureTemplateCombinationFieldInfo) *SignatureTemplateFieldBuilder {
+	builder.combinationInfo = combinationInfo
+	builder.combinationInfoFlag = true
+	return builder
+}
+
+// 子模板配置信息列表对应的string，避免循环引用问题
+//
+// 示例值：[]
+func (builder *SignatureTemplateFieldBuilder) Children(children string) *SignatureTemplateFieldBuilder {
+	builder.children = children
+	builder.childrenFlag = true
+	return builder
+}
+
+// 组合字段信息v2
+//
+// 示例值：
+func (builder *SignatureTemplateFieldBuilder) CombinationInfoV2(combinationInfoV2 *SignatureTemplateCombinationFieldInfoV2) *SignatureTemplateFieldBuilder {
+	builder.combinationInfoV2 = combinationInfoV2
+	builder.combinationInfoV2Flag = true
+	return builder
+}
+
+func (builder *SignatureTemplateFieldBuilder) Build() *SignatureTemplateField {
+	req := &SignatureTemplateField{}
+	if builder.fieldTypeFlag {
+		req.FieldType = builder.fieldType
+	}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	if builder.commonInfoFlag {
+		req.CommonInfo = builder.commonInfo
+	}
+	if builder.combinationInfoFlag {
+		req.CombinationInfo = builder.combinationInfo
+	}
+	if builder.childrenFlag {
+		req.Children = &builder.children
+
+	}
+	if builder.combinationInfoV2Flag {
+		req.CombinationInfoV2 = builder.combinationInfoV2
+	}
+	return req
+}
+
+type SignatureTemplateFilter struct {
+	Label         []*I18n                        `json:"label,omitempty"`          // 双语描述
+	Apiname       *string                        `json:"apiname,omitempty"`        // 主数据apiname
+	Filters       []*SignatureTemplateFilterItem `json:"filters,omitempty"`        // 过滤条件列表
+	Logic         *Enum                          `json:"logic,omitempty"`          // 多个生效条件的logic
+	IsChecked     *bool                          `json:"is_checked,omitempty"`     // 是否被校验
+	FilterDesc    *string                        `json:"filter_desc,omitempty"`    // 过滤条件描述
+	CriterionList *string                        `json:"criterion_list,omitempty"` // 过滤条件列表，使用string类型描述list的原因是为了避免循环引用问题，因为该list的item类型就是这个数据类型
+}
+
+type SignatureTemplateFilterBuilder struct {
+	label             []*I18n // 双语描述
+	labelFlag         bool
+	apiname           string // 主数据apiname
+	apinameFlag       bool
+	filters           []*SignatureTemplateFilterItem // 过滤条件列表
+	filtersFlag       bool
+	logic             *Enum // 多个生效条件的logic
+	logicFlag         bool
+	isChecked         bool // 是否被校验
+	isCheckedFlag     bool
+	filterDesc        string // 过滤条件描述
+	filterDescFlag    bool
+	criterionList     string // 过滤条件列表，使用string类型描述list的原因是为了避免循环引用问题，因为该list的item类型就是这个数据类型
+	criterionListFlag bool
+}
+
+func NewSignatureTemplateFilterBuilder() *SignatureTemplateFilterBuilder {
+	builder := &SignatureTemplateFilterBuilder{}
+	return builder
+}
+
+// 双语描述
+//
+// 示例值：
+func (builder *SignatureTemplateFilterBuilder) Label(label []*I18n) *SignatureTemplateFilterBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+// 主数据apiname
+//
+// 示例值：status
+func (builder *SignatureTemplateFilterBuilder) Apiname(apiname string) *SignatureTemplateFilterBuilder {
+	builder.apiname = apiname
+	builder.apinameFlag = true
+	return builder
+}
+
+// 过滤条件列表
+//
+// 示例值：
+func (builder *SignatureTemplateFilterBuilder) Filters(filters []*SignatureTemplateFilterItem) *SignatureTemplateFilterBuilder {
+	builder.filters = filters
+	builder.filtersFlag = true
+	return builder
+}
+
+// 多个生效条件的logic
+//
+// 示例值：
+func (builder *SignatureTemplateFilterBuilder) Logic(logic *Enum) *SignatureTemplateFilterBuilder {
+	builder.logic = logic
+	builder.logicFlag = true
+	return builder
+}
+
+// 是否被校验
+//
+// 示例值：
+func (builder *SignatureTemplateFilterBuilder) IsChecked(isChecked bool) *SignatureTemplateFilterBuilder {
+	builder.isChecked = isChecked
+	builder.isCheckedFlag = true
+	return builder
+}
+
+// 过滤条件描述
+//
+// 示例值：desc
+func (builder *SignatureTemplateFilterBuilder) FilterDesc(filterDesc string) *SignatureTemplateFilterBuilder {
+	builder.filterDesc = filterDesc
+	builder.filterDescFlag = true
+	return builder
+}
+
+// 过滤条件列表，使用string类型描述list的原因是为了避免循环引用问题，因为该list的item类型就是这个数据类型
+//
+// 示例值：[]
+func (builder *SignatureTemplateFilterBuilder) CriterionList(criterionList string) *SignatureTemplateFilterBuilder {
+	builder.criterionList = criterionList
+	builder.criterionListFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateFilterBuilder) Build() *SignatureTemplateFilter {
+	req := &SignatureTemplateFilter{}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	if builder.apinameFlag {
+		req.Apiname = &builder.apiname
+
+	}
+	if builder.filtersFlag {
+		req.Filters = builder.filters
+	}
+	if builder.logicFlag {
+		req.Logic = builder.logic
+	}
+	if builder.isCheckedFlag {
+		req.IsChecked = &builder.isChecked
+
+	}
+	if builder.filterDescFlag {
+		req.FilterDesc = &builder.filterDesc
+
+	}
+	if builder.criterionListFlag {
+		req.CriterionList = &builder.criterionList
+
+	}
+	return req
+}
+
+type SignatureTemplateFilterItem struct {
+	Left   *string  `json:"left,omitempty"`   // 左值
+	Rights []string `json:"rights,omitempty"` // 右值列表
+	Op     *Enum    `json:"op,omitempty"`     // 操作符
+}
+
+type SignatureTemplateFilterItemBuilder struct {
+	left       string // 左值
+	leftFlag   bool
+	rights     []string // 右值列表
+	rightsFlag bool
+	op         *Enum // 操作符
+	opFlag     bool
+}
+
+func NewSignatureTemplateFilterItemBuilder() *SignatureTemplateFilterItemBuilder {
+	builder := &SignatureTemplateFilterItemBuilder{}
+	return builder
+}
+
+// 左值
+//
+// 示例值：aa
+func (builder *SignatureTemplateFilterItemBuilder) Left(left string) *SignatureTemplateFilterItemBuilder {
+	builder.left = left
+	builder.leftFlag = true
+	return builder
+}
+
+// 右值列表
+//
+// 示例值：
+func (builder *SignatureTemplateFilterItemBuilder) Rights(rights []string) *SignatureTemplateFilterItemBuilder {
+	builder.rights = rights
+	builder.rightsFlag = true
+	return builder
+}
+
+// 操作符
+//
+// 示例值：
+func (builder *SignatureTemplateFilterItemBuilder) Op(op *Enum) *SignatureTemplateFilterItemBuilder {
+	builder.op = op
+	builder.opFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateFilterItemBuilder) Build() *SignatureTemplateFilterItem {
+	req := &SignatureTemplateFilterItem{}
+	if builder.leftFlag {
+		req.Left = &builder.left
+
+	}
+	if builder.rightsFlag {
+		req.Rights = builder.rights
+	}
+	if builder.opFlag {
+		req.Op = builder.op
+	}
+	return req
+}
+
+type SignatureTemplateIdWithSystemAndCustomField struct {
+	Id                *string                   `json:"id,omitempty"`                   // 电子签模板id
+	SystemFieldInfo   *SignatureFileSystemField `json:"system_field_info,omitempty"`    // 该电子签模板对应的系统字段
+	CustomFieldInfo   *SignatureCustomFieldV1   `json:"custom_field_info,omitempty"`    // 该电子签模板对应的自定义字段 v1版本, 不支持多语类型
+	CustomFieldInfoV2 *SignatureCustomFieldV2   `json:"custom_field_info_v2,omitempty"` // 该电子签模板对应的自定义字段 v2 版本, 支持多语类型
+}
+
+type SignatureTemplateIdWithSystemAndCustomFieldBuilder struct {
+	id                    string // 电子签模板id
+	idFlag                bool
+	systemFieldInfo       *SignatureFileSystemField // 该电子签模板对应的系统字段
+	systemFieldInfoFlag   bool
+	customFieldInfo       *SignatureCustomFieldV1 // 该电子签模板对应的自定义字段 v1版本, 不支持多语类型
+	customFieldInfoFlag   bool
+	customFieldInfoV2     *SignatureCustomFieldV2 // 该电子签模板对应的自定义字段 v2 版本, 支持多语类型
+	customFieldInfoV2Flag bool
+}
+
+func NewSignatureTemplateIdWithSystemAndCustomFieldBuilder() *SignatureTemplateIdWithSystemAndCustomFieldBuilder {
+	builder := &SignatureTemplateIdWithSystemAndCustomFieldBuilder{}
+	return builder
+}
+
+// 电子签模板id
+//
+// 示例值：1231241
+func (builder *SignatureTemplateIdWithSystemAndCustomFieldBuilder) Id(id string) *SignatureTemplateIdWithSystemAndCustomFieldBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 该电子签模板对应的系统字段
+//
+// 示例值：
+func (builder *SignatureTemplateIdWithSystemAndCustomFieldBuilder) SystemFieldInfo(systemFieldInfo *SignatureFileSystemField) *SignatureTemplateIdWithSystemAndCustomFieldBuilder {
+	builder.systemFieldInfo = systemFieldInfo
+	builder.systemFieldInfoFlag = true
+	return builder
+}
+
+// 该电子签模板对应的自定义字段 v1版本, 不支持多语类型
+//
+// 示例值：
+func (builder *SignatureTemplateIdWithSystemAndCustomFieldBuilder) CustomFieldInfo(customFieldInfo *SignatureCustomFieldV1) *SignatureTemplateIdWithSystemAndCustomFieldBuilder {
+	builder.customFieldInfo = customFieldInfo
+	builder.customFieldInfoFlag = true
+	return builder
+}
+
+// 该电子签模板对应的自定义字段 v2 版本, 支持多语类型
+//
+// 示例值：
+func (builder *SignatureTemplateIdWithSystemAndCustomFieldBuilder) CustomFieldInfoV2(customFieldInfoV2 *SignatureCustomFieldV2) *SignatureTemplateIdWithSystemAndCustomFieldBuilder {
+	builder.customFieldInfoV2 = customFieldInfoV2
+	builder.customFieldInfoV2Flag = true
+	return builder
+}
+
+func (builder *SignatureTemplateIdWithSystemAndCustomFieldBuilder) Build() *SignatureTemplateIdWithSystemAndCustomField {
+	req := &SignatureTemplateIdWithSystemAndCustomField{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.systemFieldInfoFlag {
+		req.SystemFieldInfo = builder.systemFieldInfo
+	}
+	if builder.customFieldInfoFlag {
+		req.CustomFieldInfo = builder.customFieldInfo
+	}
+	if builder.customFieldInfoV2Flag {
+		req.CustomFieldInfoV2 = builder.customFieldInfoV2
+	}
+	return req
+}
+
+type SignatureTemplateInfo struct {
+	Id          *string                       `json:"id,omitempty"`           // 电子签模板id
+	BriefInfo   *SignatureTemplateBriefInfo   `json:"brief_info,omitempty"`   // 简略信息
+	ContentInfo *SignatureTemplateContentInfo `json:"content_info,omitempty"` // 模板内容信息
+}
+
+type SignatureTemplateInfoBuilder struct {
+	id              string // 电子签模板id
+	idFlag          bool
+	briefInfo       *SignatureTemplateBriefInfo // 简略信息
+	briefInfoFlag   bool
+	contentInfo     *SignatureTemplateContentInfo // 模板内容信息
+	contentInfoFlag bool
+}
+
+func NewSignatureTemplateInfoBuilder() *SignatureTemplateInfoBuilder {
+	builder := &SignatureTemplateInfoBuilder{}
+	return builder
+}
+
+// 电子签模板id
+//
+// 示例值：12313
+func (builder *SignatureTemplateInfoBuilder) Id(id string) *SignatureTemplateInfoBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 简略信息
+//
+// 示例值：
+func (builder *SignatureTemplateInfoBuilder) BriefInfo(briefInfo *SignatureTemplateBriefInfo) *SignatureTemplateInfoBuilder {
+	builder.briefInfo = briefInfo
+	builder.briefInfoFlag = true
+	return builder
+}
+
+// 模板内容信息
+//
+// 示例值：
+func (builder *SignatureTemplateInfoBuilder) ContentInfo(contentInfo *SignatureTemplateContentInfo) *SignatureTemplateInfoBuilder {
+	builder.contentInfo = contentInfo
+	builder.contentInfoFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateInfoBuilder) Build() *SignatureTemplateInfo {
+	req := &SignatureTemplateInfo{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.briefInfoFlag {
+		req.BriefInfo = builder.briefInfo
+	}
+	if builder.contentInfoFlag {
+		req.ContentInfo = builder.contentInfo
+	}
+	return req
+}
+
+type SignatureTemplateInfoWithThumbnail struct {
+	Id                 *string                      `json:"id,omitempty"`                   // id
+	Label              []*I18n                      `json:"label,omitempty"`                // 名称 支持多语
+	Category           *Enum                        `json:"category,omitempty"`             // 模版类别
+	Usage              *Enum                        `json:"usage,omitempty"`                // 模版用法
+	CreateTime         *string                      `json:"create_time,omitempty"`          // 创建日期
+	ModifyTime         *string                      `json:"modify_time,omitempty"`          // 修改日期
+	CreatedBy          *SignatureUserInfo           `json:"created_by,omitempty"`           // 创建人
+	UpdatedBy          *SignatureUserInfo           `json:"updated_by,omitempty"`           // 修改人
+	ThumbnailUrl       *string                      `json:"thumbnail_url,omitempty"`        // 缩略图url
+	SignatoryLabels    []*SignatureSignatoryLabel   `json:"signatory_labels,omitempty"`     // 模版签署人标签
+	TemplateCode       *string                      `json:"template_code,omitempty"`        // 模板编码
+	TemplateDesc       *string                      `json:"template_desc,omitempty"`        // 模板描述
+	TemplateRegionInfo *SignatureTemplateRegionInfo `json:"template_region_info,omitempty"` // 模板适用区域
+}
+
+type SignatureTemplateInfoWithThumbnailBuilder struct {
+	id                     string // id
+	idFlag                 bool
+	label                  []*I18n // 名称 支持多语
+	labelFlag              bool
+	category               *Enum // 模版类别
+	categoryFlag           bool
+	usage                  *Enum // 模版用法
+	usageFlag              bool
+	createTime             string // 创建日期
+	createTimeFlag         bool
+	modifyTime             string // 修改日期
+	modifyTimeFlag         bool
+	createdBy              *SignatureUserInfo // 创建人
+	createdByFlag          bool
+	updatedBy              *SignatureUserInfo // 修改人
+	updatedByFlag          bool
+	thumbnailUrl           string // 缩略图url
+	thumbnailUrlFlag       bool
+	signatoryLabels        []*SignatureSignatoryLabel // 模版签署人标签
+	signatoryLabelsFlag    bool
+	templateCode           string // 模板编码
+	templateCodeFlag       bool
+	templateDesc           string // 模板描述
+	templateDescFlag       bool
+	templateRegionInfo     *SignatureTemplateRegionInfo // 模板适用区域
+	templateRegionInfoFlag bool
+}
+
+func NewSignatureTemplateInfoWithThumbnailBuilder() *SignatureTemplateInfoWithThumbnailBuilder {
+	builder := &SignatureTemplateInfoWithThumbnailBuilder{}
+	return builder
+}
+
+// id
+//
+// 示例值：1
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) Id(id string) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 名称 支持多语
+//
+// 示例值：
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) Label(label []*I18n) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.label = label
+	builder.labelFlag = true
+	return builder
+}
+
+// 模版类别
+//
+// 示例值：
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) Category(category *Enum) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.category = category
+	builder.categoryFlag = true
+	return builder
+}
+
+// 模版用法
+//
+// 示例值：
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) Usage(usage *Enum) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.usage = usage
+	builder.usageFlag = true
+	return builder
+}
+
+// 创建日期
+//
+// 示例值：2021-12-21
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) CreateTime(createTime string) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.createTime = createTime
+	builder.createTimeFlag = true
+	return builder
+}
+
+// 修改日期
+//
+// 示例值：2021-12-21
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) ModifyTime(modifyTime string) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.modifyTime = modifyTime
+	builder.modifyTimeFlag = true
+	return builder
+}
+
+// 创建人
+//
+// 示例值：
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) CreatedBy(createdBy *SignatureUserInfo) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.createdBy = createdBy
+	builder.createdByFlag = true
+	return builder
+}
+
+// 修改人
+//
+// 示例值：
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) UpdatedBy(updatedBy *SignatureUserInfo) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.updatedBy = updatedBy
+	builder.updatedByFlag = true
+	return builder
+}
+
+// 缩略图url
+//
+// 示例值：1
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) ThumbnailUrl(thumbnailUrl string) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.thumbnailUrl = thumbnailUrl
+	builder.thumbnailUrlFlag = true
+	return builder
+}
+
+// 模版签署人标签
+//
+// 示例值：
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) SignatoryLabels(signatoryLabels []*SignatureSignatoryLabel) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.signatoryLabels = signatoryLabels
+	builder.signatoryLabelsFlag = true
+	return builder
+}
+
+// 模板编码
+//
+// 示例值：1234
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) TemplateCode(templateCode string) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.templateCode = templateCode
+	builder.templateCodeFlag = true
+	return builder
+}
+
+// 模板描述
+//
+// 示例值：desc
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) TemplateDesc(templateDesc string) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.templateDesc = templateDesc
+	builder.templateDescFlag = true
+	return builder
+}
+
+// 模板适用区域
+//
+// 示例值：
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) TemplateRegionInfo(templateRegionInfo *SignatureTemplateRegionInfo) *SignatureTemplateInfoWithThumbnailBuilder {
+	builder.templateRegionInfo = templateRegionInfo
+	builder.templateRegionInfoFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateInfoWithThumbnailBuilder) Build() *SignatureTemplateInfoWithThumbnail {
+	req := &SignatureTemplateInfoWithThumbnail{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.labelFlag {
+		req.Label = builder.label
+	}
+	if builder.categoryFlag {
+		req.Category = builder.category
+	}
+	if builder.usageFlag {
+		req.Usage = builder.usage
+	}
+	if builder.createTimeFlag {
+		req.CreateTime = &builder.createTime
+
+	}
+	if builder.modifyTimeFlag {
+		req.ModifyTime = &builder.modifyTime
+
+	}
+	if builder.createdByFlag {
+		req.CreatedBy = builder.createdBy
+	}
+	if builder.updatedByFlag {
+		req.UpdatedBy = builder.updatedBy
+	}
+	if builder.thumbnailUrlFlag {
+		req.ThumbnailUrl = &builder.thumbnailUrl
+
+	}
+	if builder.signatoryLabelsFlag {
+		req.SignatoryLabels = builder.signatoryLabels
+	}
+	if builder.templateCodeFlag {
+		req.TemplateCode = &builder.templateCode
+
+	}
+	if builder.templateDescFlag {
+		req.TemplateDesc = &builder.templateDesc
+
+	}
+	if builder.templateRegionInfoFlag {
+		req.TemplateRegionInfo = builder.templateRegionInfo
+	}
+	return req
+}
+
+type SignatureTemplatePermissionInfo struct {
+	ReadPermission   *bool `json:"read_permission,omitempty"`   // 读权限
+	WritePermission  *bool `json:"write_permission,omitempty"`  // 写权限
+	SwitchPermission *bool `json:"switch_permission,omitempty"` // 转换权限
+	CopyPermission   *bool `json:"copy_permission,omitempty"`   // 复制权限
+	DeletePermission *bool `json:"delete_permission,omitempty"` // 删除权限
+}
+
+type SignatureTemplatePermissionInfoBuilder struct {
+	readPermission       bool // 读权限
+	readPermissionFlag   bool
+	writePermission      bool // 写权限
+	writePermissionFlag  bool
+	switchPermission     bool // 转换权限
+	switchPermissionFlag bool
+	copyPermission       bool // 复制权限
+	copyPermissionFlag   bool
+	deletePermission     bool // 删除权限
+	deletePermissionFlag bool
+}
+
+func NewSignatureTemplatePermissionInfoBuilder() *SignatureTemplatePermissionInfoBuilder {
+	builder := &SignatureTemplatePermissionInfoBuilder{}
+	return builder
+}
+
+// 读权限
+//
+// 示例值：
+func (builder *SignatureTemplatePermissionInfoBuilder) ReadPermission(readPermission bool) *SignatureTemplatePermissionInfoBuilder {
+	builder.readPermission = readPermission
+	builder.readPermissionFlag = true
+	return builder
+}
+
+// 写权限
+//
+// 示例值：
+func (builder *SignatureTemplatePermissionInfoBuilder) WritePermission(writePermission bool) *SignatureTemplatePermissionInfoBuilder {
+	builder.writePermission = writePermission
+	builder.writePermissionFlag = true
+	return builder
+}
+
+// 转换权限
+//
+// 示例值：
+func (builder *SignatureTemplatePermissionInfoBuilder) SwitchPermission(switchPermission bool) *SignatureTemplatePermissionInfoBuilder {
+	builder.switchPermission = switchPermission
+	builder.switchPermissionFlag = true
+	return builder
+}
+
+// 复制权限
+//
+// 示例值：
+func (builder *SignatureTemplatePermissionInfoBuilder) CopyPermission(copyPermission bool) *SignatureTemplatePermissionInfoBuilder {
+	builder.copyPermission = copyPermission
+	builder.copyPermissionFlag = true
+	return builder
+}
+
+// 删除权限
+//
+// 示例值：
+func (builder *SignatureTemplatePermissionInfoBuilder) DeletePermission(deletePermission bool) *SignatureTemplatePermissionInfoBuilder {
+	builder.deletePermission = deletePermission
+	builder.deletePermissionFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplatePermissionInfoBuilder) Build() *SignatureTemplatePermissionInfo {
+	req := &SignatureTemplatePermissionInfo{}
+	if builder.readPermissionFlag {
+		req.ReadPermission = &builder.readPermission
+
+	}
+	if builder.writePermissionFlag {
+		req.WritePermission = &builder.writePermission
+
+	}
+	if builder.switchPermissionFlag {
+		req.SwitchPermission = &builder.switchPermission
+
+	}
+	if builder.copyPermissionFlag {
+		req.CopyPermission = &builder.copyPermission
+
+	}
+	if builder.deletePermissionFlag {
+		req.DeletePermission = &builder.deletePermission
+
+	}
+	return req
+}
+
+type SignatureTemplateRegionInfo struct {
+	IsGlobalScope *string              `json:"is_global_scope,omitempty"` // 是否全球适用
+	MetaInfos     []*SignatureMetaInfo `json:"meta_infos,omitempty"`      // 适用区域名称
+}
+
+type SignatureTemplateRegionInfoBuilder struct {
+	isGlobalScope     string // 是否全球适用
+	isGlobalScopeFlag bool
+	metaInfos         []*SignatureMetaInfo // 适用区域名称
+	metaInfosFlag     bool
+}
+
+func NewSignatureTemplateRegionInfoBuilder() *SignatureTemplateRegionInfoBuilder {
+	builder := &SignatureTemplateRegionInfoBuilder{}
+	return builder
+}
+
+// 是否全球适用
+//
+// 示例值：global
+func (builder *SignatureTemplateRegionInfoBuilder) IsGlobalScope(isGlobalScope string) *SignatureTemplateRegionInfoBuilder {
+	builder.isGlobalScope = isGlobalScope
+	builder.isGlobalScopeFlag = true
+	return builder
+}
+
+// 适用区域名称
+//
+// 示例值：
+func (builder *SignatureTemplateRegionInfoBuilder) MetaInfos(metaInfos []*SignatureMetaInfo) *SignatureTemplateRegionInfoBuilder {
+	builder.metaInfos = metaInfos
+	builder.metaInfosFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateRegionInfoBuilder) Build() *SignatureTemplateRegionInfo {
+	req := &SignatureTemplateRegionInfo{}
+	if builder.isGlobalScopeFlag {
+		req.IsGlobalScope = &builder.isGlobalScope
+
+	}
+	if builder.metaInfosFlag {
+		req.MetaInfos = builder.metaInfos
+	}
+	return req
+}
+
+type SignatureTemplateSetting struct {
+	PageSealTypes []string `json:"page_seal_types,omitempty"` // 骑缝章类型
+}
+
+type SignatureTemplateSettingBuilder struct {
+	pageSealTypes     []string // 骑缝章类型
+	pageSealTypesFlag bool
+}
+
+func NewSignatureTemplateSettingBuilder() *SignatureTemplateSettingBuilder {
+	builder := &SignatureTemplateSettingBuilder{}
+	return builder
+}
+
+// 骑缝章类型
+//
+// 示例值：
+func (builder *SignatureTemplateSettingBuilder) PageSealTypes(pageSealTypes []string) *SignatureTemplateSettingBuilder {
+	builder.pageSealTypes = pageSealTypes
+	builder.pageSealTypesFlag = true
+	return builder
+}
+
+func (builder *SignatureTemplateSettingBuilder) Build() *SignatureTemplateSetting {
+	req := &SignatureTemplateSetting{}
+	if builder.pageSealTypesFlag {
+		req.PageSealTypes = builder.pageSealTypes
+	}
+	return req
+}
+
+type SignatureUserInfo struct {
+	Id *string `json:"id,omitempty"` // employmentID
+}
+
+type SignatureUserInfoBuilder struct {
+	id     string // employmentID
+	idFlag bool
+}
+
+func NewSignatureUserInfoBuilder() *SignatureUserInfoBuilder {
+	builder := &SignatureUserInfoBuilder{}
+	return builder
+}
+
+// employmentID
+//
+// 示例值：7300476612163913260
+func (builder *SignatureUserInfoBuilder) Id(id string) *SignatureUserInfoBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+func (builder *SignatureUserInfoBuilder) Build() *SignatureUserInfo {
+	req := &SignatureUserInfo{}
+	if builder.idFlag {
+		req.Id = &builder.id
 
 	}
 	return req
@@ -25954,6 +28722,64 @@ func (builder *UserContactBuilder) Build() *UserContact {
 	}
 	if builder.mobileFlag {
 		req.Mobile = &builder.mobile
+
+	}
+	return req
+}
+
+type UserId struct {
+	UserId  *string `json:"user_id,omitempty"`  //
+	OpenId  *string `json:"open_id,omitempty"`  //
+	UnionId *string `json:"union_id,omitempty"` //
+}
+
+type UserIdBuilder struct {
+	userId      string //
+	userIdFlag  bool
+	openId      string //
+	openIdFlag  bool
+	unionId     string //
+	unionIdFlag bool
+}
+
+func NewUserIdBuilder() *UserIdBuilder {
+	builder := &UserIdBuilder{}
+	return builder
+}
+
+// 示例值：
+func (builder *UserIdBuilder) UserId(userId string) *UserIdBuilder {
+	builder.userId = userId
+	builder.userIdFlag = true
+	return builder
+}
+
+// 示例值：
+func (builder *UserIdBuilder) OpenId(openId string) *UserIdBuilder {
+	builder.openId = openId
+	builder.openIdFlag = true
+	return builder
+}
+
+// 示例值：
+func (builder *UserIdBuilder) UnionId(unionId string) *UserIdBuilder {
+	builder.unionId = unionId
+	builder.unionIdFlag = true
+	return builder
+}
+
+func (builder *UserIdBuilder) Build() *UserId {
+	req := &UserId{}
+	if builder.userIdFlag {
+		req.UserId = &builder.userId
+
+	}
+	if builder.openIdFlag {
+		req.OpenId = &builder.openId
+
+	}
+	if builder.unionIdFlag {
+		req.UnionId = &builder.unionId
 
 	}
 	return req
@@ -30325,6 +33151,232 @@ func (resp *ParentsDepartmentResp) Success() bool {
 	return resp.Code == 0
 }
 
+type QueryMultiTimelineDepartmentReqBodyBuilder struct {
+	departmentIds          []string // 部门 ID 列表
+	departmentIdsFlag      bool
+	effectiveDateStart     string // 生效日期开始(包含)
+	effectiveDateStartFlag bool
+	effectiveDateEnd       string // 生效日期结束(包含)
+	effectiveDateEndFlag   bool
+	fields                 []string // 返回数据的字段列表，可选["department_name", "code", "active", "parent_department_id", "manager", "description", "effective_date"], 以及自定义字段field_name
+	fieldsFlag             bool
+}
+
+func NewQueryMultiTimelineDepartmentReqBodyBuilder() *QueryMultiTimelineDepartmentReqBodyBuilder {
+	builder := &QueryMultiTimelineDepartmentReqBodyBuilder{}
+	return builder
+}
+
+// 部门 ID 列表
+//
+// 示例值：
+func (builder *QueryMultiTimelineDepartmentReqBodyBuilder) DepartmentIds(departmentIds []string) *QueryMultiTimelineDepartmentReqBodyBuilder {
+	builder.departmentIds = departmentIds
+	builder.departmentIdsFlag = true
+	return builder
+}
+
+// 生效日期开始(包含)
+//
+// 示例值：2024-01-01
+func (builder *QueryMultiTimelineDepartmentReqBodyBuilder) EffectiveDateStart(effectiveDateStart string) *QueryMultiTimelineDepartmentReqBodyBuilder {
+	builder.effectiveDateStart = effectiveDateStart
+	builder.effectiveDateStartFlag = true
+	return builder
+}
+
+// 生效日期结束(包含)
+//
+// 示例值：2024-12-31
+func (builder *QueryMultiTimelineDepartmentReqBodyBuilder) EffectiveDateEnd(effectiveDateEnd string) *QueryMultiTimelineDepartmentReqBodyBuilder {
+	builder.effectiveDateEnd = effectiveDateEnd
+	builder.effectiveDateEndFlag = true
+	return builder
+}
+
+// 返回数据的字段列表，可选["department_name", "code", "active", "parent_department_id", "manager", "description", "effective_date"], 以及自定义字段field_name
+//
+// 示例值：
+func (builder *QueryMultiTimelineDepartmentReqBodyBuilder) Fields(fields []string) *QueryMultiTimelineDepartmentReqBodyBuilder {
+	builder.fields = fields
+	builder.fieldsFlag = true
+	return builder
+}
+
+func (builder *QueryMultiTimelineDepartmentReqBodyBuilder) Build() *QueryMultiTimelineDepartmentReqBody {
+	req := &QueryMultiTimelineDepartmentReqBody{}
+	if builder.departmentIdsFlag {
+		req.DepartmentIds = builder.departmentIds
+	}
+	if builder.effectiveDateStartFlag {
+		req.EffectiveDateStart = &builder.effectiveDateStart
+	}
+	if builder.effectiveDateEndFlag {
+		req.EffectiveDateEnd = &builder.effectiveDateEnd
+	}
+	if builder.fieldsFlag {
+		req.Fields = builder.fields
+	}
+	return req
+}
+
+type QueryMultiTimelineDepartmentPathReqBodyBuilder struct {
+	departmentIds          []string
+	departmentIdsFlag      bool
+	effectiveDateStart     string
+	effectiveDateStartFlag bool
+	effectiveDateEnd       string
+	effectiveDateEndFlag   bool
+	fields                 []string
+	fieldsFlag             bool
+}
+
+func NewQueryMultiTimelineDepartmentPathReqBodyBuilder() *QueryMultiTimelineDepartmentPathReqBodyBuilder {
+	builder := &QueryMultiTimelineDepartmentPathReqBodyBuilder{}
+	return builder
+}
+
+// 部门 ID 列表
+//
+// 示例值：
+func (builder *QueryMultiTimelineDepartmentPathReqBodyBuilder) DepartmentIds(departmentIds []string) *QueryMultiTimelineDepartmentPathReqBodyBuilder {
+	builder.departmentIds = departmentIds
+	builder.departmentIdsFlag = true
+	return builder
+}
+
+// 生效日期开始(包含)
+//
+// 示例值：2024-01-01
+func (builder *QueryMultiTimelineDepartmentPathReqBodyBuilder) EffectiveDateStart(effectiveDateStart string) *QueryMultiTimelineDepartmentPathReqBodyBuilder {
+	builder.effectiveDateStart = effectiveDateStart
+	builder.effectiveDateStartFlag = true
+	return builder
+}
+
+// 生效日期结束(包含)
+//
+// 示例值：2024-12-31
+func (builder *QueryMultiTimelineDepartmentPathReqBodyBuilder) EffectiveDateEnd(effectiveDateEnd string) *QueryMultiTimelineDepartmentPathReqBodyBuilder {
+	builder.effectiveDateEnd = effectiveDateEnd
+	builder.effectiveDateEndFlag = true
+	return builder
+}
+
+// 返回数据的字段列表，可选["department_name", "code", "active", "parent_department_id", "manager", "description", "effective_date"], 以及自定义字段field_name
+//
+// 示例值：
+func (builder *QueryMultiTimelineDepartmentPathReqBodyBuilder) Fields(fields []string) *QueryMultiTimelineDepartmentPathReqBodyBuilder {
+	builder.fields = fields
+	builder.fieldsFlag = true
+	return builder
+}
+
+func (builder *QueryMultiTimelineDepartmentPathReqBodyBuilder) Build() (*QueryMultiTimelineDepartmentReqBody, error) {
+	req := &QueryMultiTimelineDepartmentReqBody{}
+	if builder.departmentIdsFlag {
+		req.DepartmentIds = builder.departmentIds
+	}
+	if builder.effectiveDateStartFlag {
+		req.EffectiveDateStart = &builder.effectiveDateStart
+	}
+	if builder.effectiveDateEndFlag {
+		req.EffectiveDateEnd = &builder.effectiveDateEnd
+	}
+	if builder.fieldsFlag {
+		req.Fields = builder.fields
+	}
+	return req, nil
+}
+
+type QueryMultiTimelineDepartmentReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *QueryMultiTimelineDepartmentReqBody
+}
+
+func NewQueryMultiTimelineDepartmentReqBuilder() *QueryMultiTimelineDepartmentReqBuilder {
+	builder := &QueryMultiTimelineDepartmentReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 分页大小，最大 100
+//
+// 示例值：100
+func (builder *QueryMultiTimelineDepartmentReqBuilder) PageSize(pageSize int) *QueryMultiTimelineDepartmentReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：6891251722631890445
+func (builder *QueryMultiTimelineDepartmentReqBuilder) PageToken(pageToken string) *QueryMultiTimelineDepartmentReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：people_corehr_id
+func (builder *QueryMultiTimelineDepartmentReqBuilder) UserIdType(userIdType string) *QueryMultiTimelineDepartmentReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 此次调用中使用的部门 ID 类型
+//
+// 示例值：people_corehr_department_id
+func (builder *QueryMultiTimelineDepartmentReqBuilder) DepartmentIdType(departmentIdType string) *QueryMultiTimelineDepartmentReqBuilder {
+	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
+	return builder
+}
+
+// 查询任意日期部门信息
+func (builder *QueryMultiTimelineDepartmentReqBuilder) Body(body *QueryMultiTimelineDepartmentReqBody) *QueryMultiTimelineDepartmentReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *QueryMultiTimelineDepartmentReqBuilder) Build() *QueryMultiTimelineDepartmentReq {
+	req := &QueryMultiTimelineDepartmentReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type QueryMultiTimelineDepartmentReqBody struct {
+	DepartmentIds      []string `json:"department_ids,omitempty"`       // 部门 ID 列表
+	EffectiveDateStart *string  `json:"effective_date_start,omitempty"` // 生效日期开始(包含)
+	EffectiveDateEnd   *string  `json:"effective_date_end,omitempty"`   // 生效日期结束(包含)
+	Fields             []string `json:"fields,omitempty"`               // 返回数据的字段列表，可选["department_name", "code", "active", "parent_department_id", "manager", "description", "effective_date"], 以及自定义字段field_name
+}
+
+type QueryMultiTimelineDepartmentReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *QueryMultiTimelineDepartmentReqBody `body:""`
+}
+
+type QueryMultiTimelineDepartmentRespData struct {
+	Items     []*DepartmentTimeline `json:"items,omitempty"`      // 部门信息
+	PageToken *string               `json:"page_token,omitempty"` // 下一页token
+	HasMore   *bool                 `json:"has_more,omitempty"`   // 是否有下一页
+}
+
+type QueryMultiTimelineDepartmentResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *QueryMultiTimelineDepartmentRespData `json:"data"` // 业务数据
+}
+
+func (resp *QueryMultiTimelineDepartmentResp) Success() bool {
+	return resp.Code == 0
+}
+
 type QueryTimelineDepartmentReqBodyBuilder struct {
 	departmentIds     []string // 部门 ID 列表
 	departmentIdsFlag bool
@@ -32981,6 +36033,187 @@ func (resp *BatchGetJobFamilyResp) Success() bool {
 	return resp.Code == 0
 }
 
+type QueryJobGradeReqBodyBuilder struct {
+	ids        []string // 职等ID列表
+	idsFlag    bool
+	codes      []string // 职等code列表
+	codesFlag  bool
+	active     bool // 是否启用
+	activeFlag bool
+}
+
+func NewQueryJobGradeReqBodyBuilder() *QueryJobGradeReqBodyBuilder {
+	builder := &QueryJobGradeReqBodyBuilder{}
+	return builder
+}
+
+// 职等ID列表
+//
+// 示例值：
+func (builder *QueryJobGradeReqBodyBuilder) Ids(ids []string) *QueryJobGradeReqBodyBuilder {
+	builder.ids = ids
+	builder.idsFlag = true
+	return builder
+}
+
+// 职等code列表
+//
+// 示例值：
+func (builder *QueryJobGradeReqBodyBuilder) Codes(codes []string) *QueryJobGradeReqBodyBuilder {
+	builder.codes = codes
+	builder.codesFlag = true
+	return builder
+}
+
+// 是否启用
+//
+// 示例值：true
+func (builder *QueryJobGradeReqBodyBuilder) Active(active bool) *QueryJobGradeReqBodyBuilder {
+	builder.active = active
+	builder.activeFlag = true
+	return builder
+}
+
+func (builder *QueryJobGradeReqBodyBuilder) Build() *QueryJobGradeReqBody {
+	req := &QueryJobGradeReqBody{}
+	if builder.idsFlag {
+		req.Ids = builder.ids
+	}
+	if builder.codesFlag {
+		req.Codes = builder.codes
+	}
+	if builder.activeFlag {
+		req.Active = &builder.active
+	}
+	return req
+}
+
+type QueryJobGradePathReqBodyBuilder struct {
+	ids        []string
+	idsFlag    bool
+	codes      []string
+	codesFlag  bool
+	active     bool
+	activeFlag bool
+}
+
+func NewQueryJobGradePathReqBodyBuilder() *QueryJobGradePathReqBodyBuilder {
+	builder := &QueryJobGradePathReqBodyBuilder{}
+	return builder
+}
+
+// 职等ID列表
+//
+// 示例值：
+func (builder *QueryJobGradePathReqBodyBuilder) Ids(ids []string) *QueryJobGradePathReqBodyBuilder {
+	builder.ids = ids
+	builder.idsFlag = true
+	return builder
+}
+
+// 职等code列表
+//
+// 示例值：
+func (builder *QueryJobGradePathReqBodyBuilder) Codes(codes []string) *QueryJobGradePathReqBodyBuilder {
+	builder.codes = codes
+	builder.codesFlag = true
+	return builder
+}
+
+// 是否启用
+//
+// 示例值：true
+func (builder *QueryJobGradePathReqBodyBuilder) Active(active bool) *QueryJobGradePathReqBodyBuilder {
+	builder.active = active
+	builder.activeFlag = true
+	return builder
+}
+
+func (builder *QueryJobGradePathReqBodyBuilder) Build() (*QueryJobGradeReqBody, error) {
+	req := &QueryJobGradeReqBody{}
+	if builder.idsFlag {
+		req.Ids = builder.ids
+	}
+	if builder.codesFlag {
+		req.Codes = builder.codes
+	}
+	if builder.activeFlag {
+		req.Active = &builder.active
+	}
+	return req, nil
+}
+
+type QueryJobGradeReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *QueryJobGradeReqBody
+}
+
+func NewQueryJobGradeReqBuilder() *QueryJobGradeReqBuilder {
+	builder := &QueryJobGradeReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 分页大小，最大 100
+//
+// 示例值：100
+func (builder *QueryJobGradeReqBuilder) PageSize(pageSize int) *QueryJobGradeReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：6891251722631890445
+func (builder *QueryJobGradeReqBuilder) PageToken(pageToken string) *QueryJobGradeReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 查询职等信息
+func (builder *QueryJobGradeReqBuilder) Body(body *QueryJobGradeReqBody) *QueryJobGradeReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *QueryJobGradeReqBuilder) Build() *QueryJobGradeReq {
+	req := &QueryJobGradeReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type QueryJobGradeReqBody struct {
+	Ids    []string `json:"ids,omitempty"`    // 职等ID列表
+	Codes  []string `json:"codes,omitempty"`  // 职等code列表
+	Active *bool    `json:"active,omitempty"` // 是否启用
+}
+
+type QueryJobGradeReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *QueryJobGradeReqBody `body:""`
+}
+
+type QueryJobGradeRespData struct {
+	Items     []*JobGrade `json:"items,omitempty"`      // 职等信息列表
+	PageToken *string     `json:"page_token,omitempty"` // 下一页token
+	HasMore   *bool       `json:"has_more,omitempty"`   // 是否有下一页
+}
+
+type QueryJobGradeResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *QueryJobGradeRespData `json:"data"` // 业务数据
+}
+
+func (resp *QueryJobGradeResp) Success() bool {
+	return resp.Code == 0
+}
+
 type BatchGetJobLevelReqBodyBuilder struct {
 	jobLevelIds     []string // 职级 ID 列表
 	jobLevelIdsFlag bool
@@ -34888,6 +38121,7 @@ type GetProcessRespData struct {
 	Todos              []*ProcessTodoItem     `json:"todos,omitempty"`                // 待办列表
 	CcList             []*ProcessCcItem       `json:"cc_list,omitempty"`              // 抄送列表
 	DoneList           []*ProcessDoneItem     `json:"done_list,omitempty"`            // 已办列表
+	Properties         *int                   `json:"properties,omitempty"`           // 普通流程或撤销流程等
 }
 
 type GetProcessResp struct {
@@ -35023,7 +38257,7 @@ func (builder *GetProcessFormVariableDataReqBuilder) ProcessId(processId string)
 
 // 用户 ID 类型
 //
-// 示例值：open_id
+// 示例值：people_corehr_id
 func (builder *GetProcessFormVariableDataReqBuilder) UserIdType(userIdType string) *GetProcessFormVariableDataReqBuilder {
 	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
 	return builder
@@ -35031,7 +38265,7 @@ func (builder *GetProcessFormVariableDataReqBuilder) UserIdType(userIdType strin
 
 // 此次调用中使用的部门 ID 类型
 //
-// 示例值：open_department_id
+// 示例值：people_corehr_department_id
 func (builder *GetProcessFormVariableDataReqBuilder) DepartmentIdType(departmentIdType string) *GetProcessFormVariableDataReqBuilder {
 	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
 	return builder
@@ -35061,6 +38295,66 @@ type GetProcessFormVariableDataResp struct {
 
 func (resp *GetProcessFormVariableDataResp) Success() bool {
 	return resp.Code == 0
+}
+
+type P2OffboardingChecklistUpdatedV2Data struct {
+	EmploymentId       *string `json:"employment_id,omitempty"`        // 员工 ID
+	TargetUserId       *UserId `json:"target_user_id,omitempty"`       // 员工的飞书用户 ID
+	OffboardingId      *string `json:"offboarding_id,omitempty"`       // 离职记录 ID
+	ChecklistProcessId *string `json:"checklist_process_id,omitempty"` // 离职流转流程发起后的审批流程实例 ID
+	ChecklistStatus    *int    `json:"checklist_status,omitempty"`     // 离职流转状态
+}
+
+type P2OffboardingChecklistUpdatedV2 struct {
+	*larkevent.EventV2Base                                      // 事件基础数据
+	*larkevent.EventReq                                         // 请求原生数据
+	Event                  *P2OffboardingChecklistUpdatedV2Data `json:"event"` // 事件内容
+}
+
+func (m *P2OffboardingChecklistUpdatedV2) RawReq(req *larkevent.EventReq) {
+	m.EventReq = req
+}
+
+type P2OffboardingStatusUpdatedV2Data struct {
+	EmploymentId  *string `json:"employment_id,omitempty"`  // 员工 ID
+	TargetUserId  *UserId `json:"target_user_id,omitempty"` // 员工的飞书用户 ID
+	OffboardingId *string `json:"offboarding_id,omitempty"` // 离职记录 ID
+	ProcessId     *string `json:"process_id,omitempty"`     // 离职发起后的审批流程实例 ID
+	Status        *int    `json:"status,omitempty"`         // 离职状态
+}
+
+type P2OffboardingStatusUpdatedV2 struct {
+	*larkevent.EventV2Base                                   // 事件基础数据
+	*larkevent.EventReq                                      // 请求原生数据
+	Event                  *P2OffboardingStatusUpdatedV2Data `json:"event"` // 事件内容
+}
+
+func (m *P2OffboardingStatusUpdatedV2) RawReq(req *larkevent.EventReq) {
+	m.EventReq = req
+}
+
+type P2OffboardingUpdatedV2Data struct {
+	TenantId           *string  `json:"tenant_id,omitempty"`            // Saas租户ID
+	OffboardingInfoId  *string  `json:"offboarding_info_id,omitempty"`  // 离职记录ID
+	ProcessId          *string  `json:"process_id,omitempty"`           // 离职流程ID
+	ChecklistProcessId *string  `json:"checklist_process_id,omitempty"` // 离职手续办了流程ID
+	EmploymentId       *string  `json:"employment_id,omitempty"`        // 离职员工雇佣ID
+	Operator           *string  `json:"operator,omitempty"`             // 操作人雇佣ID
+	Status             *int     `json:"status,omitempty"`               // 变更后的离职状态
+	ChecklistStatus    *int     `json:"checklist_status,omitempty"`     // 变更后的离职手续办理状态
+	UpdatedTime        *string  `json:"updated_time,omitempty"`         // 更新时间毫秒时间戳
+	UpdatedFields      []string `json:"updated_fields,omitempty"`       // 所有变更的离职信息字段
+	TargetUserId       *UserId  `json:"target_user_id,omitempty"`       // 员工的飞书用户 ID
+}
+
+type P2OffboardingUpdatedV2 struct {
+	*larkevent.EventV2Base                             // 事件基础数据
+	*larkevent.EventReq                                // 请求原生数据
+	Event                  *P2OffboardingUpdatedV2Data `json:"event"` // 事件内容
+}
+
+func (m *P2OffboardingUpdatedV2) RawReq(req *larkevent.EventReq) {
+	m.EventReq = req
 }
 
 type P2ProbationUpdatedV2Data struct {
@@ -35096,11 +38390,14 @@ func (m *P2ProcessUpdatedV2) RawReq(req *larkevent.EventReq) {
 }
 
 type P2ProcessApproverUpdatedV2Data struct {
-	ProcessId  *string `json:"process_id,omitempty"`  // 流程实例ID
-	ApproverId *string `json:"approver_id,omitempty"` // 单据ID
-	Type       *int    `json:"type,omitempty"`        // 单据类型
-	Status     *int    `json:"status,omitempty"`      // 单据状态
-	BizType    *string `json:"biz_type,omitempty"`    // 业务类型
+	ProcessId        *string `json:"process_id,omitempty"`         // 流程实例ID
+	ApproverId       *string `json:"approver_id,omitempty"`        // 单据ID
+	Type             *int    `json:"type,omitempty"`               // 单据类型
+	Status           *int    `json:"status,omitempty"`             // 单据状态
+	BizType          *string `json:"biz_type,omitempty"`           // 业务类型
+	FlowDefinitionId *string `json:"flow_definition_id,omitempty"` // 流程定义id
+	NodeDefinitionId *string `json:"node_definition_id,omitempty"` // 节点定义id
+	NodeId           *string `json:"node_id,omitempty"`            // 节点id
 }
 
 type P2ProcessApproverUpdatedV2 struct {

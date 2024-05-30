@@ -40,7 +40,6 @@ func main() {
 			SubTypeList([]*larkcorehr.Enum{larkcorehr.NewEnumBuilder().Build()}).
 			BranchCompany(true).
 			PrimaryManager([]*larkcorehr.I18n{larkcorehr.NewI18nBuilder().Build()}).
-			CustomFields([]*larkcorehr.ObjectFieldData{larkcorehr.NewObjectFieldDataBuilder().Build()}).
 			Currency(larkcorehr.NewCurrencyBuilder().Build()).
 			Phone(larkcorehr.NewPhoneNumberAndAreaCodeBuilder().Build()).
 			Fax(larkcorehr.NewPhoneNumberAndAreaCodeBuilder().Build()).

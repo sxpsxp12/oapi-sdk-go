@@ -21,45 +21,17 @@ import (
 	"github.com/larksuite/oapi-sdk-go/v3/service/corehr/v1"
 )
 
-// PATCH /open-apis/corehr/v1/job_datas/:job_data_id
+// GET /open-apis/corehr/v1/authorizations/get_by_param
 func main() {
 	// 创建 Client
 	client := lark.NewClient("appID", "appSecret")
 	// 创建请求对象
-	req := larkcorehr.NewPatchJobDataReqBuilder().
-		JobDataId("151515").
-		ClientToken("12454646").
+	req := larkcorehr.NewGetByParamAuthorizationReqBuilder().
+		EmploymentId("67489937334909845").
 		UserIdType("people_corehr_id").
-		DepartmentIdType("people_corehr_department_id").
-		JobData(larkcorehr.NewJobDataBuilder().
-			VersionId("6890452208593372697").
-			JobLevelId("6890452208593372679").
-			JobGradeId("6890452208593372679").
-			EmployeeTypeId("6890452208593372679").
-			WorkingHoursTypeId("6890452208593372679").
-			WorkLocationId("6890452208593372679").
-			DepartmentId("6890452208593372679").
-			JobId("6890452208593372679").
-			ProbationStartDate("2018-03-16T00:00:00").
-			ProbationEndDate("2019-05-24T00:00:00").
-			PrimaryJobData(true).
-			EmploymentId("6893014062142064135").
-			EffectiveTime("2020-05-01 00:00:00").
-			ExpirationTime("2020-05-02 00:00:00").
-			JobFamilyId("1245678").
-			AssignmentStartReason(larkcorehr.NewEnumBuilder().Build()).
-			ProbationExpectedEndDate("2006-01-02").
-			DirectManagerId("6890452208593372679").
-			DottedLineManagerIdList([]string{}).
-			SecondDirectManagerId("6890452208593372679").
-			CostCenterRate([]*larkcorehr.SupportCostCenterItem{larkcorehr.NewSupportCostCenterItemBuilder().Build()}).
-			WorkShift(larkcorehr.NewEnumBuilder().Build()).
-			CompensationType(larkcorehr.NewEnumBuilder().Build()).
-			ServiceCompany("6890452208593372680").
-			Build()).
 		Build()
 	// 发起请求
-	resp, err := client.Corehr.V1.JobData.Patch(context.Background(), req)
+	resp, err := client.Corehr.V1.Authorization.GetByParam(context.Background(), req)
 
 	// 处理错误
 	if err != nil {

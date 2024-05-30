@@ -28,8 +28,8 @@ func main() {
 	// 创建请求对象
 	req := larkcorehr.NewGetProcessFormVariableDataReqBuilder().
 		ProcessId("7341373094948242956").
-		UserIdType("open_id").
-		DepartmentIdType("open_department_id").
+		UserIdType("people_corehr_id").
+		DepartmentIdType("people_corehr_department_id").
 		Build()
 	// 发起请求
 	resp, err := client.Corehr.V2.ProcessFormVariableData.Get(context.Background(), req)
