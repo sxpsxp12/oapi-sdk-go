@@ -254,6 +254,7 @@ type CallbackActionValue struct {
 	AgentId      *string `json:"agent_id,omitempty"`      // agent_id
 	AgentType    *int    `json:"agent_type,omitempty"`    // agent_type
 	ResponseType *int    `json:"response_type,omitempty"` // response_type
+	SessionId    *string `json:"session_id,omitempty"`    // 当前会话的 id，需要透传到下一次请求中
 }
 
 type CallbackActionValueBuilder struct {
@@ -265,6 +266,8 @@ type CallbackActionValueBuilder struct {
 	agentTypeFlag    bool
 	responseType     int // response_type
 	responseTypeFlag bool
+	sessionId        string // 当前会话的 id，需要透传到下一次请求中
+	sessionIdFlag    bool
 }
 
 func NewCallbackActionValueBuilder() *CallbackActionValueBuilder {
@@ -308,6 +311,15 @@ func (builder *CallbackActionValueBuilder) ResponseType(responseType int) *Callb
 	return builder
 }
 
+// 当前会话的 id，需要透传到下一次请求中
+//
+// 示例值：“”
+func (builder *CallbackActionValueBuilder) SessionId(sessionId string) *CallbackActionValueBuilder {
+	builder.sessionId = sessionId
+	builder.sessionIdFlag = true
+	return builder
+}
+
 func (builder *CallbackActionValueBuilder) Build() *CallbackActionValue {
 	req := &CallbackActionValue{}
 	if builder.strategyInfoFlag {
@@ -324,6 +336,10 @@ func (builder *CallbackActionValueBuilder) Build() *CallbackActionValue {
 	}
 	if builder.responseTypeFlag {
 		req.ResponseType = &builder.responseType
+
+	}
+	if builder.sessionIdFlag {
+		req.SessionId = &builder.sessionId
 
 	}
 	return req

@@ -6806,6 +6806,7 @@ type ReserveMeetingSetting struct {
 	Topic              *string                    `json:"topic,omitempty"`                // 会议主题
 	ActionPermissions  []*ReserveActionPermission `json:"action_permissions,omitempty"`   // 会议权限配置列表，如果存在相同的权限配置项则它们之间为"逻辑或"的关系（即 有一个为true则拥有该权限）
 	MeetingInitialType *int                       `json:"meeting_initial_type,omitempty"` // 会议初始类型
+	MeetingConnect     *bool                      `json:"meeting_connect,omitempty"`      // 该会议是否支持互通，不支持更新（注：该字段内测中）
 	CallSetting        *ReserveCallSetting        `json:"call_setting,omitempty"`         // 1v1呼叫相关参数
 	AutoRecord         *bool                      `json:"auto_record,omitempty"`          // 使用飞书视频会议时，是否开启自动录制，默认false
 	AssignHostList     []*ReserveAssignHost       `json:"assign_host_list,omitempty"`     // 指定主持人列表
@@ -6819,6 +6820,8 @@ type ReserveMeetingSettingBuilder struct {
 	actionPermissionsFlag  bool
 	meetingInitialType     int // 会议初始类型
 	meetingInitialTypeFlag bool
+	meetingConnect         bool // 该会议是否支持互通，不支持更新（注：该字段内测中）
+	meetingConnectFlag     bool
 	callSetting            *ReserveCallSetting // 1v1呼叫相关参数
 	callSettingFlag        bool
 	autoRecord             bool // 使用飞书视频会议时，是否开启自动录制，默认false
@@ -6858,6 +6861,15 @@ func (builder *ReserveMeetingSettingBuilder) ActionPermissions(actionPermissions
 func (builder *ReserveMeetingSettingBuilder) MeetingInitialType(meetingInitialType int) *ReserveMeetingSettingBuilder {
 	builder.meetingInitialType = meetingInitialType
 	builder.meetingInitialTypeFlag = true
+	return builder
+}
+
+// 该会议是否支持互通，不支持更新（注：该字段内测中）
+//
+// 示例值：true
+func (builder *ReserveMeetingSettingBuilder) MeetingConnect(meetingConnect bool) *ReserveMeetingSettingBuilder {
+	builder.meetingConnect = meetingConnect
+	builder.meetingConnectFlag = true
 	return builder
 }
 
@@ -6908,6 +6920,10 @@ func (builder *ReserveMeetingSettingBuilder) Build() *ReserveMeetingSetting {
 	}
 	if builder.meetingInitialTypeFlag {
 		req.MeetingInitialType = &builder.meetingInitialType
+
+	}
+	if builder.meetingConnectFlag {
+		req.MeetingConnect = &builder.meetingConnect
 
 	}
 	if builder.callSettingFlag {

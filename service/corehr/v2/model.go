@@ -3401,6 +3401,9 @@ type Contract struct {
 	DurationType        *Enum   `json:"duration_type,omitempty"`          // 期限类型，枚举值可通过文档【飞书人事枚举常量】合同期限类型（duration_type）枚举定义部分获得
 	ContractNumber      *string `json:"contract_number,omitempty"`        // 合同编号
 	SigningType         *Enum   `json:"signing_type,omitempty"`           // 签订类型，枚举值可通过文档【飞书人事枚举常量】签订类型（signing_type）枚举定义部分获得
+	ContractStatus      *Enum   `json:"contract_status,omitempty"`        // 合同协议状态，枚举值可通过文档【飞书人事枚举常量】合同协议状态（contract_status）枚举定义部分获得
+	RenewalStatus       *Enum   `json:"renewal_status,omitempty"`         // 续签状态，枚举值可通过文档【飞书人事枚举常量】续签状态（renewal_status）枚举定义部分获得
+	SigningTimes        *int    `json:"signing_times,omitempty"`          // 第几次签署
 }
 
 type ContractBuilder struct {
@@ -3426,6 +3429,12 @@ type ContractBuilder struct {
 	contractNumberFlag      bool
 	signingType             *Enum // 签订类型，枚举值可通过文档【飞书人事枚举常量】签订类型（signing_type）枚举定义部分获得
 	signingTypeFlag         bool
+	contractStatus          *Enum // 合同协议状态，枚举值可通过文档【飞书人事枚举常量】合同协议状态（contract_status）枚举定义部分获得
+	contractStatusFlag      bool
+	renewalStatus           *Enum // 续签状态，枚举值可通过文档【飞书人事枚举常量】续签状态（renewal_status）枚举定义部分获得
+	renewalStatusFlag       bool
+	signingTimes            int // 第几次签署
+	signingTimesFlag        bool
 }
 
 func NewContractBuilder() *ContractBuilder {
@@ -3532,6 +3541,33 @@ func (builder *ContractBuilder) SigningType(signingType *Enum) *ContractBuilder 
 	return builder
 }
 
+// 合同协议状态，枚举值可通过文档【飞书人事枚举常量】合同协议状态（contract_status）枚举定义部分获得
+//
+// 示例值：
+func (builder *ContractBuilder) ContractStatus(contractStatus *Enum) *ContractBuilder {
+	builder.contractStatus = contractStatus
+	builder.contractStatusFlag = true
+	return builder
+}
+
+// 续签状态，枚举值可通过文档【飞书人事枚举常量】续签状态（renewal_status）枚举定义部分获得
+//
+// 示例值：
+func (builder *ContractBuilder) RenewalStatus(renewalStatus *Enum) *ContractBuilder {
+	builder.renewalStatus = renewalStatus
+	builder.renewalStatusFlag = true
+	return builder
+}
+
+// 第几次签署
+//
+// 示例值：1
+func (builder *ContractBuilder) SigningTimes(signingTimes int) *ContractBuilder {
+	builder.signingTimes = signingTimes
+	builder.signingTimesFlag = true
+	return builder
+}
+
 func (builder *ContractBuilder) Build() *Contract {
 	req := &Contract{}
 	if builder.idFlag {
@@ -3574,6 +3610,16 @@ func (builder *ContractBuilder) Build() *Contract {
 	}
 	if builder.signingTypeFlag {
 		req.SigningType = builder.signingType
+	}
+	if builder.contractStatusFlag {
+		req.ContractStatus = builder.contractStatus
+	}
+	if builder.renewalStatusFlag {
+		req.RenewalStatus = builder.renewalStatus
+	}
+	if builder.signingTimesFlag {
+		req.SigningTimes = &builder.signingTimes
+
 	}
 	return req
 }
@@ -16220,6 +16266,290 @@ func (builder *OnboardingTaskChangeBuilder) Build() *OnboardingTaskChange {
 	if builder.taskCodeFlag {
 		req.TaskCode = &builder.taskCode
 
+	}
+	return req
+}
+
+type OperationLogEntity struct {
+	OptType      *string                    `json:"opt_type,omitempty"`      // 操作类型（create、update、delete）
+	Fields       []*OperationLogEntityField `json:"fields,omitempty"`        // 变更字段
+	EmploymentId *string                    `json:"employment_id,omitempty"` // 雇员ID
+}
+
+type OperationLogEntityBuilder struct {
+	optType          string // 操作类型（create、update、delete）
+	optTypeFlag      bool
+	fields           []*OperationLogEntityField // 变更字段
+	fieldsFlag       bool
+	employmentId     string // 雇员ID
+	employmentIdFlag bool
+}
+
+func NewOperationLogEntityBuilder() *OperationLogEntityBuilder {
+	builder := &OperationLogEntityBuilder{}
+	return builder
+}
+
+// 操作类型（create、update、delete）
+//
+// 示例值：update
+func (builder *OperationLogEntityBuilder) OptType(optType string) *OperationLogEntityBuilder {
+	builder.optType = optType
+	builder.optTypeFlag = true
+	return builder
+}
+
+// 变更字段
+//
+// 示例值：
+func (builder *OperationLogEntityBuilder) Fields(fields []*OperationLogEntityField) *OperationLogEntityBuilder {
+	builder.fields = fields
+	builder.fieldsFlag = true
+	return builder
+}
+
+// 雇员ID
+//
+// 示例值：7373878233473271340
+func (builder *OperationLogEntityBuilder) EmploymentId(employmentId string) *OperationLogEntityBuilder {
+	builder.employmentId = employmentId
+	builder.employmentIdFlag = true
+	return builder
+}
+
+func (builder *OperationLogEntityBuilder) Build() *OperationLogEntity {
+	req := &OperationLogEntity{}
+	if builder.optTypeFlag {
+		req.OptType = &builder.optType
+
+	}
+	if builder.fieldsFlag {
+		req.Fields = builder.fields
+	}
+	if builder.employmentIdFlag {
+		req.EmploymentId = &builder.employmentId
+
+	}
+	return req
+}
+
+type OperationLogEntityField struct {
+	Field  *string `json:"field,omitempty"`  // 变更字段
+	Before *string `json:"before,omitempty"` // 旧值
+	After  *string `json:"after,omitempty"`  // 新值
+}
+
+type OperationLogEntityFieldBuilder struct {
+	field      string // 变更字段
+	fieldFlag  bool
+	before     string // 旧值
+	beforeFlag bool
+	after      string // 新值
+	afterFlag  bool
+}
+
+func NewOperationLogEntityFieldBuilder() *OperationLogEntityFieldBuilder {
+	builder := &OperationLogEntityFieldBuilder{}
+	return builder
+}
+
+// 变更字段
+//
+// 示例值：personal_profile.profile_type_2_201_20101
+func (builder *OperationLogEntityFieldBuilder) Field(field string) *OperationLogEntityFieldBuilder {
+	builder.field = field
+	builder.fieldFlag = true
+	return builder
+}
+
+// 旧值
+//
+// 示例值：{\"type\":\"text\",\"value\":\"null\"}
+func (builder *OperationLogEntityFieldBuilder) Before(before string) *OperationLogEntityFieldBuilder {
+	builder.before = before
+	builder.beforeFlag = true
+	return builder
+}
+
+// 新值
+//
+// 示例值：{\"type\":\"text\",\"value\":\"1\"}
+func (builder *OperationLogEntityFieldBuilder) After(after string) *OperationLogEntityFieldBuilder {
+	builder.after = after
+	builder.afterFlag = true
+	return builder
+}
+
+func (builder *OperationLogEntityFieldBuilder) Build() *OperationLogEntityField {
+	req := &OperationLogEntityField{}
+	if builder.fieldFlag {
+		req.Field = &builder.field
+
+	}
+	if builder.beforeFlag {
+		req.Before = &builder.before
+
+	}
+	if builder.afterFlag {
+		req.After = &builder.after
+
+	}
+	return req
+}
+
+type OperationLogListReq struct {
+	StartTime    *string  `json:"start_time,omitempty"`    // 开始时间，默认当天前30天
+	EndTime      *string  `json:"end_time,omitempty"`      // 结束时间，默认当天
+	OperatorIds  []string `json:"operator_ids,omitempty"`  // 操作人ID
+	EmploymentId *string  `json:"employment_id,omitempty"` // 雇员ID
+	FilterFields []string `json:"filter_fields,omitempty"` // 查询变更的字段
+}
+
+type OperationLogListReqBuilder struct {
+	startTime        string // 开始时间，默认当天前30天
+	startTimeFlag    bool
+	endTime          string // 结束时间，默认当天
+	endTimeFlag      bool
+	operatorIds      []string // 操作人ID
+	operatorIdsFlag  bool
+	employmentId     string // 雇员ID
+	employmentIdFlag bool
+	filterFields     []string // 查询变更的字段
+	filterFieldsFlag bool
+}
+
+func NewOperationLogListReqBuilder() *OperationLogListReqBuilder {
+	builder := &OperationLogListReqBuilder{}
+	return builder
+}
+
+// 开始时间，默认当天前30天
+//
+// 示例值：2024-01-02
+func (builder *OperationLogListReqBuilder) StartTime(startTime string) *OperationLogListReqBuilder {
+	builder.startTime = startTime
+	builder.startTimeFlag = true
+	return builder
+}
+
+// 结束时间，默认当天
+//
+// 示例值：2024-01-02
+func (builder *OperationLogListReqBuilder) EndTime(endTime string) *OperationLogListReqBuilder {
+	builder.endTime = endTime
+	builder.endTimeFlag = true
+	return builder
+}
+
+// 操作人ID
+//
+// 示例值：7140964208476371111
+func (builder *OperationLogListReqBuilder) OperatorIds(operatorIds []string) *OperationLogListReqBuilder {
+	builder.operatorIds = operatorIds
+	builder.operatorIdsFlag = true
+	return builder
+}
+
+// 雇员ID
+//
+// 示例值：7140964208476371111
+func (builder *OperationLogListReqBuilder) EmploymentId(employmentId string) *OperationLogListReqBuilder {
+	builder.employmentId = employmentId
+	builder.employmentIdFlag = true
+	return builder
+}
+
+// 查询变更的字段
+//
+// 示例值：
+func (builder *OperationLogListReqBuilder) FilterFields(filterFields []string) *OperationLogListReqBuilder {
+	builder.filterFields = filterFields
+	builder.filterFieldsFlag = true
+	return builder
+}
+
+func (builder *OperationLogListReqBuilder) Build() *OperationLogListReq {
+	req := &OperationLogListReq{}
+	if builder.startTimeFlag {
+		req.StartTime = &builder.startTime
+
+	}
+	if builder.endTimeFlag {
+		req.EndTime = &builder.endTime
+
+	}
+	if builder.operatorIdsFlag {
+		req.OperatorIds = builder.operatorIds
+	}
+	if builder.employmentIdFlag {
+		req.EmploymentId = &builder.employmentId
+
+	}
+	if builder.filterFieldsFlag {
+		req.FilterFields = builder.filterFields
+	}
+	return req
+}
+
+type OperationLogListRespItem struct {
+	OperatorId *string               `json:"operator_id,omitempty"` // 操作人ID
+	OptTime    *string               `json:"opt_time,omitempty"`    // 操作时间
+	Entities   []*OperationLogEntity `json:"entities,omitempty"`    // 操作记录
+}
+
+type OperationLogListRespItemBuilder struct {
+	operatorId     string // 操作人ID
+	operatorIdFlag bool
+	optTime        string // 操作时间
+	optTimeFlag    bool
+	entities       []*OperationLogEntity // 操作记录
+	entitiesFlag   bool
+}
+
+func NewOperationLogListRespItemBuilder() *OperationLogListRespItemBuilder {
+	builder := &OperationLogListRespItemBuilder{}
+	return builder
+}
+
+// 操作人ID
+//
+// 示例值：7373878233473271340
+func (builder *OperationLogListRespItemBuilder) OperatorId(operatorId string) *OperationLogListRespItemBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 操作时间
+//
+// 示例值：2024-01-01 12:12:12
+func (builder *OperationLogListRespItemBuilder) OptTime(optTime string) *OperationLogListRespItemBuilder {
+	builder.optTime = optTime
+	builder.optTimeFlag = true
+	return builder
+}
+
+// 操作记录
+//
+// 示例值：
+func (builder *OperationLogListRespItemBuilder) Entities(entities []*OperationLogEntity) *OperationLogListRespItemBuilder {
+	builder.entities = entities
+	builder.entitiesFlag = true
+	return builder
+}
+
+func (builder *OperationLogListRespItemBuilder) Build() *OperationLogListRespItem {
+	req := &OperationLogListRespItem{}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+
+	}
+	if builder.optTimeFlag {
+		req.OptTime = &builder.optTime
+
+	}
+	if builder.entitiesFlag {
+		req.Entities = builder.entities
 	}
 	return req
 }
@@ -34123,6 +34453,239 @@ func (resp *BatchGetEmployeeResp) Success() bool {
 	return resp.Code == 0
 }
 
+type CreateEmployeeReqBodyBuilder struct {
+	personalInfo       *ProfileSettingPersonalInfo // 个人信息
+	personalInfoFlag   bool
+	employmentInfo     *ProfileSettingEmploymentInfo // 工作信息
+	employmentInfoFlag bool
+	career             *ProfileSettingCareer // 履历信息
+	careerFlag         bool
+	dataAttachment     *ProfileSettingDataAttachment // 资料附件
+	dataAttachmentFlag bool
+}
+
+func NewCreateEmployeeReqBodyBuilder() *CreateEmployeeReqBodyBuilder {
+	builder := &CreateEmployeeReqBodyBuilder{}
+	return builder
+}
+
+// 个人信息
+//
+// 示例值：
+func (builder *CreateEmployeeReqBodyBuilder) PersonalInfo(personalInfo *ProfileSettingPersonalInfo) *CreateEmployeeReqBodyBuilder {
+	builder.personalInfo = personalInfo
+	builder.personalInfoFlag = true
+	return builder
+}
+
+// 工作信息
+//
+// 示例值：
+func (builder *CreateEmployeeReqBodyBuilder) EmploymentInfo(employmentInfo *ProfileSettingEmploymentInfo) *CreateEmployeeReqBodyBuilder {
+	builder.employmentInfo = employmentInfo
+	builder.employmentInfoFlag = true
+	return builder
+}
+
+// 履历信息
+//
+// 示例值：
+func (builder *CreateEmployeeReqBodyBuilder) Career(career *ProfileSettingCareer) *CreateEmployeeReqBodyBuilder {
+	builder.career = career
+	builder.careerFlag = true
+	return builder
+}
+
+// 资料附件
+//
+// 示例值：
+func (builder *CreateEmployeeReqBodyBuilder) DataAttachment(dataAttachment *ProfileSettingDataAttachment) *CreateEmployeeReqBodyBuilder {
+	builder.dataAttachment = dataAttachment
+	builder.dataAttachmentFlag = true
+	return builder
+}
+
+func (builder *CreateEmployeeReqBodyBuilder) Build() *CreateEmployeeReqBody {
+	req := &CreateEmployeeReqBody{}
+	if builder.personalInfoFlag {
+		req.PersonalInfo = builder.personalInfo
+	}
+	if builder.employmentInfoFlag {
+		req.EmploymentInfo = builder.employmentInfo
+	}
+	if builder.careerFlag {
+		req.Career = builder.career
+	}
+	if builder.dataAttachmentFlag {
+		req.DataAttachment = builder.dataAttachment
+	}
+	return req
+}
+
+type CreateEmployeePathReqBodyBuilder struct {
+	personalInfo       *ProfileSettingPersonalInfo
+	personalInfoFlag   bool
+	employmentInfo     *ProfileSettingEmploymentInfo
+	employmentInfoFlag bool
+	career             *ProfileSettingCareer
+	careerFlag         bool
+	dataAttachment     *ProfileSettingDataAttachment
+	dataAttachmentFlag bool
+}
+
+func NewCreateEmployeePathReqBodyBuilder() *CreateEmployeePathReqBodyBuilder {
+	builder := &CreateEmployeePathReqBodyBuilder{}
+	return builder
+}
+
+// 个人信息
+//
+// 示例值：
+func (builder *CreateEmployeePathReqBodyBuilder) PersonalInfo(personalInfo *ProfileSettingPersonalInfo) *CreateEmployeePathReqBodyBuilder {
+	builder.personalInfo = personalInfo
+	builder.personalInfoFlag = true
+	return builder
+}
+
+// 工作信息
+//
+// 示例值：
+func (builder *CreateEmployeePathReqBodyBuilder) EmploymentInfo(employmentInfo *ProfileSettingEmploymentInfo) *CreateEmployeePathReqBodyBuilder {
+	builder.employmentInfo = employmentInfo
+	builder.employmentInfoFlag = true
+	return builder
+}
+
+// 履历信息
+//
+// 示例值：
+func (builder *CreateEmployeePathReqBodyBuilder) Career(career *ProfileSettingCareer) *CreateEmployeePathReqBodyBuilder {
+	builder.career = career
+	builder.careerFlag = true
+	return builder
+}
+
+// 资料附件
+//
+// 示例值：
+func (builder *CreateEmployeePathReqBodyBuilder) DataAttachment(dataAttachment *ProfileSettingDataAttachment) *CreateEmployeePathReqBodyBuilder {
+	builder.dataAttachment = dataAttachment
+	builder.dataAttachmentFlag = true
+	return builder
+}
+
+func (builder *CreateEmployeePathReqBodyBuilder) Build() (*CreateEmployeeReqBody, error) {
+	req := &CreateEmployeeReqBody{}
+	if builder.personalInfoFlag {
+		req.PersonalInfo = builder.personalInfo
+	}
+	if builder.employmentInfoFlag {
+		req.EmploymentInfo = builder.employmentInfo
+	}
+	if builder.careerFlag {
+		req.Career = builder.career
+	}
+	if builder.dataAttachmentFlag {
+		req.DataAttachment = builder.dataAttachment
+	}
+	return req, nil
+}
+
+type CreateEmployeeReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *CreateEmployeeReqBody
+}
+
+func NewCreateEmployeeReqBuilder() *CreateEmployeeReqBuilder {
+	builder := &CreateEmployeeReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 幂等标识，服务端会忽略client_token重复的请求
+//
+// 示例值：12454646
+func (builder *CreateEmployeeReqBuilder) ClientToken(clientToken string) *CreateEmployeeReqBuilder {
+	builder.apiReq.QueryParams.Set("client_token", fmt.Sprint(clientToken))
+	return builder
+}
+
+// 是否为离职重聘：;false: 否，系统直接标为非离职重聘人员，不再做重复判断";true: 是，要求rehire_employment_id
+//
+// 示例值：true
+func (builder *CreateEmployeeReqBuilder) Rehire(rehire bool) *CreateEmployeeReqBuilder {
+	builder.apiReq.QueryParams.Set("rehire", fmt.Sprint(rehire))
+	return builder
+}
+
+// 离职重聘员工雇佣ID, rehire
+//
+// 示例值：7140964208476371111
+func (builder *CreateEmployeeReqBuilder) RehireEmploymentId(rehireEmploymentId string) *CreateEmployeeReqBuilder {
+	builder.apiReq.QueryParams.Set("rehire_employment_id", fmt.Sprint(rehireEmploymentId))
+	return builder
+}
+
+// 是否强制提交，超编等场景需要用户确认影响才能提交
+//
+// 示例值：false
+func (builder *CreateEmployeeReqBuilder) ForceSubmit(forceSubmit bool) *CreateEmployeeReqBuilder {
+	builder.apiReq.QueryParams.Set("force_submit", fmt.Sprint(forceSubmit))
+	return builder
+}
+
+// 是否忽略工时制度自动生成规则
+//
+// 示例值：true
+func (builder *CreateEmployeeReqBuilder) IgnoreWorkingHoursTypeRule(ignoreWorkingHoursTypeRule bool) *CreateEmployeeReqBuilder {
+	builder.apiReq.QueryParams.Set("ignore_working_hours_type_rule", fmt.Sprint(ignoreWorkingHoursTypeRule))
+	return builder
+}
+
+func (builder *CreateEmployeeReqBuilder) Body(body *CreateEmployeeReqBody) *CreateEmployeeReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *CreateEmployeeReqBuilder) Build() *CreateEmployeeReq {
+	req := &CreateEmployeeReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type CreateEmployeeReqBody struct {
+	PersonalInfo   *ProfileSettingPersonalInfo   `json:"personal_info,omitempty"`   // 个人信息
+	EmploymentInfo *ProfileSettingEmploymentInfo `json:"employment_info,omitempty"` // 工作信息
+	Career         *ProfileSettingCareer         `json:"career,omitempty"`          // 履历信息
+	DataAttachment *ProfileSettingDataAttachment `json:"data_attachment,omitempty"` // 资料附件
+}
+
+type CreateEmployeeReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *CreateEmployeeReqBody `body:""`
+}
+
+type CreateEmployeeRespData struct {
+	EmploymentId *string `json:"employment_id,omitempty"` // 雇佣信息 ID
+	ContractId   *string `json:"contract_id,omitempty"`   // 合同 ID
+	JobDataId    *string `json:"job_data_id,omitempty"`   // 任职信息 ID
+}
+
+type CreateEmployeeResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateEmployeeRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateEmployeeResp) Success() bool {
+	return resp.Code == 0
+}
+
 type SearchEmployeeReqBodyBuilder struct {
 	fields                            []string // 返回数据的字段列表，填写方式：为空时默认仅返回 ID
 	fieldsFlag                        bool
@@ -38295,6 +38858,30 @@ type GetProcessFormVariableDataResp struct {
 
 func (resp *GetProcessFormVariableDataResp) Success() bool {
 	return resp.Code == 0
+}
+
+type P2JobChangeUpdatedV2Data struct {
+	EmploymentId  *string  `json:"employment_id,omitempty"`  // 异动员工雇员ID
+	TenantId      *string  `json:"tenant_id,omitempty"`      // Saas租户ID
+	ProcessId     *string  `json:"process_id,omitempty"`     // 流程ID
+	Initiator     *string  `json:"initiator,omitempty"`      // 发起人雇员ID
+	Operator      *string  `json:"operator,omitempty"`       // 操作人雇员ID
+	UpdatedTime   *string  `json:"updated_time,omitempty"`   // 更新时间毫秒时间戳
+	JobChangeId   *string  `json:"job_change_id,omitempty"`  // 异动记录ID
+	Status        *int     `json:"status,omitempty"`         // 变更后异动状态
+	OperateReason *string  `json:"operate_reason,omitempty"` // 操作原因
+	TransferType  *int     `json:"transfer_type,omitempty"`  // 变更类型
+	UpdatedFields []string `json:"updated_fields,omitempty"` // 所有更新过的字段，异动字段为元数据定义的字段api name，工作信息字段为"target_employment_change." + 元数据定义的字段api name
+}
+
+type P2JobChangeUpdatedV2 struct {
+	*larkevent.EventV2Base                           // 事件基础数据
+	*larkevent.EventReq                              // 请求原生数据
+	Event                  *P2JobChangeUpdatedV2Data `json:"event"` // 事件内容
+}
+
+func (m *P2JobChangeUpdatedV2) RawReq(req *larkevent.EventReq) {
+	m.EventReq = req
 }
 
 type P2OffboardingChecklistUpdatedV2Data struct {

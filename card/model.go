@@ -1019,6 +1019,19 @@ type MessageCardPlainTextI18n struct {
 	ZhCN_ string `json:"zh_cn,omitempty"`
 	EnUS_ string `json:"en_us,omitempty"`
 	JaJP_ string `json:"ja_jp,omitempty"`
+	ZhHK_ string `json:"zh_hk,omitempty"`
+	ZhTW_ string `json:"zh_tw,omitempty"`
+	IdID_ string `json:"id_id,omitempty"`
+	ViVN_ string `json:"vi_vn,omitempty"`
+	ThTH_ string `json:"th_th,omitempty"`
+	PtBR_ string `json:"pt_br,omitempty"`
+	EsES_ string `json:"es_es,omitempty"`
+	KoKR_ string `json:"ko_kr,omitempty"`
+	DeDE_ string `json:"de_de,omitempty"`
+	FrFR_ string `json:"fr_fr,omitempty"`
+	ItIT_ string `json:"it_it,omitempty"`
+	RuRU_ string `json:"ru_ru,omitempty"`
+	MsMY_ string `json:"ms_my,omitempty"`
 }
 
 func NewMessageCardPlainTextI18n() *MessageCardPlainTextI18n {

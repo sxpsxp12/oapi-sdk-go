@@ -22681,6 +22681,54 @@ func (builder *MasterLocationInfoBuilder) Build() *MasterLocationInfo {
 	return req
 }
 
+type MentionEntity struct {
+	Offset *int    `json:"offset,omitempty"`  // 被@人在 content 中的偏移量
+	UserId *string `json:"user_id,omitempty"` // 被@人的 user id
+}
+
+type MentionEntityBuilder struct {
+	offset     int // 被@人在 content 中的偏移量
+	offsetFlag bool
+	userId     string // 被@人的 user id
+	userIdFlag bool
+}
+
+func NewMentionEntityBuilder() *MentionEntityBuilder {
+	builder := &MentionEntityBuilder{}
+	return builder
+}
+
+// 被@人在 content 中的偏移量
+//
+// 示例值：3
+func (builder *MentionEntityBuilder) Offset(offset int) *MentionEntityBuilder {
+	builder.offset = offset
+	builder.offsetFlag = true
+	return builder
+}
+
+// 被@人的 user id
+//
+// 示例值：on_94a1ee5551019f18cd73d9f111898cf2
+func (builder *MentionEntityBuilder) UserId(userId string) *MentionEntityBuilder {
+	builder.userId = userId
+	builder.userIdFlag = true
+	return builder
+}
+
+func (builder *MentionEntityBuilder) Build() *MentionEntity {
+	req := &MentionEntity{}
+	if builder.offsetFlag {
+		req.Offset = &builder.offset
+
+	}
+	if builder.userIdFlag {
+		req.UserId = &builder.userId
+
+	}
+	return req
+}
+
 type Mobile struct {
 	Code   *string `json:"code,omitempty"`   // 国家代码
 	Number *string `json:"number,omitempty"` // 手机号码
@@ -22794,36 +22842,42 @@ func (builder *NationalityBuilder) Build() *Nationality {
 }
 
 type Note struct {
-	Id            *string `json:"id,omitempty"`             // 备注ID
-	TalentId      *string `json:"talent_id,omitempty"`      // 人才ID
-	ApplicationId *string `json:"application_id,omitempty"` // 投递ID
-	IsPrivate     *bool   `json:"is_private,omitempty"`     // 是否私密
-	CreateTime    *int    `json:"create_time,omitempty"`    // 创建时间
-	ModifyTime    *int    `json:"modify_time,omitempty"`    // 更新时间
-	CreatorId     *string `json:"creator_id,omitempty"`     // 创建人ID
-	Content       *string `json:"content,omitempty"`        // 内容
-	Privacy       *int    `json:"privacy,omitempty"`        // 备注私密属性（默认为公开）
+	Id                  *string          `json:"id,omitempty"`                    // 备注ID
+	TalentId            *string          `json:"talent_id,omitempty"`             // 人才ID
+	ApplicationId       *string          `json:"application_id,omitempty"`        // 投递ID
+	IsPrivate           *bool            `json:"is_private,omitempty"`            // 是否私密
+	CreateTime          *int             `json:"create_time,omitempty"`           // 创建时间
+	ModifyTime          *int             `json:"modify_time,omitempty"`           // 更新时间
+	CreatorId           *string          `json:"creator_id,omitempty"`            // 创建人ID
+	Content             *string          `json:"content,omitempty"`               // 内容
+	Privacy             *int             `json:"privacy,omitempty"`               // 备注私密属性（默认为公开）
+	NotifyMentionedUser *bool            `json:"notify_mentioned_user,omitempty"` // 是否通知被@的用户
+	MentionEntityList   []*MentionEntity `json:"mention_entity_list,omitempty"`   // 被@用户列表
 }
 
 type NoteBuilder struct {
-	id                string // 备注ID
-	idFlag            bool
-	talentId          string // 人才ID
-	talentIdFlag      bool
-	applicationId     string // 投递ID
-	applicationIdFlag bool
-	isPrivate         bool // 是否私密
-	isPrivateFlag     bool
-	createTime        int // 创建时间
-	createTimeFlag    bool
-	modifyTime        int // 更新时间
-	modifyTimeFlag    bool
-	creatorId         string // 创建人ID
-	creatorIdFlag     bool
-	content           string // 内容
-	contentFlag       bool
-	privacy           int // 备注私密属性（默认为公开）
-	privacyFlag       bool
+	id                      string // 备注ID
+	idFlag                  bool
+	talentId                string // 人才ID
+	talentIdFlag            bool
+	applicationId           string // 投递ID
+	applicationIdFlag       bool
+	isPrivate               bool // 是否私密
+	isPrivateFlag           bool
+	createTime              int // 创建时间
+	createTimeFlag          bool
+	modifyTime              int // 更新时间
+	modifyTimeFlag          bool
+	creatorId               string // 创建人ID
+	creatorIdFlag           bool
+	content                 string // 内容
+	contentFlag             bool
+	privacy                 int // 备注私密属性（默认为公开）
+	privacyFlag             bool
+	notifyMentionedUser     bool // 是否通知被@的用户
+	notifyMentionedUserFlag bool
+	mentionEntityList       []*MentionEntity // 被@用户列表
+	mentionEntityListFlag   bool
 }
 
 func NewNoteBuilder() *NoteBuilder {
@@ -22912,6 +22966,24 @@ func (builder *NoteBuilder) Privacy(privacy int) *NoteBuilder {
 	return builder
 }
 
+// 是否通知被@的用户
+//
+// 示例值：false
+func (builder *NoteBuilder) NotifyMentionedUser(notifyMentionedUser bool) *NoteBuilder {
+	builder.notifyMentionedUser = notifyMentionedUser
+	builder.notifyMentionedUserFlag = true
+	return builder
+}
+
+// 被@用户列表
+//
+// 示例值：
+func (builder *NoteBuilder) MentionEntityList(mentionEntityList []*MentionEntity) *NoteBuilder {
+	builder.mentionEntityList = mentionEntityList
+	builder.mentionEntityListFlag = true
+	return builder
+}
+
 func (builder *NoteBuilder) Build() *Note {
 	req := &Note{}
 	if builder.idFlag {
@@ -22949,6 +23021,13 @@ func (builder *NoteBuilder) Build() *Note {
 	if builder.privacyFlag {
 		req.Privacy = &builder.privacy
 
+	}
+	if builder.notifyMentionedUserFlag {
+		req.NotifyMentionedUser = &builder.notifyMentionedUser
+
+	}
+	if builder.mentionEntityListFlag {
+		req.MentionEntityList = builder.mentionEntityList
 	}
 	return req
 }
@@ -27176,6 +27255,9 @@ type Role struct {
 	Name               *I18n   `json:"name,omitempty"`                 // 角色名称
 	Description        *I18n   `json:"description,omitempty"`          // 角色描述
 	ScopeOfApplication *int    `json:"scope_of_application,omitempty"` // 适用范围
+	ModifyTime         *string `json:"modify_time,omitempty"`          // 更新时间
+	RoleStatus         *int    `json:"role_status,omitempty"`          // 停启用状态
+	RoleType           *int    `json:"role_type,omitempty"`            // 角色类型
 }
 
 type RoleBuilder struct {
@@ -27187,6 +27269,12 @@ type RoleBuilder struct {
 	descriptionFlag        bool
 	scopeOfApplication     int // 适用范围
 	scopeOfApplicationFlag bool
+	modifyTime             string // 更新时间
+	modifyTimeFlag         bool
+	roleStatus             int // 停启用状态
+	roleStatusFlag         bool
+	roleType               int // 角色类型
+	roleTypeFlag           bool
 }
 
 func NewRoleBuilder() *RoleBuilder {
@@ -27230,6 +27318,33 @@ func (builder *RoleBuilder) ScopeOfApplication(scopeOfApplication int) *RoleBuil
 	return builder
 }
 
+// 更新时间
+//
+// 示例值：1716535727510
+func (builder *RoleBuilder) ModifyTime(modifyTime string) *RoleBuilder {
+	builder.modifyTime = modifyTime
+	builder.modifyTimeFlag = true
+	return builder
+}
+
+// 停启用状态
+//
+// 示例值：
+func (builder *RoleBuilder) RoleStatus(roleStatus int) *RoleBuilder {
+	builder.roleStatus = roleStatus
+	builder.roleStatusFlag = true
+	return builder
+}
+
+// 角色类型
+//
+// 示例值：
+func (builder *RoleBuilder) RoleType(roleType int) *RoleBuilder {
+	builder.roleType = roleType
+	builder.roleTypeFlag = true
+	return builder
+}
+
 func (builder *RoleBuilder) Build() *Role {
 	req := &Role{}
 	if builder.idFlag {
@@ -27246,6 +27361,18 @@ func (builder *RoleBuilder) Build() *Role {
 		req.ScopeOfApplication = &builder.scopeOfApplication
 
 	}
+	if builder.modifyTimeFlag {
+		req.ModifyTime = &builder.modifyTime
+
+	}
+	if builder.roleStatusFlag {
+		req.RoleStatus = &builder.roleStatus
+
+	}
+	if builder.roleTypeFlag {
+		req.RoleType = &builder.roleType
+
+	}
 	return req
 }
 
@@ -27253,6 +27380,9 @@ type RoleDetail struct {
 	Id                         *string               `json:"id,omitempty"`                            // 角色ID
 	Name                       *I18n                 `json:"name,omitempty"`                          // 角色名称
 	Description                *I18n                 `json:"description,omitempty"`                   // 角色描述
+	ModifyTime                 *string               `json:"modify_time,omitempty"`                   // 更新时间
+	RoleStatus                 *int                  `json:"role_status,omitempty"`                   // 停启用状态
+	RoleType                   *int                  `json:"role_type,omitempty"`                     // 角色类型
 	ScopeOfApplication         *int                  `json:"scope_of_application,omitempty"`          // 适用范围
 	HasBusinessManagementScope *bool                 `json:"has_business_management_scope,omitempty"` // 是否在角色上配置业务管理范围
 	SocailPermissionCollection *PermissionCollection `json:"socail_permission_collection,omitempty"`  // 社招权限配置
@@ -27266,6 +27396,12 @@ type RoleDetailBuilder struct {
 	nameFlag                       bool
 	description                    *I18n // 角色描述
 	descriptionFlag                bool
+	modifyTime                     string // 更新时间
+	modifyTimeFlag                 bool
+	roleStatus                     int // 停启用状态
+	roleStatusFlag                 bool
+	roleType                       int // 角色类型
+	roleTypeFlag                   bool
 	scopeOfApplication             int // 适用范围
 	scopeOfApplicationFlag         bool
 	hasBusinessManagementScope     bool // 是否在角色上配置业务管理范围
@@ -27305,6 +27441,33 @@ func (builder *RoleDetailBuilder) Name(name *I18n) *RoleDetailBuilder {
 func (builder *RoleDetailBuilder) Description(description *I18n) *RoleDetailBuilder {
 	builder.description = description
 	builder.descriptionFlag = true
+	return builder
+}
+
+// 更新时间
+//
+// 示例值：1716535727510
+func (builder *RoleDetailBuilder) ModifyTime(modifyTime string) *RoleDetailBuilder {
+	builder.modifyTime = modifyTime
+	builder.modifyTimeFlag = true
+	return builder
+}
+
+// 停启用状态
+//
+// 示例值：
+func (builder *RoleDetailBuilder) RoleStatus(roleStatus int) *RoleDetailBuilder {
+	builder.roleStatus = roleStatus
+	builder.roleStatusFlag = true
+	return builder
+}
+
+// 角色类型
+//
+// 示例值：
+func (builder *RoleDetailBuilder) RoleType(roleType int) *RoleDetailBuilder {
+	builder.roleType = roleType
+	builder.roleTypeFlag = true
 	return builder
 }
 
@@ -27355,6 +27518,18 @@ func (builder *RoleDetailBuilder) Build() *RoleDetail {
 	}
 	if builder.descriptionFlag {
 		req.Description = builder.description
+	}
+	if builder.modifyTimeFlag {
+		req.ModifyTime = &builder.modifyTime
+
+	}
+	if builder.roleStatusFlag {
+		req.RoleStatus = &builder.roleStatus
+
+	}
+	if builder.roleTypeFlag {
+		req.RoleType = &builder.roleType
+
 	}
 	if builder.scopeOfApplicationFlag {
 		req.ScopeOfApplication = &builder.scopeOfApplication
@@ -35454,12 +35629,12 @@ func (builder *UserIdBuilder) Build() *UserId {
 }
 
 type UserRole struct {
-	UserId                   *string                      `json:"user_id,omitempty"`                    // 用户 ID
-	RoleId                   *string                      `json:"role_id,omitempty"`                    // 角色 ID
-	ModifyTime               *string                      `json:"modify_time,omitempty"`                // 修改时间
-	RoleName                 *I18n                        `json:"role_name,omitempty"`                  // 角色名称
-	RoleDescription          *I18n                        `json:"role_description,omitempty"`           // 角色描述
-	BusinessManagementScopes *UserBusinessManagementScope `json:"business_management_scopes,omitempty"` // 业务管理范围
+	UserId                   *string                        `json:"user_id,omitempty"`                    // 用户 ID
+	RoleId                   *string                        `json:"role_id,omitempty"`                    // 角色 ID
+	ModifyTime               *string                        `json:"modify_time,omitempty"`                // 修改时间
+	RoleName                 *I18n                          `json:"role_name,omitempty"`                  // 角色名称
+	RoleDescription          *I18n                          `json:"role_description,omitempty"`           // 角色描述
+	BusinessManagementScopes []*UserBusinessManagementScope `json:"business_management_scopes,omitempty"` // 业务管理范围
 }
 
 type UserRoleBuilder struct {
@@ -35473,7 +35648,7 @@ type UserRoleBuilder struct {
 	roleNameFlag                 bool
 	roleDescription              *I18n // 角色描述
 	roleDescriptionFlag          bool
-	businessManagementScopes     *UserBusinessManagementScope // 业务管理范围
+	businessManagementScopes     []*UserBusinessManagementScope // 业务管理范围
 	businessManagementScopesFlag bool
 }
 
@@ -35530,7 +35705,7 @@ func (builder *UserRoleBuilder) RoleDescription(roleDescription *I18n) *UserRole
 // 业务管理范围
 //
 // 示例值：
-func (builder *UserRoleBuilder) BusinessManagementScopes(businessManagementScopes *UserBusinessManagementScope) *UserRoleBuilder {
+func (builder *UserRoleBuilder) BusinessManagementScopes(businessManagementScopes []*UserBusinessManagementScope) *UserRoleBuilder {
 	builder.businessManagementScopes = businessManagementScopes
 	builder.businessManagementScopesFlag = true
 	return builder
@@ -43851,8 +44026,14 @@ func (resp *ListNoteResp) Success() bool {
 }
 
 type PatchNoteReqBodyBuilder struct {
-	content     string // 备注内容
-	contentFlag bool
+	content                 string // 备注内容
+	contentFlag             bool
+	operatorId              string // 更新人 ID
+	operatorIdFlag          bool
+	notifyMentionedUser     bool // 是否通知被@的用户
+	notifyMentionedUserFlag bool
+	mentionEntityList       []*MentionEntity // 被@用户列表
+	mentionEntityListFlag   bool
 }
 
 func NewPatchNoteReqBodyBuilder() *PatchNoteReqBodyBuilder {
@@ -43869,17 +44050,59 @@ func (builder *PatchNoteReqBodyBuilder) Content(content string) *PatchNoteReqBod
 	return builder
 }
 
+// 更新人 ID
+//
+// 示例值：ou_f476cb099ac9227c9bae09ce46112579
+func (builder *PatchNoteReqBodyBuilder) OperatorId(operatorId string) *PatchNoteReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 是否通知被@的用户
+//
+// 示例值：false
+func (builder *PatchNoteReqBodyBuilder) NotifyMentionedUser(notifyMentionedUser bool) *PatchNoteReqBodyBuilder {
+	builder.notifyMentionedUser = notifyMentionedUser
+	builder.notifyMentionedUserFlag = true
+	return builder
+}
+
+// 被@用户列表
+//
+// 示例值：
+func (builder *PatchNoteReqBodyBuilder) MentionEntityList(mentionEntityList []*MentionEntity) *PatchNoteReqBodyBuilder {
+	builder.mentionEntityList = mentionEntityList
+	builder.mentionEntityListFlag = true
+	return builder
+}
+
 func (builder *PatchNoteReqBodyBuilder) Build() *PatchNoteReqBody {
 	req := &PatchNoteReqBody{}
 	if builder.contentFlag {
 		req.Content = &builder.content
 	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	if builder.notifyMentionedUserFlag {
+		req.NotifyMentionedUser = &builder.notifyMentionedUser
+	}
+	if builder.mentionEntityListFlag {
+		req.MentionEntityList = builder.mentionEntityList
+	}
 	return req
 }
 
 type PatchNotePathReqBodyBuilder struct {
-	content     string
-	contentFlag bool
+	content                 string
+	contentFlag             bool
+	operatorId              string
+	operatorIdFlag          bool
+	notifyMentionedUser     bool
+	notifyMentionedUserFlag bool
+	mentionEntityList       []*MentionEntity
+	mentionEntityListFlag   bool
 }
 
 func NewPatchNotePathReqBodyBuilder() *PatchNotePathReqBodyBuilder {
@@ -43896,10 +44119,46 @@ func (builder *PatchNotePathReqBodyBuilder) Content(content string) *PatchNotePa
 	return builder
 }
 
+// 更新人 ID
+//
+// 示例值：ou_f476cb099ac9227c9bae09ce46112579
+func (builder *PatchNotePathReqBodyBuilder) OperatorId(operatorId string) *PatchNotePathReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 是否通知被@的用户
+//
+// 示例值：false
+func (builder *PatchNotePathReqBodyBuilder) NotifyMentionedUser(notifyMentionedUser bool) *PatchNotePathReqBodyBuilder {
+	builder.notifyMentionedUser = notifyMentionedUser
+	builder.notifyMentionedUserFlag = true
+	return builder
+}
+
+// 被@用户列表
+//
+// 示例值：
+func (builder *PatchNotePathReqBodyBuilder) MentionEntityList(mentionEntityList []*MentionEntity) *PatchNotePathReqBodyBuilder {
+	builder.mentionEntityList = mentionEntityList
+	builder.mentionEntityListFlag = true
+	return builder
+}
+
 func (builder *PatchNotePathReqBodyBuilder) Build() (*PatchNoteReqBody, error) {
 	req := &PatchNoteReqBody{}
 	if builder.contentFlag {
 		req.Content = &builder.content
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	if builder.notifyMentionedUserFlag {
+		req.NotifyMentionedUser = &builder.notifyMentionedUser
+	}
+	if builder.mentionEntityListFlag {
+		req.MentionEntityList = builder.mentionEntityList
 	}
 	return req, nil
 }
@@ -43950,7 +44209,10 @@ func (builder *PatchNoteReqBuilder) Build() *PatchNoteReq {
 }
 
 type PatchNoteReqBody struct {
-	Content *string `json:"content,omitempty"` // 备注内容
+	Content             *string          `json:"content,omitempty"`               // 备注内容
+	OperatorId          *string          `json:"operator_id,omitempty"`           // 更新人 ID
+	NotifyMentionedUser *bool            `json:"notify_mentioned_user,omitempty"` // 是否通知被@的用户
+	MentionEntityList   []*MentionEntity `json:"mention_entity_list,omitempty"`   // 被@用户列表
 }
 
 type PatchNoteReq struct {

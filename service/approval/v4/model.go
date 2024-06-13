@@ -7726,6 +7726,38 @@ func (builder *MyAiPresentCardVariablesBuilder) Build() *MyAiPresentCardVariable
 	return req
 }
 
+type MyAiSearchDefinitionScenarioContext struct {
+	ToolRawInstruction *string `json:"tool_raw_instruction,omitempty"` // 用户的原始输入
+}
+
+type MyAiSearchDefinitionScenarioContextBuilder struct {
+	toolRawInstruction     string // 用户的原始输入
+	toolRawInstructionFlag bool
+}
+
+func NewMyAiSearchDefinitionScenarioContextBuilder() *MyAiSearchDefinitionScenarioContextBuilder {
+	builder := &MyAiSearchDefinitionScenarioContextBuilder{}
+	return builder
+}
+
+// 用户的原始输入
+//
+// 示例值：帮我发起报销申请
+func (builder *MyAiSearchDefinitionScenarioContextBuilder) ToolRawInstruction(toolRawInstruction string) *MyAiSearchDefinitionScenarioContextBuilder {
+	builder.toolRawInstruction = toolRawInstruction
+	builder.toolRawInstructionFlag = true
+	return builder
+}
+
+func (builder *MyAiSearchDefinitionScenarioContextBuilder) Build() *MyAiSearchDefinitionScenarioContext {
+	req := &MyAiSearchDefinitionScenarioContext{}
+	if builder.toolRawInstructionFlag {
+		req.ToolRawInstruction = &builder.toolRawInstruction
+
+	}
+	return req
+}
+
 type MyAiSimpleCommandResult struct {
 	Content *string `json:"content,omitempty"` // result_content
 }

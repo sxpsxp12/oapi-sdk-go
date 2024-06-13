@@ -1755,6 +1755,38 @@ func (builder *DocumentBuilder) Build() *Document {
 	return req
 }
 
+type DocumentAuthor struct {
+	UserId *string `json:"user_id,omitempty"` // 作者 ID
+}
+
+type DocumentAuthorBuilder struct {
+	userId     string // 作者 ID
+	userIdFlag bool
+}
+
+func NewDocumentAuthorBuilder() *DocumentAuthorBuilder {
+	builder := &DocumentAuthorBuilder{}
+	return builder
+}
+
+// 作者 ID
+//
+// 示例值：ou_b13d41c02edc52ce66aaae67bf1abcef
+func (builder *DocumentAuthorBuilder) UserId(userId string) *DocumentAuthorBuilder {
+	builder.userId = userId
+	builder.userIdFlag = true
+	return builder
+}
+
+func (builder *DocumentAuthorBuilder) Build() *DocumentAuthor {
+	req := &DocumentAuthor{}
+	if builder.userIdFlag {
+		req.UserId = &builder.userId
+
+	}
+	return req
+}
+
 type DocumentCover struct {
 	Token        *string  `json:"token,omitempty"`          // 图片 token
 	OffsetRatioX *float64 `json:"offset_ratio_x,omitempty"` // 展示视图在水平方向的偏移比例。其值为距离原图中心的水平方向偏移值 px / 原图宽度 px。 视图在原图中心时，该值为 0； 视图在原图右部分时，该值为正数； 视图在原图左部分时，改值为负数。

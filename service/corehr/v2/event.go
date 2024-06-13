@@ -18,6 +18,26 @@ import (
 )
 
 // 消息处理器定义
+type P2JobChangeUpdatedV2Handler struct {
+	handler func(context.Context, *P2JobChangeUpdatedV2) error
+}
+
+func NewP2JobChangeUpdatedV2Handler(handler func(context.Context, *P2JobChangeUpdatedV2) error) *P2JobChangeUpdatedV2Handler {
+	h := &P2JobChangeUpdatedV2Handler{handler: handler}
+	return h
+}
+
+// 返回事件的消息体的实例，用于反序列化用
+func (h *P2JobChangeUpdatedV2Handler) Event() interface{} {
+	return &P2JobChangeUpdatedV2{}
+}
+
+// 回调开发者注册的handle
+func (h *P2JobChangeUpdatedV2Handler) Handle(ctx context.Context, event interface{}) error {
+	return h.handler(ctx, event.(*P2JobChangeUpdatedV2))
+}
+
+// 消息处理器定义
 type P2OffboardingChecklistUpdatedV2Handler struct {
 	handler func(context.Context, *P2OffboardingChecklistUpdatedV2) error
 }

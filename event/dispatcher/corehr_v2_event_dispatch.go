@@ -21,6 +21,18 @@ import (
 // -
 //
 // - 事件描述文档链接:
+func (dispatcher *EventDispatcher) OnP2JobChangeUpdatedV2(handler func(ctx context.Context, event *larkcorehr.P2JobChangeUpdatedV2) error) *EventDispatcher {
+	_, existed := dispatcher.eventType2EventHandler["corehr.job_change.updated_v2"]
+	if existed {
+		panic("event: multiple handler registrations for " + "corehr.job_change.updated_v2")
+	}
+	dispatcher.eventType2EventHandler["corehr.job_change.updated_v2"] = larkcorehr.NewP2JobChangeUpdatedV2Handler(handler)
+	return dispatcher
+}
+
+// -
+//
+// - 事件描述文档链接:
 func (dispatcher *EventDispatcher) OnP2OffboardingChecklistUpdatedV2(handler func(ctx context.Context, event *larkcorehr.P2OffboardingChecklistUpdatedV2) error) *EventDispatcher {
 	_, existed := dispatcher.eventType2EventHandler["corehr.offboarding.checklist_updated_v2"]
 	if existed {

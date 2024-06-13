@@ -47,7 +47,6 @@ func main() {
 			GroupMessageType("chat").
 			UrgentSetting("all_members").
 			VideoConferenceSetting("all_members").
-			PinManageSetting("all_members").
 			HideMemberCountSetting("all_members").
 			Build()).
 		Build()

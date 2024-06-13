@@ -5254,8 +5254,6 @@ type CreateChatReqBodyBuilder struct {
 	editPermission             string // 谁可以编辑群信息
 	editPermissionFlag         bool
 
-	pinManageSetting           string // 谁可以管理置顶
-	pinManageSettingFlag       bool
 	hideMemberCountSetting     string // 隐藏群成员人数设置
 	hideMemberCountSettingFlag bool
 }
@@ -5418,15 +5416,6 @@ func (builder *CreateChatReqBodyBuilder) EditPermission(editPermission string) *
 	return builder
 }
 
-// 谁可以管理置顶
-//
-// 示例值：all_members
-func (builder *CreateChatReqBodyBuilder) PinManageSetting(pinManageSetting string) *CreateChatReqBodyBuilder {
-	builder.pinManageSetting = pinManageSetting
-	builder.pinManageSettingFlag = true
-	return builder
-}
-
 // 隐藏群成员人数设置
 //
 // 示例值：all_members
@@ -5488,9 +5477,6 @@ func (builder *CreateChatReqBodyBuilder) Build() *CreateChatReqBody {
 	}
 	if builder.editPermissionFlag {
 		req.EditPermission = &builder.editPermission
-	}
-	if builder.pinManageSettingFlag {
-		req.PinManageSetting = &builder.pinManageSetting
 	}
 	if builder.hideMemberCountSettingFlag {
 		req.HideMemberCountSetting = &builder.hideMemberCountSetting
@@ -5705,15 +5691,6 @@ func (builder *CreateChatPathReqBodyBuilder) EditPermission(editPermission strin
 	return builder
 }
 
-// 谁可以管理置顶
-//
-// 示例值：all_members
-func (builder *CreateChatPathReqBodyBuilder) PinManageSetting(pinManageSetting string) *CreateChatPathReqBodyBuilder {
-	builder.pinManageSetting = pinManageSetting
-	builder.pinManageSettingFlag = true
-	return builder
-}
-
 // 隐藏群成员人数设置
 //
 // 示例值：all_members
@@ -5775,9 +5752,6 @@ func (builder *CreateChatPathReqBodyBuilder) Build() (*CreateChatReqBody, error)
 	}
 	if builder.editPermissionFlag {
 		req.EditPermission = &builder.editPermission
-	}
-	if builder.pinManageSettingFlag {
-		req.PinManageSetting = &builder.pinManageSetting
 	}
 	if builder.hideMemberCountSettingFlag {
 		req.HideMemberCountSetting = &builder.hideMemberCountSetting
@@ -5858,7 +5832,6 @@ type CreateChatReqBody struct {
 	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"` // 谁可以发起视频会议
 	EditPermission         *string                `json:"edit_permission,omitempty"`          // 谁可以编辑群信息
 
-	PinManageSetting       *string `json:"pin_manage_setting,omitempty"`        // 谁可以管理置顶
 	HideMemberCountSetting *string `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
 }
 
@@ -5877,21 +5850,21 @@ type CreateChatRespData struct {
 	OwnerIdType            *string    `json:"owner_id_type,omitempty"`            // 群主 ID 对应的ID类型，与查询参数中的 ==user_id_type== 相同。取值为：`open_id`、`user_id`、`union_id`其中之一;;**注意**：当群主是机器人时，该字段不返回
 	UrgentSetting          *string    `json:"urgent_setting,omitempty"`           // 谁可以加急
 	VideoConferenceSetting *string    `json:"video_conference_setting,omitempty"` // 谁可以发起视频会议
-	PinManageSetting       *string    `json:"pin_manage_setting,omitempty"`       // 谁可以管理置顶
-	AddMemberPermission    *string    `json:"add_member_permission,omitempty"`    // 拉 用户或机器人 入群权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员
-	ShareCardPermission    *string    `json:"share_card_permission,omitempty"`    // 群分享权限;;**可选值有**：;- `allowed`：允许;- `not_allowed`：不允许
-	AtAllPermission        *string    `json:"at_all_permission,omitempty"`        // at 所有人权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员
-	EditPermission         *string    `json:"edit_permission,omitempty"`          // 群编辑权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员
-	GroupMessageType       *string    `json:"group_message_type,omitempty"`       // 群消息模式
-	ChatMode               *string    `json:"chat_mode,omitempty"`                // 群模式;;**可选值有**：;- `group`：群组
-	ChatType               *string    `json:"chat_type,omitempty"`                // 群类型;;**可选值有**：;- `private`：私有群;- `public`：公开群
-	ChatTag                *string    `json:"chat_tag,omitempty"`                 // 群标签，如有多个，则按照下列顺序返回第一个;;**可选值有**：;- `inner`：内部群;- `tenant`：公司群;- `department`：部门群;- `edu`：教育群;- `meeting`：会议群;- `customer_service`：客服群
-	External               *bool      `json:"external,omitempty"`                 // 是否是外部群
-	TenantKey              *string    `json:"tenant_key,omitempty"`               // 租户在飞书上的唯一标识，用来换取对应的tenant_access_token，也可以用作租户在应用里面的唯一标识
-	JoinMessageVisibility  *string    `json:"join_message_visibility,omitempty"`  // 入群消息可见性;;**可选值有**：;- `only_owner`：仅群主和管理员可见;- `all_members`：所有成员可见;- `not_anyone`：任何人均不可见
-	LeaveMessageVisibility *string    `json:"leave_message_visibility,omitempty"` // 出群消息可见性;;**可选值有**：;- `only_owner`：仅群主和管理员可见;- `all_members`：所有成员可见;- `not_anyone`：任何人均不可见
-	MembershipApproval     *string    `json:"membership_approval,omitempty"`      // 加群审批;;**可选值有**：;- `no_approval_required`：无需审批;- `approval_required`：需要审批
-	ModerationPermission   *string    `json:"moderation_permission,omitempty"`    // 发言权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员;- `moderator_list`：指定群成员
+
+	AddMemberPermission    *string `json:"add_member_permission,omitempty"`    // 拉 用户或机器人 入群权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员
+	ShareCardPermission    *string `json:"share_card_permission,omitempty"`    // 群分享权限;;**可选值有**：;- `allowed`：允许;- `not_allowed`：不允许
+	AtAllPermission        *string `json:"at_all_permission,omitempty"`        // at 所有人权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员
+	EditPermission         *string `json:"edit_permission,omitempty"`          // 群编辑权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员
+	GroupMessageType       *string `json:"group_message_type,omitempty"`       // 群消息模式
+	ChatMode               *string `json:"chat_mode,omitempty"`                // 群模式;;**可选值有**：;- `group`：群组
+	ChatType               *string `json:"chat_type,omitempty"`                // 群类型;;**可选值有**：;- `private`：私有群;- `public`：公开群
+	ChatTag                *string `json:"chat_tag,omitempty"`                 // 群标签，如有多个，则按照下列顺序返回第一个;;**可选值有**：;- `inner`：内部群;- `tenant`：公司群;- `department`：部门群;- `edu`：教育群;- `meeting`：会议群;- `customer_service`：客服群
+	External               *bool   `json:"external,omitempty"`                 // 是否是外部群
+	TenantKey              *string `json:"tenant_key,omitempty"`               // 租户在飞书上的唯一标识，用来换取对应的tenant_access_token，也可以用作租户在应用里面的唯一标识
+	JoinMessageVisibility  *string `json:"join_message_visibility,omitempty"`  // 入群消息可见性;;**可选值有**：;- `only_owner`：仅群主和管理员可见;- `all_members`：所有成员可见;- `not_anyone`：任何人均不可见
+	LeaveMessageVisibility *string `json:"leave_message_visibility,omitempty"` // 出群消息可见性;;**可选值有**：;- `only_owner`：仅群主和管理员可见;- `all_members`：所有成员可见;- `not_anyone`：任何人均不可见
+	MembershipApproval     *string `json:"membership_approval,omitempty"`      // 加群审批;;**可选值有**：;- `no_approval_required`：无需审批;- `approval_required`：需要审批
+	ModerationPermission   *string `json:"moderation_permission,omitempty"`    // 发言权限;;**可选值有**：;- `only_owner`：仅群主和管理员;- `all_members`：所有成员;- `moderator_list`：指定群成员
 
 	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`   // 防泄密模式设置
 	HideMemberCountSetting *string                `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
@@ -6015,12 +5988,12 @@ type GetChatRespData struct {
 	UserCount              *string    `json:"user_count,omitempty"`               // 群成员人数
 	BotCount               *string    `json:"bot_count,omitempty"`                // 群机器人数
 
-	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`   // 防泄密模式设置
-	UrgentSetting          *string                `json:"urgent_setting,omitempty"`            // 谁可以加急
-	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"`  // 谁可以发起视频会议
-	PinManageSetting       *string                `json:"pin_manage_setting,omitempty"`        // 谁可以管理置顶
-	HideMemberCountSetting *string                `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
-	ChatStatus             *string                `json:"chat_status,omitempty"`               // 群状态
+	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`  // 防泄密模式设置
+	UrgentSetting          *string                `json:"urgent_setting,omitempty"`           // 谁可以加急
+	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"` // 谁可以发起视频会议
+
+	HideMemberCountSetting *string `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
+	ChatStatus             *string `json:"chat_status,omitempty"`               // 群状态
 }
 
 type GetChatResp struct {
@@ -6348,8 +6321,7 @@ type UpdateChatReqBodyBuilder struct {
 	urgentSettingFlag          bool
 	videoConferenceSetting     string // 谁可以发起视频会议
 	videoConferenceSettingFlag bool
-	pinManageSetting           string // 谁可以管理置顶
-	pinManageSettingFlag       bool
+
 	hideMemberCountSetting     string // 隐藏群成员人数设置
 	hideMemberCountSettingFlag bool
 }
@@ -6512,15 +6484,6 @@ func (builder *UpdateChatReqBodyBuilder) VideoConferenceSetting(videoConferenceS
 	return builder
 }
 
-// 谁可以管理置顶
-//
-// 示例值：all_members
-func (builder *UpdateChatReqBodyBuilder) PinManageSetting(pinManageSetting string) *UpdateChatReqBodyBuilder {
-	builder.pinManageSetting = pinManageSetting
-	builder.pinManageSettingFlag = true
-	return builder
-}
-
 // 隐藏群成员人数设置
 //
 // 示例值：all_members
@@ -6582,9 +6545,6 @@ func (builder *UpdateChatReqBodyBuilder) Build() *UpdateChatReqBody {
 	}
 	if builder.videoConferenceSettingFlag {
 		req.VideoConferenceSetting = &builder.videoConferenceSetting
-	}
-	if builder.pinManageSettingFlag {
-		req.PinManageSetting = &builder.pinManageSetting
 	}
 	if builder.hideMemberCountSettingFlag {
 		req.HideMemberCountSetting = &builder.hideMemberCountSetting
@@ -6795,15 +6755,6 @@ func (builder *UpdateChatPathReqBodyBuilder) VideoConferenceSetting(videoConfere
 	return builder
 }
 
-// 谁可以管理置顶
-//
-// 示例值：all_members
-func (builder *UpdateChatPathReqBodyBuilder) PinManageSetting(pinManageSetting string) *UpdateChatPathReqBodyBuilder {
-	builder.pinManageSetting = pinManageSetting
-	builder.pinManageSettingFlag = true
-	return builder
-}
-
 // 隐藏群成员人数设置
 //
 // 示例值：all_members
@@ -6865,9 +6816,6 @@ func (builder *UpdateChatPathReqBodyBuilder) Build() (*UpdateChatReqBody, error)
 	}
 	if builder.videoConferenceSettingFlag {
 		req.VideoConferenceSetting = &builder.videoConferenceSetting
-	}
-	if builder.pinManageSettingFlag {
-		req.PinManageSetting = &builder.pinManageSetting
 	}
 	if builder.hideMemberCountSettingFlag {
 		req.HideMemberCountSetting = &builder.hideMemberCountSetting
@@ -6934,13 +6882,13 @@ type UpdateChatReqBody struct {
 	LeaveMessageVisibility *string    `json:"leave_message_visibility,omitempty"` // 出群消息可见性;;**可选值有**：;- `only_owner`：仅群主和管理员可见;- `all_members`：所有成员可见;- `not_anyone`：任何人均不可见
 	MembershipApproval     *string    `json:"membership_approval,omitempty"`      // 加群审批;;**可选值有**：;- `no_approval_required`：无需审批;- `approval_required`：需要审批
 
-	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`   // 防泄密模式设置
-	ChatType               *string                `json:"chat_type,omitempty"`                 // 群类型;;**可选值有**：;- `private`：私有群;- `public`：公开群
-	GroupMessageType       *string                `json:"group_message_type,omitempty"`        // 群消息模式
-	UrgentSetting          *string                `json:"urgent_setting,omitempty"`            // 谁可以加急
-	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"`  // 谁可以发起视频会议
-	PinManageSetting       *string                `json:"pin_manage_setting,omitempty"`        // 谁可以管理置顶
-	HideMemberCountSetting *string                `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
+	RestrictedModeSetting  *RestrictedModeSetting `json:"restricted_mode_setting,omitempty"`  // 防泄密模式设置
+	ChatType               *string                `json:"chat_type,omitempty"`                // 群类型;;**可选值有**：;- `private`：私有群;- `public`：公开群
+	GroupMessageType       *string                `json:"group_message_type,omitempty"`       // 群消息模式
+	UrgentSetting          *string                `json:"urgent_setting,omitempty"`           // 谁可以加急
+	VideoConferenceSetting *string                `json:"video_conference_setting,omitempty"` // 谁可以发起视频会议
+
+	HideMemberCountSetting *string `json:"hide_member_count_setting,omitempty"` // 隐藏群成员人数设置
 }
 
 type UpdateChatReq struct {

@@ -41,7 +41,7 @@ func NewAilyKnowledgeDatasetBuilder() *AilyKnowledgeDatasetBuilder {
 
 // 分析表ID
 //
-// 示例值：xxx
+// 示例值：object_x
 func (builder *AilyKnowledgeDatasetBuilder) ApiName(apiName string) *AilyKnowledgeDatasetBuilder {
 	builder.apiName = apiName
 	builder.apiNameFlag = true
@@ -89,7 +89,7 @@ func NewAilyKnowledgeDatatableBuilder() *AilyKnowledgeDatatableBuilder {
 
 // 数据表ID
 //
-// 示例值：xxx
+// 示例值：object_x
 func (builder *AilyKnowledgeDatatableBuilder) ApiName(apiName string) *AilyKnowledgeDatatableBuilder {
 	builder.apiName = apiName
 	builder.apiNameFlag = true
@@ -161,7 +161,7 @@ func (builder *AilyKnowledgeDocsBuilder) Type(type_ string) *AilyKnowledgeDocsBu
 
 // 飞书云文档标识
 //
-// 示例值：xxx
+// 示例值：NWicfaD1Rlp2utdR0zycOabcdef
 func (builder *AilyKnowledgeDocsBuilder) Token(token string) *AilyKnowledgeDocsBuilder {
 	builder.token = token
 	builder.tokenFlag = true
@@ -170,7 +170,7 @@ func (builder *AilyKnowledgeDocsBuilder) Token(token string) *AilyKnowledgeDocsB
 
 // 链接
 //
-// 示例值：xxx
+// 示例值：https://feishu.cn/docx/NWicfaD1Rlp2utdR0zycOabcdef
 func (builder *AilyKnowledgeDocsBuilder) Url(url string) *AilyKnowledgeDocsBuilder {
 	builder.url = url
 	builder.urlFlag = true

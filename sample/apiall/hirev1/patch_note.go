@@ -31,6 +31,9 @@ func main() {
 		UserIdType("open_id").
 		Body(larkhire.NewPatchNoteReqBodyBuilder().
 			Content("111").
+			OperatorId("ou_f476cb099ac9227c9bae09ce46112579").
+			NotifyMentionedUser(false).
+			MentionEntityList([]*larkhire.MentionEntity{larkhire.NewMentionEntityBuilder().Build()}).
 			Build()).
 		Build()
 	// 发起请求

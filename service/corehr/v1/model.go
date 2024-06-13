@@ -2337,6 +2337,9 @@ type Contract struct {
 	ContractEndDate     *string            `json:"contract_end_date,omitempty"`      // 合同结束日期
 	ContractNumber      *string            `json:"contract_number,omitempty"`        // 合同编号
 	SigningType         *Enum              `json:"signing_type,omitempty"`           // 签订类型，枚举值可通过文档[【飞书人事枚举常量】](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)签订类型（signing_type）枚举定义部分获得
+	ContractStatus      *Enum              `json:"contract_status,omitempty"`        // 合同协议状态，枚举值可通过文档【飞书人事枚举常量】合同协议状态（contract_status）枚举定义部分获得
+	RenewalStatus       *Enum              `json:"renewal_status,omitempty"`         // 续签状态，枚举值可通过文档【飞书人事枚举常量】续签状态（renewal_status）枚举定义部分获得
+	SigningTimes        *int               `json:"signing_times,omitempty"`          // 第几次签署
 }
 
 type ContractBuilder struct {
@@ -2364,6 +2367,12 @@ type ContractBuilder struct {
 	contractNumberFlag      bool
 	signingType             *Enum // 签订类型，枚举值可通过文档[【飞书人事枚举常量】](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)签订类型（signing_type）枚举定义部分获得
 	signingTypeFlag         bool
+	contractStatus          *Enum // 合同协议状态，枚举值可通过文档【飞书人事枚举常量】合同协议状态（contract_status）枚举定义部分获得
+	contractStatusFlag      bool
+	renewalStatus           *Enum // 续签状态，枚举值可通过文档【飞书人事枚举常量】续签状态（renewal_status）枚举定义部分获得
+	renewalStatusFlag       bool
+	signingTimes            int // 第几次签署
+	signingTimesFlag        bool
 }
 
 func NewContractBuilder() *ContractBuilder {
@@ -2479,6 +2488,33 @@ func (builder *ContractBuilder) SigningType(signingType *Enum) *ContractBuilder 
 	return builder
 }
 
+// 合同协议状态，枚举值可通过文档【飞书人事枚举常量】合同协议状态（contract_status）枚举定义部分获得
+//
+// 示例值：
+func (builder *ContractBuilder) ContractStatus(contractStatus *Enum) *ContractBuilder {
+	builder.contractStatus = contractStatus
+	builder.contractStatusFlag = true
+	return builder
+}
+
+// 续签状态，枚举值可通过文档【飞书人事枚举常量】续签状态（renewal_status）枚举定义部分获得
+//
+// 示例值：
+func (builder *ContractBuilder) RenewalStatus(renewalStatus *Enum) *ContractBuilder {
+	builder.renewalStatus = renewalStatus
+	builder.renewalStatusFlag = true
+	return builder
+}
+
+// 第几次签署
+//
+// 示例值：1
+func (builder *ContractBuilder) SigningTimes(signingTimes int) *ContractBuilder {
+	builder.signingTimes = signingTimes
+	builder.signingTimesFlag = true
+	return builder
+}
+
 func (builder *ContractBuilder) Build() *Contract {
 	req := &Contract{}
 	if builder.idFlag {
@@ -2524,6 +2560,16 @@ func (builder *ContractBuilder) Build() *Contract {
 	}
 	if builder.signingTypeFlag {
 		req.SigningType = builder.signingType
+	}
+	if builder.contractStatusFlag {
+		req.ContractStatus = builder.contractStatus
+	}
+	if builder.renewalStatusFlag {
+		req.RenewalStatus = builder.renewalStatus
+	}
+	if builder.signingTimesFlag {
+		req.SigningTimes = &builder.signingTimes
+
 	}
 	return req
 }
@@ -12204,6 +12250,290 @@ func (builder *OffboardingReasonBuilder) Build() *OffboardingReason {
 	if builder.updatedTimeFlag {
 		req.UpdatedTime = &builder.updatedTime
 
+	}
+	return req
+}
+
+type OperationLogEntity struct {
+	OptType      *string                    `json:"opt_type,omitempty"`      // 操作类型（create、update、delete）
+	Fields       []*OperationLogEntityField `json:"fields,omitempty"`        // 变更字段
+	EmploymentId *string                    `json:"employment_id,omitempty"` // 雇员ID
+}
+
+type OperationLogEntityBuilder struct {
+	optType          string // 操作类型（create、update、delete）
+	optTypeFlag      bool
+	fields           []*OperationLogEntityField // 变更字段
+	fieldsFlag       bool
+	employmentId     string // 雇员ID
+	employmentIdFlag bool
+}
+
+func NewOperationLogEntityBuilder() *OperationLogEntityBuilder {
+	builder := &OperationLogEntityBuilder{}
+	return builder
+}
+
+// 操作类型（create、update、delete）
+//
+// 示例值：update
+func (builder *OperationLogEntityBuilder) OptType(optType string) *OperationLogEntityBuilder {
+	builder.optType = optType
+	builder.optTypeFlag = true
+	return builder
+}
+
+// 变更字段
+//
+// 示例值：
+func (builder *OperationLogEntityBuilder) Fields(fields []*OperationLogEntityField) *OperationLogEntityBuilder {
+	builder.fields = fields
+	builder.fieldsFlag = true
+	return builder
+}
+
+// 雇员ID
+//
+// 示例值：7373878233473271340
+func (builder *OperationLogEntityBuilder) EmploymentId(employmentId string) *OperationLogEntityBuilder {
+	builder.employmentId = employmentId
+	builder.employmentIdFlag = true
+	return builder
+}
+
+func (builder *OperationLogEntityBuilder) Build() *OperationLogEntity {
+	req := &OperationLogEntity{}
+	if builder.optTypeFlag {
+		req.OptType = &builder.optType
+
+	}
+	if builder.fieldsFlag {
+		req.Fields = builder.fields
+	}
+	if builder.employmentIdFlag {
+		req.EmploymentId = &builder.employmentId
+
+	}
+	return req
+}
+
+type OperationLogEntityField struct {
+	Field  *string `json:"field,omitempty"`  // 变更字段
+	Before *string `json:"before,omitempty"` // 旧值
+	After  *string `json:"after,omitempty"`  // 新值
+}
+
+type OperationLogEntityFieldBuilder struct {
+	field      string // 变更字段
+	fieldFlag  bool
+	before     string // 旧值
+	beforeFlag bool
+	after      string // 新值
+	afterFlag  bool
+}
+
+func NewOperationLogEntityFieldBuilder() *OperationLogEntityFieldBuilder {
+	builder := &OperationLogEntityFieldBuilder{}
+	return builder
+}
+
+// 变更字段
+//
+// 示例值：personal_profile.profile_type_2_201_20101
+func (builder *OperationLogEntityFieldBuilder) Field(field string) *OperationLogEntityFieldBuilder {
+	builder.field = field
+	builder.fieldFlag = true
+	return builder
+}
+
+// 旧值
+//
+// 示例值：{\"type\":\"text\",\"value\":\"null\"}
+func (builder *OperationLogEntityFieldBuilder) Before(before string) *OperationLogEntityFieldBuilder {
+	builder.before = before
+	builder.beforeFlag = true
+	return builder
+}
+
+// 新值
+//
+// 示例值：{\"type\":\"text\",\"value\":\"1\"}
+func (builder *OperationLogEntityFieldBuilder) After(after string) *OperationLogEntityFieldBuilder {
+	builder.after = after
+	builder.afterFlag = true
+	return builder
+}
+
+func (builder *OperationLogEntityFieldBuilder) Build() *OperationLogEntityField {
+	req := &OperationLogEntityField{}
+	if builder.fieldFlag {
+		req.Field = &builder.field
+
+	}
+	if builder.beforeFlag {
+		req.Before = &builder.before
+
+	}
+	if builder.afterFlag {
+		req.After = &builder.after
+
+	}
+	return req
+}
+
+type OperationLogListReq struct {
+	StartTime    *string  `json:"start_time,omitempty"`    // 开始时间，默认当天前30天
+	EndTime      *string  `json:"end_time,omitempty"`      // 结束时间，默认当天
+	OperatorIds  []string `json:"operator_ids,omitempty"`  // 操作人ID
+	EmploymentId *string  `json:"employment_id,omitempty"` // 雇员ID
+	FilterFields []string `json:"filter_fields,omitempty"` // 查询变更的字段
+}
+
+type OperationLogListReqBuilder struct {
+	startTime        string // 开始时间，默认当天前30天
+	startTimeFlag    bool
+	endTime          string // 结束时间，默认当天
+	endTimeFlag      bool
+	operatorIds      []string // 操作人ID
+	operatorIdsFlag  bool
+	employmentId     string // 雇员ID
+	employmentIdFlag bool
+	filterFields     []string // 查询变更的字段
+	filterFieldsFlag bool
+}
+
+func NewOperationLogListReqBuilder() *OperationLogListReqBuilder {
+	builder := &OperationLogListReqBuilder{}
+	return builder
+}
+
+// 开始时间，默认当天前30天
+//
+// 示例值：2024-01-02
+func (builder *OperationLogListReqBuilder) StartTime(startTime string) *OperationLogListReqBuilder {
+	builder.startTime = startTime
+	builder.startTimeFlag = true
+	return builder
+}
+
+// 结束时间，默认当天
+//
+// 示例值：2024-01-02
+func (builder *OperationLogListReqBuilder) EndTime(endTime string) *OperationLogListReqBuilder {
+	builder.endTime = endTime
+	builder.endTimeFlag = true
+	return builder
+}
+
+// 操作人ID
+//
+// 示例值：7140964208476371111
+func (builder *OperationLogListReqBuilder) OperatorIds(operatorIds []string) *OperationLogListReqBuilder {
+	builder.operatorIds = operatorIds
+	builder.operatorIdsFlag = true
+	return builder
+}
+
+// 雇员ID
+//
+// 示例值：7140964208476371111
+func (builder *OperationLogListReqBuilder) EmploymentId(employmentId string) *OperationLogListReqBuilder {
+	builder.employmentId = employmentId
+	builder.employmentIdFlag = true
+	return builder
+}
+
+// 查询变更的字段
+//
+// 示例值：
+func (builder *OperationLogListReqBuilder) FilterFields(filterFields []string) *OperationLogListReqBuilder {
+	builder.filterFields = filterFields
+	builder.filterFieldsFlag = true
+	return builder
+}
+
+func (builder *OperationLogListReqBuilder) Build() *OperationLogListReq {
+	req := &OperationLogListReq{}
+	if builder.startTimeFlag {
+		req.StartTime = &builder.startTime
+
+	}
+	if builder.endTimeFlag {
+		req.EndTime = &builder.endTime
+
+	}
+	if builder.operatorIdsFlag {
+		req.OperatorIds = builder.operatorIds
+	}
+	if builder.employmentIdFlag {
+		req.EmploymentId = &builder.employmentId
+
+	}
+	if builder.filterFieldsFlag {
+		req.FilterFields = builder.filterFields
+	}
+	return req
+}
+
+type OperationLogListRespItem struct {
+	OperatorId *string               `json:"operator_id,omitempty"` // 操作人ID
+	OptTime    *string               `json:"opt_time,omitempty"`    // 操作时间
+	Entities   []*OperationLogEntity `json:"entities,omitempty"`    // 操作记录
+}
+
+type OperationLogListRespItemBuilder struct {
+	operatorId     string // 操作人ID
+	operatorIdFlag bool
+	optTime        string // 操作时间
+	optTimeFlag    bool
+	entities       []*OperationLogEntity // 操作记录
+	entitiesFlag   bool
+}
+
+func NewOperationLogListRespItemBuilder() *OperationLogListRespItemBuilder {
+	builder := &OperationLogListRespItemBuilder{}
+	return builder
+}
+
+// 操作人ID
+//
+// 示例值：7373878233473271340
+func (builder *OperationLogListRespItemBuilder) OperatorId(operatorId string) *OperationLogListRespItemBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 操作时间
+//
+// 示例值：2024-01-01 12:12:12
+func (builder *OperationLogListRespItemBuilder) OptTime(optTime string) *OperationLogListRespItemBuilder {
+	builder.optTime = optTime
+	builder.optTimeFlag = true
+	return builder
+}
+
+// 操作记录
+//
+// 示例值：
+func (builder *OperationLogListRespItemBuilder) Entities(entities []*OperationLogEntity) *OperationLogListRespItemBuilder {
+	builder.entities = entities
+	builder.entitiesFlag = true
+	return builder
+}
+
+func (builder *OperationLogListRespItemBuilder) Build() *OperationLogListRespItem {
+	req := &OperationLogListRespItem{}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+
+	}
+	if builder.optTimeFlag {
+		req.OptTime = &builder.optTime
+
+	}
+	if builder.entitiesFlag {
+		req.Entities = builder.entities
 	}
 	return req
 }

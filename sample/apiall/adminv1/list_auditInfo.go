@@ -39,6 +39,7 @@ func main() {
 		UserType(0).
 		ObjectType(1).
 		ObjectValue("55ed16fe").
+		ExtFilterObjectByCcmToken("55ed16fe").
 		Build()
 	// 发起请求
 	resp, err := client.Admin.V1.AuditInfo.List(context.Background(), req)

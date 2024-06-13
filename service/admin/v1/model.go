@@ -167,6 +167,10 @@ type AdminDeptStat struct {
 	EmailReceiveExtCount *string `json:"email_receive_ext_count,omitempty"` // 来自外部收件数
 	EmailSendInCount     *string `json:"email_send_in_count,omitempty"`     // 对内发件数
 	EmailReceiveInCount  *string `json:"email_receive_in_count,omitempty"`  // 来自内部收件数
+	SearchActiveDau      *string `json:"search_active_dau,omitempty"`       // 大搜搜索活跃人数
+	TotalSearchCount     *string `json:"total_search_count,omitempty"`      // 总搜索次数
+	QuickSearchCount     *string `json:"quick_search_count,omitempty"`      // 综搜次数
+	TabSearchCount       *string `json:"tab_search_count,omitempty"`        // 垂搜次数
 }
 
 type AdminDeptStatBuilder struct {
@@ -246,6 +250,14 @@ type AdminDeptStatBuilder struct {
 	emailSendInCountFlag     bool
 	emailReceiveInCount      string // 来自内部收件数
 	emailReceiveInCountFlag  bool
+	searchActiveDau          string // 大搜搜索活跃人数
+	searchActiveDauFlag      bool
+	totalSearchCount         string // 总搜索次数
+	totalSearchCountFlag     bool
+	quickSearchCount         string // 综搜次数
+	quickSearchCountFlag     bool
+	tabSearchCount           string // 垂搜次数
+	tabSearchCountFlag       bool
 }
 
 func NewAdminDeptStatBuilder() *AdminDeptStatBuilder {
@@ -595,6 +607,42 @@ func (builder *AdminDeptStatBuilder) EmailReceiveInCount(emailReceiveInCount str
 	return builder
 }
 
+// 大搜搜索活跃人数
+//
+// 示例值：7
+func (builder *AdminDeptStatBuilder) SearchActiveDau(searchActiveDau string) *AdminDeptStatBuilder {
+	builder.searchActiveDau = searchActiveDau
+	builder.searchActiveDauFlag = true
+	return builder
+}
+
+// 总搜索次数
+//
+// 示例值：7
+func (builder *AdminDeptStatBuilder) TotalSearchCount(totalSearchCount string) *AdminDeptStatBuilder {
+	builder.totalSearchCount = totalSearchCount
+	builder.totalSearchCountFlag = true
+	return builder
+}
+
+// 综搜次数
+//
+// 示例值：7
+func (builder *AdminDeptStatBuilder) QuickSearchCount(quickSearchCount string) *AdminDeptStatBuilder {
+	builder.quickSearchCount = quickSearchCount
+	builder.quickSearchCountFlag = true
+	return builder
+}
+
+// 垂搜次数
+//
+// 示例值：7
+func (builder *AdminDeptStatBuilder) TabSearchCount(tabSearchCount string) *AdminDeptStatBuilder {
+	builder.tabSearchCount = tabSearchCount
+	builder.tabSearchCountFlag = true
+	return builder
+}
+
 func (builder *AdminDeptStatBuilder) Build() *AdminDeptStat {
 	req := &AdminDeptStat{}
 	if builder.dateFlag {
@@ -749,6 +797,22 @@ func (builder *AdminDeptStatBuilder) Build() *AdminDeptStat {
 		req.EmailReceiveInCount = &builder.emailReceiveInCount
 
 	}
+	if builder.searchActiveDauFlag {
+		req.SearchActiveDau = &builder.searchActiveDau
+
+	}
+	if builder.totalSearchCountFlag {
+		req.TotalSearchCount = &builder.totalSearchCount
+
+	}
+	if builder.quickSearchCountFlag {
+		req.QuickSearchCount = &builder.quickSearchCount
+
+	}
+	if builder.tabSearchCountFlag {
+		req.TabSearchCount = &builder.tabSearchCount
+
+	}
 	return req
 }
 
@@ -782,6 +846,10 @@ type AdminUserStat struct {
 	EmailReceiveExtCount *string `json:"email_receive_ext_count,omitempty"` // 来自外部收件数
 	EmailSendInCount     *string `json:"email_send_in_count,omitempty"`     // 对内发件数
 	EmailReceiveInCount  *string `json:"email_receive_in_count,omitempty"`  // 来自内部收件数
+	SearchActiveFlag     *int    `json:"search_active_flag,omitempty"`      // 是否使用了大搜
+	TotalSearchCount     *string `json:"total_search_count,omitempty"`      // 总搜索次数
+	QuickSearchCount     *string `json:"quick_search_count,omitempty"`      // 综搜次数
+	TabSearchCount       *string `json:"tab_search_count,omitempty"`        // 垂搜次数
 }
 
 type AdminUserStatBuilder struct {
@@ -843,6 +911,14 @@ type AdminUserStatBuilder struct {
 	emailSendInCountFlag     bool
 	emailReceiveInCount      string // 来自内部收件数
 	emailReceiveInCountFlag  bool
+	searchActiveFlag         int // 是否使用了大搜
+	searchActiveFlagFlag     bool
+	totalSearchCount         string // 总搜索次数
+	totalSearchCountFlag     bool
+	quickSearchCount         string // 综搜次数
+	quickSearchCountFlag     bool
+	tabSearchCount           string // 垂搜次数
+	tabSearchCountFlag       bool
 }
 
 func NewAdminUserStatBuilder() *AdminUserStatBuilder {
@@ -1111,6 +1187,42 @@ func (builder *AdminUserStatBuilder) EmailReceiveInCount(emailReceiveInCount str
 	return builder
 }
 
+// 是否使用了大搜
+//
+// 示例值：1
+func (builder *AdminUserStatBuilder) SearchActiveFlag(searchActiveFlag int) *AdminUserStatBuilder {
+	builder.searchActiveFlag = searchActiveFlag
+	builder.searchActiveFlagFlag = true
+	return builder
+}
+
+// 总搜索次数
+//
+// 示例值：7
+func (builder *AdminUserStatBuilder) TotalSearchCount(totalSearchCount string) *AdminUserStatBuilder {
+	builder.totalSearchCount = totalSearchCount
+	builder.totalSearchCountFlag = true
+	return builder
+}
+
+// 综搜次数
+//
+// 示例值：7
+func (builder *AdminUserStatBuilder) QuickSearchCount(quickSearchCount string) *AdminUserStatBuilder {
+	builder.quickSearchCount = quickSearchCount
+	builder.quickSearchCountFlag = true
+	return builder
+}
+
+// 垂搜次数
+//
+// 示例值：7
+func (builder *AdminUserStatBuilder) TabSearchCount(tabSearchCount string) *AdminUserStatBuilder {
+	builder.tabSearchCount = tabSearchCount
+	builder.tabSearchCountFlag = true
+	return builder
+}
+
 func (builder *AdminUserStatBuilder) Build() *AdminUserStat {
 	req := &AdminUserStat{}
 	if builder.dateFlag {
@@ -1227,6 +1339,22 @@ func (builder *AdminUserStatBuilder) Build() *AdminUserStat {
 	}
 	if builder.emailReceiveInCountFlag {
 		req.EmailReceiveInCount = &builder.emailReceiveInCount
+
+	}
+	if builder.searchActiveFlagFlag {
+		req.SearchActiveFlag = &builder.searchActiveFlag
+
+	}
+	if builder.totalSearchCountFlag {
+		req.TotalSearchCount = &builder.totalSearchCount
+
+	}
+	if builder.quickSearchCountFlag {
+		req.QuickSearchCount = &builder.quickSearchCount
+
+	}
+	if builder.tabSearchCountFlag {
+		req.TabSearchCount = &builder.tabSearchCount
 
 	}
 	return req
@@ -6527,6 +6655,14 @@ func (builder *ListAuditInfoReqBuilder) ObjectType(objectType int) *ListAuditInf
 // 示例值：55ed16fe
 func (builder *ListAuditInfoReqBuilder) ObjectValue(objectValue string) *ListAuditInfoReqBuilder {
 	builder.apiReq.QueryParams.Set("object_value", fmt.Sprint(objectValue))
+	return builder
+}
+
+// 增强过滤操作对象: 操作对象ID，支持云文档侧泛token过滤。会覆盖object_type和object_value查询条件
+//
+// 示例值：55ed16fe
+func (builder *ListAuditInfoReqBuilder) ExtFilterObjectByCcmToken(extFilterObjectByCcmToken string) *ListAuditInfoReqBuilder {
+	builder.apiReq.QueryParams.Set("ext_filter_object_by_ccm_token", fmt.Sprint(extFilterObjectByCcmToken))
 	return builder
 }
 

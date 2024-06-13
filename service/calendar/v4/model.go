@@ -87,8 +87,8 @@ const (
 )
 
 const (
-	NeedNotificationTrue  = true  //
-	NeedNotificationFalse = false //
+	NeedNotificationTrue  = true  // 发送通知
+	NeedNotificationFalse = false // 不发送通知
 
 )
 
