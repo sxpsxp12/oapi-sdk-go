@@ -86,6 +86,19 @@ type MessageCardI18nElements struct {
 	ZhCN_ []MessageCardElement `json:"zh_cn,omitempty"`
 	EnUS_ []MessageCardElement `json:"en_us,omitempty"`
 	JaJP_ []MessageCardElement `json:"ja_jp,omitempty"`
+	ZhHK_ []MessageCardElement `json:"zh_hk,omitempty"`
+	ZhTW_ []MessageCardElement `json:"zh_tw,omitempty"`
+	IdID_ []MessageCardElement `json:"id_id,omitempty"`
+	ViVN_ []MessageCardElement `json:"vi_vn,omitempty"`
+	ThTH_ []MessageCardElement `json:"th_th,omitempty"`
+	PtBR_ []MessageCardElement `json:"pt_br,omitempty"`
+	EsES_ []MessageCardElement `json:"es_es,omitempty"`
+	KoKR_ []MessageCardElement `json:"ko_kr,omitempty"`
+	DeDE_ []MessageCardElement `json:"de_de,omitempty"`
+	FrFR_ []MessageCardElement `json:"fr_fr,omitempty"`
+	ItIT_ []MessageCardElement `json:"it_it,omitempty"`
+	RuRU_ []MessageCardElement `json:"ru_ru,omitempty"`
+	MsMY_ []MessageCardElement `json:"ms_my,omitempty"`
 }
 
 func NewMessageCardI18nElements() *MessageCardI18nElements {
@@ -1096,6 +1109,19 @@ type I18n struct {
 	ZhCn string `json:"zh_cn"`
 	EnCn string `json:"en_us"`
 	JaJp string `json:"ja_jp"`
+	ZhHk string `json:"zh_hk"`
+	ZhTw string `json:"zh_tw"`
+	IdId string `json:"id_id"`
+	ViVn string `json:"vi_vn"`
+	ThTh string `json:"th_th"`
+	PtBr string `json:"pt_br"`
+	EsEs string `json:"es_es"`
+	KoKr string `json:"ko_kr"`
+	DeDe string `json:"de_de"`
+	FrFr string `json:"fr_fr"`
+	ItIt string `json:"it_it"`
+	RuRu string `json:"ru_ru"`
+	MsMy string `json:"ms_my"`
 }
 
 type CardActionBody struct {
