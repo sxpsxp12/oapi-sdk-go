@@ -2957,6 +2957,69 @@ func (builder *PresentBuilder) Build() *Present {
 	return req
 }
 
+type PresentDataCallbackDialogRequest struct {
+	MessageId    *string `json:"message_id,omitempty"`    // message_id
+	Status       *Status `json:"status,omitempty"`        // status
+	CallbackInfo *string `json:"callback_info,omitempty"` // callback_info
+}
+
+type PresentDataCallbackDialogRequestBuilder struct {
+	messageId        string // message_id
+	messageIdFlag    bool
+	status           *Status // status
+	statusFlag       bool
+	callbackInfo     string // callback_info
+	callbackInfoFlag bool
+}
+
+func NewPresentDataCallbackDialogRequestBuilder() *PresentDataCallbackDialogRequestBuilder {
+	builder := &PresentDataCallbackDialogRequestBuilder{}
+	return builder
+}
+
+// message_id
+//
+// 示例值：""
+func (builder *PresentDataCallbackDialogRequestBuilder) MessageId(messageId string) *PresentDataCallbackDialogRequestBuilder {
+	builder.messageId = messageId
+	builder.messageIdFlag = true
+	return builder
+}
+
+// status
+//
+// 示例值：
+func (builder *PresentDataCallbackDialogRequestBuilder) Status(status *Status) *PresentDataCallbackDialogRequestBuilder {
+	builder.status = status
+	builder.statusFlag = true
+	return builder
+}
+
+// callback_info
+//
+// 示例值：""
+func (builder *PresentDataCallbackDialogRequestBuilder) CallbackInfo(callbackInfo string) *PresentDataCallbackDialogRequestBuilder {
+	builder.callbackInfo = callbackInfo
+	builder.callbackInfoFlag = true
+	return builder
+}
+
+func (builder *PresentDataCallbackDialogRequestBuilder) Build() *PresentDataCallbackDialogRequest {
+	req := &PresentDataCallbackDialogRequest{}
+	if builder.messageIdFlag {
+		req.MessageId = &builder.messageId
+
+	}
+	if builder.statusFlag {
+		req.Status = builder.status
+	}
+	if builder.callbackInfoFlag {
+		req.CallbackInfo = &builder.callbackInfo
+
+	}
+	return req
+}
+
 type RagAnswerResponse struct {
 	Answer   *string    `json:"answer,omitempty"`   // 模型总结的结果
 	Passages []*Passage `json:"passages,omitempty"` // 召回的passage列表
@@ -4235,6 +4298,54 @@ func (builder *SeperatePassageBuilder) Build() *SeperatePassage {
 	return req
 }
 
+type Status struct {
+	FromStatus *string `json:"from_status,omitempty"` // from_status
+	ToStatus   *string `json:"to_status,omitempty"`   // to_status
+}
+
+type StatusBuilder struct {
+	fromStatus     string // from_status
+	fromStatusFlag bool
+	toStatus       string // to_status
+	toStatusFlag   bool
+}
+
+func NewStatusBuilder() *StatusBuilder {
+	builder := &StatusBuilder{}
+	return builder
+}
+
+// from_status
+//
+// 示例值：""
+func (builder *StatusBuilder) FromStatus(fromStatus string) *StatusBuilder {
+	builder.fromStatus = fromStatus
+	builder.fromStatusFlag = true
+	return builder
+}
+
+// to_status
+//
+// 示例值：""
+func (builder *StatusBuilder) ToStatus(toStatus string) *StatusBuilder {
+	builder.toStatus = toStatus
+	builder.toStatusFlag = true
+	return builder
+}
+
+func (builder *StatusBuilder) Build() *Status {
+	req := &Status{}
+	if builder.fromStatusFlag {
+		req.FromStatus = &builder.fromStatus
+
+	}
+	if builder.toStatusFlag {
+		req.ToStatus = &builder.toStatus
+
+	}
+	return req
+}
+
 type SystemInfo struct {
 	Time       *string `json:"time,omitempty"`        // 用户时间
 	TimeZone   *string `json:"time_zone,omitempty"`   // 用户时区
@@ -4245,6 +4356,8 @@ type SystemInfo struct {
 	ShadowName *string `json:"shadow_name,omitempty"` // 用户赋予飞飞的名字
 	MsgId      *string `json:"msg_id,omitempty"`      // 消息 ID
 	AgentId    *string `json:"agent_id,omitempty"`    // 场景 ID
+	Locale     *string `json:"locale,omitempty"`      // locale
+	AppVersion *string `json:"app_version,omitempty"` // app_version 客户端版本
 }
 
 type SystemInfoBuilder struct {
@@ -4266,6 +4379,10 @@ type SystemInfoBuilder struct {
 	msgIdFlag      bool
 	agentId        string // 场景 ID
 	agentIdFlag    bool
+	locale         string // locale
+	localeFlag     bool
+	appVersion     string // app_version 客户端版本
+	appVersionFlag bool
 }
 
 func NewSystemInfoBuilder() *SystemInfoBuilder {
@@ -4354,6 +4471,24 @@ func (builder *SystemInfoBuilder) AgentId(agentId string) *SystemInfoBuilder {
 	return builder
 }
 
+// locale
+//
+// 示例值：zh_cn
+func (builder *SystemInfoBuilder) Locale(locale string) *SystemInfoBuilder {
+	builder.locale = locale
+	builder.localeFlag = true
+	return builder
+}
+
+// app_version 客户端版本
+//
+// 示例值：7.20.0
+func (builder *SystemInfoBuilder) AppVersion(appVersion string) *SystemInfoBuilder {
+	builder.appVersion = appVersion
+	builder.appVersionFlag = true
+	return builder
+}
+
 func (builder *SystemInfoBuilder) Build() *SystemInfo {
 	req := &SystemInfo{}
 	if builder.timeFlag {
@@ -4390,6 +4525,14 @@ func (builder *SystemInfoBuilder) Build() *SystemInfo {
 	}
 	if builder.agentIdFlag {
 		req.AgentId = &builder.agentId
+
+	}
+	if builder.localeFlag {
+		req.Locale = &builder.locale
+
+	}
+	if builder.appVersionFlag {
+		req.AppVersion = &builder.appVersion
 
 	}
 	return req

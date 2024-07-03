@@ -36,6 +36,8 @@ func main() {
 			PreHireIds([]string{}).
 			OnboardingDateStart("2006-01-02").
 			OnboardingDateEnd("2006-01-02").
+			UpdatedDateStart("2006-01-02").
+			UpdatedDateEnd("2006-01-02").
 			OnboardingLocationIds([]string{}).
 			OnboardingStatus("待入职(preboarding)").
 			DepartmentIds([]string{}).

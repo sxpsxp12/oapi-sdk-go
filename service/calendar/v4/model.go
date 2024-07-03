@@ -87,9 +87,8 @@ const (
 )
 
 const (
-	NeedNotificationTrue  = true  // 发送通知
-	NeedNotificationFalse = false // 不发送通知
-
+	NeedNotificationTrue  = "true"  // 发送通知
+	NeedNotificationFalse = "false" // 不发送通知
 )
 
 const (
@@ -7026,8 +7025,8 @@ func (builder *DeleteCalendarEventReqBuilder) EventId(eventId string) *DeleteCal
 
 // 删除日程是否给日程参与人发送bot通知，默认为true
 //
-// 示例值：false
-func (builder *DeleteCalendarEventReqBuilder) NeedNotification(needNotification bool) *DeleteCalendarEventReqBuilder {
+// 示例值：
+func (builder *DeleteCalendarEventReqBuilder) NeedNotification(needNotification string) *DeleteCalendarEventReqBuilder {
 	builder.apiReq.QueryParams.Set("need_notification", fmt.Sprint(needNotification))
 	return builder
 }

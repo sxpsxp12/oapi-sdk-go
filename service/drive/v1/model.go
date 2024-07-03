@@ -333,6 +333,7 @@ const (
 	ParentTypeUploadAllMediaBitableFile         = "bitable_file"          // 多维表格文件
 	ParentTypeUploadAllMediaMoments             = "moments"               // 同事圈
 	ParentTypeUploadAllMediaCcmImportOpen       = "ccm_import_open"       // 云文档导入文件
+	ParentTypeUploadAllMediaCalendar            = "calendar"              // 日历文件
 )
 
 const (
@@ -380,6 +381,19 @@ const (
 )
 
 const (
+	TokenTypeV2Doc      = "doc"      // 文档
+	TokenTypeV2Sheet    = "sheet"    // 电子表格
+	TokenTypeV2File     = "file"     // 云空间文件
+	TokenTypeV2Wiki     = "wiki"     // 知识库节点
+	TokenTypeV2Bitable  = "bitable"  // 多维表格
+	TokenTypeV2Docx     = "docx"     // 新版文档
+	TokenTypeV2Folder   = "folder"   // 文件夹
+	TokenTypeV2Mindnote = "mindnote" // 思维笔记
+	TokenTypeV2Minutes  = "minutes"  // 妙记
+	TokenTypeV2Slides   = "slides"   // 幻灯片
+)
+
+const (
 	MemberTypeEmail            = "email"            // 飞书邮箱
 	MemberTypeOpenId           = "openid"           // 开放平台OpenID
 	MemberTypeUnionId          = "unionid"          // 开放平台UnionID
@@ -397,6 +411,11 @@ const (
 )
 
 const (
+	PermTypeContainer  = "container"   // 当前页面及子页面
+	PermTypeSinglePage = "single_page" // 仅当前页面，当且仅当在知识库文档中该参数有效
+)
+
+const (
 	TypeCreatePermissionMemberUser            = "user"              // 用户
 	TypeCreatePermissionMemberChat            = "chat"              // 群组
 	TypeCreatePermissionMemberDepartment      = "department"        // 组织架构
@@ -407,16 +426,16 @@ const (
 )
 
 const (
-	TokenTypeV2Doc      = "doc"      // 文档
-	TokenTypeV2Sheet    = "sheet"    // 电子表格
-	TokenTypeV2File     = "file"     // 云空间文件
-	TokenTypeV2Wiki     = "wiki"     // 知识库节点
-	TokenTypeV2Bitable  = "bitable"  // 多维表格
-	TokenTypeV2Docx     = "docx"     // 新版文档
-	TokenTypeV2Folder   = "folder"   // 文件夹
-	TokenTypeV2Mindnote = "mindnote" // 思维笔记
-	TokenTypeV2Minutes  = "minutes"  // 妙记
-	TokenTypeV2Slides   = "slides"   // 幻灯片
+	TokenTypeV2CreatePermissionMemberDoc      = "doc"      // 文档
+	TokenTypeV2CreatePermissionMemberSheet    = "sheet"    // 电子表格
+	TokenTypeV2CreatePermissionMemberFile     = "file"     // 云空间文件
+	TokenTypeV2CreatePermissionMemberWiki     = "wiki"     // 知识库节点
+	TokenTypeV2CreatePermissionMemberBitable  = "bitable"  // 多维表格
+	TokenTypeV2CreatePermissionMemberDocx     = "docx"     // 新版文档
+	TokenTypeV2CreatePermissionMemberFolder   = "folder"   // 文件夹
+	TokenTypeV2CreatePermissionMemberMindnote = "mindnote" // 思维笔记
+	TokenTypeV2CreatePermissionMemberMinutes  = "minutes"  // 妙记
+	TokenTypeV2CreatePermissionMemberSlides   = "slides"   // 幻灯片
 )
 
 const (
@@ -427,6 +446,11 @@ const (
 	TypeDeletePermissionMemberWikiSpaceMember = "wiki_space_member" // 知识库成员
 	TypeDeletePermissionMemberWikiSpaceViewer = "wiki_space_viewer" // 知识库可阅读成员
 	TypeDeletePermissionMemberWikiSpaceEditor = "wiki_space_editor" // 知识库可编辑成员
+)
+
+const (
+	PermTypeDeletePermissionMemberContainer  = "container"   // 当前页面及子页面
+	PermTypeDeletePermissionMemberSinglePage = "single_page" // 仅当前页面，当且仅当在知识库文档中该参数有效
 )
 
 const (
@@ -466,6 +490,11 @@ const (
 )
 
 const (
+	PermTypeListPermissionMemberContainer  = "container"   // 当前页面及子页面
+	PermTypeListPermissionMemberSinglePage = "single_page" // 仅当前页面，当且仅当在知识库文档中该参数有效
+)
+
+const (
 	MemberTypeTransferOwnerPermissionMemberEmail  = "email"  // 飞书邮箱
 	MemberTypeTransferOwnerPermissionMemberOpenId = "openid" // 开放平台ID
 	MemberTypeTransferOwnerPermissionMemberUserId = "userid" // 用户自定义ID
@@ -498,6 +527,11 @@ const (
 	PermUpdatePermissionMemberView       = "view"        // 可阅读角色
 	PermUpdatePermissionMemberEdit       = "edit"        // 可编辑角色
 	PermUpdatePermissionMemberFullAccess = "full_access" // 可管理角色
+)
+
+const (
+	PermTypeUpdatePermissionMemberContainer  = "container"   // 当前页面及子页面
+	PermTypeUpdatePermissionMemberSinglePage = "single_page" // 仅当前页面，当且仅当在知识库文档中该参数有效
 )
 
 const (
@@ -659,6 +693,7 @@ type BaseMember struct {
 	MemberType *string `json:"member_type,omitempty"` // 协作者 ID 类型，与协作者 ID 需要对应
 	MemberId   *string `json:"member_id,omitempty"`   // 协作者 ID，与协作者 ID 类型需要对应
 	Perm       *string `json:"perm,omitempty"`        // 协作者对应的权限角色
+	PermType   *string `json:"perm_type,omitempty"`   // 协作者的权限角色类型
 	Type       *string `json:"type,omitempty"`        // 协作者类型
 }
 
@@ -669,6 +704,8 @@ type BaseMemberBuilder struct {
 	memberIdFlag   bool
 	perm           string // 协作者对应的权限角色
 	permFlag       bool
+	permType       string // 协作者的权限角色类型
+	permTypeFlag   bool
 	type_          string // 协作者类型
 	typeFlag       bool
 }
@@ -705,6 +742,15 @@ func (builder *BaseMemberBuilder) Perm(perm string) *BaseMemberBuilder {
 	return builder
 }
 
+// 协作者的权限角色类型
+//
+// 示例值：container
+func (builder *BaseMemberBuilder) PermType(permType string) *BaseMemberBuilder {
+	builder.permType = permType
+	builder.permTypeFlag = true
+	return builder
+}
+
 // 协作者类型
 //
 // 示例值：user
@@ -726,6 +772,10 @@ func (builder *BaseMemberBuilder) Build() *BaseMember {
 	}
 	if builder.permFlag {
 		req.Perm = &builder.perm
+
+	}
+	if builder.permTypeFlag {
+		req.PermType = &builder.permType
 
 	}
 	if builder.typeFlag {
@@ -3298,6 +3348,7 @@ type Member struct {
 	MemberType    *string `json:"member_type,omitempty"`    // 协作者 ID 类型，与协作者 ID 需要对应
 	MemberId      *string `json:"member_id,omitempty"`      // 协作者 ID，与协作者 ID 类型需要对应
 	Perm          *string `json:"perm,omitempty"`           // 协作者对应的权限角色
+	PermType      *string `json:"perm_type,omitempty"`      // 协作者的权限角色类型
 	Type          *string `json:"type,omitempty"`           // 协作者的类型
 	Name          *string `json:"name,omitempty"`           // 协作者的名字
 	Avatar        *string `json:"avatar,omitempty"`         // 协作者的头像
@@ -3311,6 +3362,8 @@ type MemberBuilder struct {
 	memberIdFlag      bool
 	perm              string // 协作者对应的权限角色
 	permFlag          bool
+	permType          string // 协作者的权限角色类型
+	permTypeFlag      bool
 	type_             string // 协作者的类型
 	typeFlag          bool
 	name              string // 协作者的名字
@@ -3350,6 +3403,15 @@ func (builder *MemberBuilder) MemberId(memberId string) *MemberBuilder {
 func (builder *MemberBuilder) Perm(perm string) *MemberBuilder {
 	builder.perm = perm
 	builder.permFlag = true
+	return builder
+}
+
+// 协作者的权限角色类型
+//
+// 示例值：container
+func (builder *MemberBuilder) PermType(permType string) *MemberBuilder {
+	builder.permType = permType
+	builder.permTypeFlag = true
 	return builder
 }
 
@@ -3401,6 +3463,10 @@ func (builder *MemberBuilder) Build() *Member {
 	}
 	if builder.permFlag {
 		req.Perm = &builder.perm
+
+	}
+	if builder.permTypeFlag {
+		req.PermType = &builder.permType
 
 	}
 	if builder.typeFlag {
@@ -9304,6 +9370,135 @@ func (resp *AuthPermissionMemberResp) Success() bool {
 	return resp.Code == 0
 }
 
+type BatchCreatePermissionMemberReqBodyBuilder struct {
+	members     []*BaseMember // 协作者列表
+	membersFlag bool
+}
+
+func NewBatchCreatePermissionMemberReqBodyBuilder() *BatchCreatePermissionMemberReqBodyBuilder {
+	builder := &BatchCreatePermissionMemberReqBodyBuilder{}
+	return builder
+}
+
+// 协作者列表
+//
+// 示例值：
+func (builder *BatchCreatePermissionMemberReqBodyBuilder) Members(members []*BaseMember) *BatchCreatePermissionMemberReqBodyBuilder {
+	builder.members = members
+	builder.membersFlag = true
+	return builder
+}
+
+func (builder *BatchCreatePermissionMemberReqBodyBuilder) Build() *BatchCreatePermissionMemberReqBody {
+	req := &BatchCreatePermissionMemberReqBody{}
+	if builder.membersFlag {
+		req.Members = builder.members
+	}
+	return req
+}
+
+type BatchCreatePermissionMemberPathReqBodyBuilder struct {
+	members     []*BaseMember
+	membersFlag bool
+}
+
+func NewBatchCreatePermissionMemberPathReqBodyBuilder() *BatchCreatePermissionMemberPathReqBodyBuilder {
+	builder := &BatchCreatePermissionMemberPathReqBodyBuilder{}
+	return builder
+}
+
+// 协作者列表
+//
+// 示例值：
+func (builder *BatchCreatePermissionMemberPathReqBodyBuilder) Members(members []*BaseMember) *BatchCreatePermissionMemberPathReqBodyBuilder {
+	builder.members = members
+	builder.membersFlag = true
+	return builder
+}
+
+func (builder *BatchCreatePermissionMemberPathReqBodyBuilder) Build() (*BatchCreatePermissionMemberReqBody, error) {
+	req := &BatchCreatePermissionMemberReqBody{}
+	if builder.membersFlag {
+		req.Members = builder.members
+	}
+	return req, nil
+}
+
+type BatchCreatePermissionMemberReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *BatchCreatePermissionMemberReqBody
+}
+
+func NewBatchCreatePermissionMemberReqBuilder() *BatchCreatePermissionMemberReqBuilder {
+	builder := &BatchCreatePermissionMemberReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 文件的 token
+//
+// 示例值：doccnBKgoMyY5OMbUG6FioTXuBe
+func (builder *BatchCreatePermissionMemberReqBuilder) Token(token string) *BatchCreatePermissionMemberReqBuilder {
+	builder.apiReq.PathParams.Set("token", fmt.Sprint(token))
+	return builder
+}
+
+// 文件的类型
+//
+// 示例值：doc
+func (builder *BatchCreatePermissionMemberReqBuilder) Type(type_ string) *BatchCreatePermissionMemberReqBuilder {
+	builder.apiReq.QueryParams.Set("type", fmt.Sprint(type_))
+	return builder
+}
+
+// 添加权限后是否通知对方
+//
+// 示例值：false
+func (builder *BatchCreatePermissionMemberReqBuilder) NeedNotification(needNotification bool) *BatchCreatePermissionMemberReqBuilder {
+	builder.apiReq.QueryParams.Set("need_notification", fmt.Sprint(needNotification))
+	return builder
+}
+
+func (builder *BatchCreatePermissionMemberReqBuilder) Body(body *BatchCreatePermissionMemberReqBody) *BatchCreatePermissionMemberReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *BatchCreatePermissionMemberReqBuilder) Build() *BatchCreatePermissionMemberReq {
+	req := &BatchCreatePermissionMemberReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type BatchCreatePermissionMemberReqBody struct {
+	Members []*BaseMember `json:"members,omitempty"` // 协作者列表
+}
+
+type BatchCreatePermissionMemberReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *BatchCreatePermissionMemberReqBody `body:""`
+}
+
+type BatchCreatePermissionMemberRespData struct {
+	Members []*BaseMember `json:"members,omitempty"` // 协作者列表
+}
+
+type BatchCreatePermissionMemberResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *BatchCreatePermissionMemberRespData `json:"data"` // 业务数据
+}
+
+func (resp *BatchCreatePermissionMemberResp) Success() bool {
+	return resp.Code == 0
+}
+
 type CreatePermissionMemberReqBuilder struct {
 	apiReq     *larkcore.ApiReq
 	baseMember *BaseMember
@@ -9377,8 +9572,10 @@ func (resp *CreatePermissionMemberResp) Success() bool {
 }
 
 type DeletePermissionMemberReqBodyBuilder struct {
-	type_    string // 协作者类型
-	typeFlag bool
+	type_        string // 协作者类型
+	typeFlag     bool
+	permType     string // 协作者的权限角色类型
+	permTypeFlag bool
 }
 
 func NewDeletePermissionMemberReqBodyBuilder() *DeletePermissionMemberReqBodyBuilder {
@@ -9395,17 +9592,31 @@ func (builder *DeletePermissionMemberReqBodyBuilder) Type(type_ string) *DeleteP
 	return builder
 }
 
+// 协作者的权限角色类型
+//
+// 示例值：container
+func (builder *DeletePermissionMemberReqBodyBuilder) PermType(permType string) *DeletePermissionMemberReqBodyBuilder {
+	builder.permType = permType
+	builder.permTypeFlag = true
+	return builder
+}
+
 func (builder *DeletePermissionMemberReqBodyBuilder) Build() *DeletePermissionMemberReqBody {
 	req := &DeletePermissionMemberReqBody{}
 	if builder.typeFlag {
 		req.Type = &builder.type_
 	}
+	if builder.permTypeFlag {
+		req.PermType = &builder.permType
+	}
 	return req
 }
 
 type DeletePermissionMemberPathReqBodyBuilder struct {
-	type_    string
-	typeFlag bool
+	type_        string
+	typeFlag     bool
+	permType     string
+	permTypeFlag bool
 }
 
 func NewDeletePermissionMemberPathReqBodyBuilder() *DeletePermissionMemberPathReqBodyBuilder {
@@ -9422,10 +9633,22 @@ func (builder *DeletePermissionMemberPathReqBodyBuilder) Type(type_ string) *Del
 	return builder
 }
 
+// 协作者的权限角色类型
+//
+// 示例值：container
+func (builder *DeletePermissionMemberPathReqBodyBuilder) PermType(permType string) *DeletePermissionMemberPathReqBodyBuilder {
+	builder.permType = permType
+	builder.permTypeFlag = true
+	return builder
+}
+
 func (builder *DeletePermissionMemberPathReqBodyBuilder) Build() (*DeletePermissionMemberReqBody, error) {
 	req := &DeletePermissionMemberReqBody{}
 	if builder.typeFlag {
 		req.Type = &builder.type_
+	}
+	if builder.permTypeFlag {
+		req.PermType = &builder.permType
 	}
 	return req, nil
 }
@@ -9492,7 +9715,8 @@ func (builder *DeletePermissionMemberReqBuilder) Build() *DeletePermissionMember
 }
 
 type DeletePermissionMemberReqBody struct {
-	Type *string `json:"type,omitempty"` // 协作者类型
+	Type     *string `json:"type,omitempty"`      // 协作者类型
+	PermType *string `json:"perm_type,omitempty"` // 协作者的权限角色类型
 }
 
 type DeletePermissionMemberReq struct {
@@ -9543,6 +9767,14 @@ func (builder *ListPermissionMemberReqBuilder) Type(type_ string) *ListPermissio
 // 示例值：*
 func (builder *ListPermissionMemberReqBuilder) Fields(fields string) *ListPermissionMemberReqBuilder {
 	builder.apiReq.QueryParams.Set("fields", fmt.Sprint(fields))
+	return builder
+}
+
+// 协作者的权限角色类型
+//
+// 示例值：container
+func (builder *ListPermissionMemberReqBuilder) PermType(permType string) *ListPermissionMemberReqBuilder {
+	builder.apiReq.QueryParams.Set("perm_type", fmt.Sprint(permType))
 	return builder
 }
 

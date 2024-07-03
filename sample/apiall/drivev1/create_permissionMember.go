@@ -34,6 +34,7 @@ func main() {
 			MemberType("openid").
 			MemberId("string").
 			Perm("view").
+			PermType("container").
 			Type("user").
 			Build()).
 		Build()

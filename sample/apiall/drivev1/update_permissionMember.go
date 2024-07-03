@@ -34,6 +34,7 @@ func main() {
 		BaseMember(larkdrive.NewBaseMemberBuilder().
 			MemberType("openid").
 			Perm("view").
+			PermType("container").
 			Type("user").
 			Build()).
 		Build()

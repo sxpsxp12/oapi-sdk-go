@@ -1444,6 +1444,7 @@ type Meeting struct {
 	StartTime                   *string               `json:"start_time,omitempty"`                    // 会议开始时间（unix时间，单位sec）
 	EndTime                     *string               `json:"end_time,omitempty"`                      // 会议结束时间（unix时间，单位sec）
 	HostUser                    *MeetingUser          `json:"host_user,omitempty"`                     // 主持人
+	MeetingConnect              *bool                 `json:"meeting_connect,omitempty"`               // 该会议是否支持互通
 	Status                      *int                  `json:"status,omitempty"`                        // 会议状态
 	ParticipantCount            *string               `json:"participant_count,omitempty"`             // 参会峰值人数
 	ParticipantCountAccumulated *string               `json:"participant_count_accumulated,omitempty"` // 累计参会人数
@@ -1470,6 +1471,8 @@ type MeetingBuilder struct {
 	endTimeFlag                     bool
 	hostUser                        *MeetingUser // 主持人
 	hostUserFlag                    bool
+	meetingConnect                  bool // 该会议是否支持互通
+	meetingConnectFlag              bool
 	status                          int // 会议状态
 	statusFlag                      bool
 	participantCount                string // 参会峰值人数
@@ -1568,6 +1571,15 @@ func (builder *MeetingBuilder) HostUser(hostUser *MeetingUser) *MeetingBuilder {
 	return builder
 }
 
+// 该会议是否支持互通
+//
+// 示例值：true
+func (builder *MeetingBuilder) MeetingConnect(meetingConnect bool) *MeetingBuilder {
+	builder.meetingConnect = meetingConnect
+	builder.meetingConnectFlag = true
+	return builder
+}
+
 // 会议状态
 //
 // 示例值：2
@@ -1649,6 +1661,10 @@ func (builder *MeetingBuilder) Build() *Meeting {
 	}
 	if builder.hostUserFlag {
 		req.HostUser = builder.hostUser
+	}
+	if builder.meetingConnectFlag {
+		req.MeetingConnect = &builder.meetingConnect
+
 	}
 	if builder.statusFlag {
 		req.Status = &builder.status

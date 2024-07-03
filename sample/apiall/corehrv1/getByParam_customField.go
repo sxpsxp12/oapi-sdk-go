@@ -27,8 +27,8 @@ func main() {
 	client := lark.NewClient("appID", "appSecret")
 	// 创建请求对象
 	req := larkcorehr.NewGetByParamCustomFieldReqBuilder().
-		CustomApiName("custom_field_33").
 		ObjectApiName("offboarding_info").
+		CustomApiName("custom_field_33").
 		Build()
 	// 发起请求
 	resp, err := client.Corehr.V1.CustomField.GetByParam(context.Background(), req)

@@ -1547,12 +1547,107 @@ func (builder *FaqBuilder) Build() *Faq {
 	return req
 }
 
+type FaqCreateInfo struct {
+	CategoryId     *string  `json:"category_id,omitempty"`     // faq category id
+	Question       *string  `json:"question,omitempty"`        // faq question
+	Answer         *string  `json:"answer,omitempty"`          // faq answer
+	AnswerRichtext *string  `json:"answer_richtext,omitempty"` // faq answer in richtext
+	Tags           []string `json:"tags,omitempty"`            // faq tags
+}
+
+type FaqCreateInfoBuilder struct {
+	categoryId         string // faq category id
+	categoryIdFlag     bool
+	question           string // faq question
+	questionFlag       bool
+	answer             string // faq answer
+	answerFlag         bool
+	answerRichtext     string // faq answer in richtext
+	answerRichtextFlag bool
+	tags               []string // faq tags
+	tagsFlag           bool
+}
+
+func NewFaqCreateInfoBuilder() *FaqCreateInfoBuilder {
+	builder := &FaqCreateInfoBuilder{}
+	return builder
+}
+
+// faq category id
+//
+// 示例值：6836004780707807251
+func (builder *FaqCreateInfoBuilder) CategoryId(categoryId string) *FaqCreateInfoBuilder {
+	builder.categoryId = categoryId
+	builder.categoryIdFlag = true
+	return builder
+}
+
+// faq question
+//
+// 示例值：问题
+func (builder *FaqCreateInfoBuilder) Question(question string) *FaqCreateInfoBuilder {
+	builder.question = question
+	builder.questionFlag = true
+	return builder
+}
+
+// faq answer
+//
+// 示例值："答案"
+func (builder *FaqCreateInfoBuilder) Answer(answer string) *FaqCreateInfoBuilder {
+	builder.answer = answer
+	builder.answerFlag = true
+	return builder
+}
+
+// faq answer in richtext
+//
+// 示例值："[{"content":"答案","type":"text"},{"content":"这只是一个测试，医保问题","type":"text"}]"
+func (builder *FaqCreateInfoBuilder) AnswerRichtext(answerRichtext string) *FaqCreateInfoBuilder {
+	builder.answerRichtext = answerRichtext
+	builder.answerRichtextFlag = true
+	return builder
+}
+
+// faq tags
+//
+// 示例值：
+func (builder *FaqCreateInfoBuilder) Tags(tags []string) *FaqCreateInfoBuilder {
+	builder.tags = tags
+	builder.tagsFlag = true
+	return builder
+}
+
+func (builder *FaqCreateInfoBuilder) Build() *FaqCreateInfo {
+	req := &FaqCreateInfo{}
+	if builder.categoryIdFlag {
+		req.CategoryId = &builder.categoryId
+
+	}
+	if builder.questionFlag {
+		req.Question = &builder.question
+
+	}
+	if builder.answerFlag {
+		req.Answer = &builder.answer
+
+	}
+	if builder.answerRichtextFlag {
+		req.AnswerRichtext = &builder.answerRichtext
+
+	}
+	if builder.tagsFlag {
+		req.Tags = builder.tags
+	}
+	return req
+}
+
 type FaqUpdateInfo struct {
-	CategoryId     *string  `json:"category_id,omitempty"`     // 知识库分类ID
-	Question       *string  `json:"question,omitempty"`        // 问题
-	Answer         *string  `json:"answer,omitempty"`          // 答案
-	AnswerRichtext *string  `json:"answer_richtext,omitempty"` // 富文本答案和答案必须有一个必填。Json Array格式，富文本结构请见[了解更多: 富文本](https://open.feishu.cn/document/ukTMukTMukTM/uITM0YjLyEDN24iMxQjN)
-	Tags           []string `json:"tags,omitempty"`            // 相似问题
+	CategoryId     *string     `json:"category_id,omitempty"`     // 知识库分类ID
+	Question       *string     `json:"question,omitempty"`        // 问题
+	Answer         *string     `json:"answer,omitempty"`          // 答案
+	AnswerRichtext []*Richtext `json:"answer_richtext,omitempty"` // 富文本答案和答案必须有一个必填。Json Array格式，富文本结构请见[了解更多: 富文本](https://open.feishu.cn/document/ukTMukTMukTM/uITM0YjLyEDN24iMxQjN)
+	Tags           []string    `json:"tags,omitempty"`            // 相似问题
 }
 
 type FaqUpdateInfoBuilder struct {
@@ -1562,7 +1657,7 @@ type FaqUpdateInfoBuilder struct {
 	questionFlag       bool
 	answer             string // 答案
 	answerFlag         bool
-	answerRichtext     string // 富文本答案和答案必须有一个必填。Json Array格式，富文本结构请见[了解更多: 富文本](https://open.feishu.cn/document/ukTMukTMukTM/uITM0YjLyEDN24iMxQjN)
+	answerRichtext     []*Richtext // 富文本答案和答案必须有一个必填。Json Array格式，富文本结构请见[了解更多: 富文本](https://open.feishu.cn/document/ukTMukTMukTM/uITM0YjLyEDN24iMxQjN)
 	answerRichtextFlag bool
 	tags               []string // 相似问题
 	tagsFlag           bool
@@ -1602,8 +1697,8 @@ func (builder *FaqUpdateInfoBuilder) Answer(answer string) *FaqUpdateInfoBuilder
 
 // 富文本答案和答案必须有一个必填。Json Array格式，富文本结构请见[了解更多: 富文本](https://open.feishu.cn/document/ukTMukTMukTM/uITM0YjLyEDN24iMxQjN)
 //
-// 示例值：[{;						"content": "这只是一个测试，医保问题",;						"type": "text";					}]
-func (builder *FaqUpdateInfoBuilder) AnswerRichtext(answerRichtext string) *FaqUpdateInfoBuilder {
+// 示例值：[{"content":"答案","type":"text"},{"content":"\n","type":"text"}]
+func (builder *FaqUpdateInfoBuilder) AnswerRichtext(answerRichtext []*Richtext) *FaqUpdateInfoBuilder {
 	builder.answerRichtext = answerRichtext
 	builder.answerRichtextFlag = true
 	return builder
@@ -1633,8 +1728,7 @@ func (builder *FaqUpdateInfoBuilder) Build() *FaqUpdateInfo {
 
 	}
 	if builder.answerRichtextFlag {
-		req.AnswerRichtext = &builder.answerRichtext
-
+		req.AnswerRichtext = builder.answerRichtext
 	}
 	if builder.tagsFlag {
 		req.Tags = builder.tags
@@ -5618,7 +5712,7 @@ func (resp *UnsubscribeEventResp) Success() bool {
 }
 
 type CreateFaqReqBodyBuilder struct {
-	faq     *FaqUpdateInfo // 知识库详情
+	faq     *FaqCreateInfo // 知识库详情
 	faqFlag bool
 }
 
@@ -5630,7 +5724,7 @@ func NewCreateFaqReqBodyBuilder() *CreateFaqReqBodyBuilder {
 // 知识库详情
 //
 // 示例值：
-func (builder *CreateFaqReqBodyBuilder) Faq(faq *FaqUpdateInfo) *CreateFaqReqBodyBuilder {
+func (builder *CreateFaqReqBodyBuilder) Faq(faq *FaqCreateInfo) *CreateFaqReqBodyBuilder {
 	builder.faq = faq
 	builder.faqFlag = true
 	return builder
@@ -5645,7 +5739,7 @@ func (builder *CreateFaqReqBodyBuilder) Build() *CreateFaqReqBody {
 }
 
 type CreateFaqPathReqBodyBuilder struct {
-	faq     *FaqUpdateInfo
+	faq     *FaqCreateInfo
 	faqFlag bool
 }
 
@@ -5657,7 +5751,7 @@ func NewCreateFaqPathReqBodyBuilder() *CreateFaqPathReqBodyBuilder {
 // 知识库详情
 //
 // 示例值：
-func (builder *CreateFaqPathReqBodyBuilder) Faq(faq *FaqUpdateInfo) *CreateFaqPathReqBodyBuilder {
+func (builder *CreateFaqPathReqBodyBuilder) Faq(faq *FaqCreateInfo) *CreateFaqPathReqBodyBuilder {
 	builder.faq = faq
 	builder.faqFlag = true
 	return builder
@@ -5699,7 +5793,7 @@ func (builder *CreateFaqReqBuilder) Build() *CreateFaqReq {
 }
 
 type CreateFaqReqBody struct {
-	Faq *FaqUpdateInfo `json:"faq,omitempty"` // 知识库详情
+	Faq *FaqCreateInfo `json:"faq,omitempty"` // 知识库详情
 }
 
 type CreateFaqReq struct {

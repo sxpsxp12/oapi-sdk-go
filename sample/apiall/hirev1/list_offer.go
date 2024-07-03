@@ -28,7 +28,7 @@ func main() {
 	// 创建请求对象
 	req := larkhire.NewListOfferReqBuilder().
 		PageToken("1231231987").
-		PageSize(1).
+		PageSize(10).
 		TalentId("7096320678581242123").
 		UserIdType("user_id").
 		EmployeeTypeIdType("people_admin_employee_type_id").

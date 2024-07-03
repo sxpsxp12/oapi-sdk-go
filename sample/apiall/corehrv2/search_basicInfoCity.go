@@ -28,7 +28,7 @@ func main() {
 	// 创建请求对象
 	req := larkcorehr.NewSearchBasicInfoCityReqBuilder().
 		PageSize(100).
-		PageToken("6891251722631890445").
+		PageToken("7316867189967963685").
 		Body(larkcorehr.NewSearchBasicInfoCityReqBodyBuilder().
 			CountryRegionSubdivisionIdList([]string{}).
 			CityIdList([]string{}).

@@ -21,20 +21,21 @@ import (
 	"github.com/larksuite/oapi-sdk-go/v3/service/corehr/v1"
 )
 
-// GET /open-apis/corehr/v1/authorizations/query
+// POST /open-apis/corehr/v1/common_data/meta_data/add_enum_option
 func main() {
 	// 创建 Client
 	client := lark.NewClient("appID", "appSecret")
 	// 创建请求对象
-	req := larkcorehr.NewQueryAuthorizationReqBuilder().
-		EmploymentIdList([]string{}).
-		RoleIdList([]string{}).
-		PageToken("6969864184272078374").
-		PageSize("20").
-		UserIdType("people_corehr_id").
+	req := larkcorehr.NewAddEnumOptionCommonDataMetaDataReqBuilder().
+		ClientToken("6727817538283013641").
+		Body(larkcorehr.NewAddEnumOptionCommonDataMetaDataReqBodyBuilder().
+			ObjectApiName("probation_management").
+			EnumFieldApiName("final_assessment_grade").
+			EnumFieldOptions([]*larkcorehr.EnumFieldOption{larkcorehr.NewEnumFieldOptionBuilder().Build()}).
+			Build()).
 		Build()
 	// 发起请求
-	resp, err := client.Corehr.V1.Authorization.Query(context.Background(), req)
+	resp, err := client.Corehr.V1.CommonDataMetaData.AddEnumOption(context.Background(), req)
 
 	// 处理错误
 	if err != nil {

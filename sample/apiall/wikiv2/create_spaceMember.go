@@ -30,9 +30,9 @@ func main() {
 		SpaceId("1565676577122621").
 		NeedNotification(true).
 		Member(larkwiki.NewMemberBuilder().
-			MemberType("").
-			MemberId("").
-			MemberRole("").
+			MemberType("openid").
+			MemberId("ou_67e5ecb64ce1c0bd94612c17999db411").
+			MemberRole("admin").
 			Build()).
 		Build()
 	// 发起请求

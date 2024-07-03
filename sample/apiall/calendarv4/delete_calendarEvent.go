@@ -29,7 +29,7 @@ func main() {
 	req := larkcalendar.NewDeleteCalendarEventReqBuilder().
 		CalendarId("feishu.cn_xxxxxxxxxx@group.calendar.feishu.cn").
 		EventId("xxxxxxxxx_0").
-		NeedNotification(false).
+		NeedNotification("true").
 		Build()
 	// 发起请求
 	resp, err := client.Calendar.V4.CalendarEvent.Delete(context.Background(), req)

@@ -23,22 +23,22 @@ import (
 )
 
 const (
-	ShowLanguageLangZH   = "zh"    // 中文（简体）（中华人民共和国）
-	ShowLanguageLangID   = "id"    // 印尼语（印度尼西亚）
-	ShowLanguageLangDE   = "de"    // 德语（德国）
-	ShowLanguageLangEN   = "en"    // 英语（美国）
-	ShowLanguageLangES   = "es"    // 西班牙语（西班牙）
-	ShowLanguageLangFR   = "fr"    // 法语（法国）
-	ShowLanguageLangIT   = "it"    // 意大利语（意大利）
-	ShowLanguageLangPT   = "pt"    // 葡萄牙语（巴西）
-	ShowLanguageLangVI   = "vi"    // 越南语（越南）
-	ShowLanguageLangRU   = "ru"    // 俄语（俄罗斯）
-	ShowLanguageLangHI   = "hi"    // 印地语（印度）
-	ShowLanguageLangTH   = "th"    // 泰语（泰国）
-	ShowLanguageLangKO   = "ko"    // 韩语（韩国）
-	ShowLanguageLangJA   = "ja"    // 日语（日本）
-	ShowLanguageLangZHHK = "zh-HK" // 中文（中国香港）
-	ShowLanguageLangZHTW = "zh-TW" // 中文（中国台湾）
+	ShowLanguageLangZH   = "zh"    // 简体中文
+	ShowLanguageLangID   = "id"    // 印尼语
+	ShowLanguageLangDE   = "de"    // 德语
+	ShowLanguageLangEN   = "en"    // 英语
+	ShowLanguageLangES   = "es"    // 西班牙语
+	ShowLanguageLangFR   = "fr"    // 法语
+	ShowLanguageLangIT   = "it"    // 意大利语
+	ShowLanguageLangPT   = "pt"    // 葡萄牙语
+	ShowLanguageLangVI   = "vi"    // 越南语
+	ShowLanguageLangRU   = "ru"    // 俄语
+	ShowLanguageLangHI   = "hi"    // 印地语
+	ShowLanguageLangTH   = "th"    // 泰语
+	ShowLanguageLangKO   = "ko"    // 韩语
+	ShowLanguageLangJA   = "ja"    // 日语
+	ShowLanguageLangZHHK = "zh-HK" // 繁体中文（中国香港）
+	ShowLanguageLangZHTW = "zh-TW" // 繁体中文（中国台湾）
 )
 
 const (
@@ -53,22 +53,28 @@ const (
 )
 
 const (
-	ShowLanguageListSpaceLangZH   = "zh"    // 中文（简体）（中华人民共和国）
-	ShowLanguageListSpaceLangID   = "id"    // 印尼语（印度尼西亚）
-	ShowLanguageListSpaceLangDE   = "de"    // 德语（德国）
-	ShowLanguageListSpaceLangEN   = "en"    // 英语（美国）
-	ShowLanguageListSpaceLangES   = "es"    // 西班牙语（西班牙）
-	ShowLanguageListSpaceLangFR   = "fr"    // 法语（法国）
-	ShowLanguageListSpaceLangIT   = "it"    // 意大利语（意大利）
-	ShowLanguageListSpaceLangPT   = "pt"    // 葡萄牙语（巴西）
-	ShowLanguageListSpaceLangVI   = "vi"    // 越南语（越南）
-	ShowLanguageListSpaceLangRU   = "ru"    // 俄语（俄罗斯）
-	ShowLanguageListSpaceLangHI   = "hi"    // 印地语（印度）
-	ShowLanguageListSpaceLangTH   = "th"    // 泰语（泰国）
-	ShowLanguageListSpaceLangKO   = "ko"    // 韩语（韩国）
-	ShowLanguageListSpaceLangJA   = "ja"    // 日语（日本）
-	ShowLanguageListSpaceLangZHHK = "zh-HK" // 中文（中国香港）
-	ShowLanguageListSpaceLangZHTW = "zh-TW" // 中文（中国台湾）
+	ShowLanguageListSpaceLangZH   = "zh"    // 简体中文
+	ShowLanguageListSpaceLangID   = "id"    // 印尼语
+	ShowLanguageListSpaceLangDE   = "de"    // 德语
+	ShowLanguageListSpaceLangEN   = "en"    // 英语
+	ShowLanguageListSpaceLangES   = "es"    // 西班牙语
+	ShowLanguageListSpaceLangFR   = "fr"    // 法语
+	ShowLanguageListSpaceLangIT   = "it"    // 意大利语
+	ShowLanguageListSpaceLangPT   = "pt"    // 葡萄牙语
+	ShowLanguageListSpaceLangVI   = "vi"    // 越南语
+	ShowLanguageListSpaceLangRU   = "ru"    // 俄语
+	ShowLanguageListSpaceLangHI   = "hi"    // 印地语
+	ShowLanguageListSpaceLangTH   = "th"    // 泰语
+	ShowLanguageListSpaceLangKO   = "ko"    // 韩语
+	ShowLanguageListSpaceLangJA   = "ja"    // 日语
+	ShowLanguageListSpaceLangZHHK = "zh-HK" // 繁体中文（中国香港）
+	ShowLanguageListSpaceLangZHTW = "zh-TW" // 繁体中文（中国台湾）
+)
+
+const (
+	TypeUser       = "user"       // 用户
+	TypeChat       = "chat"       // 群组
+	TypeDepartment = "department" // 组织架构
 )
 
 const (
@@ -148,6 +154,7 @@ type Member struct {
 	MemberType *string `json:"member_type,omitempty"` // “openchat” - 群id ;;“userid” - 用户id;;“email” - 邮箱;;“opendepartmentid” - 部门id;;“openid” - 应用openid;;“unionid” - [unionid](/:ssltoken/home/user-identity-introduction/union-id;)
 	MemberId   *string `json:"member_id,omitempty"`   // 用户id，值的类型由上面的 member_type 参数决定
 	MemberRole *string `json:"member_role,omitempty"` // 角色:;;“admin” - 管理员;;“member” - 成员
+	Type       *string `json:"type,omitempty"`        // 知识库协作者类型
 }
 
 type MemberBuilder struct {
@@ -157,6 +164,8 @@ type MemberBuilder struct {
 	memberIdFlag   bool
 	memberRole     string // 角色:;;“admin” - 管理员;;“member” - 成员
 	memberRoleFlag bool
+	type_          string // 知识库协作者类型
+	typeFlag       bool
 }
 
 func NewMemberBuilder() *MemberBuilder {
@@ -191,6 +200,15 @@ func (builder *MemberBuilder) MemberRole(memberRole string) *MemberBuilder {
 	return builder
 }
 
+// 知识库协作者类型
+//
+// 示例值：user
+func (builder *MemberBuilder) Type(type_ string) *MemberBuilder {
+	builder.type_ = type_
+	builder.typeFlag = true
+	return builder
+}
+
 func (builder *MemberBuilder) Build() *Member {
 	req := &Member{}
 	if builder.memberTypeFlag {
@@ -203,6 +221,10 @@ func (builder *MemberBuilder) Build() *Member {
 	}
 	if builder.memberRoleFlag {
 		req.MemberRole = &builder.memberRole
+
+	}
+	if builder.typeFlag {
+		req.Type = &builder.type_
 
 	}
 	return req
@@ -287,6 +309,7 @@ type Node struct {
 	NodeCreateTime  *string `json:"node_create_time,omitempty"`  // 节点创建时间
 	Creator         *string `json:"creator,omitempty"`           // 节点创建者
 	Owner           *string `json:"owner,omitempty"`             // 节点所有者
+	NodeCreator     *string `json:"node_creator,omitempty"`      // 节点创建者
 }
 
 type NodeBuilder struct {
@@ -320,6 +343,8 @@ type NodeBuilder struct {
 	creatorFlag         bool
 	owner               string // 节点所有者
 	ownerFlag           bool
+	nodeCreator         string // 节点创建者
+	nodeCreatorFlag     bool
 }
 
 func NewNodeBuilder() *NodeBuilder {
@@ -462,6 +487,15 @@ func (builder *NodeBuilder) Owner(owner string) *NodeBuilder {
 	return builder
 }
 
+// 节点创建者
+//
+// 示例值：ou_xxxxx
+func (builder *NodeBuilder) NodeCreator(nodeCreator string) *NodeBuilder {
+	builder.nodeCreator = nodeCreator
+	builder.nodeCreatorFlag = true
+	return builder
+}
+
 func (builder *NodeBuilder) Build() *Node {
 	req := &Node{}
 	if builder.spaceIdFlag {
@@ -522,6 +556,10 @@ func (builder *NodeBuilder) Build() *Node {
 	}
 	if builder.ownerFlag {
 		req.Owner = &builder.owner
+
+	}
+	if builder.nodeCreatorFlag {
+		req.NodeCreator = &builder.nodeCreator
 
 	}
 	return req
@@ -591,7 +629,7 @@ func (builder *NodeSearchBuilder) SpaceId(spaceId string) *NodeSearchBuilder {
 
 // 父节点id
 //
-// 示例值：
+// 示例值：7067522558521772323
 func (builder *NodeSearchBuilder) ParentId(parentId string) *NodeSearchBuilder {
 	builder.parentId = parentId
 	builder.parentIdFlag = true
@@ -618,7 +656,7 @@ func (builder *NodeSearchBuilder) Title(title string) *NodeSearchBuilder {
 
 // wiki的访问url
 //
-// 示例值：https://single-container.feishu.cn/wiki/wikbcPkzIoLp52Dh2Pj3nQaYPFO
+// 示例值：https://example.feishu.cn/wiki
 func (builder *NodeSearchBuilder) Url(url string) *NodeSearchBuilder {
 	builder.url = url
 	builder.urlFlag = true
@@ -627,7 +665,7 @@ func (builder *NodeSearchBuilder) Url(url string) *NodeSearchBuilder {
 
 // wiki对应图标的url
 //
-// 示例值：
+// 示例值：https://example.feishu.cn/icon
 func (builder *NodeSearchBuilder) Icon(icon string) *NodeSearchBuilder {
 	builder.icon = icon
 	builder.iconFlag = true
@@ -636,7 +674,7 @@ func (builder *NodeSearchBuilder) Icon(icon string) *NodeSearchBuilder {
 
 // 所属权限范围id
 //
-// 示例值：
+// 示例值：7067522558521772323
 func (builder *NodeSearchBuilder) AreaId(areaId string) *NodeSearchBuilder {
 	builder.areaId = areaId
 	builder.areaIdFlag = true
@@ -654,7 +692,7 @@ func (builder *NodeSearchBuilder) SortId(sortId float64) *NodeSearchBuilder {
 
 // 所在域名
 //
-// 示例值：
+// 示例值：example.feishu.cn
 func (builder *NodeSearchBuilder) Domain(domain string) *NodeSearchBuilder {
 	builder.domain = domain
 	builder.domainFlag = true

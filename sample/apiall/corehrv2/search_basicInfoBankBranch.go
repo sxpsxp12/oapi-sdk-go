@@ -28,13 +28,13 @@ func main() {
 	// 创建请求对象
 	req := larkcorehr.NewSearchBasicInfoBankBranchReqBuilder().
 		PageSize(100).
-		PageToken("6891251722631890445").
+		PageToken("MDBK00000120").
 		Body(larkcorehr.NewSearchBasicInfoBankBranchReqBodyBuilder().
 			BankIdList([]string{}).
 			BankBranchIdList([]string{}).
 			BankBranchNameList([]string{}).
 			StatusList([]int{}).
-			UpdateStartTime("2024-01-01 00:00:00").
+			UpdateStartTime("2020-01-01 00:00:00").
 			UpdateEndTime("2024-01-01 00:00:00").
 			Build()).
 		Build()

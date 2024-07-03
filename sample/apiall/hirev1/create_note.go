@@ -33,7 +33,7 @@ func main() {
 			ApplicationId("6891565253964859661").
 			CreatorId("ou_f476cb099ac9227c9bae09ce46112579").
 			Content("测试5").
-			Privacy(1).
+			Privacy(2).
 			NotifyMentionedUser(false).
 			MentionEntityList([]*larkhire.MentionEntity{larkhire.NewMentionEntityBuilder().Build()}).
 			Build()).

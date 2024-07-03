@@ -47,6 +47,7 @@ type V1 struct {
 	Talent                          *talent                          // 人才
 	TalentFolder                    *talentFolder                    // talent_folder
 	TalentObject                    *talentObject                    // talent_object
+	TerminationReason               *terminationReason               // termination_reason
 }
 
 func New(config *larkcore.Config) *V1 {
@@ -89,6 +90,7 @@ func New(config *larkcore.Config) *V1 {
 		Talent:                          &talent{config: config},
 		TalentFolder:                    &talentFolder{config: config},
 		TalentObject:                    &talentObject{config: config},
+		TerminationReason:               &terminationReason{config: config},
 	}
 }
 
@@ -204,6 +206,9 @@ type talentFolder struct {
 	config *larkcore.Config
 }
 type talentObject struct {
+	config *larkcore.Config
+}
+type terminationReason struct {
 	config *larkcore.Config
 }
 
@@ -2388,4 +2393,38 @@ func (t *talentObject) Query(ctx context.Context, options ...larkcore.RequestOpt
 		return nil, err
 	}
 	return resp, err
+}
+
+// List 获取终止投递原因
+//
+// - 获取终止投递原因
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/termination_reason/list
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/list_terminationReason.go
+func (t *terminationReason) List(ctx context.Context, req *ListTerminationReasonReq, options ...larkcore.RequestOptionFunc) (*ListTerminationReasonResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/termination_reasons"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, t.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListTerminationReasonResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, t.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (t *terminationReason) ListByIterator(ctx context.Context, req *ListTerminationReasonReq, options ...larkcore.RequestOptionFunc) (*ListTerminationReasonIterator, error) {
+	return &ListTerminationReasonIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: t.List,
+		options:  options,
+		limit:    req.Limit}, nil
 }

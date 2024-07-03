@@ -2952,7 +2952,7 @@ type MentionUser struct {
 	Name         *string       `json:"name,omitempty"`          // 用户名
 	UserId       *string       `json:"user_id,omitempty"`       // 用户id
 	Notify       *bool         `json:"notify,omitempty"`        // 是否通知用户
-	SegmentStyle *SegmentStyle `json:"segment_style,omitempty"` //
+	SegmentStyle *SegmentStyle `json:"segment_style,omitempty"` // 局部样式
 }
 
 type MentionUserBuilder struct {
@@ -2962,7 +2962,7 @@ type MentionUserBuilder struct {
 	userIdFlag       bool
 	notify           bool // 是否通知用户
 	notifyFlag       bool
-	segmentStyle     *SegmentStyle //
+	segmentStyle     *SegmentStyle // 局部样式
 	segmentStyleFlag bool
 }
 
@@ -2998,6 +2998,8 @@ func (builder *MentionUserBuilder) Notify(notify bool) *MentionUserBuilder {
 	return builder
 }
 
+// 局部样式
+//
 // 示例值：
 func (builder *MentionUserBuilder) SegmentStyle(segmentStyle *SegmentStyle) *MentionUserBuilder {
 	builder.segmentStyle = segmentStyle

@@ -21,20 +21,18 @@ import (
 	"github.com/larksuite/oapi-sdk-go/v3/service/corehr/v1"
 )
 
-// GET /open-apis/corehr/v1/authorizations/query
+// POST /open-apis/corehr/v1/authorizations/remove_role_assign
 func main() {
 	// 创建 Client
 	client := lark.NewClient("appID", "appSecret")
 	// 创建请求对象
-	req := larkcorehr.NewQueryAuthorizationReqBuilder().
-		EmploymentIdList([]string{}).
-		RoleIdList([]string{}).
-		PageToken("6969864184272078374").
-		PageSize("20").
+	req := larkcorehr.NewRemoveRoleAssignAuthorizationReqBuilder().
+		EmploymentId("67489937334909845").
 		UserIdType("people_corehr_id").
+		RoleId("67489937334909845").
 		Build()
 	// 发起请求
-	resp, err := client.Corehr.V1.Authorization.Query(context.Background(), req)
+	resp, err := client.Corehr.V1.Authorization.RemoveRoleAssign(context.Background(), req)
 
 	// 处理错误
 	if err != nil {

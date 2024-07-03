@@ -52,6 +52,13 @@ const (
 )
 
 const (
+	UserIdTypeRemoveRoleAssignAuthorizationUserId         = "user_id"          // 以 user_id 来识别用户
+	UserIdTypeRemoveRoleAssignAuthorizationUnionId        = "union_id"         // 以 union_id 来识别用户
+	UserIdTypeRemoveRoleAssignAuthorizationOpenId         = "open_id"          // 以 open_id 来识别用户
+	UserIdTypeRemoveRoleAssignAuthorizationPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
+)
+
+const (
 	IdTransformTypeCoreHR2Feishu = 1 // 飞书人事 -> 飞书通讯录
 	IdTransformTypeFeishu2CoreHR = 2 // 飞书通讯录 -> 飞书人事
 	IdTransformTypeAdmin2Feishu  = 3 // people admin -> 飞书人事
@@ -6430,17 +6437,17 @@ func (builder *EnumBuilder) Build() *Enum {
 }
 
 type EnumFieldOption struct {
-	OptionApiName *string `json:"option_api_name,omitempty"` // 选项 apiname，即选项的唯一标识
+	OptionApiName *string `json:"option_api_name,omitempty"` // 枚举值选项 API Name，即选项的唯一标识
 	Active        *bool   `json:"active,omitempty"`          // 是否启用
-	Name          *Name   `json:"name,omitempty"`            // 选项名称（填写至少一个语言名称）
+	Name          *Name   `json:"name,omitempty"`            // 选项名称（需填写至少一个语种）
 }
 
 type EnumFieldOptionBuilder struct {
-	optionApiName     string // 选项 apiname，即选项的唯一标识
+	optionApiName     string // 枚举值选项 API Name，即选项的唯一标识
 	optionApiNameFlag bool
 	active            bool // 是否启用
 	activeFlag        bool
-	name              *Name // 选项名称（填写至少一个语言名称）
+	name              *Name // 选项名称（需填写至少一个语种）
 	nameFlag          bool
 }
 
@@ -6449,7 +6456,7 @@ func NewEnumFieldOptionBuilder() *EnumFieldOptionBuilder {
 	return builder
 }
 
-// 选项 apiname，即选项的唯一标识
+// 枚举值选项 API Name，即选项的唯一标识
 //
 // 示例值：grade_e
 func (builder *EnumFieldOptionBuilder) OptionApiName(optionApiName string) *EnumFieldOptionBuilder {
@@ -6467,7 +6474,7 @@ func (builder *EnumFieldOptionBuilder) Active(active bool) *EnumFieldOptionBuild
 	return builder
 }
 
-// 选项名称（填写至少一个语言名称）
+// 选项名称（需填写至少一个语种）
 //
 // 示例值：
 func (builder *EnumFieldOptionBuilder) Name(name *Name) *EnumFieldOptionBuilder {
@@ -10817,14 +10824,14 @@ func (builder *LocationBuilder) Build() *Location {
 }
 
 type LookupFieldSetting struct {
-	LookupObjApiName *string `json:"lookup_obj_api_name,omitempty"` // 查找字段对应的对象 apiname，可通过【获取自定义字段列表】接口获取这个对象中定义的自定义字段
-	IsMultiple       *bool   `json:"is_multiple,omitempty"`         // 是否为多值
+	LookupObjApiName *string `json:"lookup_obj_api_name,omitempty"` // 查找字段指向对象的 API name。例如人员单选、人员多选字段均指向 employment 系统对象，而自定义分组字段指向用户创建的自定义对象。可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口传入此属性，以获取自定义分组中的字段。
+	IsMultiple       *bool   `json:"is_multiple,omitempty"`         // 是否为多值。例如人员单选字段此属性为 false，而人员多选字段此属性为 true。
 }
 
 type LookupFieldSettingBuilder struct {
-	lookupObjApiName     string // 查找字段对应的对象 apiname，可通过【获取自定义字段列表】接口获取这个对象中定义的自定义字段
+	lookupObjApiName     string // 查找字段指向对象的 API name。例如人员单选、人员多选字段均指向 employment 系统对象，而自定义分组字段指向用户创建的自定义对象。可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口传入此属性，以获取自定义分组中的字段。
 	lookupObjApiNameFlag bool
-	isMultiple           bool // 是否为多值
+	isMultiple           bool // 是否为多值。例如人员单选字段此属性为 false，而人员多选字段此属性为 true。
 	isMultipleFlag       bool
 }
 
@@ -10833,7 +10840,7 @@ func NewLookupFieldSettingBuilder() *LookupFieldSettingBuilder {
 	return builder
 }
 
-// 查找字段对应的对象 apiname，可通过【获取自定义字段列表】接口获取这个对象中定义的自定义字段
+// 查找字段指向对象的 API name。例如人员单选、人员多选字段均指向 employment 系统对象，而自定义分组字段指向用户创建的自定义对象。可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口传入此属性，以获取自定义分组中的字段。
 //
 // 示例值：employment
 func (builder *LookupFieldSettingBuilder) LookupObjApiName(lookupObjApiName string) *LookupFieldSettingBuilder {
@@ -10842,7 +10849,7 @@ func (builder *LookupFieldSettingBuilder) LookupObjApiName(lookupObjApiName stri
 	return builder
 }
 
-// 是否为多值
+// 是否为多值。例如人员单选字段此属性为 false，而人员多选字段此属性为 true。
 //
 // 示例值：false
 func (builder *LookupFieldSettingBuilder) IsMultiple(isMultiple bool) *LookupFieldSettingBuilder {
@@ -15686,6 +15693,8 @@ type TransferInfo struct {
 	TargetCompensationType     *string                  `json:"target_compensation_type,omitempty"`      // 新薪资类型
 	OriginalServiceCompany     *string                  `json:"original_service_company,omitempty"`      // 原任职公司
 	TargetServiceCompany       *string                  `json:"target_service_company,omitempty"`        // 新任职公司
+	OriginalPosition           *string                  `json:"original_position,omitempty"`             // 原岗位
+	TargetPosition             *string                  `json:"target_position,omitempty"`               // 新岗位
 }
 
 type TransferInfoBuilder struct {
@@ -15797,6 +15806,10 @@ type TransferInfoBuilder struct {
 	originalServiceCompanyFlag     bool
 	targetServiceCompany           string // 新任职公司
 	targetServiceCompanyFlag       bool
+	originalPosition               string // 原岗位
+	originalPositionFlag           bool
+	targetPosition                 string // 新岗位
+	targetPositionFlag             bool
 }
 
 func NewTransferInfoBuilder() *TransferInfoBuilder {
@@ -16290,6 +16303,24 @@ func (builder *TransferInfoBuilder) TargetServiceCompany(targetServiceCompany st
 	return builder
 }
 
+// 原岗位
+//
+// 示例值：7289005963599693367
+func (builder *TransferInfoBuilder) OriginalPosition(originalPosition string) *TransferInfoBuilder {
+	builder.originalPosition = originalPosition
+	builder.originalPositionFlag = true
+	return builder
+}
+
+// 新岗位
+//
+// 示例值：7289005963599693367
+func (builder *TransferInfoBuilder) TargetPosition(targetPosition string) *TransferInfoBuilder {
+	builder.targetPosition = targetPosition
+	builder.targetPositionFlag = true
+	return builder
+}
+
 func (builder *TransferInfoBuilder) Build() *TransferInfo {
 	req := &TransferInfo{}
 	if builder.remarkFlag {
@@ -16502,6 +16533,14 @@ func (builder *TransferInfoBuilder) Build() *TransferInfo {
 	}
 	if builder.targetServiceCompanyFlag {
 		req.TargetServiceCompany = &builder.targetServiceCompany
+
+	}
+	if builder.originalPositionFlag {
+		req.OriginalPosition = &builder.originalPosition
+
+	}
+	if builder.targetPositionFlag {
+		req.TargetPosition = &builder.targetPosition
 
 	}
 	return req
@@ -17644,9 +17683,9 @@ func (builder *QueryAuthorizationReqBuilder) PageToken(pageToken string) *QueryA
 	return builder
 }
 
-// 每页获取记录数量，最大100
+// 每页获取记录数量，最大20
 //
-// 示例值：100
+// 示例值：20
 func (builder *QueryAuthorizationReqBuilder) PageSize(pageSize string) *QueryAuthorizationReqBuilder {
 	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
 	return builder
@@ -17684,6 +17723,68 @@ type QueryAuthorizationResp struct {
 }
 
 func (resp *QueryAuthorizationResp) Success() bool {
+	return resp.Code == 0
+}
+
+type RemoveRoleAssignAuthorizationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewRemoveRoleAssignAuthorizationReqBuilder() *RemoveRoleAssignAuthorizationReqBuilder {
+	builder := &RemoveRoleAssignAuthorizationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 雇员 ID
+//
+// 示例值：67489937334909845
+func (builder *RemoveRoleAssignAuthorizationReqBuilder) EmploymentId(employmentId string) *RemoveRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("employment_id", fmt.Sprint(employmentId))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：people_corehr_id
+func (builder *RemoveRoleAssignAuthorizationReqBuilder) UserIdType(userIdType string) *RemoveRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 角色 ID
+//
+// 示例值：67489937334909845
+func (builder *RemoveRoleAssignAuthorizationReqBuilder) RoleId(roleId string) *RemoveRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("role_id", fmt.Sprint(roleId))
+	return builder
+}
+
+func (builder *RemoveRoleAssignAuthorizationReqBuilder) Build() *RemoveRoleAssignAuthorizationReq {
+	req := &RemoveRoleAssignAuthorizationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type RemoveRoleAssignAuthorizationReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type RemoveRoleAssignAuthorizationRespData struct {
+	AssignId *string `json:"assign_id,omitempty"` // 授权id
+}
+
+type RemoveRoleAssignAuthorizationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *RemoveRoleAssignAuthorizationRespData `json:"data"` // 业务数据
+}
+
+func (resp *RemoveRoleAssignAuthorizationResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -17820,6 +17921,348 @@ type ConvertCommonDataIdResp struct {
 }
 
 func (resp *ConvertCommonDataIdResp) Success() bool {
+	return resp.Code == 0
+}
+
+type AddEnumOptionCommonDataMetaDataReqBodyBuilder struct {
+	objectApiName        string // 所属对象 API name，可通过[获取飞书人事对象列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/list_object_api_name)接口中返回的 `object_api_name` 字段获取
+	objectApiNameFlag    bool
+	enumFieldApiName     string // 枚举字段 API name，可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口中返回的 `custom_api_name` 字段获取
+	enumFieldApiNameFlag bool
+	enumFieldOptions     []*EnumFieldOption // 新增枚举选项列表
+	enumFieldOptionsFlag bool
+}
+
+func NewAddEnumOptionCommonDataMetaDataReqBodyBuilder() *AddEnumOptionCommonDataMetaDataReqBodyBuilder {
+	builder := &AddEnumOptionCommonDataMetaDataReqBodyBuilder{}
+	return builder
+}
+
+// 所属对象 API name，可通过[获取飞书人事对象列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/list_object_api_name)接口中返回的 `object_api_name` 字段获取
+//
+// 示例值：probation_management
+func (builder *AddEnumOptionCommonDataMetaDataReqBodyBuilder) ObjectApiName(objectApiName string) *AddEnumOptionCommonDataMetaDataReqBodyBuilder {
+	builder.objectApiName = objectApiName
+	builder.objectApiNameFlag = true
+	return builder
+}
+
+// 枚举字段 API name，可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口中返回的 `custom_api_name` 字段获取
+//
+// 示例值：final_assessment_grade
+func (builder *AddEnumOptionCommonDataMetaDataReqBodyBuilder) EnumFieldApiName(enumFieldApiName string) *AddEnumOptionCommonDataMetaDataReqBodyBuilder {
+	builder.enumFieldApiName = enumFieldApiName
+	builder.enumFieldApiNameFlag = true
+	return builder
+}
+
+// 新增枚举选项列表
+//
+// 示例值：
+func (builder *AddEnumOptionCommonDataMetaDataReqBodyBuilder) EnumFieldOptions(enumFieldOptions []*EnumFieldOption) *AddEnumOptionCommonDataMetaDataReqBodyBuilder {
+	builder.enumFieldOptions = enumFieldOptions
+	builder.enumFieldOptionsFlag = true
+	return builder
+}
+
+func (builder *AddEnumOptionCommonDataMetaDataReqBodyBuilder) Build() *AddEnumOptionCommonDataMetaDataReqBody {
+	req := &AddEnumOptionCommonDataMetaDataReqBody{}
+	if builder.objectApiNameFlag {
+		req.ObjectApiName = &builder.objectApiName
+	}
+	if builder.enumFieldApiNameFlag {
+		req.EnumFieldApiName = &builder.enumFieldApiName
+	}
+	if builder.enumFieldOptionsFlag {
+		req.EnumFieldOptions = builder.enumFieldOptions
+	}
+	return req
+}
+
+type AddEnumOptionCommonDataMetaDataPathReqBodyBuilder struct {
+	objectApiName        string
+	objectApiNameFlag    bool
+	enumFieldApiName     string
+	enumFieldApiNameFlag bool
+	enumFieldOptions     []*EnumFieldOption
+	enumFieldOptionsFlag bool
+}
+
+func NewAddEnumOptionCommonDataMetaDataPathReqBodyBuilder() *AddEnumOptionCommonDataMetaDataPathReqBodyBuilder {
+	builder := &AddEnumOptionCommonDataMetaDataPathReqBodyBuilder{}
+	return builder
+}
+
+// 所属对象 API name，可通过[获取飞书人事对象列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/list_object_api_name)接口中返回的 `object_api_name` 字段获取
+//
+// 示例值：probation_management
+func (builder *AddEnumOptionCommonDataMetaDataPathReqBodyBuilder) ObjectApiName(objectApiName string) *AddEnumOptionCommonDataMetaDataPathReqBodyBuilder {
+	builder.objectApiName = objectApiName
+	builder.objectApiNameFlag = true
+	return builder
+}
+
+// 枚举字段 API name，可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口中返回的 `custom_api_name` 字段获取
+//
+// 示例值：final_assessment_grade
+func (builder *AddEnumOptionCommonDataMetaDataPathReqBodyBuilder) EnumFieldApiName(enumFieldApiName string) *AddEnumOptionCommonDataMetaDataPathReqBodyBuilder {
+	builder.enumFieldApiName = enumFieldApiName
+	builder.enumFieldApiNameFlag = true
+	return builder
+}
+
+// 新增枚举选项列表
+//
+// 示例值：
+func (builder *AddEnumOptionCommonDataMetaDataPathReqBodyBuilder) EnumFieldOptions(enumFieldOptions []*EnumFieldOption) *AddEnumOptionCommonDataMetaDataPathReqBodyBuilder {
+	builder.enumFieldOptions = enumFieldOptions
+	builder.enumFieldOptionsFlag = true
+	return builder
+}
+
+func (builder *AddEnumOptionCommonDataMetaDataPathReqBodyBuilder) Build() (*AddEnumOptionCommonDataMetaDataReqBody, error) {
+	req := &AddEnumOptionCommonDataMetaDataReqBody{}
+	if builder.objectApiNameFlag {
+		req.ObjectApiName = &builder.objectApiName
+	}
+	if builder.enumFieldApiNameFlag {
+		req.EnumFieldApiName = &builder.enumFieldApiName
+	}
+	if builder.enumFieldOptionsFlag {
+		req.EnumFieldOptions = builder.enumFieldOptions
+	}
+	return req, nil
+}
+
+type AddEnumOptionCommonDataMetaDataReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *AddEnumOptionCommonDataMetaDataReqBody
+}
+
+func NewAddEnumOptionCommonDataMetaDataReqBuilder() *AddEnumOptionCommonDataMetaDataReqBuilder {
+	builder := &AddEnumOptionCommonDataMetaDataReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 根据 client_token 是否一致来判断是否为同一请求
+//
+// 示例值：6727817538283013641
+func (builder *AddEnumOptionCommonDataMetaDataReqBuilder) ClientToken(clientToken string) *AddEnumOptionCommonDataMetaDataReqBuilder {
+	builder.apiReq.QueryParams.Set("client_token", fmt.Sprint(clientToken))
+	return builder
+}
+
+func (builder *AddEnumOptionCommonDataMetaDataReqBuilder) Body(body *AddEnumOptionCommonDataMetaDataReqBody) *AddEnumOptionCommonDataMetaDataReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *AddEnumOptionCommonDataMetaDataReqBuilder) Build() *AddEnumOptionCommonDataMetaDataReq {
+	req := &AddEnumOptionCommonDataMetaDataReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type AddEnumOptionCommonDataMetaDataReqBody struct {
+	ObjectApiName    *string            `json:"object_api_name,omitempty"`     // 所属对象 API name，可通过[获取飞书人事对象列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/list_object_api_name)接口中返回的 `object_api_name` 字段获取
+	EnumFieldApiName *string            `json:"enum_field_api_name,omitempty"` // 枚举字段 API name，可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口中返回的 `custom_api_name` 字段获取
+	EnumFieldOptions []*EnumFieldOption `json:"enum_field_options,omitempty"`  // 新增枚举选项列表
+}
+
+type AddEnumOptionCommonDataMetaDataReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *AddEnumOptionCommonDataMetaDataReqBody `body:""`
+}
+
+type AddEnumOptionCommonDataMetaDataRespData struct {
+	EnumFieldApiName *string            `json:"enum_field_api_name,omitempty"` // 枚举字段 API name
+	EnumFieldOptions []*EnumFieldOption `json:"enum_field_options,omitempty"`  // 枚举全部选项列表
+}
+
+type AddEnumOptionCommonDataMetaDataResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *AddEnumOptionCommonDataMetaDataRespData `json:"data"` // 业务数据
+}
+
+func (resp *AddEnumOptionCommonDataMetaDataResp) Success() bool {
+	return resp.Code == 0
+}
+
+type EditEnumOptionCommonDataMetaDataReqBodyBuilder struct {
+	objectApiName        string // 所属对象 API name，可通过[获取飞书人事对象列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/list_object_api_name)接口中返回的 `object_api_name` 字段获取
+	objectApiNameFlag    bool
+	enumFieldApiName     string // 枚举字段 API name，可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口中返回的 `custom_api_name` 字段获取
+	enumFieldApiNameFlag bool
+	enumFieldOption      *EnumFieldOption // 枚举选项
+	enumFieldOptionFlag  bool
+}
+
+func NewEditEnumOptionCommonDataMetaDataReqBodyBuilder() *EditEnumOptionCommonDataMetaDataReqBodyBuilder {
+	builder := &EditEnumOptionCommonDataMetaDataReqBodyBuilder{}
+	return builder
+}
+
+// 所属对象 API name，可通过[获取飞书人事对象列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/list_object_api_name)接口中返回的 `object_api_name` 字段获取
+//
+// 示例值：probation_management
+func (builder *EditEnumOptionCommonDataMetaDataReqBodyBuilder) ObjectApiName(objectApiName string) *EditEnumOptionCommonDataMetaDataReqBodyBuilder {
+	builder.objectApiName = objectApiName
+	builder.objectApiNameFlag = true
+	return builder
+}
+
+// 枚举字段 API name，可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口中返回的 `custom_api_name` 字段获取
+//
+// 示例值：final_assessment_grade
+func (builder *EditEnumOptionCommonDataMetaDataReqBodyBuilder) EnumFieldApiName(enumFieldApiName string) *EditEnumOptionCommonDataMetaDataReqBodyBuilder {
+	builder.enumFieldApiName = enumFieldApiName
+	builder.enumFieldApiNameFlag = true
+	return builder
+}
+
+// 枚举选项
+//
+// 示例值：
+func (builder *EditEnumOptionCommonDataMetaDataReqBodyBuilder) EnumFieldOption(enumFieldOption *EnumFieldOption) *EditEnumOptionCommonDataMetaDataReqBodyBuilder {
+	builder.enumFieldOption = enumFieldOption
+	builder.enumFieldOptionFlag = true
+	return builder
+}
+
+func (builder *EditEnumOptionCommonDataMetaDataReqBodyBuilder) Build() *EditEnumOptionCommonDataMetaDataReqBody {
+	req := &EditEnumOptionCommonDataMetaDataReqBody{}
+	if builder.objectApiNameFlag {
+		req.ObjectApiName = &builder.objectApiName
+	}
+	if builder.enumFieldApiNameFlag {
+		req.EnumFieldApiName = &builder.enumFieldApiName
+	}
+	if builder.enumFieldOptionFlag {
+		req.EnumFieldOption = builder.enumFieldOption
+	}
+	return req
+}
+
+type EditEnumOptionCommonDataMetaDataPathReqBodyBuilder struct {
+	objectApiName        string
+	objectApiNameFlag    bool
+	enumFieldApiName     string
+	enumFieldApiNameFlag bool
+	enumFieldOption      *EnumFieldOption
+	enumFieldOptionFlag  bool
+}
+
+func NewEditEnumOptionCommonDataMetaDataPathReqBodyBuilder() *EditEnumOptionCommonDataMetaDataPathReqBodyBuilder {
+	builder := &EditEnumOptionCommonDataMetaDataPathReqBodyBuilder{}
+	return builder
+}
+
+// 所属对象 API name，可通过[获取飞书人事对象列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/list_object_api_name)接口中返回的 `object_api_name` 字段获取
+//
+// 示例值：probation_management
+func (builder *EditEnumOptionCommonDataMetaDataPathReqBodyBuilder) ObjectApiName(objectApiName string) *EditEnumOptionCommonDataMetaDataPathReqBodyBuilder {
+	builder.objectApiName = objectApiName
+	builder.objectApiNameFlag = true
+	return builder
+}
+
+// 枚举字段 API name，可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口中返回的 `custom_api_name` 字段获取
+//
+// 示例值：final_assessment_grade
+func (builder *EditEnumOptionCommonDataMetaDataPathReqBodyBuilder) EnumFieldApiName(enumFieldApiName string) *EditEnumOptionCommonDataMetaDataPathReqBodyBuilder {
+	builder.enumFieldApiName = enumFieldApiName
+	builder.enumFieldApiNameFlag = true
+	return builder
+}
+
+// 枚举选项
+//
+// 示例值：
+func (builder *EditEnumOptionCommonDataMetaDataPathReqBodyBuilder) EnumFieldOption(enumFieldOption *EnumFieldOption) *EditEnumOptionCommonDataMetaDataPathReqBodyBuilder {
+	builder.enumFieldOption = enumFieldOption
+	builder.enumFieldOptionFlag = true
+	return builder
+}
+
+func (builder *EditEnumOptionCommonDataMetaDataPathReqBodyBuilder) Build() (*EditEnumOptionCommonDataMetaDataReqBody, error) {
+	req := &EditEnumOptionCommonDataMetaDataReqBody{}
+	if builder.objectApiNameFlag {
+		req.ObjectApiName = &builder.objectApiName
+	}
+	if builder.enumFieldApiNameFlag {
+		req.EnumFieldApiName = &builder.enumFieldApiName
+	}
+	if builder.enumFieldOptionFlag {
+		req.EnumFieldOption = builder.enumFieldOption
+	}
+	return req, nil
+}
+
+type EditEnumOptionCommonDataMetaDataReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *EditEnumOptionCommonDataMetaDataReqBody
+}
+
+func NewEditEnumOptionCommonDataMetaDataReqBuilder() *EditEnumOptionCommonDataMetaDataReqBuilder {
+	builder := &EditEnumOptionCommonDataMetaDataReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 根据 client_token 是否一致来判断是否为同一请求
+//
+// 示例值：6727817538283013641
+func (builder *EditEnumOptionCommonDataMetaDataReqBuilder) ClientToken(clientToken string) *EditEnumOptionCommonDataMetaDataReqBuilder {
+	builder.apiReq.QueryParams.Set("client_token", fmt.Sprint(clientToken))
+	return builder
+}
+
+func (builder *EditEnumOptionCommonDataMetaDataReqBuilder) Body(body *EditEnumOptionCommonDataMetaDataReqBody) *EditEnumOptionCommonDataMetaDataReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *EditEnumOptionCommonDataMetaDataReqBuilder) Build() *EditEnumOptionCommonDataMetaDataReq {
+	req := &EditEnumOptionCommonDataMetaDataReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type EditEnumOptionCommonDataMetaDataReqBody struct {
+	ObjectApiName    *string          `json:"object_api_name,omitempty"`     // 所属对象 API name，可通过[获取飞书人事对象列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/list_object_api_name)接口中返回的 `object_api_name` 字段获取
+	EnumFieldApiName *string          `json:"enum_field_api_name,omitempty"` // 枚举字段 API name，可通过[获取自定义字段列表](https://open.feishu.cn/document/server-docs/corehr-v1/basic-infomation/custom_field/query)接口中返回的 `custom_api_name` 字段获取
+	EnumFieldOption  *EnumFieldOption `json:"enum_field_option,omitempty"`   // 枚举选项
+}
+
+type EditEnumOptionCommonDataMetaDataReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *EditEnumOptionCommonDataMetaDataReqBody `body:""`
+}
+
+type EditEnumOptionCommonDataMetaDataRespData struct {
+	EnumFieldApiName *string            `json:"enum_field_api_name,omitempty"` // 枚举字段 API name
+	EnumFieldOptions []*EnumFieldOption `json:"enum_field_options,omitempty"`  // 枚举全部选项列表
+}
+
+type EditEnumOptionCommonDataMetaDataResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *EditEnumOptionCommonDataMetaDataRespData `json:"data"` // 业务数据
+}
+
+func (resp *EditEnumOptionCommonDataMetaDataResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -18732,19 +19175,19 @@ func NewGetByParamCustomFieldReqBuilder() *GetByParamCustomFieldReqBuilder {
 	return builder
 }
 
-// 自定义字段 apiname
-//
-// 示例值：custom_field_33
-func (builder *GetByParamCustomFieldReqBuilder) CustomApiName(customApiName string) *GetByParamCustomFieldReqBuilder {
-	builder.apiReq.QueryParams.Set("custom_api_name", fmt.Sprint(customApiName))
-	return builder
-}
-
 // 所属对象 apiname
 //
 // 示例值：offboarding_info
 func (builder *GetByParamCustomFieldReqBuilder) ObjectApiName(objectApiName string) *GetByParamCustomFieldReqBuilder {
 	builder.apiReq.QueryParams.Set("object_api_name", fmt.Sprint(objectApiName))
+	return builder
+}
+
+// 自定义字段 apiname
+//
+// 示例值：custom_field_33
+func (builder *GetByParamCustomFieldReqBuilder) CustomApiName(customApiName string) *GetByParamCustomFieldReqBuilder {
+	builder.apiReq.QueryParams.Set("custom_api_name", fmt.Sprint(customApiName))
 	return builder
 }
 

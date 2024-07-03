@@ -28,7 +28,7 @@ func main() {
 	// 创建请求对象
 	req := larkcorehr.NewSearchBasicInfoNationalityReqBuilder().
 		PageSize(100).
-		PageToken("6891251722631890445").
+		PageToken("7075702743846897196").
 		Body(larkcorehr.NewSearchBasicInfoNationalityReqBodyBuilder().
 			NationalityIdList([]string{}).
 			CountryRegionIdList([]string{}).

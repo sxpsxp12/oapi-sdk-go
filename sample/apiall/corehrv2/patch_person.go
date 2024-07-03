@@ -34,7 +34,6 @@ func main() {
 			NameList([]*larkcorehr.PersonName{larkcorehr.NewPersonNameBuilder().Build()}).
 			Gender(larkcorehr.NewEnumBuilder().Build()).
 			DateOfBirth("2020-01-01").
-			NationalityIdV2("6862995757234914821").
 			Race(larkcorehr.NewEnumBuilder().Build()).
 			MaritalStatus(larkcorehr.NewEnumBuilder().Build()).
 			PhoneList([]*larkcorehr.Phone{larkcorehr.NewPhoneBuilder().Build()}).
@@ -64,6 +63,9 @@ func main() {
 			ResidentTaxes([]*larkcorehr.ResidentTax{larkcorehr.NewResidentTaxBuilder().Build()}).
 			FirstEntryTime("2021-01-02").
 			LeaveTime("2022-01-02").
+			BankAccountNumber("69928404442626824").
+			PassportNumber("6919733936050406926").
+			FormerEmployer([]*larkcorehr.I18n{larkcorehr.NewI18nBuilder().Build()}).
 			Build()).
 		Build()
 	// 发起请求

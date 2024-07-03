@@ -663,28 +663,28 @@ const (
 	UserIdTypeCreateNoteUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeCreateNoteUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeCreateNoteOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypeCreateNotePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	UserIdTypeCreateNotePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户，即将下线字段，不建议使用
 )
 
 const (
 	UserIdTypeGetNoteUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeGetNoteUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeGetNoteOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypeGetNotePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	UserIdTypeGetNotePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户,即将下线字段，不建议使用
 )
 
 const (
 	UserIdTypeListNoteUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeListNoteUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeListNoteOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypeListNotePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	UserIdTypeListNotePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户，即将下线字段，不建议使用
 )
 
 const (
 	UserIdTypePatchNoteUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypePatchNoteUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypePatchNoteOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypePatchNotePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	UserIdTypePatchNotePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户,即将下线字段，不建议使用
 )
 
 const (
@@ -697,7 +697,7 @@ const (
 	UserIdTypeCreateOfferUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeCreateOfferUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeCreateOfferOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypeCreateOfferPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	UserIdTypeCreateOfferPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户,即将下线字段,不建议使用
 )
 
 const (
@@ -724,7 +724,7 @@ const (
 	UserIdTypeGetOfferUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeGetOfferUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeGetOfferOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypeGetOfferPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	UserIdTypeGetOfferPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户,即将下线字段,不建议使用
 )
 
 const (
@@ -757,7 +757,7 @@ const (
 	UserIdTypeListOfferUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeListOfferUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeListOfferOpenId        = "open_id"         // 以open_id来识别用户
-	UserIdTypeListOfferPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+	UserIdTypeListOfferPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户，即将下线字段，不建议使用
 )
 
 const (
@@ -939,6 +939,86 @@ func (builder *AbilityBuilder) Build() *Ability {
 	}
 	if builder.descriptionFlag {
 		req.Description = builder.description
+	}
+	return req
+}
+
+type Acceptance struct {
+	OperatorType *int    `json:"operator_type,omitempty"` // 操作类型
+	Conclusion   *int    `json:"conclusion,omitempty"`    // offer 接受或拒绝的结果
+	Memo         *string `json:"memo,omitempty"`          // 备注，如果是拒绝，则展示拒绝原因
+	OperateTime  *string `json:"operate_time,omitempty"`  // 操作的字符串毫秒时间戳
+}
+
+type AcceptanceBuilder struct {
+	operatorType     int // 操作类型
+	operatorTypeFlag bool
+	conclusion       int // offer 接受或拒绝的结果
+	conclusionFlag   bool
+	memo             string // 备注，如果是拒绝，则展示拒绝原因
+	memoFlag         bool
+	operateTime      string // 操作的字符串毫秒时间戳
+	operateTimeFlag  bool
+}
+
+func NewAcceptanceBuilder() *AcceptanceBuilder {
+	builder := &AcceptanceBuilder{}
+	return builder
+}
+
+// 操作类型
+//
+// 示例值：1
+func (builder *AcceptanceBuilder) OperatorType(operatorType int) *AcceptanceBuilder {
+	builder.operatorType = operatorType
+	builder.operatorTypeFlag = true
+	return builder
+}
+
+// offer 接受或拒绝的结果
+//
+// 示例值：1
+func (builder *AcceptanceBuilder) Conclusion(conclusion int) *AcceptanceBuilder {
+	builder.conclusion = conclusion
+	builder.conclusionFlag = true
+	return builder
+}
+
+// 备注，如果是拒绝，则展示拒绝原因
+//
+// 示例值：Abort
+func (builder *AcceptanceBuilder) Memo(memo string) *AcceptanceBuilder {
+	builder.memo = memo
+	builder.memoFlag = true
+	return builder
+}
+
+// 操作的字符串毫秒时间戳
+//
+// 示例值：1718959426734
+func (builder *AcceptanceBuilder) OperateTime(operateTime string) *AcceptanceBuilder {
+	builder.operateTime = operateTime
+	builder.operateTimeFlag = true
+	return builder
+}
+
+func (builder *AcceptanceBuilder) Build() *Acceptance {
+	req := &Acceptance{}
+	if builder.operatorTypeFlag {
+		req.OperatorType = &builder.operatorType
+
+	}
+	if builder.conclusionFlag {
+		req.Conclusion = &builder.conclusion
+
+	}
+	if builder.memoFlag {
+		req.Memo = &builder.memo
+
+	}
+	if builder.operateTimeFlag {
+		req.OperateTime = &builder.operateTime
+
 	}
 	return req
 }
@@ -2999,6 +3079,7 @@ type ApplicationOffer struct {
 	OfferStatus          *int                            `json:"offer_status,omitempty"`           // Offer 状态
 	JobInfo              *OfferJobInfo                   `json:"job_info,omitempty"`               // 职位信息
 	CustomizedModuleList []*ApplicationOfferCustomModule `json:"customized_module_list,omitempty"` // offer自定义模块列表
+	JobRequirementId     *string                         `json:"job_requirement_id,omitempty"`     // 招聘需求 ID
 }
 
 type ApplicationOfferBuilder struct {
@@ -3018,6 +3099,8 @@ type ApplicationOfferBuilder struct {
 	jobInfoFlag              bool
 	customizedModuleList     []*ApplicationOfferCustomModule // offer自定义模块列表
 	customizedModuleListFlag bool
+	jobRequirementId         string // 招聘需求 ID
+	jobRequirementIdFlag     bool
 }
 
 func NewApplicationOfferBuilder() *ApplicationOfferBuilder {
@@ -3097,6 +3180,15 @@ func (builder *ApplicationOfferBuilder) CustomizedModuleList(customizedModuleLis
 	return builder
 }
 
+// 招聘需求 ID
+//
+// 示例值：1231231232312312
+func (builder *ApplicationOfferBuilder) JobRequirementId(jobRequirementId string) *ApplicationOfferBuilder {
+	builder.jobRequirementId = jobRequirementId
+	builder.jobRequirementIdFlag = true
+	return builder
+}
+
 func (builder *ApplicationOfferBuilder) Build() *ApplicationOffer {
 	req := &ApplicationOffer{}
 	if builder.idFlag {
@@ -3126,6 +3218,10 @@ func (builder *ApplicationOfferBuilder) Build() *ApplicationOffer {
 	}
 	if builder.customizedModuleListFlag {
 		req.CustomizedModuleList = builder.customizedModuleList
+	}
+	if builder.jobRequirementIdFlag {
+		req.JobRequirementId = &builder.jobRequirementId
+
 	}
 	return req
 }
@@ -9052,6 +9148,53 @@ func (builder *BusinessManagementScopeBuilder) Build() *BusinessManagementScope 
 	return req
 }
 
+type CandidateTagFilter struct {
+	MatchType      *int     `json:"match_type,omitempty"`       // 标签匹配方式
+	CandidateTagId []string `json:"candidate_tag_id,omitempty"` // 标签 ID 列表
+}
+
+type CandidateTagFilterBuilder struct {
+	matchType          int // 标签匹配方式
+	matchTypeFlag      bool
+	candidateTagId     []string // 标签 ID 列表
+	candidateTagIdFlag bool
+}
+
+func NewCandidateTagFilterBuilder() *CandidateTagFilterBuilder {
+	builder := &CandidateTagFilterBuilder{}
+	return builder
+}
+
+// 标签匹配方式
+//
+// 示例值：1
+func (builder *CandidateTagFilterBuilder) MatchType(matchType int) *CandidateTagFilterBuilder {
+	builder.matchType = matchType
+	builder.matchTypeFlag = true
+	return builder
+}
+
+// 标签 ID 列表
+//
+// 示例值：
+func (builder *CandidateTagFilterBuilder) CandidateTagId(candidateTagId []string) *CandidateTagFilterBuilder {
+	builder.candidateTagId = candidateTagId
+	builder.candidateTagIdFlag = true
+	return builder
+}
+
+func (builder *CandidateTagFilterBuilder) Build() *CandidateTagFilter {
+	req := &CandidateTagFilter{}
+	if builder.matchTypeFlag {
+		req.MatchType = &builder.matchType
+
+	}
+	if builder.candidateTagIdFlag {
+		req.CandidateTagId = builder.candidateTagId
+	}
+	return req
+}
+
 type CareerInfo struct {
 	CareerType *int    `json:"career_type,omitempty"` // 类型
 	Company    *string `json:"company,omitempty"`     // 公司
@@ -11001,6 +11144,53 @@ func (builder *DataPermissionBuilder) Build() *DataPermission {
 	if builder.selectStatusFlag {
 		req.SelectStatus = &builder.selectStatus
 
+	}
+	return req
+}
+
+type DegreeFilter struct {
+	HideOption *int     `json:"hide_option,omitempty"` // 是否过滤专升本
+	Degree     []string `json:"degree,omitempty"`      // 学历列表
+}
+
+type DegreeFilterBuilder struct {
+	hideOption     int // 是否过滤专升本
+	hideOptionFlag bool
+	degree         []string // 学历列表
+	degreeFlag     bool
+}
+
+func NewDegreeFilterBuilder() *DegreeFilterBuilder {
+	builder := &DegreeFilterBuilder{}
+	return builder
+}
+
+// 是否过滤专升本
+//
+// 示例值：1
+func (builder *DegreeFilterBuilder) HideOption(hideOption int) *DegreeFilterBuilder {
+	builder.hideOption = hideOption
+	builder.hideOptionFlag = true
+	return builder
+}
+
+// 学历列表
+//
+// 示例值：
+func (builder *DegreeFilterBuilder) Degree(degree []string) *DegreeFilterBuilder {
+	builder.degree = degree
+	builder.degreeFlag = true
+	return builder
+}
+
+func (builder *DegreeFilterBuilder) Build() *DegreeFilter {
+	req := &DegreeFilter{}
+	if builder.hideOptionFlag {
+		req.HideOption = &builder.hideOption
+
+	}
+	if builder.degreeFlag {
+		req.Degree = builder.degree
 	}
 	return req
 }
@@ -13013,6 +13203,7 @@ type Employee struct {
 	Sequence               *string `json:"sequence,omitempty"`                 // 序列
 	Level                  *string `json:"level,omitempty"`                    // 职级
 	EmployeeType           *string `json:"employee_type,omitempty"`            // 员工类型
+	JobRequirementId       *string `json:"job_requirement_id,omitempty"`       // 招聘需求ID
 }
 
 type EmployeeBuilder struct {
@@ -13046,6 +13237,8 @@ type EmployeeBuilder struct {
 	levelFlag                  bool
 	employeeType               string // 员工类型
 	employeeTypeFlag           bool
+	jobRequirementId           string // 招聘需求ID
+	jobRequirementIdFlag       bool
 }
 
 func NewEmployeeBuilder() *EmployeeBuilder {
@@ -13188,6 +13381,15 @@ func (builder *EmployeeBuilder) EmployeeType(employeeType string) *EmployeeBuild
 	return builder
 }
 
+// 招聘需求ID
+//
+// 示例值：123123123213
+func (builder *EmployeeBuilder) JobRequirementId(jobRequirementId string) *EmployeeBuilder {
+	builder.jobRequirementId = jobRequirementId
+	builder.jobRequirementIdFlag = true
+	return builder
+}
+
 func (builder *EmployeeBuilder) Build() *Employee {
 	req := &Employee{}
 	if builder.idFlag {
@@ -13248,6 +13450,10 @@ func (builder *EmployeeBuilder) Build() *Employee {
 	}
 	if builder.employeeTypeFlag {
 		req.EmployeeType = &builder.employeeType
+
+	}
+	if builder.jobRequirementIdFlag {
+		req.JobRequirementId = &builder.jobRequirementId
 
 	}
 	return req
@@ -14859,6 +15065,114 @@ func (builder *ExternalRewardBuilder) Build() *ExternalReward {
 	if builder.commentFlag {
 		req.Comment = &builder.comment
 
+	}
+	return req
+}
+
+type Filter struct {
+	Key                *string             `json:"key,omitempty"`                  // 筛选项 key
+	ValueType          *int                `json:"value_type,omitempty"`           // 筛选项值类型
+	ValueList          []string            `json:"value_list,omitempty"`           // 筛选项值列表
+	RangeFilter        *RangeFilter        `json:"range_filter,omitempty"`         // 范围筛选
+	CandidateTagFilter *CandidateTagFilter `json:"candidate_tag_filter,omitempty"` // 候选人标签筛选
+	DegreeFilter       *DegreeFilter       `json:"degree_filter,omitempty"`        // 学历筛选
+}
+
+type FilterBuilder struct {
+	key                    string // 筛选项 key
+	keyFlag                bool
+	valueType              int // 筛选项值类型
+	valueTypeFlag          bool
+	valueList              []string // 筛选项值列表
+	valueListFlag          bool
+	rangeFilter            *RangeFilter // 范围筛选
+	rangeFilterFlag        bool
+	candidateTagFilter     *CandidateTagFilter // 候选人标签筛选
+	candidateTagFilterFlag bool
+	degreeFilter           *DegreeFilter // 学历筛选
+	degreeFilterFlag       bool
+}
+
+func NewFilterBuilder() *FilterBuilder {
+	builder := &FilterBuilder{}
+	return builder
+}
+
+// 筛选项 key
+//
+// 示例值：degree
+func (builder *FilterBuilder) Key(key string) *FilterBuilder {
+	builder.key = key
+	builder.keyFlag = true
+	return builder
+}
+
+// 筛选项值类型
+//
+// 示例值：1
+func (builder *FilterBuilder) ValueType(valueType int) *FilterBuilder {
+	builder.valueType = valueType
+	builder.valueTypeFlag = true
+	return builder
+}
+
+// 筛选项值列表
+//
+// 示例值：
+func (builder *FilterBuilder) ValueList(valueList []string) *FilterBuilder {
+	builder.valueList = valueList
+	builder.valueListFlag = true
+	return builder
+}
+
+// 范围筛选
+//
+// 示例值：
+func (builder *FilterBuilder) RangeFilter(rangeFilter *RangeFilter) *FilterBuilder {
+	builder.rangeFilter = rangeFilter
+	builder.rangeFilterFlag = true
+	return builder
+}
+
+// 候选人标签筛选
+//
+// 示例值：
+func (builder *FilterBuilder) CandidateTagFilter(candidateTagFilter *CandidateTagFilter) *FilterBuilder {
+	builder.candidateTagFilter = candidateTagFilter
+	builder.candidateTagFilterFlag = true
+	return builder
+}
+
+// 学历筛选
+//
+// 示例值：
+func (builder *FilterBuilder) DegreeFilter(degreeFilter *DegreeFilter) *FilterBuilder {
+	builder.degreeFilter = degreeFilter
+	builder.degreeFilterFlag = true
+	return builder
+}
+
+func (builder *FilterBuilder) Build() *Filter {
+	req := &Filter{}
+	if builder.keyFlag {
+		req.Key = &builder.key
+
+	}
+	if builder.valueTypeFlag {
+		req.ValueType = &builder.valueType
+
+	}
+	if builder.valueListFlag {
+		req.ValueList = builder.valueList
+	}
+	if builder.rangeFilterFlag {
+		req.RangeFilter = builder.rangeFilter
+	}
+	if builder.candidateTagFilterFlag {
+		req.CandidateTagFilter = builder.candidateTagFilter
+	}
+	if builder.degreeFilterFlag {
+		req.DegreeFilter = builder.degreeFilter
 	}
 	return req
 }
@@ -21550,6 +21864,9 @@ type JobRequirementDto struct {
 	JobIdList          []string                           `json:"job_id_list,omitempty"`          // 关联职位 ID
 	ProcessType        *int                               `json:"process_type,omitempty"`         // 招聘需求支持的招聘类型
 	JobType            *JobTypeInfo                       `json:"job_type,omitempty"`             // 职位类别
+	CreateTime         *string                            `json:"create_time,omitempty"`          // 创建时间,毫秒级时间戳
+	CreatorId          *string                            `json:"creator_id,omitempty"`           // 创建人ID
+	UpdateTime         *string                            `json:"update_time,omitempty"`          // 更新时间,毫秒级时间戳
 }
 
 type JobRequirementDtoBuilder struct {
@@ -21607,6 +21924,12 @@ type JobRequirementDtoBuilder struct {
 	processTypeFlag        bool
 	jobType                *JobTypeInfo // 职位类别
 	jobTypeFlag            bool
+	createTime             string // 创建时间,毫秒级时间戳
+	createTimeFlag         bool
+	creatorId              string // 创建人ID
+	creatorIdFlag          bool
+	updateTime             string // 更新时间,毫秒级时间戳
+	updateTimeFlag         bool
 }
 
 func NewJobRequirementDtoBuilder() *JobRequirementDtoBuilder {
@@ -21857,6 +22180,33 @@ func (builder *JobRequirementDtoBuilder) JobType(jobType *JobTypeInfo) *JobRequi
 	return builder
 }
 
+// 创建时间,毫秒级时间戳
+//
+// 示例值：1718856006000
+func (builder *JobRequirementDtoBuilder) CreateTime(createTime string) *JobRequirementDtoBuilder {
+	builder.createTime = createTime
+	builder.createTimeFlag = true
+	return builder
+}
+
+// 创建人ID
+//
+// 示例值：ou_e2fc714c4727ee9395f324cd2e7f331f
+func (builder *JobRequirementDtoBuilder) CreatorId(creatorId string) *JobRequirementDtoBuilder {
+	builder.creatorId = creatorId
+	builder.creatorIdFlag = true
+	return builder
+}
+
+// 更新时间,毫秒级时间戳
+//
+// 示例值：1718856006000
+func (builder *JobRequirementDtoBuilder) UpdateTime(updateTime string) *JobRequirementDtoBuilder {
+	builder.updateTime = updateTime
+	builder.updateTimeFlag = true
+	return builder
+}
+
 func (builder *JobRequirementDtoBuilder) Build() *JobRequirementDto {
 	req := &JobRequirementDto{}
 	if builder.idFlag {
@@ -21953,6 +22303,18 @@ func (builder *JobRequirementDtoBuilder) Build() *JobRequirementDto {
 	}
 	if builder.jobTypeFlag {
 		req.JobType = builder.jobType
+	}
+	if builder.createTimeFlag {
+		req.CreateTime = &builder.createTime
+
+	}
+	if builder.creatorIdFlag {
+		req.CreatorId = &builder.creatorId
+
+	}
+	if builder.updateTimeFlag {
+		req.UpdateTime = &builder.updateTime
+
 	}
 	return req
 }
@@ -22571,6 +22933,430 @@ func (builder *LocationBaseInfoBuilder) Build() *LocationBaseInfo {
 	return req
 }
 
+type LocationCity struct {
+	CityCode     *string           `json:"city_code,omitempty"`      // 市地址Code码
+	StateCode    *string           `json:"state_code,omitempty"`     // 省份/州地址Code码
+	CountryCode  *string           `json:"country_code,omitempty"`   // 国家地址Code码
+	CityNameInfo *LocationNameInfo `json:"city_name_info,omitempty"` // 市地址名称信息聚合
+}
+
+type LocationCityBuilder struct {
+	cityCode         string // 市地址Code码
+	cityCodeFlag     bool
+	stateCode        string // 省份/州地址Code码
+	stateCodeFlag    bool
+	countryCode      string // 国家地址Code码
+	countryCodeFlag  bool
+	cityNameInfo     *LocationNameInfo // 市地址名称信息聚合
+	cityNameInfoFlag bool
+}
+
+func NewLocationCityBuilder() *LocationCityBuilder {
+	builder := &LocationCityBuilder{}
+	return builder
+}
+
+// 市地址Code码
+//
+// 示例值：CT_1
+func (builder *LocationCityBuilder) CityCode(cityCode string) *LocationCityBuilder {
+	builder.cityCode = cityCode
+	builder.cityCodeFlag = true
+	return builder
+}
+
+// 省份/州地址Code码
+//
+// 示例值：ST_1
+func (builder *LocationCityBuilder) StateCode(stateCode string) *LocationCityBuilder {
+	builder.stateCode = stateCode
+	builder.stateCodeFlag = true
+	return builder
+}
+
+// 国家地址Code码
+//
+// 示例值：CN_1
+func (builder *LocationCityBuilder) CountryCode(countryCode string) *LocationCityBuilder {
+	builder.countryCode = countryCode
+	builder.countryCodeFlag = true
+	return builder
+}
+
+// 市地址名称信息聚合
+//
+// 示例值：
+func (builder *LocationCityBuilder) CityNameInfo(cityNameInfo *LocationNameInfo) *LocationCityBuilder {
+	builder.cityNameInfo = cityNameInfo
+	builder.cityNameInfoFlag = true
+	return builder
+}
+
+func (builder *LocationCityBuilder) Build() *LocationCity {
+	req := &LocationCity{}
+	if builder.cityCodeFlag {
+		req.CityCode = &builder.cityCode
+
+	}
+	if builder.stateCodeFlag {
+		req.StateCode = &builder.stateCode
+
+	}
+	if builder.countryCodeFlag {
+		req.CountryCode = &builder.countryCode
+
+	}
+	if builder.cityNameInfoFlag {
+		req.CityNameInfo = builder.cityNameInfo
+	}
+	return req
+}
+
+type LocationCountry struct {
+	CountryCode     *string           `json:"country_code,omitempty"`      // 国家地址Code码
+	CountryNameInfo *LocationNameInfo `json:"country_name_info,omitempty"` // 国家地址名称信息聚合
+}
+
+type LocationCountryBuilder struct {
+	countryCode         string // 国家地址Code码
+	countryCodeFlag     bool
+	countryNameInfo     *LocationNameInfo // 国家地址名称信息聚合
+	countryNameInfoFlag bool
+}
+
+func NewLocationCountryBuilder() *LocationCountryBuilder {
+	builder := &LocationCountryBuilder{}
+	return builder
+}
+
+// 国家地址Code码
+//
+// 示例值：CN_1
+func (builder *LocationCountryBuilder) CountryCode(countryCode string) *LocationCountryBuilder {
+	builder.countryCode = countryCode
+	builder.countryCodeFlag = true
+	return builder
+}
+
+// 国家地址名称信息聚合
+//
+// 示例值：
+func (builder *LocationCountryBuilder) CountryNameInfo(countryNameInfo *LocationNameInfo) *LocationCountryBuilder {
+	builder.countryNameInfo = countryNameInfo
+	builder.countryNameInfoFlag = true
+	return builder
+}
+
+func (builder *LocationCountryBuilder) Build() *LocationCountry {
+	req := &LocationCountry{}
+	if builder.countryCodeFlag {
+		req.CountryCode = &builder.countryCode
+
+	}
+	if builder.countryNameInfoFlag {
+		req.CountryNameInfo = builder.countryNameInfo
+	}
+	return req
+}
+
+type LocationDistrict struct {
+	DistrictCode     *string           `json:"district_code,omitempty"`      // 区/县Code码
+	CityCode         *string           `json:"city_code,omitempty"`          // 市地址Code码
+	StateCode        *string           `json:"state_code,omitempty"`         // 省份/州地址Code码
+	CountryCode      *string           `json:"country_code,omitempty"`       // 国家地址Code码
+	DistrictNameInfo *LocationNameInfo `json:"district_name_info,omitempty"` // 区/县地址名称信息聚合
+}
+
+type LocationDistrictBuilder struct {
+	districtCode         string // 区/县Code码
+	districtCodeFlag     bool
+	cityCode             string // 市地址Code码
+	cityCodeFlag         bool
+	stateCode            string // 省份/州地址Code码
+	stateCodeFlag        bool
+	countryCode          string // 国家地址Code码
+	countryCodeFlag      bool
+	districtNameInfo     *LocationNameInfo // 区/县地址名称信息聚合
+	districtNameInfoFlag bool
+}
+
+func NewLocationDistrictBuilder() *LocationDistrictBuilder {
+	builder := &LocationDistrictBuilder{}
+	return builder
+}
+
+// 区/县Code码
+//
+// 示例值：DS_70
+func (builder *LocationDistrictBuilder) DistrictCode(districtCode string) *LocationDistrictBuilder {
+	builder.districtCode = districtCode
+	builder.districtCodeFlag = true
+	return builder
+}
+
+// 市地址Code码
+//
+// 示例值：CT_1
+func (builder *LocationDistrictBuilder) CityCode(cityCode string) *LocationDistrictBuilder {
+	builder.cityCode = cityCode
+	builder.cityCodeFlag = true
+	return builder
+}
+
+// 省份/州地址Code码
+//
+// 示例值：ST_1
+func (builder *LocationDistrictBuilder) StateCode(stateCode string) *LocationDistrictBuilder {
+	builder.stateCode = stateCode
+	builder.stateCodeFlag = true
+	return builder
+}
+
+// 国家地址Code码
+//
+// 示例值：CN_1
+func (builder *LocationDistrictBuilder) CountryCode(countryCode string) *LocationDistrictBuilder {
+	builder.countryCode = countryCode
+	builder.countryCodeFlag = true
+	return builder
+}
+
+// 区/县地址名称信息聚合
+//
+// 示例值：
+func (builder *LocationDistrictBuilder) DistrictNameInfo(districtNameInfo *LocationNameInfo) *LocationDistrictBuilder {
+	builder.districtNameInfo = districtNameInfo
+	builder.districtNameInfoFlag = true
+	return builder
+}
+
+func (builder *LocationDistrictBuilder) Build() *LocationDistrict {
+	req := &LocationDistrict{}
+	if builder.districtCodeFlag {
+		req.DistrictCode = &builder.districtCode
+
+	}
+	if builder.cityCodeFlag {
+		req.CityCode = &builder.cityCode
+
+	}
+	if builder.stateCodeFlag {
+		req.StateCode = &builder.stateCode
+
+	}
+	if builder.countryCodeFlag {
+		req.CountryCode = &builder.countryCode
+
+	}
+	if builder.districtNameInfoFlag {
+		req.DistrictNameInfo = builder.districtNameInfo
+	}
+	return req
+}
+
+type LocationDto struct {
+	Country  *LocationCountry  `json:"country,omitempty"`  // 国家信息列表,仅当 location_type=1 时返回
+	State    *LocationState    `json:"state,omitempty"`    // 省份/州信息列表,仅当 location_type=2 时返回
+	City     *LocationCity     `json:"city,omitempty"`     // 市信息列表，仅当 location_type=3 时返回
+	District *LocationDistrict `json:"district,omitempty"` // 区/县信息列表，仅当 location_type=4 时返回
+}
+
+type LocationDtoBuilder struct {
+	country      *LocationCountry // 国家信息列表,仅当 location_type=1 时返回
+	countryFlag  bool
+	state        *LocationState // 省份/州信息列表,仅当 location_type=2 时返回
+	stateFlag    bool
+	city         *LocationCity // 市信息列表，仅当 location_type=3 时返回
+	cityFlag     bool
+	district     *LocationDistrict // 区/县信息列表，仅当 location_type=4 时返回
+	districtFlag bool
+}
+
+func NewLocationDtoBuilder() *LocationDtoBuilder {
+	builder := &LocationDtoBuilder{}
+	return builder
+}
+
+// 国家信息列表,仅当 location_type=1 时返回
+//
+// 示例值：
+func (builder *LocationDtoBuilder) Country(country *LocationCountry) *LocationDtoBuilder {
+	builder.country = country
+	builder.countryFlag = true
+	return builder
+}
+
+// 省份/州信息列表,仅当 location_type=2 时返回
+//
+// 示例值：
+func (builder *LocationDtoBuilder) State(state *LocationState) *LocationDtoBuilder {
+	builder.state = state
+	builder.stateFlag = true
+	return builder
+}
+
+// 市信息列表，仅当 location_type=3 时返回
+//
+// 示例值：
+func (builder *LocationDtoBuilder) City(city *LocationCity) *LocationDtoBuilder {
+	builder.city = city
+	builder.cityFlag = true
+	return builder
+}
+
+// 区/县信息列表，仅当 location_type=4 时返回
+//
+// 示例值：
+func (builder *LocationDtoBuilder) District(district *LocationDistrict) *LocationDtoBuilder {
+	builder.district = district
+	builder.districtFlag = true
+	return builder
+}
+
+func (builder *LocationDtoBuilder) Build() *LocationDto {
+	req := &LocationDto{}
+	if builder.countryFlag {
+		req.Country = builder.country
+	}
+	if builder.stateFlag {
+		req.State = builder.state
+	}
+	if builder.cityFlag {
+		req.City = builder.city
+	}
+	if builder.districtFlag {
+		req.District = builder.district
+	}
+	return req
+}
+
+type LocationNameInfo struct {
+	ZhName *string `json:"zh_name,omitempty"` // 地址中文名
+	EnName *string `json:"en_name,omitempty"` // 地址英文名
+	PyName *string `json:"py_name,omitempty"` // 地址拼音名
+}
+
+type LocationNameInfoBuilder struct {
+	zhName     string // 地址中文名
+	zhNameFlag bool
+	enName     string // 地址英文名
+	enNameFlag bool
+	pyName     string // 地址拼音名
+	pyNameFlag bool
+}
+
+func NewLocationNameInfoBuilder() *LocationNameInfoBuilder {
+	builder := &LocationNameInfoBuilder{}
+	return builder
+}
+
+// 地址中文名
+//
+// 示例值：成都
+func (builder *LocationNameInfoBuilder) ZhName(zhName string) *LocationNameInfoBuilder {
+	builder.zhName = zhName
+	builder.zhNameFlag = true
+	return builder
+}
+
+// 地址英文名
+//
+// 示例值：ChengDu
+func (builder *LocationNameInfoBuilder) EnName(enName string) *LocationNameInfoBuilder {
+	builder.enName = enName
+	builder.enNameFlag = true
+	return builder
+}
+
+// 地址拼音名
+//
+// 示例值：chengdu
+func (builder *LocationNameInfoBuilder) PyName(pyName string) *LocationNameInfoBuilder {
+	builder.pyName = pyName
+	builder.pyNameFlag = true
+	return builder
+}
+
+func (builder *LocationNameInfoBuilder) Build() *LocationNameInfo {
+	req := &LocationNameInfo{}
+	if builder.zhNameFlag {
+		req.ZhName = &builder.zhName
+
+	}
+	if builder.enNameFlag {
+		req.EnName = &builder.enName
+
+	}
+	if builder.pyNameFlag {
+		req.PyName = &builder.pyName
+
+	}
+	return req
+}
+
+type LocationState struct {
+	StateCode     *string           `json:"state_code,omitempty"`      // 省份/州地址Code码
+	CountryCode   *string           `json:"country_code,omitempty"`    // 国家地址Code码
+	StateNameInfo *LocationNameInfo `json:"state_name_info,omitempty"` // 省份/州地址名称信息聚合
+}
+
+type LocationStateBuilder struct {
+	stateCode         string // 省份/州地址Code码
+	stateCodeFlag     bool
+	countryCode       string // 国家地址Code码
+	countryCodeFlag   bool
+	stateNameInfo     *LocationNameInfo // 省份/州地址名称信息聚合
+	stateNameInfoFlag bool
+}
+
+func NewLocationStateBuilder() *LocationStateBuilder {
+	builder := &LocationStateBuilder{}
+	return builder
+}
+
+// 省份/州地址Code码
+//
+// 示例值：ST_1
+func (builder *LocationStateBuilder) StateCode(stateCode string) *LocationStateBuilder {
+	builder.stateCode = stateCode
+	builder.stateCodeFlag = true
+	return builder
+}
+
+// 国家地址Code码
+//
+// 示例值：CN_1
+func (builder *LocationStateBuilder) CountryCode(countryCode string) *LocationStateBuilder {
+	builder.countryCode = countryCode
+	builder.countryCodeFlag = true
+	return builder
+}
+
+// 省份/州地址名称信息聚合
+//
+// 示例值：
+func (builder *LocationStateBuilder) StateNameInfo(stateNameInfo *LocationNameInfo) *LocationStateBuilder {
+	builder.stateNameInfo = stateNameInfo
+	builder.stateNameInfoFlag = true
+	return builder
+}
+
+func (builder *LocationStateBuilder) Build() *LocationState {
+	req := &LocationState{}
+	if builder.stateCodeFlag {
+		req.StateCode = &builder.stateCode
+
+	}
+	if builder.countryCodeFlag {
+		req.CountryCode = &builder.countryCode
+
+	}
+	if builder.stateNameInfoFlag {
+		req.StateNameInfo = builder.stateNameInfo
+	}
+	return req
+}
+
 type MasterLocationAddressInfo struct {
 	LocationInfo *MasterLocationInfo `json:"location_info,omitempty"` // 办公地点
 	AddressInfo  *MasterLocationInfo `json:"address_info,omitempty"`  // 办公地址
@@ -23151,6 +23937,8 @@ type Offer struct {
 	OfferType            *int                            `json:"offer_type,omitempty"`             // Offer 类型
 	JobInfo              *OfferJobInfo                   `json:"job_info,omitempty"`               // 职位信息
 	CustomizedModuleList []*ApplicationOfferCustomModule `json:"customized_module_list,omitempty"` // offer自定义模块列表
+	JobRequirementId     *string                         `json:"job_requirement_id,omitempty"`     // 招聘需求 ID
+
 }
 
 type OfferBuilder struct {
@@ -23172,6 +23960,8 @@ type OfferBuilder struct {
 	jobInfoFlag              bool
 	customizedModuleList     []*ApplicationOfferCustomModule // offer自定义模块列表
 	customizedModuleListFlag bool
+	jobRequirementId         string // 招聘需求 ID
+	jobRequirementIdFlag     bool
 }
 
 func NewOfferBuilder() *OfferBuilder {
@@ -23260,6 +24050,15 @@ func (builder *OfferBuilder) CustomizedModuleList(customizedModuleList []*Applic
 	return builder
 }
 
+// 招聘需求 ID
+//
+// 示例值：1231231232312312
+func (builder *OfferBuilder) JobRequirementId(jobRequirementId string) *OfferBuilder {
+	builder.jobRequirementId = jobRequirementId
+	builder.jobRequirementIdFlag = true
+	return builder
+}
+
 func (builder *OfferBuilder) Build() *Offer {
 	req := &Offer{}
 	if builder.idFlag {
@@ -23294,6 +24093,11 @@ func (builder *OfferBuilder) Build() *Offer {
 	if builder.customizedModuleListFlag {
 		req.CustomizedModuleList = builder.customizedModuleList
 	}
+	if builder.jobRequirementIdFlag {
+		req.JobRequirementId = &builder.jobRequirementId
+
+	}
+
 	return req
 }
 
@@ -24694,6 +25498,180 @@ func (builder *OfferCustomizedInfoBuilder) Build() *OfferCustomizedInfo {
 	return req
 }
 
+type OfferEmailInfo struct {
+	SenderEmail       *string  `json:"sender_email,omitempty"`        // 邮件发送地址
+	CcEmailList       []string `json:"cc_email_list,omitempty"`       // 抄送人邮件列表
+	ReceiverEmailList []string `json:"receiver_email_list,omitempty"` // 接收人邮件列表
+	Content           *string  `json:"content,omitempty"`             // 邮件内容
+}
+
+type OfferEmailInfoBuilder struct {
+	senderEmail           string // 邮件发送地址
+	senderEmailFlag       bool
+	ccEmailList           []string // 抄送人邮件列表
+	ccEmailListFlag       bool
+	receiverEmailList     []string // 接收人邮件列表
+	receiverEmailListFlag bool
+	content               string // 邮件内容
+	contentFlag           bool
+}
+
+func NewOfferEmailInfoBuilder() *OfferEmailInfoBuilder {
+	builder := &OfferEmailInfoBuilder{}
+	return builder
+}
+
+// 邮件发送地址
+//
+// 示例值：no-reply@hire.mail.feishu.cn
+func (builder *OfferEmailInfoBuilder) SenderEmail(senderEmail string) *OfferEmailInfoBuilder {
+	builder.senderEmail = senderEmail
+	builder.senderEmailFlag = true
+	return builder
+}
+
+// 抄送人邮件列表
+//
+// 示例值：
+func (builder *OfferEmailInfoBuilder) CcEmailList(ccEmailList []string) *OfferEmailInfoBuilder {
+	builder.ccEmailList = ccEmailList
+	builder.ccEmailListFlag = true
+	return builder
+}
+
+// 接收人邮件列表
+//
+// 示例值：
+func (builder *OfferEmailInfoBuilder) ReceiverEmailList(receiverEmailList []string) *OfferEmailInfoBuilder {
+	builder.receiverEmailList = receiverEmailList
+	builder.receiverEmailListFlag = true
+	return builder
+}
+
+// 邮件内容
+//
+// 示例值：This is a test email.
+func (builder *OfferEmailInfoBuilder) Content(content string) *OfferEmailInfoBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+func (builder *OfferEmailInfoBuilder) Build() *OfferEmailInfo {
+	req := &OfferEmailInfo{}
+	if builder.senderEmailFlag {
+		req.SenderEmail = &builder.senderEmail
+
+	}
+	if builder.ccEmailListFlag {
+		req.CcEmailList = builder.ccEmailList
+	}
+	if builder.receiverEmailListFlag {
+		req.ReceiverEmailList = builder.receiverEmailList
+	}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	return req
+}
+
+type OfferFile struct {
+	Id                   *string `json:"id,omitempty"`                      // 文件 id
+	FileTemplateId       *string `json:"file_template_id,omitempty"`        // 文件模板 id
+	FileTemplateName     *string `json:"file_template_name,omitempty"`      // 文件模板名称
+	FileTemplateTypeId   *string `json:"file_template_type_id,omitempty"`   // 文件模板类型 id
+	FileTemplateTypeName *string `json:"file_template_type_name,omitempty"` // 文件模板类型名称
+}
+
+type OfferFileBuilder struct {
+	id                       string // 文件 id
+	idFlag                   bool
+	fileTemplateId           string // 文件模板 id
+	fileTemplateIdFlag       bool
+	fileTemplateName         string // 文件模板名称
+	fileTemplateNameFlag     bool
+	fileTemplateTypeId       string // 文件模板类型 id
+	fileTemplateTypeIdFlag   bool
+	fileTemplateTypeName     string // 文件模板类型名称
+	fileTemplateTypeNameFlag bool
+}
+
+func NewOfferFileBuilder() *OfferFileBuilder {
+	builder := &OfferFileBuilder{}
+	return builder
+}
+
+// 文件 id
+//
+// 示例值：12345678901
+func (builder *OfferFileBuilder) Id(id string) *OfferFileBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 文件模板 id
+//
+// 示例值：1718959426734
+func (builder *OfferFileBuilder) FileTemplateId(fileTemplateId string) *OfferFileBuilder {
+	builder.fileTemplateId = fileTemplateId
+	builder.fileTemplateIdFlag = true
+	return builder
+}
+
+// 文件模板名称
+//
+// 示例值：offer 文件
+func (builder *OfferFileBuilder) FileTemplateName(fileTemplateName string) *OfferFileBuilder {
+	builder.fileTemplateName = fileTemplateName
+	builder.fileTemplateNameFlag = true
+	return builder
+}
+
+// 文件模板类型 id
+//
+// 示例值：1718959426734
+func (builder *OfferFileBuilder) FileTemplateTypeId(fileTemplateTypeId string) *OfferFileBuilder {
+	builder.fileTemplateTypeId = fileTemplateTypeId
+	builder.fileTemplateTypeIdFlag = true
+	return builder
+}
+
+// 文件模板类型名称
+//
+// 示例值：offer 文件
+func (builder *OfferFileBuilder) FileTemplateTypeName(fileTemplateTypeName string) *OfferFileBuilder {
+	builder.fileTemplateTypeName = fileTemplateTypeName
+	builder.fileTemplateTypeNameFlag = true
+	return builder
+}
+
+func (builder *OfferFileBuilder) Build() *OfferFile {
+	req := &OfferFile{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.fileTemplateIdFlag {
+		req.FileTemplateId = &builder.fileTemplateId
+
+	}
+	if builder.fileTemplateNameFlag {
+		req.FileTemplateName = &builder.fileTemplateName
+
+	}
+	if builder.fileTemplateTypeIdFlag {
+		req.FileTemplateTypeId = &builder.fileTemplateTypeId
+
+	}
+	if builder.fileTemplateTypeNameFlag {
+		req.FileTemplateTypeName = &builder.fileTemplateTypeName
+
+	}
+	return req
+}
+
 type OfferInfo struct {
 	OfferId            *string                `json:"offer_id,omitempty"`             // Offer ID
 	ApplicationId      *string                `json:"application_id,omitempty"`       // 投递 ID
@@ -25558,6 +26536,209 @@ func (builder *OfferSelectionObjectBuilder) Build() *OfferSelectionObject {
 	}
 	if builder.optionListFlag {
 		req.OptionList = builder.optionList
+	}
+	return req
+}
+
+type OfferSendRecord struct {
+	OfferSendRecordId  *string             `json:"offer_send_record_id,omitempty"` // offer 发送记录 id
+	OperatorUserId     *string             `json:"operator_user_id,omitempty"`     // 操作人 user id
+	SendTime           *string             `json:"send_time,omitempty"`            // offer 发送时间
+	OfferLetterStatus  *int                `json:"offer_letter_status,omitempty"`  // offer 状态
+	EmailInfo          *OfferEmailInfo     `json:"email_info,omitempty"`           // offer 邮件信息
+	AcceptanceList     []*Acceptance       `json:"acceptance_list,omitempty"`      // 跟进记录
+	OfferFileList      []*OfferFile        `json:"offer_file_list,omitempty"`      // offer 文件列表
+	OfferSignatureInfo *OfferSignatureInfo `json:"offer_signature_info,omitempty"` // offer 签署信息
+}
+
+type OfferSendRecordBuilder struct {
+	offerSendRecordId      string // offer 发送记录 id
+	offerSendRecordIdFlag  bool
+	operatorUserId         string // 操作人 user id
+	operatorUserIdFlag     bool
+	sendTime               string // offer 发送时间
+	sendTimeFlag           bool
+	offerLetterStatus      int // offer 状态
+	offerLetterStatusFlag  bool
+	emailInfo              *OfferEmailInfo // offer 邮件信息
+	emailInfoFlag          bool
+	acceptanceList         []*Acceptance // 跟进记录
+	acceptanceListFlag     bool
+	offerFileList          []*OfferFile // offer 文件列表
+	offerFileListFlag      bool
+	offerSignatureInfo     *OfferSignatureInfo // offer 签署信息
+	offerSignatureInfoFlag bool
+}
+
+func NewOfferSendRecordBuilder() *OfferSendRecordBuilder {
+	builder := &OfferSendRecordBuilder{}
+	return builder
+}
+
+// offer 发送记录 id
+//
+// 示例值：1718959426734
+func (builder *OfferSendRecordBuilder) OfferSendRecordId(offerSendRecordId string) *OfferSendRecordBuilder {
+	builder.offerSendRecordId = offerSendRecordId
+	builder.offerSendRecordIdFlag = true
+	return builder
+}
+
+// 操作人 user id
+//
+// 示例值：ou_ce613028fe74745421f5dc320bb9c709
+func (builder *OfferSendRecordBuilder) OperatorUserId(operatorUserId string) *OfferSendRecordBuilder {
+	builder.operatorUserId = operatorUserId
+	builder.operatorUserIdFlag = true
+	return builder
+}
+
+// offer 发送时间
+//
+// 示例值：1718959426734
+func (builder *OfferSendRecordBuilder) SendTime(sendTime string) *OfferSendRecordBuilder {
+	builder.sendTime = sendTime
+	builder.sendTimeFlag = true
+	return builder
+}
+
+// offer 状态
+//
+// 示例值：1
+func (builder *OfferSendRecordBuilder) OfferLetterStatus(offerLetterStatus int) *OfferSendRecordBuilder {
+	builder.offerLetterStatus = offerLetterStatus
+	builder.offerLetterStatusFlag = true
+	return builder
+}
+
+// offer 邮件信息
+//
+// 示例值：
+func (builder *OfferSendRecordBuilder) EmailInfo(emailInfo *OfferEmailInfo) *OfferSendRecordBuilder {
+	builder.emailInfo = emailInfo
+	builder.emailInfoFlag = true
+	return builder
+}
+
+// 跟进记录
+//
+// 示例值：
+func (builder *OfferSendRecordBuilder) AcceptanceList(acceptanceList []*Acceptance) *OfferSendRecordBuilder {
+	builder.acceptanceList = acceptanceList
+	builder.acceptanceListFlag = true
+	return builder
+}
+
+// offer 文件列表
+//
+// 示例值：
+func (builder *OfferSendRecordBuilder) OfferFileList(offerFileList []*OfferFile) *OfferSendRecordBuilder {
+	builder.offerFileList = offerFileList
+	builder.offerFileListFlag = true
+	return builder
+}
+
+// offer 签署信息
+//
+// 示例值：
+func (builder *OfferSendRecordBuilder) OfferSignatureInfo(offerSignatureInfo *OfferSignatureInfo) *OfferSendRecordBuilder {
+	builder.offerSignatureInfo = offerSignatureInfo
+	builder.offerSignatureInfoFlag = true
+	return builder
+}
+
+func (builder *OfferSendRecordBuilder) Build() *OfferSendRecord {
+	req := &OfferSendRecord{}
+	if builder.offerSendRecordIdFlag {
+		req.OfferSendRecordId = &builder.offerSendRecordId
+
+	}
+	if builder.operatorUserIdFlag {
+		req.OperatorUserId = &builder.operatorUserId
+
+	}
+	if builder.sendTimeFlag {
+		req.SendTime = &builder.sendTime
+
+	}
+	if builder.offerLetterStatusFlag {
+		req.OfferLetterStatus = &builder.offerLetterStatus
+
+	}
+	if builder.emailInfoFlag {
+		req.EmailInfo = builder.emailInfo
+	}
+	if builder.acceptanceListFlag {
+		req.AcceptanceList = builder.acceptanceList
+	}
+	if builder.offerFileListFlag {
+		req.OfferFileList = builder.offerFileList
+	}
+	if builder.offerSignatureInfoFlag {
+		req.OfferSignatureInfo = builder.offerSignatureInfo
+	}
+	return req
+}
+
+type OfferSignatureInfo struct {
+	Id              *string                `json:"id,omitempty"`               // 电子签信息 id
+	SignatureStatus *int                   `json:"signature_status,omitempty"` // 电子签签署状态
+	AttachmentList  []*SignatureAttachment `json:"attachment_list,omitempty"`  // 电子签附件列表
+}
+
+type OfferSignatureInfoBuilder struct {
+	id                  string // 电子签信息 id
+	idFlag              bool
+	signatureStatus     int // 电子签签署状态
+	signatureStatusFlag bool
+	attachmentList      []*SignatureAttachment // 电子签附件列表
+	attachmentListFlag  bool
+}
+
+func NewOfferSignatureInfoBuilder() *OfferSignatureInfoBuilder {
+	builder := &OfferSignatureInfoBuilder{}
+	return builder
+}
+
+// 电子签信息 id
+//
+// 示例值：1718959426734
+func (builder *OfferSignatureInfoBuilder) Id(id string) *OfferSignatureInfoBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 电子签签署状态
+//
+// 示例值：1
+func (builder *OfferSignatureInfoBuilder) SignatureStatus(signatureStatus int) *OfferSignatureInfoBuilder {
+	builder.signatureStatus = signatureStatus
+	builder.signatureStatusFlag = true
+	return builder
+}
+
+// 电子签附件列表
+//
+// 示例值：xxx
+func (builder *OfferSignatureInfoBuilder) AttachmentList(attachmentList []*SignatureAttachment) *OfferSignatureInfoBuilder {
+	builder.attachmentList = attachmentList
+	builder.attachmentListFlag = true
+	return builder
+}
+
+func (builder *OfferSignatureInfoBuilder) Build() *OfferSignatureInfo {
+	req := &OfferSignatureInfo{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.signatureStatusFlag {
+		req.SignatureStatus = &builder.signatureStatus
+
+	}
+	if builder.attachmentListFlag {
+		req.AttachmentList = builder.attachmentList
 	}
 	return req
 }
@@ -26658,6 +27839,54 @@ func (builder *QuestionnaireBuilder) Build() *Questionnaire {
 	}
 	if builder.updateTimeFlag {
 		req.UpdateTime = &builder.updateTime
+
+	}
+	return req
+}
+
+type RangeFilter struct {
+	From *string `json:"from,omitempty"` // 起始值
+	To   *string `json:"to,omitempty"`   // 终止值
+}
+
+type RangeFilterBuilder struct {
+	from     string // 起始值
+	fromFlag bool
+	to       string // 终止值
+	toFlag   bool
+}
+
+func NewRangeFilterBuilder() *RangeFilterBuilder {
+	builder := &RangeFilterBuilder{}
+	return builder
+}
+
+// 起始值
+//
+// 示例值：20
+func (builder *RangeFilterBuilder) From(from string) *RangeFilterBuilder {
+	builder.from = from
+	builder.fromFlag = true
+	return builder
+}
+
+// 终止值
+//
+// 示例值：30
+func (builder *RangeFilterBuilder) To(to string) *RangeFilterBuilder {
+	builder.to = to
+	builder.toFlag = true
+	return builder
+}
+
+func (builder *RangeFilterBuilder) Build() *RangeFilter {
+	req := &RangeFilter{}
+	if builder.fromFlag {
+		req.From = &builder.from
+
+	}
+	if builder.toFlag {
+		req.To = &builder.to
 
 	}
 	return req
@@ -27925,6 +29154,118 @@ func (builder *SequenceBuilder) Build() *Sequence {
 	}
 	if builder.enNameFlag {
 		req.EnName = &builder.enName
+
+	}
+	return req
+}
+
+type SignatureAttachment struct {
+	Id                   *string `json:"id,omitempty"`                      // 文件 id
+	FileName             *string `json:"file_name,omitempty"`               // 文件名称
+	FileTemplateId       *string `json:"file_template_id,omitempty"`        // 文件模板 id
+	FileTemplateName     *string `json:"file_template_name,omitempty"`      // 文件模板名称
+	FileTemplateTypeId   *string `json:"file_template_type_id,omitempty"`   // 文件模板类型 id
+	FileTemplateTypeName *string `json:"file_template_type_name,omitempty"` // 文件模板类型名称
+}
+
+type SignatureAttachmentBuilder struct {
+	id                       string // 文件 id
+	idFlag                   bool
+	fileName                 string // 文件名称
+	fileNameFlag             bool
+	fileTemplateId           string // 文件模板 id
+	fileTemplateIdFlag       bool
+	fileTemplateName         string // 文件模板名称
+	fileTemplateNameFlag     bool
+	fileTemplateTypeId       string // 文件模板类型 id
+	fileTemplateTypeIdFlag   bool
+	fileTemplateTypeName     string // 文件模板类型名称
+	fileTemplateTypeNameFlag bool
+}
+
+func NewSignatureAttachmentBuilder() *SignatureAttachmentBuilder {
+	builder := &SignatureAttachmentBuilder{}
+	return builder
+}
+
+// 文件 id
+//
+// 示例值：12345678901
+func (builder *SignatureAttachmentBuilder) Id(id string) *SignatureAttachmentBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 文件名称
+//
+// 示例值：offer 文件
+func (builder *SignatureAttachmentBuilder) FileName(fileName string) *SignatureAttachmentBuilder {
+	builder.fileName = fileName
+	builder.fileNameFlag = true
+	return builder
+}
+
+// 文件模板 id
+//
+// 示例值：1718959426734
+func (builder *SignatureAttachmentBuilder) FileTemplateId(fileTemplateId string) *SignatureAttachmentBuilder {
+	builder.fileTemplateId = fileTemplateId
+	builder.fileTemplateIdFlag = true
+	return builder
+}
+
+// 文件模板名称
+//
+// 示例值：offer 文件
+func (builder *SignatureAttachmentBuilder) FileTemplateName(fileTemplateName string) *SignatureAttachmentBuilder {
+	builder.fileTemplateName = fileTemplateName
+	builder.fileTemplateNameFlag = true
+	return builder
+}
+
+// 文件模板类型 id
+//
+// 示例值：1718959426734
+func (builder *SignatureAttachmentBuilder) FileTemplateTypeId(fileTemplateTypeId string) *SignatureAttachmentBuilder {
+	builder.fileTemplateTypeId = fileTemplateTypeId
+	builder.fileTemplateTypeIdFlag = true
+	return builder
+}
+
+// 文件模板类型名称
+//
+// 示例值：offer 文件
+func (builder *SignatureAttachmentBuilder) FileTemplateTypeName(fileTemplateTypeName string) *SignatureAttachmentBuilder {
+	builder.fileTemplateTypeName = fileTemplateTypeName
+	builder.fileTemplateTypeNameFlag = true
+	return builder
+}
+
+func (builder *SignatureAttachmentBuilder) Build() *SignatureAttachment {
+	req := &SignatureAttachment{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.fileNameFlag {
+		req.FileName = &builder.fileName
+
+	}
+	if builder.fileTemplateIdFlag {
+		req.FileTemplateId = &builder.fileTemplateId
+
+	}
+	if builder.fileTemplateNameFlag {
+		req.FileTemplateName = &builder.fileTemplateName
+
+	}
+	if builder.fileTemplateTypeIdFlag {
+		req.FileTemplateTypeId = &builder.fileTemplateTypeId
+
+	}
+	if builder.fileTemplateTypeNameFlag {
+		req.FileTemplateTypeName = &builder.fileTemplateTypeName
 
 	}
 	return req
@@ -46459,6 +47800,72 @@ func (resp *QueryTalentObjectResp) Success() bool {
 	return resp.Code == 0
 }
 
+type ListTerminationReasonReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListTerminationReasonReqBuilder() *ListTerminationReasonReqBuilder {
+	builder := &ListTerminationReasonReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListTerminationReasonReqBuilder) Limit(limit int) *ListTerminationReasonReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListTerminationReasonReqBuilder) PageToken(pageToken string) *ListTerminationReasonReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大10
+//
+// 示例值：10
+func (builder *ListTerminationReasonReqBuilder) PageSize(pageSize int) *ListTerminationReasonReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+func (builder *ListTerminationReasonReqBuilder) Build() *ListTerminationReasonReq {
+	req := &ListTerminationReasonReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListTerminationReasonReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListTerminationReasonRespData struct {
+	Items     []*TerminationReason `json:"items,omitempty"`      // 列表
+	HasMore   *bool                `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string              `json:"page_token,omitempty"` // 下一页页码
+}
+
+type ListTerminationReasonResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListTerminationReasonRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListTerminationReasonResp) Success() bool {
+	return resp.Code == 0
+}
+
 type P2ApplicationDeletedV1Data struct {
 	ApplicationIds []string `json:"application_ids,omitempty"` // 投递 ID 列表
 }
@@ -46954,5 +48361,59 @@ func (iterator *ListTalentFolderIterator) Next() (bool, *TalentFolderForList, er
 }
 
 func (iterator *ListTalentFolderIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListTerminationReasonIterator struct {
+	nextPageToken *string
+	items         []*TerminationReason
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListTerminationReasonReq
+	listFunc      func(ctx context.Context, req *ListTerminationReasonReq, options ...larkcore.RequestOptionFunc) (*ListTerminationReasonResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListTerminationReasonIterator) Next() (bool, *TerminationReason, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListTerminationReasonIterator) NextPageToken() *string {
 	return iterator.nextPageToken
 }

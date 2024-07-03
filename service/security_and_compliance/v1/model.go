@@ -1894,6 +1894,7 @@ type DlpExecuteLog struct {
 	EvidenceDetail    *DlpEvidenceDetail `json:"evidence_detail,omitempty"`     // 证据详情
 	HitPolicies       []*DlpHitPolicy    `json:"hit_policies,omitempty"`        // 命中策略
 	FileToken         *string            `json:"file_token,omitempty"`          // 文件token
+	TriggerEventType  *string            `json:"trigger_event_type,omitempty"`  // 触发事件类型
 }
 
 type DlpExecuteLogBuilder struct {
@@ -1951,6 +1952,8 @@ type DlpExecuteLogBuilder struct {
 	hitPoliciesFlag       bool
 	fileToken             string // 文件token
 	fileTokenFlag         bool
+	triggerEventType      string // 触发事件类型
+	triggerEventTypeFlag  bool
 }
 
 func NewDlpExecuteLogBuilder() *DlpExecuteLogBuilder {
@@ -2201,6 +2204,15 @@ func (builder *DlpExecuteLogBuilder) FileToken(fileToken string) *DlpExecuteLogB
 	return builder
 }
 
+// 触发事件类型
+//
+// 示例值：系统送检
+func (builder *DlpExecuteLogBuilder) TriggerEventType(triggerEventType string) *DlpExecuteLogBuilder {
+	builder.triggerEventType = triggerEventType
+	builder.triggerEventTypeFlag = true
+	return builder
+}
+
 func (builder *DlpExecuteLogBuilder) Build() *DlpExecuteLog {
 	req := &DlpExecuteLog{}
 	if builder.applicableServiceFlag {
@@ -2307,6 +2319,10 @@ func (builder *DlpExecuteLogBuilder) Build() *DlpExecuteLog {
 	}
 	if builder.fileTokenFlag {
 		req.FileToken = &builder.fileToken
+
+	}
+	if builder.triggerEventTypeFlag {
+		req.TriggerEventType = &builder.triggerEventType
 
 	}
 	return req
@@ -2834,6 +2850,150 @@ func (builder *EmailFilterBuilder) Build() *EmailFilter {
 }
 
 type File struct {
+}
+
+type FileRiskDetectionRecord struct {
+	RecordId          *string `json:"record_id,omitempty"`            // 文件送检记录主键
+	FileUrl           *string `json:"file_url,omitempty"`             // 文件下载链接
+	FileUrlExpireTime *string `json:"file_url_expire_time,omitempty"` // 文件下载链接失效时间戳（秒）
+	FileSize          *string `json:"file_size,omitempty"`            // 文件大小（字节）
+	TriggerReason     *int    `json:"trigger_reason,omitempty"`       // 触发送检原因
+}
+
+type FileRiskDetectionRecordBuilder struct {
+	recordId              string // 文件送检记录主键
+	recordIdFlag          bool
+	fileUrl               string // 文件下载链接
+	fileUrlFlag           bool
+	fileUrlExpireTime     string // 文件下载链接失效时间戳（秒）
+	fileUrlExpireTimeFlag bool
+	fileSize              string // 文件大小（字节）
+	fileSizeFlag          bool
+	triggerReason         int // 触发送检原因
+	triggerReasonFlag     bool
+}
+
+func NewFileRiskDetectionRecordBuilder() *FileRiskDetectionRecordBuilder {
+	builder := &FileRiskDetectionRecordBuilder{}
+	return builder
+}
+
+// 文件送检记录主键
+//
+// 示例值：308975127
+func (builder *FileRiskDetectionRecordBuilder) RecordId(recordId string) *FileRiskDetectionRecordBuilder {
+	builder.recordId = recordId
+	builder.recordIdFlag = true
+	return builder
+}
+
+// 文件下载链接
+//
+// 示例值：https://example.com
+func (builder *FileRiskDetectionRecordBuilder) FileUrl(fileUrl string) *FileRiskDetectionRecordBuilder {
+	builder.fileUrl = fileUrl
+	builder.fileUrlFlag = true
+	return builder
+}
+
+// 文件下载链接失效时间戳（秒）
+//
+// 示例值：1735660799
+func (builder *FileRiskDetectionRecordBuilder) FileUrlExpireTime(fileUrlExpireTime string) *FileRiskDetectionRecordBuilder {
+	builder.fileUrlExpireTime = fileUrlExpireTime
+	builder.fileUrlExpireTimeFlag = true
+	return builder
+}
+
+// 文件大小（字节）
+//
+// 示例值：1024
+func (builder *FileRiskDetectionRecordBuilder) FileSize(fileSize string) *FileRiskDetectionRecordBuilder {
+	builder.fileSize = fileSize
+	builder.fileSizeFlag = true
+	return builder
+}
+
+// 触发送检原因
+//
+// 示例值：1
+func (builder *FileRiskDetectionRecordBuilder) TriggerReason(triggerReason int) *FileRiskDetectionRecordBuilder {
+	builder.triggerReason = triggerReason
+	builder.triggerReasonFlag = true
+	return builder
+}
+
+func (builder *FileRiskDetectionRecordBuilder) Build() *FileRiskDetectionRecord {
+	req := &FileRiskDetectionRecord{}
+	if builder.recordIdFlag {
+		req.RecordId = &builder.recordId
+
+	}
+	if builder.fileUrlFlag {
+		req.FileUrl = &builder.fileUrl
+
+	}
+	if builder.fileUrlExpireTimeFlag {
+		req.FileUrlExpireTime = &builder.fileUrlExpireTime
+
+	}
+	if builder.fileSizeFlag {
+		req.FileSize = &builder.fileSize
+
+	}
+	if builder.triggerReasonFlag {
+		req.TriggerReason = &builder.triggerReason
+
+	}
+	return req
+}
+
+type FileRiskDetectionRecordResult struct {
+	Status  *string `json:"status,omitempty"`   // 检测状态
+	RiskTag *string `json:"risk_tag,omitempty"` // 风险类型
+}
+
+type FileRiskDetectionRecordResultBuilder struct {
+	status      string // 检测状态
+	statusFlag  bool
+	riskTag     string // 风险类型
+	riskTagFlag bool
+}
+
+func NewFileRiskDetectionRecordResultBuilder() *FileRiskDetectionRecordResultBuilder {
+	builder := &FileRiskDetectionRecordResultBuilder{}
+	return builder
+}
+
+// 检测状态
+//
+// 示例值：FINISHED
+func (builder *FileRiskDetectionRecordResultBuilder) Status(status string) *FileRiskDetectionRecordResultBuilder {
+	builder.status = status
+	builder.statusFlag = true
+	return builder
+}
+
+// 风险类型
+//
+// 示例值：RISK
+func (builder *FileRiskDetectionRecordResultBuilder) RiskTag(riskTag string) *FileRiskDetectionRecordResultBuilder {
+	builder.riskTag = riskTag
+	builder.riskTagFlag = true
+	return builder
+}
+
+func (builder *FileRiskDetectionRecordResultBuilder) Build() *FileRiskDetectionRecordResult {
+	req := &FileRiskDetectionRecordResult{}
+	if builder.statusFlag {
+		req.Status = &builder.status
+
+	}
+	if builder.riskTagFlag {
+		req.RiskTag = &builder.riskTag
+
+	}
+	return req
 }
 
 type GwCommon struct {

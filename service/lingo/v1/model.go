@@ -14,11 +14,12 @@
 package larklingo
 
 import (
-	"context"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
+
+	"context"
+	"errors"
 
 	"github.com/larksuite/oapi-sdk-go/v3/core"
 )

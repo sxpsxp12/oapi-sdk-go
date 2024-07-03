@@ -30,6 +30,7 @@ func main() {
 		Token("doccnBKgoMyY5OMbUG6FioTXuBe").
 		Type("doc").
 		Fields("*").
+		PermType("container").
 		Build()
 	// 发起请求
 	resp, err := client.Drive.V1.PermissionMember.List(context.Background(), req)

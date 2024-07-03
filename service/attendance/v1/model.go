@@ -7599,21 +7599,24 @@ func (builder *UserStatsDataBuilder) Build() *UserStatsData {
 }
 
 type UserStatsDataCell struct {
-	Code     *string                 `json:"code,omitempty"`     // 字段编号
-	Value    *string                 `json:"value,omitempty"`    // 数据值
-	Features []*UserStatsDataFeature `json:"features,omitempty"` // 数据属性
-	Title    *string                 `json:"title,omitempty"`    // 字段标题
+	Code        *string                 `json:"code,omitempty"`         // 字段编号
+	Value       *string                 `json:"value,omitempty"`        // 数据值
+	Features    []*UserStatsDataFeature `json:"features,omitempty"`     // 数据属性
+	Title       *string                 `json:"title,omitempty"`        // 字段标题
+	DurationNum *UserStatsDataDuration  `json:"duration_num,omitempty"` // 时长
 }
 
 type UserStatsDataCellBuilder struct {
-	code         string // 字段编号
-	codeFlag     bool
-	value        string // 数据值
-	valueFlag    bool
-	features     []*UserStatsDataFeature // 数据属性
-	featuresFlag bool
-	title        string // 字段标题
-	titleFlag    bool
+	code            string // 字段编号
+	codeFlag        bool
+	value           string // 数据值
+	valueFlag       bool
+	features        []*UserStatsDataFeature // 数据属性
+	featuresFlag    bool
+	title           string // 字段标题
+	titleFlag       bool
+	durationNum     *UserStatsDataDuration // 时长
+	durationNumFlag bool
 }
 
 func NewUserStatsDataCellBuilder() *UserStatsDataCellBuilder {
@@ -7657,6 +7660,15 @@ func (builder *UserStatsDataCellBuilder) Title(title string) *UserStatsDataCellB
 	return builder
 }
 
+// 时长
+//
+// 示例值：
+func (builder *UserStatsDataCellBuilder) DurationNum(durationNum *UserStatsDataDuration) *UserStatsDataCellBuilder {
+	builder.durationNum = durationNum
+	builder.durationNumFlag = true
+	return builder
+}
+
 func (builder *UserStatsDataCellBuilder) Build() *UserStatsDataCell {
 	req := &UserStatsDataCell{}
 	if builder.codeFlag {
@@ -7672,6 +7684,105 @@ func (builder *UserStatsDataCellBuilder) Build() *UserStatsDataCell {
 	}
 	if builder.titleFlag {
 		req.Title = &builder.title
+
+	}
+	if builder.durationNumFlag {
+		req.DurationNum = builder.durationNum
+	}
+	return req
+}
+
+type UserStatsDataDuration struct {
+	Day      *string `json:"day,omitempty"`       // 天
+	HalfDay  *string `json:"half_day,omitempty"`  // 半天
+	Hour     *string `json:"hour,omitempty"`      // 小时
+	HalfHour *string `json:"half_hour,omitempty"` // 半小时
+	Minute   *string `json:"minute,omitempty"`    // 分钟
+}
+
+type UserStatsDataDurationBuilder struct {
+	day          string // 天
+	dayFlag      bool
+	halfDay      string // 半天
+	halfDayFlag  bool
+	hour         string // 小时
+	hourFlag     bool
+	halfHour     string // 半小时
+	halfHourFlag bool
+	minute       string // 分钟
+	minuteFlag   bool
+}
+
+func NewUserStatsDataDurationBuilder() *UserStatsDataDurationBuilder {
+	builder := &UserStatsDataDurationBuilder{}
+	return builder
+}
+
+// 天
+//
+// 示例值：1
+func (builder *UserStatsDataDurationBuilder) Day(day string) *UserStatsDataDurationBuilder {
+	builder.day = day
+	builder.dayFlag = true
+	return builder
+}
+
+// 半天
+//
+// 示例值：1
+func (builder *UserStatsDataDurationBuilder) HalfDay(halfDay string) *UserStatsDataDurationBuilder {
+	builder.halfDay = halfDay
+	builder.halfDayFlag = true
+	return builder
+}
+
+// 小时
+//
+// 示例值：1
+func (builder *UserStatsDataDurationBuilder) Hour(hour string) *UserStatsDataDurationBuilder {
+	builder.hour = hour
+	builder.hourFlag = true
+	return builder
+}
+
+// 半小时
+//
+// 示例值：1
+func (builder *UserStatsDataDurationBuilder) HalfHour(halfHour string) *UserStatsDataDurationBuilder {
+	builder.halfHour = halfHour
+	builder.halfHourFlag = true
+	return builder
+}
+
+// 分钟
+//
+// 示例值：1
+func (builder *UserStatsDataDurationBuilder) Minute(minute string) *UserStatsDataDurationBuilder {
+	builder.minute = minute
+	builder.minuteFlag = true
+	return builder
+}
+
+func (builder *UserStatsDataDurationBuilder) Build() *UserStatsDataDuration {
+	req := &UserStatsDataDuration{}
+	if builder.dayFlag {
+		req.Day = &builder.day
+
+	}
+	if builder.halfDayFlag {
+		req.HalfDay = &builder.halfDay
+
+	}
+	if builder.hourFlag {
+		req.Hour = &builder.hour
+
+	}
+	if builder.halfHourFlag {
+		req.HalfHour = &builder.halfHour
+
+	}
+	if builder.minuteFlag {
+		req.Minute = &builder.minute
 
 	}
 	return req

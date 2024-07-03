@@ -33,6 +33,7 @@ func main() {
 		MemberType("openid").
 		Body(larkdrive.NewDeletePermissionMemberReqBodyBuilder().
 			Type("user").
+			PermType("container").
 			Build()).
 		Build()
 	// 发起请求

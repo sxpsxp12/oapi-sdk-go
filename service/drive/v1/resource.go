@@ -11,7 +11,7 @@ import (
 
 type V1 struct {
 	ExportTask               *exportTask               // 导出
-	File                     *file                     // 事件
+	File                     *file                     // 文件
 	FileComment              *fileComment              // 评论
 	FileCommentReply         *fileCommentReply         // 评论
 	FileStatistics           *fileStatistics           // file.statistics
@@ -1343,6 +1343,32 @@ func (p *permissionMember) Auth(ctx context.Context, req *AuthPermissionMemberRe
 	}
 	// 反序列响应结果
 	resp := &AuthPermissionMemberResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// BatchCreate
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=batch_create&project=drive&resource=permission.member&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/drivev1/batchCreate_permissionMember.go
+func (p *permissionMember) BatchCreate(ctx context.Context, req *BatchCreatePermissionMemberReq, options ...larkcore.RequestOptionFunc) (*BatchCreatePermissionMemberResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/drive/v1/permissions/:token/members/batch_create"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &BatchCreatePermissionMemberResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, p.config)
 	if err != nil {
 		return nil, err

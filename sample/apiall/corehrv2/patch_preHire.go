@@ -33,6 +33,7 @@ func main() {
 			OfferInfoUpdate(larkcorehr.NewOfferInfoUpdateBuilder().Build()).
 			StandardUpdateFields([]string{}).
 			CustomUpdateFields([]string{}).
+			PersonCustomUpdateFields([]string{}).
 			Build()).
 		Build()
 	// 发起请求

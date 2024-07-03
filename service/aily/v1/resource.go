@@ -44,7 +44,7 @@ func (a *ailySession) Create(ctx context.Context, req *CreateAilySessionReq, opt
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions"
 	apiReq.HttpMethod = http.MethodPost
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (a *ailySession) Delete(ctx context.Context, req *DeleteAilySessionReq, opt
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id"
 	apiReq.HttpMethod = http.MethodDelete
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (a *ailySession) Get(ctx context.Context, req *GetAilySessionReq, options .
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id"
 	apiReq.HttpMethod = http.MethodGet
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -122,7 +122,7 @@ func (a *ailySession) Update(ctx context.Context, req *UpdateAilySessionReq, opt
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id"
 	apiReq.HttpMethod = http.MethodPut
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -148,7 +148,7 @@ func (a *ailySessionAilyMessage) Create(ctx context.Context, req *CreateAilySess
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id/messages"
 	apiReq.HttpMethod = http.MethodPost
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -174,7 +174,7 @@ func (a *ailySessionAilyMessage) Get(ctx context.Context, req *GetAilySessionAil
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id/messages/:aily_message_id"
 	apiReq.HttpMethod = http.MethodGet
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -200,7 +200,7 @@ func (a *ailySessionAilyMessage) List(ctx context.Context, req *ListAilySessionA
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id/messages"
 	apiReq.HttpMethod = http.MethodGet
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -234,7 +234,7 @@ func (a *ailySessionRun) Cancel(ctx context.Context, req *CancelAilySessionRunRe
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id/runs/:run_id/cancel"
 	apiReq.HttpMethod = http.MethodPost
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -260,7 +260,7 @@ func (a *ailySessionRun) Create(ctx context.Context, req *CreateAilySessionRunRe
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id/runs"
 	apiReq.HttpMethod = http.MethodPost
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -286,7 +286,7 @@ func (a *ailySessionRun) Get(ctx context.Context, req *GetAilySessionRunReq, opt
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id/runs/:run_id"
 	apiReq.HttpMethod = http.MethodGet
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err
@@ -312,7 +312,7 @@ func (a *ailySessionRun) List(ctx context.Context, req *ListAilySessionRunReq, o
 	apiReq := req.apiReq
 	apiReq.ApiPath = "/open-apis/aily/v1/sessions/:aily_session_id/runs"
 	apiReq.HttpMethod = http.MethodGet
-	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser}
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeUser, larkcore.AccessTokenTypeTenant}
 	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
 	if err != nil {
 		return nil, err

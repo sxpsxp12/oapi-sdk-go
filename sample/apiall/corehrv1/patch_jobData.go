@@ -43,7 +43,6 @@ func main() {
 			ProbationStartDate("2018-03-16T00:00:00").
 			ProbationEndDate("2019-05-24T00:00:00").
 			PrimaryJobData(true).
-			EmploymentId("6893014062142064135").
 			EffectiveTime("2020-05-01 00:00:00").
 			ExpirationTime("2020-05-02 00:00:00").
 			JobFamilyId("1245678").

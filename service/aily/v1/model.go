@@ -787,24 +787,27 @@ func (builder *AilyMessageBuilder) Build() *AilyMessage {
 }
 
 type AilyMessageFile struct {
-	Id        *string `json:"id,omitempty"`         // 文件 ID
-	MimeType  *string `json:"mime_type,omitempty"`  // 文件类型，参见 https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types
-	FileName  *string `json:"file_name,omitempty"`  // 文件名
-	Metadata  *string `json:"metadata,omitempty"`   // 其他透传信息
-	CreatedAt *string `json:"created_at,omitempty"` // 文件的创建时间，毫秒时间戳
+	Id         *string                 `json:"id,omitempty"`          // 文件 ID
+	MimeType   *string                 `json:"mime_type,omitempty"`   // 文件类型，参见 https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+	FileName   *string                 `json:"file_name,omitempty"`   // 文件名
+	Metadata   *string                 `json:"metadata,omitempty"`    // 其他透传信息
+	CreatedAt  *string                 `json:"created_at,omitempty"`  // 文件的创建时间，毫秒时间戳
+	PreviewUrl *AilyMessageFilePreview `json:"preview_url,omitempty"` // 文件预览链接
 }
 
 type AilyMessageFileBuilder struct {
-	id            string // 文件 ID
-	idFlag        bool
-	mimeType      string // 文件类型，参见 https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types
-	mimeTypeFlag  bool
-	fileName      string // 文件名
-	fileNameFlag  bool
-	metadata      string // 其他透传信息
-	metadataFlag  bool
-	createdAt     string // 文件的创建时间，毫秒时间戳
-	createdAtFlag bool
+	id             string // 文件 ID
+	idFlag         bool
+	mimeType       string // 文件类型，参见 https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+	mimeTypeFlag   bool
+	fileName       string // 文件名
+	fileNameFlag   bool
+	metadata       string // 其他透传信息
+	metadataFlag   bool
+	createdAt      string // 文件的创建时间，毫秒时间戳
+	createdAtFlag  bool
+	previewUrl     *AilyMessageFilePreview // 文件预览链接
+	previewUrlFlag bool
 }
 
 func NewAilyMessageFileBuilder() *AilyMessageFileBuilder {
@@ -857,6 +860,15 @@ func (builder *AilyMessageFileBuilder) CreatedAt(createdAt string) *AilyMessageF
 	return builder
 }
 
+// 文件预览链接
+//
+// 示例值：
+func (builder *AilyMessageFileBuilder) PreviewUrl(previewUrl *AilyMessageFilePreview) *AilyMessageFileBuilder {
+	builder.previewUrl = previewUrl
+	builder.previewUrlFlag = true
+	return builder
+}
+
 func (builder *AilyMessageFileBuilder) Build() *AilyMessageFile {
 	req := &AilyMessageFile{}
 	if builder.idFlag {
@@ -877,6 +889,89 @@ func (builder *AilyMessageFileBuilder) Build() *AilyMessageFile {
 	}
 	if builder.createdAtFlag {
 		req.CreatedAt = &builder.createdAt
+
+	}
+	if builder.previewUrlFlag {
+		req.PreviewUrl = builder.previewUrl
+	}
+	return req
+}
+
+type AilyMessageFileFilter struct {
+	WithPreviewUrl *bool `json:"with_preview_url,omitempty"` // 返回文件的预览链接
+}
+
+type AilyMessageFileFilterBuilder struct {
+	withPreviewUrl     bool // 返回文件的预览链接
+	withPreviewUrlFlag bool
+}
+
+func NewAilyMessageFileFilterBuilder() *AilyMessageFileFilterBuilder {
+	builder := &AilyMessageFileFilterBuilder{}
+	return builder
+}
+
+// 返回文件的预览链接
+//
+// 示例值：false
+func (builder *AilyMessageFileFilterBuilder) WithPreviewUrl(withPreviewUrl bool) *AilyMessageFileFilterBuilder {
+	builder.withPreviewUrl = withPreviewUrl
+	builder.withPreviewUrlFlag = true
+	return builder
+}
+
+func (builder *AilyMessageFileFilterBuilder) Build() *AilyMessageFileFilter {
+	req := &AilyMessageFileFilter{}
+	if builder.withPreviewUrlFlag {
+		req.WithPreviewUrl = &builder.withPreviewUrl
+
+	}
+	return req
+}
+
+type AilyMessageFilePreview struct {
+	Url       *string `json:"url,omitempty"`        // 文件的 URL
+	ExpiredAt *string `json:"expired_at,omitempty"` // url 过期时间，秒时间戳
+}
+
+type AilyMessageFilePreviewBuilder struct {
+	url           string // 文件的 URL
+	urlFlag       bool
+	expiredAt     string // url 过期时间，秒时间戳
+	expiredAtFlag bool
+}
+
+func NewAilyMessageFilePreviewBuilder() *AilyMessageFilePreviewBuilder {
+	builder := &AilyMessageFilePreviewBuilder{}
+	return builder
+}
+
+// 文件的 URL
+//
+// 示例值：http://path_to_file
+func (builder *AilyMessageFilePreviewBuilder) Url(url string) *AilyMessageFilePreviewBuilder {
+	builder.url = url
+	builder.urlFlag = true
+	return builder
+}
+
+// url 过期时间，秒时间戳
+//
+// 示例值：1719413169
+func (builder *AilyMessageFilePreviewBuilder) ExpiredAt(expiredAt string) *AilyMessageFilePreviewBuilder {
+	builder.expiredAt = expiredAt
+	builder.expiredAtFlag = true
+	return builder
+}
+
+func (builder *AilyMessageFilePreviewBuilder) Build() *AilyMessageFilePreview {
+	req := &AilyMessageFilePreview{}
+	if builder.urlFlag {
+		req.Url = &builder.url
+
+	}
+	if builder.expiredAtFlag {
+		req.ExpiredAt = &builder.expiredAt
 
 	}
 	return req
