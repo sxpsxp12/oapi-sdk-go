@@ -12,6 +12,7 @@ type V1 struct {
 	Application                     *application                     // 投递
 	ApplicationInterview            *applicationInterview            // application.interview
 	Attachment                      *attachment                      // 附件
+	DiversityInclusion              *diversityInclusion              // diversity_inclusion
 	EcoAccount                      *ecoAccount                      // 事件
 	EcoAccountCustomField           *ecoAccountCustomField           // 生态对接账号自定义字段
 	EcoBackgroundCheck              *ecoBackgroundCheck              // 背调订单
@@ -30,10 +31,12 @@ type V1 struct {
 	Interview                       *interview                       // 面试
 	Job                             *job                             // 职位
 	JobManager                      *jobManager                      // job.manager
+	JobFunction                     *jobFunction                     // job_function
 	JobProcess                      *jobProcess                      // 流程
 	JobRequirement                  *jobRequirement                  // 招聘需求（灰度租户可见）
 	JobRequirementSchema            *jobRequirementSchema            // job_requirement_schema
 	JobType                         *jobType                         // job_type
+	Location                        *location                        // 地址（灰度租户可见）
 	Note                            *note                            // 备注
 	Offer                           *offer                           // Offer
 	OfferSchema                     *offerSchema                     // offer_schema
@@ -43,11 +46,18 @@ type V1 struct {
 	ReferralWebsiteJobPost          *referralWebsiteJobPost          // referral_website.job_post
 	RegistrationSchema              *registrationSchema              // registration_schema
 	ResumeSource                    *resumeSource                    // 简历来源
-	Role                            *role                            // role
+	Role                            *role                            // 权限
+	Subject                         *subject                         // 项目（灰度租户可见）
 	Talent                          *talent                          // 人才
 	TalentFolder                    *talentFolder                    // talent_folder
 	TalentObject                    *talentObject                    // talent_object
 	TerminationReason               *terminationReason               // termination_reason
+	Website                         *website                         // 官网（灰度租户可见）
+	WebsiteChannel                  *websiteChannel                  // website.channel
+	WebsiteDelivery                 *websiteDelivery                 // website.delivery
+	WebsiteDeliveryTask             *websiteDeliveryTask             // website.delivery_task
+	WebsiteJobPost                  *websiteJobPost                  // website.job_post
+	WebsiteSiteUser                 *websiteSiteUser                 // website.site_user
 }
 
 func New(config *larkcore.Config) *V1 {
@@ -55,6 +65,7 @@ func New(config *larkcore.Config) *V1 {
 		Application:                     &application{config: config},
 		ApplicationInterview:            &applicationInterview{config: config},
 		Attachment:                      &attachment{config: config},
+		DiversityInclusion:              &diversityInclusion{config: config},
 		EcoAccount:                      &ecoAccount{config: config},
 		EcoAccountCustomField:           &ecoAccountCustomField{config: config},
 		EcoBackgroundCheck:              &ecoBackgroundCheck{config: config},
@@ -73,10 +84,12 @@ func New(config *larkcore.Config) *V1 {
 		Interview:                       &interview{config: config},
 		Job:                             &job{config: config},
 		JobManager:                      &jobManager{config: config},
+		JobFunction:                     &jobFunction{config: config},
 		JobProcess:                      &jobProcess{config: config},
 		JobRequirement:                  &jobRequirement{config: config},
 		JobRequirementSchema:            &jobRequirementSchema{config: config},
 		JobType:                         &jobType{config: config},
+		Location:                        &location{config: config},
 		Note:                            &note{config: config},
 		Offer:                           &offer{config: config},
 		OfferSchema:                     &offerSchema{config: config},
@@ -87,10 +100,17 @@ func New(config *larkcore.Config) *V1 {
 		RegistrationSchema:              &registrationSchema{config: config},
 		ResumeSource:                    &resumeSource{config: config},
 		Role:                            &role{config: config},
+		Subject:                         &subject{config: config},
 		Talent:                          &talent{config: config},
 		TalentFolder:                    &talentFolder{config: config},
 		TalentObject:                    &talentObject{config: config},
 		TerminationReason:               &terminationReason{config: config},
+		Website:                         &website{config: config},
+		WebsiteChannel:                  &websiteChannel{config: config},
+		WebsiteDelivery:                 &websiteDelivery{config: config},
+		WebsiteDeliveryTask:             &websiteDeliveryTask{config: config},
+		WebsiteJobPost:                  &websiteJobPost{config: config},
+		WebsiteSiteUser:                 &websiteSiteUser{config: config},
 	}
 }
 
@@ -101,6 +121,9 @@ type applicationInterview struct {
 	config *larkcore.Config
 }
 type attachment struct {
+	config *larkcore.Config
+}
+type diversityInclusion struct {
 	config *larkcore.Config
 }
 type ecoAccount struct {
@@ -157,6 +180,9 @@ type job struct {
 type jobManager struct {
 	config *larkcore.Config
 }
+type jobFunction struct {
+	config *larkcore.Config
+}
 type jobProcess struct {
 	config *larkcore.Config
 }
@@ -167,6 +193,9 @@ type jobRequirementSchema struct {
 	config *larkcore.Config
 }
 type jobType struct {
+	config *larkcore.Config
+}
+type location struct {
 	config *larkcore.Config
 }
 type note struct {
@@ -199,6 +228,9 @@ type resumeSource struct {
 type role struct {
 	config *larkcore.Config
 }
+type subject struct {
+	config *larkcore.Config
+}
 type talent struct {
 	config *larkcore.Config
 }
@@ -209,6 +241,24 @@ type talentObject struct {
 	config *larkcore.Config
 }
 type terminationReason struct {
+	config *larkcore.Config
+}
+type website struct {
+	config *larkcore.Config
+}
+type websiteChannel struct {
+	config *larkcore.Config
+}
+type websiteDelivery struct {
+	config *larkcore.Config
+}
+type websiteDeliveryTask struct {
+	config *larkcore.Config
+}
+type websiteJobPost struct {
+	config *larkcore.Config
+}
+type websiteSiteUser struct {
 	config *larkcore.Config
 }
 
@@ -316,6 +366,32 @@ func (a *application) Offer(ctx context.Context, req *OfferApplicationReq, optio
 	return resp, err
 }
 
+// Recover
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=recover&project=hire&resource=application&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/recover_application.go
+func (a *application) Recover(ctx context.Context, req *RecoverApplicationReq, options ...larkcore.RequestOptionFunc) (*RecoverApplicationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/applications/:application_id/recover"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &RecoverApplicationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Terminate 终止投递
 //
 // - 根据投递 ID 修改投递状态为「已终止」
@@ -394,6 +470,36 @@ func (a *applicationInterview) List(ctx context.Context, req *ListApplicationInt
 	return resp, err
 }
 
+// Create
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/create_attachment.go
+func (a *attachment) Create(ctx context.Context, options ...larkcore.RequestOptionFunc) (*CreateAttachmentResp, error) {
+	options = append(options, larkcore.WithFileUpload())
+	// 发起请求
+	apiReq := &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	apiReq.ApiPath = "/open-apis/hire/v1/attachments"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateAttachmentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Get 获取附件信息
 //
 // - 获取招聘系统中附件的元信息，比如文件名、创建时间、文件url等
@@ -440,6 +546,32 @@ func (a *attachment) Preview(ctx context.Context, req *PreviewAttachmentReq, opt
 	// 反序列响应结果
 	resp := &PreviewAttachmentResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Search
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=search&project=hire&resource=diversity_inclusion&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/search_diversityInclusion.go
+func (d *diversityInclusion) Search(ctx context.Context, req *SearchDiversityInclusionReq, options ...larkcore.RequestOptionFunc) (*SearchDiversityInclusionResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/applications/diversity_inclusions/search"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, d.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &SearchDiversityInclusionResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, d.config)
 	if err != nil {
 		return nil, err
 	}
@@ -1416,6 +1548,40 @@ func (j *jobManager) Get(ctx context.Context, req *GetJobManagerReq, options ...
 	return resp, err
 }
 
+// List 获取职能分类列表
+//
+// - 获取职能分类列表
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job_function/list
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/list_jobFunction.go
+func (j *jobFunction) List(ctx context.Context, req *ListJobFunctionReq, options ...larkcore.RequestOptionFunc) (*ListJobFunctionResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/job_functions"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, j.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListJobFunctionResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, j.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (j *jobFunction) ListByIterator(ctx context.Context, req *ListJobFunctionReq, options ...larkcore.RequestOptionFunc) (*ListJobFunctionIterator, error) {
+	return &ListJobFunctionIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: j.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
 // List 获取招聘流程信息
 //
 // - 获取全部招聘流程信息
@@ -1632,6 +1798,66 @@ func (j *jobType) ListByIterator(ctx context.Context, req *ListJobTypeReq, optio
 		limit:    req.Limit}, nil
 }
 
+// List 获取地址列表
+//
+// - 获取地址列表
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/location/list
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/list_location.go
+func (l *location) List(ctx context.Context, req *ListLocationReq, options ...larkcore.RequestOptionFunc) (*ListLocationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/locations"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, l.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListLocationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, l.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (l *location) ListByIterator(ctx context.Context, req *ListLocationReq, options ...larkcore.RequestOptionFunc) (*ListLocationIterator, error) {
+	return &ListLocationIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: l.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// Query
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query&project=hire&resource=location&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/query_location.go
+func (l *location) Query(ctx context.Context, req *QueryLocationReq, options ...larkcore.RequestOptionFunc) (*QueryLocationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/locations/query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, l.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryLocationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, l.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Create 创建备注
 //
 // - 创建备注信息
@@ -1651,6 +1877,32 @@ func (n *note) Create(ctx context.Context, req *CreateNoteReq, options ...larkco
 	}
 	// 反序列响应结果
 	resp := &CreateNoteResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, n.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Delete
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=delete&project=hire&resource=note&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/delete_note.go
+func (n *note) Delete(ctx context.Context, req *DeleteNoteReq, options ...larkcore.RequestOptionFunc) (*DeleteNoteResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/notes/:note_id"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, n.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeleteNoteResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, n.config)
 	if err != nil {
 		return nil, err
@@ -2228,6 +2480,66 @@ func (r *role) Get(ctx context.Context, req *GetRoleReq, options ...larkcore.Req
 	return resp, err
 }
 
+// List 获取角色列表
+//
+// - 获取角色列表
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/role/list
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/list_role.go
+func (r *role) List(ctx context.Context, req *ListRoleReq, options ...larkcore.RequestOptionFunc) (*ListRoleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/roles"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, r.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListRoleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, r.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (r *role) ListByIterator(ctx context.Context, req *ListRoleReq, options ...larkcore.RequestOptionFunc) (*ListRoleIterator, error) {
+	return &ListRoleIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: r.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// List 获取项目列表
+//
+// - 获取项目列表（概念上一批集体启动和管理的职位可以定义为一个项目，例如 「2012 秋招项目」）
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/subject/list
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/list_subject.go
+func (s *subject) List(ctx context.Context, req *ListSubjectReq, options ...larkcore.RequestOptionFunc) (*ListSubjectResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/subjects"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListSubjectResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // AddToFolder 将人才加入指定文件夹
 //
 // - 将人才加入指定文件夹
@@ -2273,6 +2585,32 @@ func (t *talent) BatchGetId(ctx context.Context, req *BatchGetIdTalentReq, optio
 	}
 	// 反序列响应结果
 	resp := &BatchGetIdTalentResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, t.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// CombinedCreate 创建人才
+//
+// - 用于在企业内创建一个人才。姓名为系统预设的必填字段，邮箱/电话字段请在飞书招聘标准简历模板设置中确认是否必填。可配合[获取人才字段](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口获取自定义字段信息。
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent/combined_create
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/combinedCreate_talent.go
+func (t *talent) CombinedCreate(ctx context.Context, req *CombinedCreateTalentReq, options ...larkcore.RequestOptionFunc) (*CombinedCreateTalentResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/talents/combined_create"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, t.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CombinedCreateTalentResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, t.config)
 	if err != nil {
 		return nil, err
@@ -2427,4 +2765,288 @@ func (t *terminationReason) ListByIterator(ctx context.Context, req *ListTermina
 		listFunc: t.List,
 		options:  options,
 		limit:    req.Limit}, nil
+}
+
+// List 获取自定义官网列表
+//
+// - 获取自定义官网列表
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website/list
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/list_website.go
+func (w *website) List(ctx context.Context, req *ListWebsiteReq, options ...larkcore.RequestOptionFunc) (*ListWebsiteResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListWebsiteResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (w *website) ListByIterator(ctx context.Context, req *ListWebsiteReq, options ...larkcore.RequestOptionFunc) (*ListWebsiteIterator, error) {
+	return &ListWebsiteIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: w.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// Create 创建官网推广渠道
+//
+// - 根据官网 ID 和推广渠道名称创建官网推广渠道
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/create
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/create_websiteChannel.go
+func (w *websiteChannel) Create(ctx context.Context, req *CreateWebsiteChannelReq, options ...larkcore.RequestOptionFunc) (*CreateWebsiteChannelResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/channels"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateWebsiteChannelResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Delete 删除官网推广渠道
+//
+// - 根据官网 ID 和推广渠道 ID 删除官网推广渠道
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/delete
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/delete_websiteChannel.go
+func (w *websiteChannel) Delete(ctx context.Context, req *DeleteWebsiteChannelReq, options ...larkcore.RequestOptionFunc) (*DeleteWebsiteChannelResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/channels/:channel_id"
+	apiReq.HttpMethod = http.MethodDelete
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DeleteWebsiteChannelResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List 获取官网推广渠道列表
+//
+// - 根据官网 ID 分页获取推广渠道列表
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/list
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/list_websiteChannel.go
+func (w *websiteChannel) List(ctx context.Context, req *ListWebsiteChannelReq, options ...larkcore.RequestOptionFunc) (*ListWebsiteChannelResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/channels"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListWebsiteChannelResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Update 更新官网推广渠道
+//
+// - 根据官网 ID 和推广渠道 ID 更改推广渠道名称
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/update
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/update_websiteChannel.go
+func (w *websiteChannel) Update(ctx context.Context, req *UpdateWebsiteChannelReq, options ...larkcore.RequestOptionFunc) (*UpdateWebsiteChannelResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/channels/:channel_id"
+	apiReq.HttpMethod = http.MethodPut
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UpdateWebsiteChannelResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// CreateByAttachment 根据简历附件解析创建官网投递
+//
+// - 根据简历附件解析创建官网投递
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-delivery/create_by_attachment
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/createByAttachment_websiteDelivery.go
+func (w *websiteDelivery) CreateByAttachment(ctx context.Context, req *CreateByAttachmentWebsiteDeliveryReq, options ...larkcore.RequestOptionFunc) (*CreateByAttachmentWebsiteDeliveryResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/deliveries/create_by_attachment"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateByAttachmentWebsiteDeliveryResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Get 获取简历解析创建官网投递任务结果
+//
+// - 获取官网投递任务信息;，如果获取到的数据data为空，仍然继续轮询，直到data不为空时，再查询data里面的数据
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-delivery_task/get
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/get_websiteDeliveryTask.go
+func (w *websiteDeliveryTask) Get(ctx context.Context, req *GetWebsiteDeliveryTaskReq, options ...larkcore.RequestOptionFunc) (*GetWebsiteDeliveryTaskResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/delivery_tasks/:delivery_task_id"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &GetWebsiteDeliveryTaskResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List 获取自定义官网下的职位列表
+//
+// - 获取自定义官网下的职位列表。自定义数据暂不支持列表获取，请从「获取自定义官网下职位广告详情」接口获取。
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-job_post/list
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/list_websiteJobPost.go
+func (w *websiteJobPost) List(ctx context.Context, req *ListWebsiteJobPostReq, options ...larkcore.RequestOptionFunc) (*ListWebsiteJobPostResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/job_posts"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListWebsiteJobPostResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (w *websiteJobPost) ListByIterator(ctx context.Context, req *ListWebsiteJobPostReq, options ...larkcore.RequestOptionFunc) (*ListWebsiteJobPostIterator, error) {
+	return &ListWebsiteJobPostIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: w.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// Search 搜索自定义官网下的职位列表
+//
+// - 搜索自定义官网下的职位列表
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-job_post/search
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/search_websiteJobPost.go
+func (w *websiteJobPost) Search(ctx context.Context, req *SearchWebsiteJobPostReq, options ...larkcore.RequestOptionFunc) (*SearchWebsiteJobPostResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/job_posts/search"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &SearchWebsiteJobPostResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (w *websiteJobPost) SearchByIterator(ctx context.Context, req *SearchWebsiteJobPostReq, options ...larkcore.RequestOptionFunc) (*SearchWebsiteJobPostIterator, error) {
+	return &SearchWebsiteJobPostIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: w.Search,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// Create 创建官网用户
+//
+// - 创建官网用户
+//
+// - 官网API文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-site_user/create
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/hirev1/create_websiteSiteUser.go
+func (w *websiteSiteUser) Create(ctx context.Context, req *CreateWebsiteSiteUserReq, options ...larkcore.RequestOptionFunc) (*CreateWebsiteSiteUserResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/hire/v1/websites/:website_id/site_users"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, w.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateWebsiteSiteUserResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, w.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
 }

@@ -29,11 +29,11 @@ func main() {
 	req := larkcalendar.NewPatchCalendarReqBuilder().
 		CalendarId("feishu.cn_xxxxxxxxxx@group.calendar.feishu.cn").
 		Calendar(larkcalendar.NewCalendarBuilder().
-			Summary("").
-			Description("").
+			Summary("summary").
+			Description("description").
 			Permissions("private").
-			Color(0).
-			SummaryAlias("").
+			Color(11034625).
+			SummaryAlias("xxx").
 			Build()).
 		Build()
 	// 发起请求

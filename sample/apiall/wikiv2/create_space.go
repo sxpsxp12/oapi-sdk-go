@@ -28,8 +28,9 @@ func main() {
 	// 创建请求对象
 	req := larkwiki.NewCreateSpaceReqBuilder().
 		Space(larkwiki.NewSpaceBuilder().
-			Name("").
-			Description("").
+			Name("测试知识库").
+			Description("测试知识库").
+			OpenSharing("open").
 			Build()).
 		Build()
 	// 发起请求

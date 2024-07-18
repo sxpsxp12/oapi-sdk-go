@@ -12,6 +12,7 @@ import (
 type V1 struct {
 	BatchMessage     *batchMessage     // 消息 - 批量消息
 	Chat             *chat             // 群组
+	ChatAccessEvent  *chatAccessEvent  // chat.access_event
 	ChatAnnouncement *chatAnnouncement // 群组 - 群公告
 	ChatManagers     *chatManagers     // 群组 - 群成员
 	ChatMemberBot    *chatMemberBot    // 事件
@@ -35,6 +36,7 @@ func New(config *larkcore.Config) *V1 {
 	return &V1{
 		BatchMessage:     &batchMessage{config: config},
 		Chat:             &chat{config: config},
+		ChatAccessEvent:  &chatAccessEvent{config: config},
 		ChatAnnouncement: &chatAnnouncement{config: config},
 		ChatManagers:     &chatManagers{config: config},
 		ChatMemberBot:    &chatMemberBot{config: config},
@@ -59,6 +61,9 @@ type batchMessage struct {
 	config *larkcore.Config
 }
 type chat struct {
+	config *larkcore.Config
+}
+type chatAccessEvent struct {
 	config *larkcore.Config
 }
 type chatAnnouncement struct {
@@ -1390,6 +1395,32 @@ func (m *message) Patch(ctx context.Context, req *PatchMessageReq, options ...la
 	}
 	// 反序列响应结果
 	resp := &PatchMessageResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, m.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// PushFollowUp
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=push_follow_up&project=im&resource=message&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/imv1/pushFollowUp_message.go
+func (m *message) PushFollowUp(ctx context.Context, req *PushFollowUpMessageReq, options ...larkcore.RequestOptionFunc) (*PushFollowUpMessageResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/im/v1/messages/:message_id/push_follow_up"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, m.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &PushFollowUpMessageResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, m.config)
 	if err != nil {
 		return nil, err

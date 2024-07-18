@@ -50,6 +50,18 @@ func (dispatcher *EventDispatcher) OnP2ChatUpdatedV1(handler func(ctx context.Co
 	return dispatcher
 }
 
+// -
+//
+// - 事件描述文档链接:
+func (dispatcher *EventDispatcher) OnP2ChatAccessEventBotP2pChatEnteredV1(handler func(ctx context.Context, event *larkim.P2ChatAccessEventBotP2pChatEnteredV1) error) *EventDispatcher {
+	_, existed := dispatcher.eventType2EventHandler["im.chat.access_event.bot_p2p_chat_entered_v1"]
+	if existed {
+		panic("event: multiple handler registrations for " + "im.chat.access_event.bot_p2p_chat_entered_v1")
+	}
+	dispatcher.eventType2EventHandler["im.chat.access_event.bot_p2p_chat_entered_v1"] = larkim.NewP2ChatAccessEventBotP2pChatEnteredV1Handler(handler)
+	return dispatcher
+}
+
 // 机器人进群
 //
 // - 机器人被用户添加至群聊时触发此事件。

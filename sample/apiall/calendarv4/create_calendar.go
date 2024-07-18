@@ -28,11 +28,11 @@ func main() {
 	// 创建请求对象
 	req := larkcalendar.NewCreateCalendarReqBuilder().
 		Calendar(larkcalendar.NewCalendarBuilder().
-			Summary("").
-			Description("").
+			Summary("summary").
+			Description("description").
 			Permissions("private").
-			Color(0).
-			SummaryAlias("").
+			Color(11034625).
+			SummaryAlias("xxx").
 			Build()).
 		Build()
 	// 发起请求

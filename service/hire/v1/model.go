@@ -654,6 +654,19 @@ const (
 )
 
 const (
+	UsagePositionLocation  = "position_location"  // 职位地点
+	UsageInterviewLocation = "interview_location" // 面试地点
+)
+
+const (
+	LocationType1 = 1 // 国家类型
+	LocationType2 = 2 // 省份/州类型
+	LocationType3 = 3 // 市类型
+	LocationType4 = 4 // 区类型
+
+)
+
+const (
 	PrivacyPrivate = 1 // 私密
 	PrivacyPublic  = 2 // 公开
 
@@ -766,14 +779,15 @@ const (
 )
 
 const (
-	OfferStatusApproving       = 2 // 审批中
-	OfferStatusWithdrawn       = 3 // 审批已撤回
-	OfferStatusApproved        = 4 // 审批通过
-	OfferStatusRejected        = 5 // 审批不通过
-	OfferStatusOfferLetterSent = 6 // Offer已发出
-	OfferStatusOfferAccepted   = 7 // 候选人已接收
-	OfferStatusOfferRejected   = 8 // 候选人已拒绝
-	OfferStatusObsolete        = 9 // Offer 已失效
+	OfferStatusApproving       = 2  // Offer 审批中
+	OfferStatusWithdrawn       = 3  // Offer 审批已撤回
+	OfferStatusApproved        = 4  // Offer 审批通过
+	OfferStatusRejected        = 5  // Offer 审批不通过
+	OfferStatusOfferLetterSent = 6  // Offer 已发出
+	OfferStatusOfferAccepted   = 7  // Offer 被候选人接受
+	OfferStatusOfferRejected   = 8  // Offer 被候选人拒绝
+	OfferStatusObsolete        = 9  // Offer 已失效
+	OfferStatusNoApproval      = 10 // Offer 已创建
 
 )
 
@@ -857,6 +871,25 @@ const (
 )
 
 const (
+	UserIdTypeListSubjectUserId  = "user_id"  // 以 user_id 来识别用户
+	UserIdTypeListSubjectUnionId = "union_id" // 以 union_id 来识别用户
+	UserIdTypeListSubjectOpenId  = "open_id"  // 以 open_id 来识别用户
+)
+
+const (
+	CreatorAccountType员工体系 = 1 // 员工体系
+	CreatorAccountType系统   = 3 // 系统
+
+)
+
+const (
+	UserIdTypeCombinedCreateTalentUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeCombinedCreateTalentUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeCombinedCreateTalentOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeCombinedCreateTalentPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
 	UserIdTypeGetTalentUserId        = "user_id"         // 以 user_id 来识别用户
 	UserIdTypeGetTalentUnionId       = "union_id"        // 以 union_id 来识别用户
 	UserIdTypeGetTalentOpenId        = "open_id"         // 以 open_id 来识别用户
@@ -879,6 +912,38 @@ const (
 	UserIdTypeListTalentFolderUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeListTalentFolderOpenId        = "open_id"         // 以open_id来识别用户
 	UserIdTypeListTalentFolderPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	UserIdTypeListWebsiteJobPostUserId  = "user_id"  // 以 user_id 来识别用户
+	UserIdTypeListWebsiteJobPostUnionId = "union_id" // 以 union_id 来识别用户
+	UserIdTypeListWebsiteJobPostOpenId  = "open_id"  // 以 open_id 来识别用户
+)
+
+const (
+	DepartmentIdTypeListWebsiteJobPostOpenDepartmentId = "open_department_id" // 以 open_department_id 来标识部门
+	DepartmentIdTypeListWebsiteJobPostDepartmentId     = "department_id"      // 以 department_id 来标识部门
+)
+
+const (
+	JobLevelIdTypeListWebsiteJobPostPeopleAdminJobLevelId = "people_admin_job_level_id" // 「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。
+	JobLevelIdTypeListWebsiteJobPostJobLevelId            = "job_level_id"              // 「飞书管理后台」适用的职级 ID，通过「获取租户职级列表」接口获取
+)
+
+const (
+	UserIdTypeSearchWebsiteJobPostUserId  = "user_id"  // 以 user_id 来识别用户
+	UserIdTypeSearchWebsiteJobPostUnionId = "union_id" // 以 union_id 来识别用户
+	UserIdTypeSearchWebsiteJobPostOpenId  = "open_id"  // 以 open_id 来识别用户
+)
+
+const (
+	DepartmentIdTypeSearchWebsiteJobPostOpenDepartmentId = "open_department_id" // 以 open_department_id 来标识部门
+	DepartmentIdTypeSearchWebsiteJobPostDepartmentId     = "department_id"      // 以 department_id 来标识部门
+)
+
+const (
+	JobLevelIdTypeSearchWebsiteJobPostPeopleAdminJobLevelId = "people_admin_job_level_id" // 「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。
+	JobLevelIdTypeSearchWebsiteJobPostJobLevelId            = "job_level_id"              // 「飞书管理后台」适用的职级 ID，通过「获取租户职级列表」接口获取
 )
 
 type Ability struct {
@@ -40722,6 +40787,47 @@ func (resp *OfferApplicationResp) Success() bool {
 	return resp.Code == 0
 }
 
+type RecoverApplicationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewRecoverApplicationReqBuilder() *RecoverApplicationReqBuilder {
+	builder := &RecoverApplicationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 投递ID
+//
+// 示例值：12312312312
+func (builder *RecoverApplicationReqBuilder) ApplicationId(applicationId string) *RecoverApplicationReqBuilder {
+	builder.apiReq.PathParams.Set("application_id", fmt.Sprint(applicationId))
+	return builder
+}
+
+func (builder *RecoverApplicationReqBuilder) Build() *RecoverApplicationReq {
+	req := &RecoverApplicationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type RecoverApplicationReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type RecoverApplicationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *RecoverApplicationResp) Success() bool {
+	return resp.Code == 0
+}
+
 type TerminateApplicationReqBodyBuilder struct {
 	terminationType           int // 终止原因的类型
 	terminationTypeFlag       bool
@@ -41384,6 +41490,20 @@ func (resp *ListApplicationInterviewResp) Success() bool {
 	return resp.Code == 0
 }
 
+type CreateAttachmentRespData struct {
+	Id *string `json:"id,omitempty"` // 上传文件的 id
+}
+
+type CreateAttachmentResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateAttachmentRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateAttachmentResp) Success() bool {
+	return resp.Code == 0
+}
+
 type GetAttachmentReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -41482,6 +41602,138 @@ type PreviewAttachmentResp struct {
 }
 
 func (resp *PreviewAttachmentResp) Success() bool {
+	return resp.Code == 0
+}
+
+type SearchDiversityInclusionReqBodyBuilder struct {
+	talentIds          []string // 需要查询DI数据的人才ID列表
+	talentIdsFlag      bool
+	applicationIds     []string // 需要查询DI数据的投递ID列表
+	applicationIdsFlag bool
+}
+
+func NewSearchDiversityInclusionReqBodyBuilder() *SearchDiversityInclusionReqBodyBuilder {
+	builder := &SearchDiversityInclusionReqBodyBuilder{}
+	return builder
+}
+
+// 需要查询DI数据的人才ID列表
+//
+// 示例值：
+func (builder *SearchDiversityInclusionReqBodyBuilder) TalentIds(talentIds []string) *SearchDiversityInclusionReqBodyBuilder {
+	builder.talentIds = talentIds
+	builder.talentIdsFlag = true
+	return builder
+}
+
+// 需要查询DI数据的投递ID列表
+//
+// 示例值：
+func (builder *SearchDiversityInclusionReqBodyBuilder) ApplicationIds(applicationIds []string) *SearchDiversityInclusionReqBodyBuilder {
+	builder.applicationIds = applicationIds
+	builder.applicationIdsFlag = true
+	return builder
+}
+
+func (builder *SearchDiversityInclusionReqBodyBuilder) Build() *SearchDiversityInclusionReqBody {
+	req := &SearchDiversityInclusionReqBody{}
+	if builder.talentIdsFlag {
+		req.TalentIds = builder.talentIds
+	}
+	if builder.applicationIdsFlag {
+		req.ApplicationIds = builder.applicationIds
+	}
+	return req
+}
+
+type SearchDiversityInclusionPathReqBodyBuilder struct {
+	talentIds          []string
+	talentIdsFlag      bool
+	applicationIds     []string
+	applicationIdsFlag bool
+}
+
+func NewSearchDiversityInclusionPathReqBodyBuilder() *SearchDiversityInclusionPathReqBodyBuilder {
+	builder := &SearchDiversityInclusionPathReqBodyBuilder{}
+	return builder
+}
+
+// 需要查询DI数据的人才ID列表
+//
+// 示例值：
+func (builder *SearchDiversityInclusionPathReqBodyBuilder) TalentIds(talentIds []string) *SearchDiversityInclusionPathReqBodyBuilder {
+	builder.talentIds = talentIds
+	builder.talentIdsFlag = true
+	return builder
+}
+
+// 需要查询DI数据的投递ID列表
+//
+// 示例值：
+func (builder *SearchDiversityInclusionPathReqBodyBuilder) ApplicationIds(applicationIds []string) *SearchDiversityInclusionPathReqBodyBuilder {
+	builder.applicationIds = applicationIds
+	builder.applicationIdsFlag = true
+	return builder
+}
+
+func (builder *SearchDiversityInclusionPathReqBodyBuilder) Build() (*SearchDiversityInclusionReqBody, error) {
+	req := &SearchDiversityInclusionReqBody{}
+	if builder.talentIdsFlag {
+		req.TalentIds = builder.talentIds
+	}
+	if builder.applicationIdsFlag {
+		req.ApplicationIds = builder.applicationIds
+	}
+	return req, nil
+}
+
+type SearchDiversityInclusionReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *SearchDiversityInclusionReqBody
+}
+
+func NewSearchDiversityInclusionReqBuilder() *SearchDiversityInclusionReqBuilder {
+	builder := &SearchDiversityInclusionReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+func (builder *SearchDiversityInclusionReqBuilder) Body(body *SearchDiversityInclusionReqBody) *SearchDiversityInclusionReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *SearchDiversityInclusionReqBuilder) Build() *SearchDiversityInclusionReq {
+	req := &SearchDiversityInclusionReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type SearchDiversityInclusionReqBody struct {
+	TalentIds      []string `json:"talent_ids,omitempty"`      // 需要查询DI数据的人才ID列表
+	ApplicationIds []string `json:"application_ids,omitempty"` // 需要查询DI数据的投递ID列表
+}
+
+type SearchDiversityInclusionReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *SearchDiversityInclusionReqBody `body:""`
+}
+
+type SearchDiversityInclusionRespData struct {
+	Items []*DiInfo `json:"items,omitempty"` // 多元化与包容性信息列表
+}
+
+type SearchDiversityInclusionResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *SearchDiversityInclusionRespData `json:"data"` // 业务数据
+}
+
+func (resp *SearchDiversityInclusionResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -44506,6 +44758,72 @@ func (resp *GetJobManagerResp) Success() bool {
 	return resp.Code == 0
 }
 
+type ListJobFunctionReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListJobFunctionReqBuilder() *ListJobFunctionReqBuilder {
+	builder := &ListJobFunctionReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListJobFunctionReqBuilder) Limit(limit int) *ListJobFunctionReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 分页大小, 不能超过 50
+//
+// 示例值：10
+func (builder *ListJobFunctionReqBuilder) PageSize(pageSize int) *ListJobFunctionReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListJobFunctionReqBuilder) PageToken(pageToken string) *ListJobFunctionReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+func (builder *ListJobFunctionReqBuilder) Build() *ListJobFunctionReq {
+	req := &ListJobFunctionReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListJobFunctionReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListJobFunctionRespData struct {
+	HasMore   *bool          `json:"has_more,omitempty"`   // 是否还有更多项
+	PageToken *string        `json:"page_token,omitempty"` // 分页标记，当 has_more 为 true 时，会同时返回新的 page_token，否则不返回 page_token
+	Items     []*JobFunction `json:"items,omitempty"`      // 列表
+}
+
+type ListJobFunctionResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListJobFunctionRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListJobFunctionResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ListJobProcessReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -45184,6 +45502,231 @@ func (resp *ListJobTypeResp) Success() bool {
 	return resp.Code == 0
 }
 
+type ListLocationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListLocationReqBuilder() *ListLocationReqBuilder {
+	builder := &ListLocationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListLocationReqBuilder) Limit(limit int) *ListLocationReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListLocationReqBuilder) PageToken(pageToken string) *ListLocationReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：100
+func (builder *ListLocationReqBuilder) PageSize(pageSize int) *ListLocationReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 地址类型
+//
+// 示例值：interview_location
+func (builder *ListLocationReqBuilder) Usage(usage string) *ListLocationReqBuilder {
+	builder.apiReq.QueryParams.Set("usage", fmt.Sprint(usage))
+	return builder
+}
+
+func (builder *ListLocationReqBuilder) Build() *ListLocationReq {
+	req := &ListLocationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListLocationReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListLocationRespData struct {
+	Items     []*Location `json:"items,omitempty"`      // 列表
+	HasMore   *bool       `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string     `json:"page_token,omitempty"` // 下一页页码
+}
+
+type ListLocationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListLocationRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListLocationResp) Success() bool {
+	return resp.Code == 0
+}
+
+type QueryLocationReqBodyBuilder struct {
+	codeList         []string // 地址码列表,最大长度不超过100
+	codeListFlag     bool
+	locationType     int // 地址类型
+	locationTypeFlag bool
+}
+
+func NewQueryLocationReqBodyBuilder() *QueryLocationReqBodyBuilder {
+	builder := &QueryLocationReqBodyBuilder{}
+	return builder
+}
+
+// 地址码列表,最大长度不超过100
+//
+// 示例值：CN_1
+func (builder *QueryLocationReqBodyBuilder) CodeList(codeList []string) *QueryLocationReqBodyBuilder {
+	builder.codeList = codeList
+	builder.codeListFlag = true
+	return builder
+}
+
+// 地址类型
+//
+// 示例值：1
+func (builder *QueryLocationReqBodyBuilder) LocationType(locationType int) *QueryLocationReqBodyBuilder {
+	builder.locationType = locationType
+	builder.locationTypeFlag = true
+	return builder
+}
+
+func (builder *QueryLocationReqBodyBuilder) Build() *QueryLocationReqBody {
+	req := &QueryLocationReqBody{}
+	if builder.codeListFlag {
+		req.CodeList = builder.codeList
+	}
+	if builder.locationTypeFlag {
+		req.LocationType = &builder.locationType
+	}
+	return req
+}
+
+type QueryLocationPathReqBodyBuilder struct {
+	codeList         []string
+	codeListFlag     bool
+	locationType     int
+	locationTypeFlag bool
+}
+
+func NewQueryLocationPathReqBodyBuilder() *QueryLocationPathReqBodyBuilder {
+	builder := &QueryLocationPathReqBodyBuilder{}
+	return builder
+}
+
+// 地址码列表,最大长度不超过100
+//
+// 示例值：CN_1
+func (builder *QueryLocationPathReqBodyBuilder) CodeList(codeList []string) *QueryLocationPathReqBodyBuilder {
+	builder.codeList = codeList
+	builder.codeListFlag = true
+	return builder
+}
+
+// 地址类型
+//
+// 示例值：1
+func (builder *QueryLocationPathReqBodyBuilder) LocationType(locationType int) *QueryLocationPathReqBodyBuilder {
+	builder.locationType = locationType
+	builder.locationTypeFlag = true
+	return builder
+}
+
+func (builder *QueryLocationPathReqBodyBuilder) Build() (*QueryLocationReqBody, error) {
+	req := &QueryLocationReqBody{}
+	if builder.codeListFlag {
+		req.CodeList = builder.codeList
+	}
+	if builder.locationTypeFlag {
+		req.LocationType = &builder.locationType
+	}
+	return req, nil
+}
+
+type QueryLocationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *QueryLocationReqBody
+}
+
+func NewQueryLocationReqBuilder() *QueryLocationReqBuilder {
+	builder := &QueryLocationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token,下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *QueryLocationReqBuilder) PageToken(pageToken string) *QueryLocationReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页限制, 数据校验规则 1-100
+//
+// 示例值：100
+func (builder *QueryLocationReqBuilder) PageSize(pageSize int) *QueryLocationReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+func (builder *QueryLocationReqBuilder) Body(body *QueryLocationReqBody) *QueryLocationReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *QueryLocationReqBuilder) Build() *QueryLocationReq {
+	req := &QueryLocationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type QueryLocationReqBody struct {
+	CodeList     []string `json:"code_list,omitempty"`     // 地址码列表,最大长度不超过100
+	LocationType *int     `json:"location_type,omitempty"` // 地址类型
+}
+
+type QueryLocationReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *QueryLocationReqBody `body:""`
+}
+
+type QueryLocationRespData struct {
+	Items     []*LocationDto `json:"items,omitempty"`      // 地址数据列表
+	HasMore   *bool          `json:"has_more,omitempty"`   // 是否还有更多项
+	PageToken *string        `json:"page_token,omitempty"` // 分页标记，当 has_more 为 true 时，会同时返回新的 page_token,否则不返回 page_token
+}
+
+type QueryLocationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *QueryLocationRespData `json:"data"` // 业务数据
+}
+
+func (resp *QueryLocationResp) Success() bool {
+	return resp.Code == 0
+}
+
 type CreateNoteReqBuilder struct {
 	apiReq *larkcore.ApiReq
 	note   *Note
@@ -45236,6 +45779,45 @@ type CreateNoteResp struct {
 }
 
 func (resp *CreateNoteResp) Success() bool {
+	return resp.Code == 0
+}
+
+type DeleteNoteReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewDeleteNoteReqBuilder() *DeleteNoteReqBuilder {
+	builder := &DeleteNoteReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 示例值：
+func (builder *DeleteNoteReqBuilder) NoteId(noteId string) *DeleteNoteReqBuilder {
+	builder.apiReq.PathParams.Set("note_id", fmt.Sprint(noteId))
+	return builder
+}
+
+func (builder *DeleteNoteReqBuilder) Build() *DeleteNoteReq {
+	req := &DeleteNoteReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type DeleteNoteReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type DeleteNoteResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *DeleteNoteResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -47215,6 +47797,146 @@ func (resp *GetRoleResp) Success() bool {
 	return resp.Code == 0
 }
 
+type ListRoleReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListRoleReqBuilder() *ListRoleReqBuilder {
+	builder := &ListRoleReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListRoleReqBuilder) Limit(limit int) *ListRoleReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListRoleReqBuilder) PageToken(pageToken string) *ListRoleReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量
+//
+// 示例值：10
+func (builder *ListRoleReqBuilder) PageSize(pageSize int) *ListRoleReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+func (builder *ListRoleReqBuilder) Build() *ListRoleReq {
+	req := &ListRoleReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListRoleReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListRoleRespData struct {
+	Items     []*Role `json:"items,omitempty"`      // 角色列表
+	HasMore   *bool   `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string `json:"page_token,omitempty"` // 下一页页码
+}
+
+type ListRoleResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListRoleRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListRoleResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListSubjectReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewListSubjectReqBuilder() *ListSubjectReqBuilder {
+	builder := &ListSubjectReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *ListSubjectReqBuilder) UserIdType(userIdType string) *ListSubjectReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 项目ID列表
+//
+// 示例值：
+func (builder *ListSubjectReqBuilder) SubjectIds(subjectIds []string) *ListSubjectReqBuilder {
+	for _, v := range subjectIds {
+		builder.apiReq.QueryParams.Add("subject_ids", fmt.Sprint(v))
+	}
+	return builder
+}
+
+// 页码标识，获取第一页传空，每次查询会返回下一页的page_token
+//
+// 示例值：1231231987
+func (builder *ListSubjectReqBuilder) PageToken(pageToken string) *ListSubjectReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：100
+func (builder *ListSubjectReqBuilder) PageSize(pageSize int) *ListSubjectReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+func (builder *ListSubjectReqBuilder) Build() *ListSubjectReq {
+	req := &ListSubjectReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListSubjectReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type ListSubjectRespData struct {
+	HasMore   *bool      `json:"has_more,omitempty"`   // 是否有下一页
+	PageToken *string    `json:"page_token,omitempty"` // 下一页页码
+	Items     []*Subject `json:"items,omitempty"`      // 项目列表
+}
+
+type ListSubjectResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListSubjectRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListSubjectResp) Success() bool {
+	return resp.Code == 0
+}
+
 type AddToFolderTalentReqBodyBuilder struct {
 	talentIdList     []string // 人才 ID 列表
 	talentIdListFlag bool
@@ -47569,6 +48291,585 @@ func (resp *BatchGetIdTalentResp) Success() bool {
 	return resp.Code == 0
 }
 
+type CombinedCreateTalentReqBodyBuilder struct {
+	initSourceId              string // 简历来源 ID，可通过[获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口查询
+	initSourceIdFlag          bool
+	resumeSourceId            string // 简历来源 ID
+	resumeSourceIdFlag        bool
+	folderIdList              []string // 文件夹 ID 列表
+	folderIdListFlag          bool
+	creatorId                 string // 创建人 ID
+	creatorIdFlag             bool
+	creatorAccountType        int // 创建人类型
+	creatorAccountTypeFlag    bool
+	resumeAttachmentId        string // 简历附件 ID
+	resumeAttachmentIdFlag    bool
+	basicInfo                 *TalentCombinedBasicInfo // 基础信息
+	basicInfoFlag             bool
+	educationList             []*TalentCombinedEducationInfo // 教育经历
+	educationListFlag         bool
+	careerList                []*TalentCombinedCareerInfo // 工作经历
+	careerListFlag            bool
+	projectList               []*TalentCombinedProjectInfo // 项目经历
+	projectListFlag           bool
+	worksList                 []*TalentCombinedWorkInfo // 作品
+	worksListFlag             bool
+	awardList                 []*TalentCombinedAwardInfo // 获奖
+	awardListFlag             bool
+	languageList              []*TalentCombinedLanguageInfo // 语言能力
+	languageListFlag          bool
+	snsList                   []*TalentCombinedSnsInfo // 社交账号
+	snsListFlag               bool
+	preferredCityCodeList     []string // 意向地点
+	preferredCityCodeListFlag bool
+	selfEvaluation            *TalentSelfEvaluation // 自我评价
+	selfEvaluationFlag        bool
+	customizedData            []*TalentCustomizedDataObjectValue // 自定义模块
+	customizedDataFlag        bool
+}
+
+func NewCombinedCreateTalentReqBodyBuilder() *CombinedCreateTalentReqBodyBuilder {
+	builder := &CombinedCreateTalentReqBodyBuilder{}
+	return builder
+}
+
+// 简历来源 ID，可通过[获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口查询
+//
+// 示例值：1
+func (builder *CombinedCreateTalentReqBodyBuilder) InitSourceId(initSourceId string) *CombinedCreateTalentReqBodyBuilder {
+	builder.initSourceId = initSourceId
+	builder.initSourceIdFlag = true
+	return builder
+}
+
+// 简历来源 ID
+//
+// 示例值：1
+func (builder *CombinedCreateTalentReqBodyBuilder) ResumeSourceId(resumeSourceId string) *CombinedCreateTalentReqBodyBuilder {
+	builder.resumeSourceId = resumeSourceId
+	builder.resumeSourceIdFlag = true
+	return builder
+}
+
+// 文件夹 ID 列表
+//
+// 示例值：["7025517823176132908"]
+func (builder *CombinedCreateTalentReqBodyBuilder) FolderIdList(folderIdList []string) *CombinedCreateTalentReqBodyBuilder {
+	builder.folderIdList = folderIdList
+	builder.folderIdListFlag = true
+	return builder
+}
+
+// 创建人 ID
+//
+// 示例值：ou-xxx
+func (builder *CombinedCreateTalentReqBodyBuilder) CreatorId(creatorId string) *CombinedCreateTalentReqBodyBuilder {
+	builder.creatorId = creatorId
+	builder.creatorIdFlag = true
+	return builder
+}
+
+// 创建人类型
+//
+// 示例值：1
+func (builder *CombinedCreateTalentReqBodyBuilder) CreatorAccountType(creatorAccountType int) *CombinedCreateTalentReqBodyBuilder {
+	builder.creatorAccountType = creatorAccountType
+	builder.creatorAccountTypeFlag = true
+	return builder
+}
+
+// 简历附件 ID
+//
+// 示例值：12345
+func (builder *CombinedCreateTalentReqBodyBuilder) ResumeAttachmentId(resumeAttachmentId string) *CombinedCreateTalentReqBodyBuilder {
+	builder.resumeAttachmentId = resumeAttachmentId
+	builder.resumeAttachmentIdFlag = true
+	return builder
+}
+
+// 基础信息
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) BasicInfo(basicInfo *TalentCombinedBasicInfo) *CombinedCreateTalentReqBodyBuilder {
+	builder.basicInfo = basicInfo
+	builder.basicInfoFlag = true
+	return builder
+}
+
+// 教育经历
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) EducationList(educationList []*TalentCombinedEducationInfo) *CombinedCreateTalentReqBodyBuilder {
+	builder.educationList = educationList
+	builder.educationListFlag = true
+	return builder
+}
+
+// 工作经历
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) CareerList(careerList []*TalentCombinedCareerInfo) *CombinedCreateTalentReqBodyBuilder {
+	builder.careerList = careerList
+	builder.careerListFlag = true
+	return builder
+}
+
+// 项目经历
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) ProjectList(projectList []*TalentCombinedProjectInfo) *CombinedCreateTalentReqBodyBuilder {
+	builder.projectList = projectList
+	builder.projectListFlag = true
+	return builder
+}
+
+// 作品
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) WorksList(worksList []*TalentCombinedWorkInfo) *CombinedCreateTalentReqBodyBuilder {
+	builder.worksList = worksList
+	builder.worksListFlag = true
+	return builder
+}
+
+// 获奖
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) AwardList(awardList []*TalentCombinedAwardInfo) *CombinedCreateTalentReqBodyBuilder {
+	builder.awardList = awardList
+	builder.awardListFlag = true
+	return builder
+}
+
+// 语言能力
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) LanguageList(languageList []*TalentCombinedLanguageInfo) *CombinedCreateTalentReqBodyBuilder {
+	builder.languageList = languageList
+	builder.languageListFlag = true
+	return builder
+}
+
+// 社交账号
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) SnsList(snsList []*TalentCombinedSnsInfo) *CombinedCreateTalentReqBodyBuilder {
+	builder.snsList = snsList
+	builder.snsListFlag = true
+	return builder
+}
+
+// 意向地点
+//
+// 示例值：["CT_2"]
+func (builder *CombinedCreateTalentReqBodyBuilder) PreferredCityCodeList(preferredCityCodeList []string) *CombinedCreateTalentReqBodyBuilder {
+	builder.preferredCityCodeList = preferredCityCodeList
+	builder.preferredCityCodeListFlag = true
+	return builder
+}
+
+// 自我评价
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) SelfEvaluation(selfEvaluation *TalentSelfEvaluation) *CombinedCreateTalentReqBodyBuilder {
+	builder.selfEvaluation = selfEvaluation
+	builder.selfEvaluationFlag = true
+	return builder
+}
+
+// 自定义模块
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBodyBuilder) CustomizedData(customizedData []*TalentCustomizedDataObjectValue) *CombinedCreateTalentReqBodyBuilder {
+	builder.customizedData = customizedData
+	builder.customizedDataFlag = true
+	return builder
+}
+
+func (builder *CombinedCreateTalentReqBodyBuilder) Build() *CombinedCreateTalentReqBody {
+	req := &CombinedCreateTalentReqBody{}
+	if builder.initSourceIdFlag {
+		req.InitSourceId = &builder.initSourceId
+	}
+	if builder.resumeSourceIdFlag {
+		req.ResumeSourceId = &builder.resumeSourceId
+	}
+	if builder.folderIdListFlag {
+		req.FolderIdList = builder.folderIdList
+	}
+	if builder.creatorIdFlag {
+		req.CreatorId = &builder.creatorId
+	}
+	if builder.creatorAccountTypeFlag {
+		req.CreatorAccountType = &builder.creatorAccountType
+	}
+	if builder.resumeAttachmentIdFlag {
+		req.ResumeAttachmentId = &builder.resumeAttachmentId
+	}
+	if builder.basicInfoFlag {
+		req.BasicInfo = builder.basicInfo
+	}
+	if builder.educationListFlag {
+		req.EducationList = builder.educationList
+	}
+	if builder.careerListFlag {
+		req.CareerList = builder.careerList
+	}
+	if builder.projectListFlag {
+		req.ProjectList = builder.projectList
+	}
+	if builder.worksListFlag {
+		req.WorksList = builder.worksList
+	}
+	if builder.awardListFlag {
+		req.AwardList = builder.awardList
+	}
+	if builder.languageListFlag {
+		req.LanguageList = builder.languageList
+	}
+	if builder.snsListFlag {
+		req.SnsList = builder.snsList
+	}
+	if builder.preferredCityCodeListFlag {
+		req.PreferredCityCodeList = builder.preferredCityCodeList
+	}
+	if builder.selfEvaluationFlag {
+		req.SelfEvaluation = builder.selfEvaluation
+	}
+	if builder.customizedDataFlag {
+		req.CustomizedData = builder.customizedData
+	}
+	return req
+}
+
+type CombinedCreateTalentPathReqBodyBuilder struct {
+	initSourceId              string
+	initSourceIdFlag          bool
+	resumeSourceId            string
+	resumeSourceIdFlag        bool
+	folderIdList              []string
+	folderIdListFlag          bool
+	creatorId                 string
+	creatorIdFlag             bool
+	creatorAccountType        int
+	creatorAccountTypeFlag    bool
+	resumeAttachmentId        string
+	resumeAttachmentIdFlag    bool
+	basicInfo                 *TalentCombinedBasicInfo
+	basicInfoFlag             bool
+	educationList             []*TalentCombinedEducationInfo
+	educationListFlag         bool
+	careerList                []*TalentCombinedCareerInfo
+	careerListFlag            bool
+	projectList               []*TalentCombinedProjectInfo
+	projectListFlag           bool
+	worksList                 []*TalentCombinedWorkInfo
+	worksListFlag             bool
+	awardList                 []*TalentCombinedAwardInfo
+	awardListFlag             bool
+	languageList              []*TalentCombinedLanguageInfo
+	languageListFlag          bool
+	snsList                   []*TalentCombinedSnsInfo
+	snsListFlag               bool
+	preferredCityCodeList     []string
+	preferredCityCodeListFlag bool
+	selfEvaluation            *TalentSelfEvaluation
+	selfEvaluationFlag        bool
+	customizedData            []*TalentCustomizedDataObjectValue
+	customizedDataFlag        bool
+}
+
+func NewCombinedCreateTalentPathReqBodyBuilder() *CombinedCreateTalentPathReqBodyBuilder {
+	builder := &CombinedCreateTalentPathReqBodyBuilder{}
+	return builder
+}
+
+// 简历来源 ID，可通过[获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口查询
+//
+// 示例值：1
+func (builder *CombinedCreateTalentPathReqBodyBuilder) InitSourceId(initSourceId string) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.initSourceId = initSourceId
+	builder.initSourceIdFlag = true
+	return builder
+}
+
+// 简历来源 ID
+//
+// 示例值：1
+func (builder *CombinedCreateTalentPathReqBodyBuilder) ResumeSourceId(resumeSourceId string) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.resumeSourceId = resumeSourceId
+	builder.resumeSourceIdFlag = true
+	return builder
+}
+
+// 文件夹 ID 列表
+//
+// 示例值：["7025517823176132908"]
+func (builder *CombinedCreateTalentPathReqBodyBuilder) FolderIdList(folderIdList []string) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.folderIdList = folderIdList
+	builder.folderIdListFlag = true
+	return builder
+}
+
+// 创建人 ID
+//
+// 示例值：ou-xxx
+func (builder *CombinedCreateTalentPathReqBodyBuilder) CreatorId(creatorId string) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.creatorId = creatorId
+	builder.creatorIdFlag = true
+	return builder
+}
+
+// 创建人类型
+//
+// 示例值：1
+func (builder *CombinedCreateTalentPathReqBodyBuilder) CreatorAccountType(creatorAccountType int) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.creatorAccountType = creatorAccountType
+	builder.creatorAccountTypeFlag = true
+	return builder
+}
+
+// 简历附件 ID
+//
+// 示例值：12345
+func (builder *CombinedCreateTalentPathReqBodyBuilder) ResumeAttachmentId(resumeAttachmentId string) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.resumeAttachmentId = resumeAttachmentId
+	builder.resumeAttachmentIdFlag = true
+	return builder
+}
+
+// 基础信息
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) BasicInfo(basicInfo *TalentCombinedBasicInfo) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.basicInfo = basicInfo
+	builder.basicInfoFlag = true
+	return builder
+}
+
+// 教育经历
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) EducationList(educationList []*TalentCombinedEducationInfo) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.educationList = educationList
+	builder.educationListFlag = true
+	return builder
+}
+
+// 工作经历
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) CareerList(careerList []*TalentCombinedCareerInfo) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.careerList = careerList
+	builder.careerListFlag = true
+	return builder
+}
+
+// 项目经历
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) ProjectList(projectList []*TalentCombinedProjectInfo) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.projectList = projectList
+	builder.projectListFlag = true
+	return builder
+}
+
+// 作品
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) WorksList(worksList []*TalentCombinedWorkInfo) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.worksList = worksList
+	builder.worksListFlag = true
+	return builder
+}
+
+// 获奖
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) AwardList(awardList []*TalentCombinedAwardInfo) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.awardList = awardList
+	builder.awardListFlag = true
+	return builder
+}
+
+// 语言能力
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) LanguageList(languageList []*TalentCombinedLanguageInfo) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.languageList = languageList
+	builder.languageListFlag = true
+	return builder
+}
+
+// 社交账号
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) SnsList(snsList []*TalentCombinedSnsInfo) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.snsList = snsList
+	builder.snsListFlag = true
+	return builder
+}
+
+// 意向地点
+//
+// 示例值：["CT_2"]
+func (builder *CombinedCreateTalentPathReqBodyBuilder) PreferredCityCodeList(preferredCityCodeList []string) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.preferredCityCodeList = preferredCityCodeList
+	builder.preferredCityCodeListFlag = true
+	return builder
+}
+
+// 自我评价
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) SelfEvaluation(selfEvaluation *TalentSelfEvaluation) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.selfEvaluation = selfEvaluation
+	builder.selfEvaluationFlag = true
+	return builder
+}
+
+// 自定义模块
+//
+// 示例值：
+func (builder *CombinedCreateTalentPathReqBodyBuilder) CustomizedData(customizedData []*TalentCustomizedDataObjectValue) *CombinedCreateTalentPathReqBodyBuilder {
+	builder.customizedData = customizedData
+	builder.customizedDataFlag = true
+	return builder
+}
+
+func (builder *CombinedCreateTalentPathReqBodyBuilder) Build() (*CombinedCreateTalentReqBody, error) {
+	req := &CombinedCreateTalentReqBody{}
+	if builder.initSourceIdFlag {
+		req.InitSourceId = &builder.initSourceId
+	}
+	if builder.resumeSourceIdFlag {
+		req.ResumeSourceId = &builder.resumeSourceId
+	}
+	if builder.folderIdListFlag {
+		req.FolderIdList = builder.folderIdList
+	}
+	if builder.creatorIdFlag {
+		req.CreatorId = &builder.creatorId
+	}
+	if builder.creatorAccountTypeFlag {
+		req.CreatorAccountType = &builder.creatorAccountType
+	}
+	if builder.resumeAttachmentIdFlag {
+		req.ResumeAttachmentId = &builder.resumeAttachmentId
+	}
+	if builder.basicInfoFlag {
+		req.BasicInfo = builder.basicInfo
+	}
+	if builder.educationListFlag {
+		req.EducationList = builder.educationList
+	}
+	if builder.careerListFlag {
+		req.CareerList = builder.careerList
+	}
+	if builder.projectListFlag {
+		req.ProjectList = builder.projectList
+	}
+	if builder.worksListFlag {
+		req.WorksList = builder.worksList
+	}
+	if builder.awardListFlag {
+		req.AwardList = builder.awardList
+	}
+	if builder.languageListFlag {
+		req.LanguageList = builder.languageList
+	}
+	if builder.snsListFlag {
+		req.SnsList = builder.snsList
+	}
+	if builder.preferredCityCodeListFlag {
+		req.PreferredCityCodeList = builder.preferredCityCodeList
+	}
+	if builder.selfEvaluationFlag {
+		req.SelfEvaluation = builder.selfEvaluation
+	}
+	if builder.customizedDataFlag {
+		req.CustomizedData = builder.customizedData
+	}
+	return req, nil
+}
+
+type CombinedCreateTalentReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *CombinedCreateTalentReqBody
+}
+
+func NewCombinedCreateTalentReqBuilder() *CombinedCreateTalentReqBuilder {
+	builder := &CombinedCreateTalentReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *CombinedCreateTalentReqBuilder) UserIdType(userIdType string) *CombinedCreateTalentReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 用于在企业内创建一个人才。姓名为系统预设的必填字段，邮箱/电话字段请在飞书招聘标准简历模板设置中确认是否必填。可配合[获取人才字段](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口获取自定义字段信息。
+func (builder *CombinedCreateTalentReqBuilder) Body(body *CombinedCreateTalentReqBody) *CombinedCreateTalentReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *CombinedCreateTalentReqBuilder) Build() *CombinedCreateTalentReq {
+	req := &CombinedCreateTalentReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type CombinedCreateTalentReqBody struct {
+	InitSourceId          *string                            `json:"init_source_id,omitempty"`           // 简历来源 ID，可通过[获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口查询
+	ResumeSourceId        *string                            `json:"resume_source_id,omitempty"`         // 简历来源 ID
+	FolderIdList          []string                           `json:"folder_id_list,omitempty"`           // 文件夹 ID 列表
+	CreatorId             *string                            `json:"creator_id,omitempty"`               // 创建人 ID
+	CreatorAccountType    *int                               `json:"creator_account_type,omitempty"`     // 创建人类型
+	ResumeAttachmentId    *string                            `json:"resume_attachment_id,omitempty"`     // 简历附件 ID
+	BasicInfo             *TalentCombinedBasicInfo           `json:"basic_info,omitempty"`               // 基础信息
+	EducationList         []*TalentCombinedEducationInfo     `json:"education_list,omitempty"`           // 教育经历
+	CareerList            []*TalentCombinedCareerInfo        `json:"career_list,omitempty"`              // 工作经历
+	ProjectList           []*TalentCombinedProjectInfo       `json:"project_list,omitempty"`             // 项目经历
+	WorksList             []*TalentCombinedWorkInfo          `json:"works_list,omitempty"`               // 作品
+	AwardList             []*TalentCombinedAwardInfo         `json:"award_list,omitempty"`               // 获奖
+	LanguageList          []*TalentCombinedLanguageInfo      `json:"language_list,omitempty"`            // 语言能力
+	SnsList               []*TalentCombinedSnsInfo           `json:"sns_list,omitempty"`                 // 社交账号
+	PreferredCityCodeList []string                           `json:"preferred_city_code_list,omitempty"` // 意向地点
+	SelfEvaluation        *TalentSelfEvaluation              `json:"self_evaluation,omitempty"`          // 自我评价
+	CustomizedData        []*TalentCustomizedDataObjectValue `json:"customized_data,omitempty"`          // 自定义模块
+}
+
+type CombinedCreateTalentReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *CombinedCreateTalentReqBody `body:""`
+}
+
+type CombinedCreateTalentRespData struct {
+	TalentId           *string `json:"talent_id,omitempty"`            // 人才 ID
+	CreatorId          *string `json:"creator_id,omitempty"`           // 创建人 ID
+	CreatorAccountType *int    `json:"creator_account_type,omitempty"` // 创建人类型
+}
+
+type CombinedCreateTalentResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CombinedCreateTalentRespData `json:"data"` // 业务数据
+}
+
+func (resp *CombinedCreateTalentResp) Success() bool {
+	return resp.Code == 0
+}
+
 type GetTalentReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -47866,6 +49167,1122 @@ func (resp *ListTerminationReasonResp) Success() bool {
 	return resp.Code == 0
 }
 
+type ListWebsiteReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListWebsiteReqBuilder() *ListWebsiteReqBuilder {
+	builder := &ListWebsiteReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListWebsiteReqBuilder) Limit(limit int) *ListWebsiteReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListWebsiteReqBuilder) PageToken(pageToken string) *ListWebsiteReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大10
+//
+// 示例值：10
+func (builder *ListWebsiteReqBuilder) PageSize(pageSize int) *ListWebsiteReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+func (builder *ListWebsiteReqBuilder) Build() *ListWebsiteReq {
+	req := &ListWebsiteReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListWebsiteReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListWebsiteRespData struct {
+	Items     []*Website `json:"items,omitempty"`      // 列表
+	HasMore   *bool      `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string    `json:"page_token,omitempty"` // 下一页页码
+}
+
+type ListWebsiteResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListWebsiteRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListWebsiteResp) Success() bool {
+	return resp.Code == 0
+}
+
+type CreateWebsiteChannelReqBodyBuilder struct {
+	channelName     string // 推广渠道名称
+	channelNameFlag bool
+}
+
+func NewCreateWebsiteChannelReqBodyBuilder() *CreateWebsiteChannelReqBodyBuilder {
+	builder := &CreateWebsiteChannelReqBodyBuilder{}
+	return builder
+}
+
+// 推广渠道名称
+//
+// 示例值：小爱侧推广渠道
+func (builder *CreateWebsiteChannelReqBodyBuilder) ChannelName(channelName string) *CreateWebsiteChannelReqBodyBuilder {
+	builder.channelName = channelName
+	builder.channelNameFlag = true
+	return builder
+}
+
+func (builder *CreateWebsiteChannelReqBodyBuilder) Build() *CreateWebsiteChannelReqBody {
+	req := &CreateWebsiteChannelReqBody{}
+	if builder.channelNameFlag {
+		req.ChannelName = &builder.channelName
+	}
+	return req
+}
+
+type CreateWebsiteChannelPathReqBodyBuilder struct {
+	channelName     string
+	channelNameFlag bool
+}
+
+func NewCreateWebsiteChannelPathReqBodyBuilder() *CreateWebsiteChannelPathReqBodyBuilder {
+	builder := &CreateWebsiteChannelPathReqBodyBuilder{}
+	return builder
+}
+
+// 推广渠道名称
+//
+// 示例值：小爱侧推广渠道
+func (builder *CreateWebsiteChannelPathReqBodyBuilder) ChannelName(channelName string) *CreateWebsiteChannelPathReqBodyBuilder {
+	builder.channelName = channelName
+	builder.channelNameFlag = true
+	return builder
+}
+
+func (builder *CreateWebsiteChannelPathReqBodyBuilder) Build() (*CreateWebsiteChannelReqBody, error) {
+	req := &CreateWebsiteChannelReqBody{}
+	if builder.channelNameFlag {
+		req.ChannelName = &builder.channelName
+	}
+	return req, nil
+}
+
+type CreateWebsiteChannelReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *CreateWebsiteChannelReqBody
+}
+
+func NewCreateWebsiteChannelReqBuilder() *CreateWebsiteChannelReqBuilder {
+	builder := &CreateWebsiteChannelReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：1618209327096
+func (builder *CreateWebsiteChannelReqBuilder) WebsiteId(websiteId string) *CreateWebsiteChannelReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 根据官网 ID 和推广渠道名称创建官网推广渠道
+func (builder *CreateWebsiteChannelReqBuilder) Body(body *CreateWebsiteChannelReqBody) *CreateWebsiteChannelReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *CreateWebsiteChannelReqBuilder) Build() *CreateWebsiteChannelReq {
+	req := &CreateWebsiteChannelReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type CreateWebsiteChannelReqBody struct {
+	ChannelName *string `json:"channel_name,omitempty"` // 推广渠道名称
+}
+
+type CreateWebsiteChannelReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *CreateWebsiteChannelReqBody `body:""`
+}
+
+type CreateWebsiteChannelRespData struct {
+	Id   *string `json:"id,omitempty"`   // 推广渠道 ID
+	Name *string `json:"name,omitempty"` // 推广渠道名称
+	Link *string `json:"link,omitempty"` // 推广渠道链接
+	Code *string `json:"code,omitempty"` // 推广渠道推广码
+}
+
+type CreateWebsiteChannelResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateWebsiteChannelRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateWebsiteChannelResp) Success() bool {
+	return resp.Code == 0
+}
+
+type DeleteWebsiteChannelReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewDeleteWebsiteChannelReqBuilder() *DeleteWebsiteChannelReqBuilder {
+	builder := &DeleteWebsiteChannelReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：1618209327096
+func (builder *DeleteWebsiteChannelReqBuilder) WebsiteId(websiteId string) *DeleteWebsiteChannelReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 推广渠道 ID
+//
+// 示例值：7085989097067563300
+func (builder *DeleteWebsiteChannelReqBuilder) ChannelId(channelId string) *DeleteWebsiteChannelReqBuilder {
+	builder.apiReq.PathParams.Set("channel_id", fmt.Sprint(channelId))
+	return builder
+}
+
+func (builder *DeleteWebsiteChannelReqBuilder) Build() *DeleteWebsiteChannelReq {
+	req := &DeleteWebsiteChannelReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type DeleteWebsiteChannelReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type DeleteWebsiteChannelResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *DeleteWebsiteChannelResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListWebsiteChannelReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewListWebsiteChannelReqBuilder() *ListWebsiteChannelReqBuilder {
+	builder := &ListWebsiteChannelReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：1618209327096
+func (builder *ListWebsiteChannelReqBuilder) WebsiteId(websiteId string) *ListWebsiteChannelReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 每页获取记录最大数量，最大100
+//
+// 示例值：100
+func (builder *ListWebsiteChannelReqBuilder) PageSize(pageSize string) *ListWebsiteChannelReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 页码标识，获取第一页传空，每次查询会返回下一页的 page_token
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1NTUyMjM2NzIsImlkIjpudWxsfQ
+func (builder *ListWebsiteChannelReqBuilder) PageToken(pageToken string) *ListWebsiteChannelReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+func (builder *ListWebsiteChannelReqBuilder) Build() *ListWebsiteChannelReq {
+	req := &ListWebsiteChannelReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListWebsiteChannelReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type ListWebsiteChannelRespData struct {
+	HasMore            *bool                 `json:"has_more,omitempty"`             // 是否有更多数据
+	PageToken          *string               `json:"page_token,omitempty"`           // 分页 token
+	WebsiteChannelList []*WebsiteChannelInfo `json:"website_channel_list,omitempty"` // 官网推广渠道列表
+}
+
+type ListWebsiteChannelResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListWebsiteChannelRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListWebsiteChannelResp) Success() bool {
+	return resp.Code == 0
+}
+
+type UpdateWebsiteChannelReqBodyBuilder struct {
+	channelName     string // 推广渠道名称
+	channelNameFlag bool
+}
+
+func NewUpdateWebsiteChannelReqBodyBuilder() *UpdateWebsiteChannelReqBodyBuilder {
+	builder := &UpdateWebsiteChannelReqBodyBuilder{}
+	return builder
+}
+
+// 推广渠道名称
+//
+// 示例值：小爱侧推广渠道
+func (builder *UpdateWebsiteChannelReqBodyBuilder) ChannelName(channelName string) *UpdateWebsiteChannelReqBodyBuilder {
+	builder.channelName = channelName
+	builder.channelNameFlag = true
+	return builder
+}
+
+func (builder *UpdateWebsiteChannelReqBodyBuilder) Build() *UpdateWebsiteChannelReqBody {
+	req := &UpdateWebsiteChannelReqBody{}
+	if builder.channelNameFlag {
+		req.ChannelName = &builder.channelName
+	}
+	return req
+}
+
+type UpdateWebsiteChannelPathReqBodyBuilder struct {
+	channelName     string
+	channelNameFlag bool
+}
+
+func NewUpdateWebsiteChannelPathReqBodyBuilder() *UpdateWebsiteChannelPathReqBodyBuilder {
+	builder := &UpdateWebsiteChannelPathReqBodyBuilder{}
+	return builder
+}
+
+// 推广渠道名称
+//
+// 示例值：小爱侧推广渠道
+func (builder *UpdateWebsiteChannelPathReqBodyBuilder) ChannelName(channelName string) *UpdateWebsiteChannelPathReqBodyBuilder {
+	builder.channelName = channelName
+	builder.channelNameFlag = true
+	return builder
+}
+
+func (builder *UpdateWebsiteChannelPathReqBodyBuilder) Build() (*UpdateWebsiteChannelReqBody, error) {
+	req := &UpdateWebsiteChannelReqBody{}
+	if builder.channelNameFlag {
+		req.ChannelName = &builder.channelName
+	}
+	return req, nil
+}
+
+type UpdateWebsiteChannelReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *UpdateWebsiteChannelReqBody
+}
+
+func NewUpdateWebsiteChannelReqBuilder() *UpdateWebsiteChannelReqBuilder {
+	builder := &UpdateWebsiteChannelReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：1618209327096
+func (builder *UpdateWebsiteChannelReqBuilder) WebsiteId(websiteId string) *UpdateWebsiteChannelReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 推广渠道 ID
+//
+// 示例值：7085989097067563300
+func (builder *UpdateWebsiteChannelReqBuilder) ChannelId(channelId string) *UpdateWebsiteChannelReqBuilder {
+	builder.apiReq.PathParams.Set("channel_id", fmt.Sprint(channelId))
+	return builder
+}
+
+// 根据官网 ID 和推广渠道 ID 更改推广渠道名称
+func (builder *UpdateWebsiteChannelReqBuilder) Body(body *UpdateWebsiteChannelReqBody) *UpdateWebsiteChannelReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *UpdateWebsiteChannelReqBuilder) Build() *UpdateWebsiteChannelReq {
+	req := &UpdateWebsiteChannelReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type UpdateWebsiteChannelReqBody struct {
+	ChannelName *string `json:"channel_name,omitempty"` // 推广渠道名称
+}
+
+type UpdateWebsiteChannelReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *UpdateWebsiteChannelReqBody `body:""`
+}
+
+type UpdateWebsiteChannelRespData struct {
+	Id   *string `json:"id,omitempty"`   // 推广渠道 ID
+	Name *string `json:"name,omitempty"` // 推广渠道名称
+	Link *string `json:"link,omitempty"` // 推广渠道链接
+	Code *string `json:"code,omitempty"` // 推广渠道推广码
+}
+
+type UpdateWebsiteChannelResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *UpdateWebsiteChannelRespData `json:"data"` // 业务数据
+}
+
+func (resp *UpdateWebsiteChannelResp) Success() bool {
+	return resp.Code == 0
+}
+
+type CreateByAttachmentWebsiteDeliveryReqBuilder struct {
+	apiReq                    *larkcore.ApiReq
+	websiteDeliveryAttachment *WebsiteDeliveryAttachment
+}
+
+func NewCreateByAttachmentWebsiteDeliveryReqBuilder() *CreateByAttachmentWebsiteDeliveryReqBuilder {
+	builder := &CreateByAttachmentWebsiteDeliveryReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：7047318856652261676
+func (builder *CreateByAttachmentWebsiteDeliveryReqBuilder) WebsiteId(websiteId string) *CreateByAttachmentWebsiteDeliveryReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 根据简历附件解析创建官网投递
+func (builder *CreateByAttachmentWebsiteDeliveryReqBuilder) WebsiteDeliveryAttachment(websiteDeliveryAttachment *WebsiteDeliveryAttachment) *CreateByAttachmentWebsiteDeliveryReqBuilder {
+	builder.websiteDeliveryAttachment = websiteDeliveryAttachment
+	return builder
+}
+
+func (builder *CreateByAttachmentWebsiteDeliveryReqBuilder) Build() *CreateByAttachmentWebsiteDeliveryReq {
+	req := &CreateByAttachmentWebsiteDeliveryReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.websiteDeliveryAttachment
+	return req
+}
+
+type CreateByAttachmentWebsiteDeliveryReq struct {
+	apiReq                    *larkcore.ApiReq
+	WebsiteDeliveryAttachment *WebsiteDeliveryAttachment `body:""`
+}
+
+type CreateByAttachmentWebsiteDeliveryRespData struct {
+	TaskId *string `json:"task_id,omitempty"` // 异步任务 ID
+}
+
+type CreateByAttachmentWebsiteDeliveryResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateByAttachmentWebsiteDeliveryRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateByAttachmentWebsiteDeliveryResp) Success() bool {
+	return resp.Code == 0
+}
+
+type GetWebsiteDeliveryTaskReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetWebsiteDeliveryTaskReqBuilder() *GetWebsiteDeliveryTaskReqBuilder {
+	builder := &GetWebsiteDeliveryTaskReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：7047318856652261676
+func (builder *GetWebsiteDeliveryTaskReqBuilder) WebsiteId(websiteId string) *GetWebsiteDeliveryTaskReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 投递任务 ID
+//
+// 示例值：f1c2a0f138ec492d99d7ab73594158ad
+func (builder *GetWebsiteDeliveryTaskReqBuilder) DeliveryTaskId(deliveryTaskId string) *GetWebsiteDeliveryTaskReqBuilder {
+	builder.apiReq.PathParams.Set("delivery_task_id", fmt.Sprint(deliveryTaskId))
+	return builder
+}
+
+func (builder *GetWebsiteDeliveryTaskReqBuilder) Build() *GetWebsiteDeliveryTaskReq {
+	req := &GetWebsiteDeliveryTaskReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type GetWebsiteDeliveryTaskReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetWebsiteDeliveryTaskRespData struct {
+	Status    *int                `json:"status,omitempty"`     // 任务状态
+	Delivery  *WebsiteDeliveryDto `json:"delivery,omitempty"`   // 官网投递信息
+	StatusMsg *string             `json:"status_msg,omitempty"` // 状态信息，仅 status 为 3 时返回
+	ExtraInfo *string             `json:"extra_info,omitempty"` // 附加信息，当前返回投递 ID，仅当 status 为 3 且 status_msg 标识为重复投递时，将返回重复投递的 ID
+}
+
+type GetWebsiteDeliveryTaskResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetWebsiteDeliveryTaskRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetWebsiteDeliveryTaskResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListWebsiteJobPostReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListWebsiteJobPostReqBuilder() *ListWebsiteJobPostReqBuilder {
+	builder := &ListWebsiteJobPostReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListWebsiteJobPostReqBuilder) Limit(limit int) *ListWebsiteJobPostReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：111
+func (builder *ListWebsiteJobPostReqBuilder) WebsiteId(websiteId string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListWebsiteJobPostReqBuilder) PageToken(pageToken string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大10
+//
+// 示例值：10
+func (builder *ListWebsiteJobPostReqBuilder) PageSize(pageSize int) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *ListWebsiteJobPostReqBuilder) UserIdType(userIdType string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 此次调用中使用的部门 ID 的类型
+//
+// 示例值：
+func (builder *ListWebsiteJobPostReqBuilder) DepartmentIdType(departmentIdType string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
+	return builder
+}
+
+// 此次调用中使用的「职级 ID」的类型
+//
+// 示例值：
+func (builder *ListWebsiteJobPostReqBuilder) JobLevelIdType(jobLevelIdType string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("job_level_id_type", fmt.Sprint(jobLevelIdType))
+	return builder
+}
+
+// 最早更新时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *ListWebsiteJobPostReqBuilder) UpdateStartTime(updateStartTime string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("update_start_time", fmt.Sprint(updateStartTime))
+	return builder
+}
+
+// 最晚更新时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *ListWebsiteJobPostReqBuilder) UpdateEndTime(updateEndTime string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("update_end_time", fmt.Sprint(updateEndTime))
+	return builder
+}
+
+// 最早创建时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *ListWebsiteJobPostReqBuilder) CreateStartTime(createStartTime string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("create_start_time", fmt.Sprint(createStartTime))
+	return builder
+}
+
+// 最晚创建时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *ListWebsiteJobPostReqBuilder) CreateEndTime(createEndTime string) *ListWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("create_end_time", fmt.Sprint(createEndTime))
+	return builder
+}
+
+func (builder *ListWebsiteJobPostReqBuilder) Build() *ListWebsiteJobPostReq {
+	req := &ListWebsiteJobPostReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListWebsiteJobPostReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListWebsiteJobPostRespData struct {
+	Items     []*WebsiteJobPost `json:"items,omitempty"`      // 列表
+	HasMore   *bool             `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string           `json:"page_token,omitempty"` // 下一页页码
+}
+
+type ListWebsiteJobPostResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListWebsiteJobPostRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListWebsiteJobPostResp) Success() bool {
+	return resp.Code == 0
+}
+
+type SearchWebsiteJobPostReqBodyBuilder struct {
+	jobTypeIdList         []string // 职位类型列表
+	jobTypeIdListFlag     bool
+	cityCodeList          []string // 职位城市列表
+	cityCodeListFlag      bool
+	jobFunctionIdList     []string // 职能分类列表
+	jobFunctionIdListFlag bool
+	subjectIdList         []string // 职位项目列表
+	subjectIdListFlag     bool
+	keyword               string // 关键字
+	keywordFlag           bool
+	updateStartTime       string // 最早更新时间,毫秒级时间戳
+	updateStartTimeFlag   bool
+	updateEndTime         string // 最晚更新时间,毫秒级时间戳
+	updateEndTimeFlag     bool
+	createStartTime       string // 最早创建时间,毫秒级时间戳
+	createStartTimeFlag   bool
+	createEndTime         string // 最晚创建时间,毫秒级时间戳
+	createEndTimeFlag     bool
+}
+
+func NewSearchWebsiteJobPostReqBodyBuilder() *SearchWebsiteJobPostReqBodyBuilder {
+	builder := &SearchWebsiteJobPostReqBodyBuilder{}
+	return builder
+}
+
+// 职位类型列表
+//
+// 示例值：6916472453069883661
+func (builder *SearchWebsiteJobPostReqBodyBuilder) JobTypeIdList(jobTypeIdList []string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.jobTypeIdList = jobTypeIdList
+	builder.jobTypeIdListFlag = true
+	return builder
+}
+
+// 职位城市列表
+//
+// 示例值：CT_1
+func (builder *SearchWebsiteJobPostReqBodyBuilder) CityCodeList(cityCodeList []string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.cityCodeList = cityCodeList
+	builder.cityCodeListFlag = true
+	return builder
+}
+
+// 职能分类列表
+//
+// 示例值：6916472453069883661
+func (builder *SearchWebsiteJobPostReqBodyBuilder) JobFunctionIdList(jobFunctionIdList []string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.jobFunctionIdList = jobFunctionIdList
+	builder.jobFunctionIdListFlag = true
+	return builder
+}
+
+// 职位项目列表
+//
+// 示例值：6916472453069883661
+func (builder *SearchWebsiteJobPostReqBodyBuilder) SubjectIdList(subjectIdList []string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.subjectIdList = subjectIdList
+	builder.subjectIdListFlag = true
+	return builder
+}
+
+// 关键字
+//
+// 示例值：HR
+func (builder *SearchWebsiteJobPostReqBodyBuilder) Keyword(keyword string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.keyword = keyword
+	builder.keywordFlag = true
+	return builder
+}
+
+// 最早更新时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *SearchWebsiteJobPostReqBodyBuilder) UpdateStartTime(updateStartTime string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.updateStartTime = updateStartTime
+	builder.updateStartTimeFlag = true
+	return builder
+}
+
+// 最晚更新时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *SearchWebsiteJobPostReqBodyBuilder) UpdateEndTime(updateEndTime string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.updateEndTime = updateEndTime
+	builder.updateEndTimeFlag = true
+	return builder
+}
+
+// 最早创建时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *SearchWebsiteJobPostReqBodyBuilder) CreateStartTime(createStartTime string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.createStartTime = createStartTime
+	builder.createStartTimeFlag = true
+	return builder
+}
+
+// 最晚创建时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *SearchWebsiteJobPostReqBodyBuilder) CreateEndTime(createEndTime string) *SearchWebsiteJobPostReqBodyBuilder {
+	builder.createEndTime = createEndTime
+	builder.createEndTimeFlag = true
+	return builder
+}
+
+func (builder *SearchWebsiteJobPostReqBodyBuilder) Build() *SearchWebsiteJobPostReqBody {
+	req := &SearchWebsiteJobPostReqBody{}
+	if builder.jobTypeIdListFlag {
+		req.JobTypeIdList = builder.jobTypeIdList
+	}
+	if builder.cityCodeListFlag {
+		req.CityCodeList = builder.cityCodeList
+	}
+	if builder.jobFunctionIdListFlag {
+		req.JobFunctionIdList = builder.jobFunctionIdList
+	}
+	if builder.subjectIdListFlag {
+		req.SubjectIdList = builder.subjectIdList
+	}
+	if builder.keywordFlag {
+		req.Keyword = &builder.keyword
+	}
+	if builder.updateStartTimeFlag {
+		req.UpdateStartTime = &builder.updateStartTime
+	}
+	if builder.updateEndTimeFlag {
+		req.UpdateEndTime = &builder.updateEndTime
+	}
+	if builder.createStartTimeFlag {
+		req.CreateStartTime = &builder.createStartTime
+	}
+	if builder.createEndTimeFlag {
+		req.CreateEndTime = &builder.createEndTime
+	}
+	return req
+}
+
+type SearchWebsiteJobPostPathReqBodyBuilder struct {
+	jobTypeIdList         []string
+	jobTypeIdListFlag     bool
+	cityCodeList          []string
+	cityCodeListFlag      bool
+	jobFunctionIdList     []string
+	jobFunctionIdListFlag bool
+	subjectIdList         []string
+	subjectIdListFlag     bool
+	keyword               string
+	keywordFlag           bool
+	updateStartTime       string
+	updateStartTimeFlag   bool
+	updateEndTime         string
+	updateEndTimeFlag     bool
+	createStartTime       string
+	createStartTimeFlag   bool
+	createEndTime         string
+	createEndTimeFlag     bool
+}
+
+func NewSearchWebsiteJobPostPathReqBodyBuilder() *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder := &SearchWebsiteJobPostPathReqBodyBuilder{}
+	return builder
+}
+
+// 职位类型列表
+//
+// 示例值：6916472453069883661
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) JobTypeIdList(jobTypeIdList []string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.jobTypeIdList = jobTypeIdList
+	builder.jobTypeIdListFlag = true
+	return builder
+}
+
+// 职位城市列表
+//
+// 示例值：CT_1
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) CityCodeList(cityCodeList []string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.cityCodeList = cityCodeList
+	builder.cityCodeListFlag = true
+	return builder
+}
+
+// 职能分类列表
+//
+// 示例值：6916472453069883661
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) JobFunctionIdList(jobFunctionIdList []string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.jobFunctionIdList = jobFunctionIdList
+	builder.jobFunctionIdListFlag = true
+	return builder
+}
+
+// 职位项目列表
+//
+// 示例值：6916472453069883661
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) SubjectIdList(subjectIdList []string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.subjectIdList = subjectIdList
+	builder.subjectIdListFlag = true
+	return builder
+}
+
+// 关键字
+//
+// 示例值：HR
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) Keyword(keyword string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.keyword = keyword
+	builder.keywordFlag = true
+	return builder
+}
+
+// 最早更新时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) UpdateStartTime(updateStartTime string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.updateStartTime = updateStartTime
+	builder.updateStartTimeFlag = true
+	return builder
+}
+
+// 最晚更新时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) UpdateEndTime(updateEndTime string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.updateEndTime = updateEndTime
+	builder.updateEndTimeFlag = true
+	return builder
+}
+
+// 最早创建时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) CreateStartTime(createStartTime string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.createStartTime = createStartTime
+	builder.createStartTimeFlag = true
+	return builder
+}
+
+// 最晚创建时间,毫秒级时间戳
+//
+// 示例值：1618500278663
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) CreateEndTime(createEndTime string) *SearchWebsiteJobPostPathReqBodyBuilder {
+	builder.createEndTime = createEndTime
+	builder.createEndTimeFlag = true
+	return builder
+}
+
+func (builder *SearchWebsiteJobPostPathReqBodyBuilder) Build() (*SearchWebsiteJobPostReqBody, error) {
+	req := &SearchWebsiteJobPostReqBody{}
+	if builder.jobTypeIdListFlag {
+		req.JobTypeIdList = builder.jobTypeIdList
+	}
+	if builder.cityCodeListFlag {
+		req.CityCodeList = builder.cityCodeList
+	}
+	if builder.jobFunctionIdListFlag {
+		req.JobFunctionIdList = builder.jobFunctionIdList
+	}
+	if builder.subjectIdListFlag {
+		req.SubjectIdList = builder.subjectIdList
+	}
+	if builder.keywordFlag {
+		req.Keyword = &builder.keyword
+	}
+	if builder.updateStartTimeFlag {
+		req.UpdateStartTime = &builder.updateStartTime
+	}
+	if builder.updateEndTimeFlag {
+		req.UpdateEndTime = &builder.updateEndTime
+	}
+	if builder.createStartTimeFlag {
+		req.CreateStartTime = &builder.createStartTime
+	}
+	if builder.createEndTimeFlag {
+		req.CreateEndTime = &builder.createEndTime
+	}
+	return req, nil
+}
+
+type SearchWebsiteJobPostReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *SearchWebsiteJobPostReqBody
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewSearchWebsiteJobPostReqBuilder() *SearchWebsiteJobPostReqBuilder {
+	builder := &SearchWebsiteJobPostReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *SearchWebsiteJobPostReqBuilder) Limit(limit int) *SearchWebsiteJobPostReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：111
+func (builder *SearchWebsiteJobPostReqBuilder) WebsiteId(websiteId string) *SearchWebsiteJobPostReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *SearchWebsiteJobPostReqBuilder) PageToken(pageToken string) *SearchWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大10
+//
+// 示例值：10
+func (builder *SearchWebsiteJobPostReqBuilder) PageSize(pageSize int) *SearchWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *SearchWebsiteJobPostReqBuilder) UserIdType(userIdType string) *SearchWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 此次调用中使用的部门 ID 的类型
+//
+// 示例值：
+func (builder *SearchWebsiteJobPostReqBuilder) DepartmentIdType(departmentIdType string) *SearchWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
+	return builder
+}
+
+// 此次调用中使用的「职级 ID」的类型
+//
+// 示例值：
+func (builder *SearchWebsiteJobPostReqBuilder) JobLevelIdType(jobLevelIdType string) *SearchWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("job_level_id_type", fmt.Sprint(jobLevelIdType))
+	return builder
+}
+
+// 搜索自定义官网下的职位列表
+func (builder *SearchWebsiteJobPostReqBuilder) Body(body *SearchWebsiteJobPostReqBody) *SearchWebsiteJobPostReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *SearchWebsiteJobPostReqBuilder) Build() *SearchWebsiteJobPostReq {
+	req := &SearchWebsiteJobPostReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type SearchWebsiteJobPostReqBody struct {
+	JobTypeIdList     []string `json:"job_type_id_list,omitempty"`     // 职位类型列表
+	CityCodeList      []string `json:"city_code_list,omitempty"`       // 职位城市列表
+	JobFunctionIdList []string `json:"job_function_id_list,omitempty"` // 职能分类列表
+	SubjectIdList     []string `json:"subject_id_list,omitempty"`      // 职位项目列表
+	Keyword           *string  `json:"keyword,omitempty"`              // 关键字
+	UpdateStartTime   *string  `json:"update_start_time,omitempty"`    // 最早更新时间,毫秒级时间戳
+	UpdateEndTime     *string  `json:"update_end_time,omitempty"`      // 最晚更新时间,毫秒级时间戳
+	CreateStartTime   *string  `json:"create_start_time,omitempty"`    // 最早创建时间,毫秒级时间戳
+	CreateEndTime     *string  `json:"create_end_time,omitempty"`      // 最晚创建时间,毫秒级时间戳
+}
+
+type SearchWebsiteJobPostReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *SearchWebsiteJobPostReqBody `body:""`
+	Limit  int                          // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type SearchWebsiteJobPostRespData struct {
+	Items     []*WebsiteJobPost `json:"items,omitempty"`      // 列表
+	HasMore   *bool             `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string           `json:"page_token,omitempty"` // 下一页页码
+}
+
+type SearchWebsiteJobPostResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *SearchWebsiteJobPostRespData `json:"data"` // 业务数据
+}
+
+func (resp *SearchWebsiteJobPostResp) Success() bool {
+	return resp.Code == 0
+}
+
+type CreateWebsiteSiteUserReqBuilder struct {
+	apiReq      *larkcore.ApiReq
+	websiteUser *WebsiteUser
+}
+
+func NewCreateWebsiteSiteUserReqBuilder() *CreateWebsiteSiteUserReqBuilder {
+	builder := &CreateWebsiteSiteUserReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID，可从「获取官网自定义列表」获取
+//
+// 示例值：1618209327096
+func (builder *CreateWebsiteSiteUserReqBuilder) WebsiteId(websiteId string) *CreateWebsiteSiteUserReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 创建官网用户
+func (builder *CreateWebsiteSiteUserReqBuilder) WebsiteUser(websiteUser *WebsiteUser) *CreateWebsiteSiteUserReqBuilder {
+	builder.websiteUser = websiteUser
+	return builder
+}
+
+func (builder *CreateWebsiteSiteUserReqBuilder) Build() *CreateWebsiteSiteUserReq {
+	req := &CreateWebsiteSiteUserReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.websiteUser
+	return req
+}
+
+type CreateWebsiteSiteUserReq struct {
+	apiReq      *larkcore.ApiReq
+	WebsiteUser *WebsiteUser `body:""`
+}
+
+type CreateWebsiteSiteUserRespData struct {
+	SiteUser *WebsiteUser `json:"site_user,omitempty"` // 官网用户信息
+}
+
+type CreateWebsiteSiteUserResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateWebsiteSiteUserRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateWebsiteSiteUserResp) Success() bool {
+	return resp.Code == 0
+}
+
 type P2ApplicationDeletedV1Data struct {
 	ApplicationIds []string `json:"application_ids,omitempty"` // 投递 ID 列表
 }
@@ -48094,6 +50511,60 @@ func (iterator *ListEvaluationIterator) NextPageToken() *string {
 	return iterator.nextPageToken
 }
 
+type ListJobFunctionIterator struct {
+	nextPageToken *string
+	items         []*JobFunction
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListJobFunctionReq
+	listFunc      func(ctx context.Context, req *ListJobFunctionReq, options ...larkcore.RequestOptionFunc) (*ListJobFunctionResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListJobFunctionIterator) Next() (bool, *JobFunction, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListJobFunctionIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
 type ListJobTypeIterator struct {
 	nextPageToken *string
 	items         []*JobTypeInfo
@@ -48145,6 +50616,60 @@ func (iterator *ListJobTypeIterator) Next() (bool, *JobTypeInfo, error) {
 }
 
 func (iterator *ListJobTypeIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListLocationIterator struct {
+	nextPageToken *string
+	items         []*Location
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListLocationReq
+	listFunc      func(ctx context.Context, req *ListLocationReq, options ...larkcore.RequestOptionFunc) (*ListLocationResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListLocationIterator) Next() (bool, *Location, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListLocationIterator) NextPageToken() *string {
 	return iterator.nextPageToken
 }
 
@@ -48310,6 +50835,60 @@ func (iterator *ListResumeSourceIterator) NextPageToken() *string {
 	return iterator.nextPageToken
 }
 
+type ListRoleIterator struct {
+	nextPageToken *string
+	items         []*Role
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListRoleReq
+	listFunc      func(ctx context.Context, req *ListRoleReq, options ...larkcore.RequestOptionFunc) (*ListRoleResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListRoleIterator) Next() (bool, *Role, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListRoleIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
 type ListTalentFolderIterator struct {
 	nextPageToken *string
 	items         []*TalentFolderForList
@@ -48415,5 +50994,167 @@ func (iterator *ListTerminationReasonIterator) Next() (bool, *TerminationReason,
 }
 
 func (iterator *ListTerminationReasonIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListWebsiteIterator struct {
+	nextPageToken *string
+	items         []*Website
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListWebsiteReq
+	listFunc      func(ctx context.Context, req *ListWebsiteReq, options ...larkcore.RequestOptionFunc) (*ListWebsiteResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListWebsiteIterator) Next() (bool, *Website, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListWebsiteIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListWebsiteJobPostIterator struct {
+	nextPageToken *string
+	items         []*WebsiteJobPost
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListWebsiteJobPostReq
+	listFunc      func(ctx context.Context, req *ListWebsiteJobPostReq, options ...larkcore.RequestOptionFunc) (*ListWebsiteJobPostResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListWebsiteJobPostIterator) Next() (bool, *WebsiteJobPost, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListWebsiteJobPostIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type SearchWebsiteJobPostIterator struct {
+	nextPageToken *string
+	items         []*WebsiteJobPost
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *SearchWebsiteJobPostReq
+	listFunc      func(ctx context.Context, req *SearchWebsiteJobPostReq, options ...larkcore.RequestOptionFunc) (*SearchWebsiteJobPostResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *SearchWebsiteJobPostIterator) Next() (bool, *WebsiteJobPost, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *SearchWebsiteJobPostIterator) NextPageToken() *string {
 	return iterator.nextPageToken
 }

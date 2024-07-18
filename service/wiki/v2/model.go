@@ -23,6 +23,11 @@ import (
 )
 
 const (
+	OpenSharingOpen   = "open"   // 打开
+	OpenSharingClosed = "closed" // 关闭
+)
+
+const (
 	ShowLanguageLangZH   = "zh"    // 简体中文
 	ShowLanguageLangID   = "id"    // 印尼语
 	ShowLanguageLangDE   = "de"    // 德语
@@ -822,11 +827,12 @@ func (builder *SettingBuilder) Build() *Setting {
 }
 
 type Space struct {
-	Name        *string `json:"name,omitempty"`        // 知识空间名称
-	Description *string `json:"description,omitempty"` // 知识空间描述
-	SpaceId     *string `json:"space_id,omitempty"`    // 知识空间id
-	SpaceType   *string `json:"space_type,omitempty"`  // 表示知识空间类型（团队空间 或 个人空间）
-	Visibility  *string `json:"visibility,omitempty"`  // 表示知识空间可见性（公开空间 或 私有空间）
+	Name        *string `json:"name,omitempty"`         // 知识空间名称
+	Description *string `json:"description,omitempty"`  // 知识空间描述
+	SpaceId     *string `json:"space_id,omitempty"`     // 知识空间id
+	SpaceType   *string `json:"space_type,omitempty"`   // 表示知识空间类型（团队空间 或 个人空间）
+	Visibility  *string `json:"visibility,omitempty"`   // 表示知识空间可见性（公开空间 或 私有空间）
+	OpenSharing *string `json:"open_sharing,omitempty"` // 表示知识空间的分享状态
 }
 
 type SpaceBuilder struct {
@@ -840,6 +846,8 @@ type SpaceBuilder struct {
 	spaceTypeFlag   bool
 	visibility      string // 表示知识空间可见性（公开空间 或 私有空间）
 	visibilityFlag  bool
+	openSharing     string // 表示知识空间的分享状态
+	openSharingFlag bool
 }
 
 func NewSpaceBuilder() *SpaceBuilder {
@@ -867,7 +875,7 @@ func (builder *SpaceBuilder) Description(description string) *SpaceBuilder {
 
 // 知识空间id
 //
-// 示例值：
+// 示例值：6946843325487456878
 func (builder *SpaceBuilder) SpaceId(spaceId string) *SpaceBuilder {
 	builder.spaceId = spaceId
 	builder.spaceIdFlag = true
@@ -892,6 +900,15 @@ func (builder *SpaceBuilder) Visibility(visibility string) *SpaceBuilder {
 	return builder
 }
 
+// 表示知识空间的分享状态
+//
+// 示例值：open
+func (builder *SpaceBuilder) OpenSharing(openSharing string) *SpaceBuilder {
+	builder.openSharing = openSharing
+	builder.openSharingFlag = true
+	return builder
+}
+
 func (builder *SpaceBuilder) Build() *Space {
 	req := &Space{}
 	if builder.nameFlag {
@@ -912,6 +929,10 @@ func (builder *SpaceBuilder) Build() *Space {
 	}
 	if builder.visibilityFlag {
 		req.Visibility = &builder.visibility
+
+	}
+	if builder.openSharingFlag {
+		req.OpenSharing = &builder.openSharing
 
 	}
 	return req
@@ -1623,8 +1644,8 @@ type ListSpaceNodeReq struct {
 
 type ListSpaceNodeRespData struct {
 	Items     []*Node `json:"items,omitempty"`      // 数据列表
-	PageToken *string `json:"page_token,omitempty"` //
-	HasMore   *bool   `json:"has_more,omitempty"`   //
+	PageToken *string `json:"page_token,omitempty"` // 分页Token
+	HasMore   *bool   `json:"has_more,omitempty"`   // 是否还有数据
 }
 
 type ListSpaceNodeResp struct {

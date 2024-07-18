@@ -1300,6 +1300,32 @@ func (p *person) Patch(ctx context.Context, req *PatchPersonReq, options ...lark
 	return resp, err
 }
 
+// Complete
+//
+// - 完成入职
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=complete&project=corehr&resource=pre_hire&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/complete_preHire.go
+func (p *preHire) Complete(ctx context.Context, req *CompletePreHireReq, options ...larkcore.RequestOptionFunc) (*CompletePreHireResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pre_hires/:pre_hire_id/complete"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CompletePreHireResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Create 创建待入职人员
 //
 // - 创建待入职人员
@@ -1378,6 +1404,40 @@ func (p *preHire) Patch(ctx context.Context, req *PatchPreHireReq, options ...la
 	return resp, err
 }
 
+// Query
+//
+// - 批量查询待入职数据
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=query&project=corehr&resource=pre_hire&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/query_preHire.go
+func (p *preHire) Query(ctx context.Context, req *QueryPreHireReq, options ...larkcore.RequestOptionFunc) (*QueryPreHireResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pre_hires/query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &QueryPreHireResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (p *preHire) QueryByIterator(ctx context.Context, req *QueryPreHireReq, options ...larkcore.RequestOptionFunc) (*QueryPreHireIterator, error) {
+	return &QueryPreHireIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: p.Query,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
 // Search
 //
 // - 根据部门 ID，上级部门查询部门列表
@@ -1410,6 +1470,32 @@ func (p *preHire) SearchByIterator(ctx context.Context, req *SearchPreHireReq, o
 		listFunc: p.Search,
 		options:  options,
 		limit:    req.Limit}, nil
+}
+
+// TransitTask
+//
+// - 任务流转
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=transit_task&project=corehr&resource=pre_hire&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/transitTask_preHire.go
+func (p *preHire) TransitTask(ctx context.Context, req *TransitTaskPreHireReq, options ...larkcore.RequestOptionFunc) (*TransitTaskPreHireResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/pre_hires/:pre_hire_id/transit_task"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &TransitTaskPreHireResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // EnableDisableAssessment
@@ -1470,6 +1556,58 @@ func (p *probation) SearchByIterator(ctx context.Context, req *SearchProbationRe
 		listFunc: p.Search,
 		options:  options,
 		limit:    req.Limit}, nil
+}
+
+// Submit
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=submit&project=corehr&resource=probation&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/submit_probation.go
+func (p *probation) Submit(ctx context.Context, req *SubmitProbationReq, options ...larkcore.RequestOptionFunc) (*SubmitProbationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/probation/submit"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &SubmitProbationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Withdraw
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=withdraw&project=corehr&resource=probation&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv2/withdraw_probation.go
+func (p *probation) Withdraw(ctx context.Context, req *WithdrawProbationReq, options ...larkcore.RequestOptionFunc) (*WithdrawProbationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v2/probation/withdraw"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, p.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &WithdrawProbationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, p.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // Create

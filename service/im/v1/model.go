@@ -10477,6 +10477,113 @@ func (resp *PatchMessageResp) Success() bool {
 	return resp.Code == 0
 }
 
+type PushFollowUpMessageReqBodyBuilder struct {
+	followUps     []*FollowUp // follow up列表
+	followUpsFlag bool
+}
+
+func NewPushFollowUpMessageReqBodyBuilder() *PushFollowUpMessageReqBodyBuilder {
+	builder := &PushFollowUpMessageReqBodyBuilder{}
+	return builder
+}
+
+// follow up列表
+//
+// 示例值：
+func (builder *PushFollowUpMessageReqBodyBuilder) FollowUps(followUps []*FollowUp) *PushFollowUpMessageReqBodyBuilder {
+	builder.followUps = followUps
+	builder.followUpsFlag = true
+	return builder
+}
+
+func (builder *PushFollowUpMessageReqBodyBuilder) Build() *PushFollowUpMessageReqBody {
+	req := &PushFollowUpMessageReqBody{}
+	if builder.followUpsFlag {
+		req.FollowUps = builder.followUps
+	}
+	return req
+}
+
+type PushFollowUpMessagePathReqBodyBuilder struct {
+	followUps     []*FollowUp
+	followUpsFlag bool
+}
+
+func NewPushFollowUpMessagePathReqBodyBuilder() *PushFollowUpMessagePathReqBodyBuilder {
+	builder := &PushFollowUpMessagePathReqBodyBuilder{}
+	return builder
+}
+
+// follow up列表
+//
+// 示例值：
+func (builder *PushFollowUpMessagePathReqBodyBuilder) FollowUps(followUps []*FollowUp) *PushFollowUpMessagePathReqBodyBuilder {
+	builder.followUps = followUps
+	builder.followUpsFlag = true
+	return builder
+}
+
+func (builder *PushFollowUpMessagePathReqBodyBuilder) Build() (*PushFollowUpMessageReqBody, error) {
+	req := &PushFollowUpMessageReqBody{}
+	if builder.followUpsFlag {
+		req.FollowUps = builder.followUps
+	}
+	return req, nil
+}
+
+type PushFollowUpMessageReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *PushFollowUpMessageReqBody
+}
+
+func NewPushFollowUpMessageReqBuilder() *PushFollowUpMessageReqBuilder {
+	builder := &PushFollowUpMessageReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// AI发送的消息ID
+//
+// 示例值：om_3210a18894e206715a4359115f4cf2f5
+func (builder *PushFollowUpMessageReqBuilder) MessageId(messageId string) *PushFollowUpMessageReqBuilder {
+	builder.apiReq.PathParams.Set("message_id", fmt.Sprint(messageId))
+	return builder
+}
+
+func (builder *PushFollowUpMessageReqBuilder) Body(body *PushFollowUpMessageReqBody) *PushFollowUpMessageReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *PushFollowUpMessageReqBuilder) Build() *PushFollowUpMessageReq {
+	req := &PushFollowUpMessageReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type PushFollowUpMessageReqBody struct {
+	FollowUps []*FollowUp `json:"follow_ups,omitempty"` // follow up列表
+}
+
+type PushFollowUpMessageReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *PushFollowUpMessageReqBody `body:""`
+}
+
+type PushFollowUpMessageResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *PushFollowUpMessageResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ReadUsersMessageReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -11861,6 +11968,23 @@ type P2ChatUpdatedV1 struct {
 }
 
 func (m *P2ChatUpdatedV1) RawReq(req *larkevent.EventReq) {
+	m.EventReq = req
+}
+
+type P2ChatAccessEventBotP2pChatEnteredV1Data struct {
+	ChatId                *string `json:"chat_id,omitempty"`                  // 群组ID
+	OperatorId            *UserId `json:"operator_id,omitempty"`              // 进入与机器人会话的操作人ID
+	LastMessageId         *string `json:"last_message_id,omitempty"`          // 会话内用户可见的最新消息ID
+	LastMessageCreateTime *string `json:"last_message_create_time,omitempty"` // 会话内用户可见的最新消息发送时间，毫秒时间戳
+}
+
+type P2ChatAccessEventBotP2pChatEnteredV1 struct {
+	*larkevent.EventV2Base                                           // 事件基础数据
+	*larkevent.EventReq                                              // 请求原生数据
+	Event                  *P2ChatAccessEventBotP2pChatEnteredV1Data `json:"event"` // 事件内容
+}
+
+func (m *P2ChatAccessEventBotP2pChatEnteredV1) RawReq(req *larkevent.EventReq) {
 	m.EventReq = req
 }
 

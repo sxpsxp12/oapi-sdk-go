@@ -58,6 +58,26 @@ func (h *P2ChatUpdatedV1Handler) Handle(ctx context.Context, event interface{}) 
 }
 
 // 消息处理器定义
+type P2ChatAccessEventBotP2pChatEnteredV1Handler struct {
+	handler func(context.Context, *P2ChatAccessEventBotP2pChatEnteredV1) error
+}
+
+func NewP2ChatAccessEventBotP2pChatEnteredV1Handler(handler func(context.Context, *P2ChatAccessEventBotP2pChatEnteredV1) error) *P2ChatAccessEventBotP2pChatEnteredV1Handler {
+	h := &P2ChatAccessEventBotP2pChatEnteredV1Handler{handler: handler}
+	return h
+}
+
+// 返回事件的消息体的实例，用于反序列化用
+func (h *P2ChatAccessEventBotP2pChatEnteredV1Handler) Event() interface{} {
+	return &P2ChatAccessEventBotP2pChatEnteredV1{}
+}
+
+// 回调开发者注册的handle
+func (h *P2ChatAccessEventBotP2pChatEnteredV1Handler) Handle(ctx context.Context, event interface{}) error {
+	return h.handler(ctx, event.(*P2ChatAccessEventBotP2pChatEnteredV1))
+}
+
+// 消息处理器定义
 type P2ChatMemberBotAddedV1Handler struct {
 	handler func(context.Context, *P2ChatMemberBotAddedV1) error
 }

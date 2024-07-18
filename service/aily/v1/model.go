@@ -199,18 +199,21 @@ func (builder *AilyKnowledgeDocsBuilder) Build() *AilyKnowledgeDocs {
 }
 
 type AilyKnowledgeFile struct {
-	Title    *string `json:"title,omitempty"`     // 标题
-	MimeType *string `json:"mime_type,omitempty"` // 文件mime类型
-	Content  *string `json:"content,omitempty"`   // 文件内容
+	Title     *string `json:"title,omitempty"`      // 标题
+	MimeType  *string `json:"mime_type,omitempty"`  // 文件mime类型
+	Content   *string `json:"content,omitempty"`    // 文件内容
+	SourceUrl *string `json:"source_url,omitempty"` // 文件来源URL
 }
 
 type AilyKnowledgeFileBuilder struct {
-	title        string // 标题
-	titleFlag    bool
-	mimeType     string // 文件mime类型
-	mimeTypeFlag bool
-	content      string // 文件内容
-	contentFlag  bool
+	title         string // 标题
+	titleFlag     bool
+	mimeType      string // 文件mime类型
+	mimeTypeFlag  bool
+	content       string // 文件内容
+	contentFlag   bool
+	sourceUrl     string // 文件来源URL
+	sourceUrlFlag bool
 }
 
 func NewAilyKnowledgeFileBuilder() *AilyKnowledgeFileBuilder {
@@ -245,6 +248,15 @@ func (builder *AilyKnowledgeFileBuilder) Content(content string) *AilyKnowledgeF
 	return builder
 }
 
+// 文件来源URL
+//
+// 示例值：https://www.xx.xx
+func (builder *AilyKnowledgeFileBuilder) SourceUrl(sourceUrl string) *AilyKnowledgeFileBuilder {
+	builder.sourceUrl = sourceUrl
+	builder.sourceUrlFlag = true
+	return builder
+}
+
 func (builder *AilyKnowledgeFileBuilder) Build() *AilyKnowledgeFile {
 	req := &AilyKnowledgeFile{}
 	if builder.titleFlag {
@@ -257,6 +269,10 @@ func (builder *AilyKnowledgeFileBuilder) Build() *AilyKnowledgeFile {
 	}
 	if builder.contentFlag {
 		req.Content = &builder.content
+
+	}
+	if builder.sourceUrlFlag {
+		req.SourceUrl = &builder.sourceUrl
 
 	}
 	return req
@@ -4029,6 +4045,54 @@ func (builder *SourceSettingBuilder) Build() *SourceSetting {
 	}
 	if builder.dataSourceIntegrationTypeFlag {
 		req.DataSourceIntegrationType = &builder.dataSourceIntegrationType
+
+	}
+	return req
+}
+
+type Suggestion struct {
+	Content *string `json:"content,omitempty"`  // 推荐的内容
+	SkillId *string `json:"skill_id,omitempty"` // 推荐的技能
+}
+
+type SuggestionBuilder struct {
+	content     string // 推荐的内容
+	contentFlag bool
+	skillId     string // 推荐的技能
+	skillIdFlag bool
+}
+
+func NewSuggestionBuilder() *SuggestionBuilder {
+	builder := &SuggestionBuilder{}
+	return builder
+}
+
+// 推荐的内容
+//
+// 示例值：今天天气如何
+func (builder *SuggestionBuilder) Content(content string) *SuggestionBuilder {
+	builder.content = content
+	builder.contentFlag = true
+	return builder
+}
+
+// 推荐的技能
+//
+// 示例值：skill_xxx
+func (builder *SuggestionBuilder) SkillId(skillId string) *SuggestionBuilder {
+	builder.skillId = skillId
+	builder.skillIdFlag = true
+	return builder
+}
+
+func (builder *SuggestionBuilder) Build() *Suggestion {
+	req := &Suggestion{}
+	if builder.contentFlag {
+		req.Content = &builder.content
+
+	}
+	if builder.skillIdFlag {
+		req.SkillId = &builder.skillId
 
 	}
 	return req

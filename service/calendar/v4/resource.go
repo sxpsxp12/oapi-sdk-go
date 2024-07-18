@@ -15,6 +15,7 @@ type V4 struct {
 	CalendarEventAttendee           *calendarEventAttendee           // 日程参与人
 	CalendarEventAttendeeChatMember *calendarEventAttendeeChatMember // 日程参与人群成员
 	CalendarEventMeetingChat        *calendarEventMeetingChat        // calendar.event.meeting_chat
+	CalendarEventMeetingMinute      *calendarEventMeetingMinute      // calendar.event.meeting_minute
 	ExchangeBinding                 *exchangeBinding                 // Exchange绑定
 	Freebusy                        *freebusy                        // freebusy
 	Setting                         *setting                         // 日历设置
@@ -29,6 +30,7 @@ func New(config *larkcore.Config) *V4 {
 		CalendarEventAttendee:           &calendarEventAttendee{config: config},
 		CalendarEventAttendeeChatMember: &calendarEventAttendeeChatMember{config: config},
 		CalendarEventMeetingChat:        &calendarEventMeetingChat{config: config},
+		CalendarEventMeetingMinute:      &calendarEventMeetingMinute{config: config},
 		ExchangeBinding:                 &exchangeBinding{config: config},
 		Freebusy:                        &freebusy{config: config},
 		Setting:                         &setting{config: config},
@@ -52,6 +54,9 @@ type calendarEventAttendeeChatMember struct {
 	config *larkcore.Config
 }
 type calendarEventMeetingChat struct {
+	config *larkcore.Config
+}
+type calendarEventMeetingMinute struct {
 	config *larkcore.Config
 }
 type exchangeBinding struct {
@@ -1010,6 +1015,32 @@ func (c *calendarEventMeetingChat) Delete(ctx context.Context, req *DeleteCalend
 	}
 	// 反序列响应结果
 	resp := &DeleteCalendarEventMeetingChatResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, c.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// Create
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=create&project=calendar&resource=calendar.event.meeting_minute&version=v4
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/calendarv4/create_calendarEventMeetingMinute.go
+func (c *calendarEventMeetingMinute) Create(ctx context.Context, req *CreateCalendarEventMeetingMinuteReq, options ...larkcore.RequestOptionFunc) (*CreateCalendarEventMeetingMinuteResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/meeting_minute"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, c.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &CreateCalendarEventMeetingMinuteResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, c.config)
 	if err != nil {
 		return nil, err

@@ -29,9 +29,9 @@ func main() {
 	req := larkwiki.NewUpdateSpaceSettingReqBuilder().
 		SpaceId("1565676577122621").
 		Setting(larkwiki.NewSettingBuilder().
-			CreateSetting("").
-			SecuritySetting("").
-			CommentSetting("").
+			CreateSetting("admin").
+			SecuritySetting("allow").
+			CommentSetting("allow").
 			Build()).
 		Build()
 	// 发起请求

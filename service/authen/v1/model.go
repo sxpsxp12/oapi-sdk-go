@@ -548,7 +548,7 @@ func NewUserInfoBuilder() *UserInfoBuilder {
 
 // 用户姓名
 //
-// 示例值：
+// 示例值：zhangsan
 func (builder *UserInfoBuilder) Name(name string) *UserInfoBuilder {
 	builder.name = name
 	builder.nameFlag = true
@@ -557,7 +557,7 @@ func (builder *UserInfoBuilder) Name(name string) *UserInfoBuilder {
 
 // 用户英文名称
 //
-// 示例值：
+// 示例值：zhangsan
 func (builder *UserInfoBuilder) EnName(enName string) *UserInfoBuilder {
 	builder.enName = enName
 	builder.enNameFlag = true
@@ -566,7 +566,7 @@ func (builder *UserInfoBuilder) EnName(enName string) *UserInfoBuilder {
 
 // 用户头像
 //
-// 示例值：
+// 示例值：www.feishu.cn/avatar/icon
 func (builder *UserInfoBuilder) AvatarUrl(avatarUrl string) *UserInfoBuilder {
 	builder.avatarUrl = avatarUrl
 	builder.avatarUrlFlag = true
@@ -575,7 +575,7 @@ func (builder *UserInfoBuilder) AvatarUrl(avatarUrl string) *UserInfoBuilder {
 
 // 用户头像 72x72
 //
-// 示例值：
+// 示例值：www.feishu.cn/avatar/icon
 func (builder *UserInfoBuilder) AvatarThumb(avatarThumb string) *UserInfoBuilder {
 	builder.avatarThumb = avatarThumb
 	builder.avatarThumbFlag = true
@@ -584,7 +584,7 @@ func (builder *UserInfoBuilder) AvatarThumb(avatarThumb string) *UserInfoBuilder
 
 // 用户头像 240x240
 //
-// 示例值：
+// 示例值：www.feishu.cn/avatar/icon
 func (builder *UserInfoBuilder) AvatarMiddle(avatarMiddle string) *UserInfoBuilder {
 	builder.avatarMiddle = avatarMiddle
 	builder.avatarMiddleFlag = true
@@ -593,7 +593,7 @@ func (builder *UserInfoBuilder) AvatarMiddle(avatarMiddle string) *UserInfoBuild
 
 // 用户头像 640x640
 //
-// 示例值：
+// 示例值：www.feishu.cn/avatar/icon
 func (builder *UserInfoBuilder) AvatarBig(avatarBig string) *UserInfoBuilder {
 	builder.avatarBig = avatarBig
 	builder.avatarBigFlag = true
@@ -602,7 +602,7 @@ func (builder *UserInfoBuilder) AvatarBig(avatarBig string) *UserInfoBuilder {
 
 // 用户在应用内的唯一标识
 //
-// 示例值：
+// 示例值：ou-caecc734c2e3328a62489fe0648c4b98779515d3
 func (builder *UserInfoBuilder) OpenId(openId string) *UserInfoBuilder {
 	builder.openId = openId
 	builder.openIdFlag = true
@@ -611,7 +611,7 @@ func (builder *UserInfoBuilder) OpenId(openId string) *UserInfoBuilder {
 
 // 用户统一ID
 //
-// 示例值：
+// 示例值：on-d89jhsdhjsajkda7828enjdj328ydhhw3u43yjhdj
 func (builder *UserInfoBuilder) UnionId(unionId string) *UserInfoBuilder {
 	builder.unionId = unionId
 	builder.unionIdFlag = true
@@ -620,7 +620,7 @@ func (builder *UserInfoBuilder) UnionId(unionId string) *UserInfoBuilder {
 
 // 用户邮箱
 //
-// 示例值：
+// 示例值：zhangsan@feishu.cn
 func (builder *UserInfoBuilder) Email(email string) *UserInfoBuilder {
 	builder.email = email
 	builder.emailFlag = true
@@ -629,7 +629,7 @@ func (builder *UserInfoBuilder) Email(email string) *UserInfoBuilder {
 
 // 企业邮箱，请先确保已在管理后台启用飞书邮箱服务
 //
-// 示例值：
+// 示例值：zhangsan@feishu.cn
 func (builder *UserInfoBuilder) EnterpriseEmail(enterpriseEmail string) *UserInfoBuilder {
 	builder.enterpriseEmail = enterpriseEmail
 	builder.enterpriseEmailFlag = true
@@ -638,7 +638,7 @@ func (builder *UserInfoBuilder) EnterpriseEmail(enterpriseEmail string) *UserInf
 
 // 用户 user_id
 //
-// 示例值：
+// 示例值：5d9bdxxx
 func (builder *UserInfoBuilder) UserId(userId string) *UserInfoBuilder {
 	builder.userId = userId
 	builder.userIdFlag = true
@@ -647,7 +647,7 @@ func (builder *UserInfoBuilder) UserId(userId string) *UserInfoBuilder {
 
 // 用户手机号
 //
-// 示例值：
+// 示例值：+86130002883xx
 func (builder *UserInfoBuilder) Mobile(mobile string) *UserInfoBuilder {
 	builder.mobile = mobile
 	builder.mobileFlag = true
@@ -656,7 +656,7 @@ func (builder *UserInfoBuilder) Mobile(mobile string) *UserInfoBuilder {
 
 // 当前企业标识
 //
-// 示例值：
+// 示例值：736588c92lxf175d
 func (builder *UserInfoBuilder) TenantKey(tenantKey string) *UserInfoBuilder {
 	builder.tenantKey = tenantKey
 	builder.tenantKeyFlag = true
@@ -665,7 +665,7 @@ func (builder *UserInfoBuilder) TenantKey(tenantKey string) *UserInfoBuilder {
 
 // 用户工号
 //
-// 示例值：
+// 示例值：111222333
 func (builder *UserInfoBuilder) EmployeeNo(employeeNo string) *UserInfoBuilder {
 	builder.employeeNo = employeeNo
 	builder.employeeNoFlag = true

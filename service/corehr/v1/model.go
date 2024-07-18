@@ -38,6 +38,13 @@ const (
 )
 
 const (
+	UserIdTypeAddRoleAssignAuthorizationUserId         = "user_id"          // 以 user_id 来识别用户
+	UserIdTypeAddRoleAssignAuthorizationUnionId        = "union_id"         // 以 union_id 来识别用户
+	UserIdTypeAddRoleAssignAuthorizationOpenId         = "open_id"          // 以 open_id 来识别用户
+	UserIdTypeAddRoleAssignAuthorizationPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
+)
+
+const (
 	UserIdTypeGetByParamAuthorizationUserId         = "user_id"          // 以 user_id 来识别用户
 	UserIdTypeGetByParamAuthorizationUnionId        = "union_id"         // 以 union_id 来识别用户
 	UserIdTypeGetByParamAuthorizationOpenId         = "open_id"          // 以 open_id 来识别用户
@@ -56,6 +63,13 @@ const (
 	UserIdTypeRemoveRoleAssignAuthorizationUnionId        = "union_id"         // 以 union_id 来识别用户
 	UserIdTypeRemoveRoleAssignAuthorizationOpenId         = "open_id"          // 以 open_id 来识别用户
 	UserIdTypeRemoveRoleAssignAuthorizationPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
+)
+
+const (
+	UserIdTypeUpdateRoleAssignAuthorizationUserId         = "user_id"          // 以 user_id 来识别用户
+	UserIdTypeUpdateRoleAssignAuthorizationUnionId        = "union_id"         // 以 union_id 来识别用户
+	UserIdTypeUpdateRoleAssignAuthorizationOpenId         = "open_id"          // 以 open_id 来识别用户
+	UserIdTypeUpdateRoleAssignAuthorizationPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
 )
 
 const (
@@ -17588,6 +17602,135 @@ func (resp *SearchAssignedUserResp) Success() bool {
 	return resp.Code == 0
 }
 
+type AddRoleAssignAuthorizationReqBodyBuilder struct {
+	assignedOrganizationItems     [][]*AssignedOrganizationWithCode // 授权
+	assignedOrganizationItemsFlag bool
+}
+
+func NewAddRoleAssignAuthorizationReqBodyBuilder() *AddRoleAssignAuthorizationReqBodyBuilder {
+	builder := &AddRoleAssignAuthorizationReqBodyBuilder{}
+	return builder
+}
+
+// 授权
+//
+// 示例值：67489937334909845
+func (builder *AddRoleAssignAuthorizationReqBodyBuilder) AssignedOrganizationItems(assignedOrganizationItems [][]*AssignedOrganizationWithCode) *AddRoleAssignAuthorizationReqBodyBuilder {
+	builder.assignedOrganizationItems = assignedOrganizationItems
+	builder.assignedOrganizationItemsFlag = true
+	return builder
+}
+
+func (builder *AddRoleAssignAuthorizationReqBodyBuilder) Build() *AddRoleAssignAuthorizationReqBody {
+	req := &AddRoleAssignAuthorizationReqBody{}
+	if builder.assignedOrganizationItemsFlag {
+		req.AssignedOrganizationItems = builder.assignedOrganizationItems
+	}
+	return req
+}
+
+type AddRoleAssignAuthorizationPathReqBodyBuilder struct {
+	assignedOrganizationItems     [][]*AssignedOrganizationWithCode
+	assignedOrganizationItemsFlag bool
+}
+
+func NewAddRoleAssignAuthorizationPathReqBodyBuilder() *AddRoleAssignAuthorizationPathReqBodyBuilder {
+	builder := &AddRoleAssignAuthorizationPathReqBodyBuilder{}
+	return builder
+}
+
+// 授权
+//
+// 示例值：67489937334909845
+func (builder *AddRoleAssignAuthorizationPathReqBodyBuilder) AssignedOrganizationItems(assignedOrganizationItems [][]*AssignedOrganizationWithCode) *AddRoleAssignAuthorizationPathReqBodyBuilder {
+	builder.assignedOrganizationItems = assignedOrganizationItems
+	builder.assignedOrganizationItemsFlag = true
+	return builder
+}
+
+func (builder *AddRoleAssignAuthorizationPathReqBodyBuilder) Build() (*AddRoleAssignAuthorizationReqBody, error) {
+	req := &AddRoleAssignAuthorizationReqBody{}
+	if builder.assignedOrganizationItemsFlag {
+		req.AssignedOrganizationItems = builder.assignedOrganizationItems
+	}
+	return req, nil
+}
+
+type AddRoleAssignAuthorizationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *AddRoleAssignAuthorizationReqBody
+}
+
+func NewAddRoleAssignAuthorizationReqBuilder() *AddRoleAssignAuthorizationReqBuilder {
+	builder := &AddRoleAssignAuthorizationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 雇员 ID
+//
+// 示例值：67489937334909845
+func (builder *AddRoleAssignAuthorizationReqBuilder) EmploymentId(employmentId string) *AddRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("employment_id", fmt.Sprint(employmentId))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：people_corehr_id
+func (builder *AddRoleAssignAuthorizationReqBuilder) UserIdType(userIdType string) *AddRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 角色 ID
+//
+// 示例值：67489937334909845
+func (builder *AddRoleAssignAuthorizationReqBuilder) RoleId(roleId string) *AddRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("role_id", fmt.Sprint(roleId))
+	return builder
+}
+
+// 追加更新组织类授权
+func (builder *AddRoleAssignAuthorizationReqBuilder) Body(body *AddRoleAssignAuthorizationReqBody) *AddRoleAssignAuthorizationReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *AddRoleAssignAuthorizationReqBuilder) Build() *AddRoleAssignAuthorizationReq {
+	req := &AddRoleAssignAuthorizationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type AddRoleAssignAuthorizationReqBody struct {
+	AssignedOrganizationItems [][]*AssignedOrganizationWithCode `json:"assigned_organization_items,omitempty"` // 授权
+}
+
+type AddRoleAssignAuthorizationReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *AddRoleAssignAuthorizationReqBody `body:""`
+}
+
+type AddRoleAssignAuthorizationRespData struct {
+	AssignId *string `json:"assign_id,omitempty"` // 授权id
+}
+
+type AddRoleAssignAuthorizationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *AddRoleAssignAuthorizationRespData `json:"data"` // 业务数据
+}
+
+func (resp *AddRoleAssignAuthorizationResp) Success() bool {
+	return resp.Code == 0
+}
+
 type GetByParamAuthorizationReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -17785,6 +17928,135 @@ type RemoveRoleAssignAuthorizationResp struct {
 }
 
 func (resp *RemoveRoleAssignAuthorizationResp) Success() bool {
+	return resp.Code == 0
+}
+
+type UpdateRoleAssignAuthorizationReqBodyBuilder struct {
+	assignedOrganizationItems     [][]*AssignedOrganizationWithCode // 授权
+	assignedOrganizationItemsFlag bool
+}
+
+func NewUpdateRoleAssignAuthorizationReqBodyBuilder() *UpdateRoleAssignAuthorizationReqBodyBuilder {
+	builder := &UpdateRoleAssignAuthorizationReqBodyBuilder{}
+	return builder
+}
+
+// 授权
+//
+// 示例值：67489937334909845
+func (builder *UpdateRoleAssignAuthorizationReqBodyBuilder) AssignedOrganizationItems(assignedOrganizationItems [][]*AssignedOrganizationWithCode) *UpdateRoleAssignAuthorizationReqBodyBuilder {
+	builder.assignedOrganizationItems = assignedOrganizationItems
+	builder.assignedOrganizationItemsFlag = true
+	return builder
+}
+
+func (builder *UpdateRoleAssignAuthorizationReqBodyBuilder) Build() *UpdateRoleAssignAuthorizationReqBody {
+	req := &UpdateRoleAssignAuthorizationReqBody{}
+	if builder.assignedOrganizationItemsFlag {
+		req.AssignedOrganizationItems = builder.assignedOrganizationItems
+	}
+	return req
+}
+
+type UpdateRoleAssignAuthorizationPathReqBodyBuilder struct {
+	assignedOrganizationItems     [][]*AssignedOrganizationWithCode
+	assignedOrganizationItemsFlag bool
+}
+
+func NewUpdateRoleAssignAuthorizationPathReqBodyBuilder() *UpdateRoleAssignAuthorizationPathReqBodyBuilder {
+	builder := &UpdateRoleAssignAuthorizationPathReqBodyBuilder{}
+	return builder
+}
+
+// 授权
+//
+// 示例值：67489937334909845
+func (builder *UpdateRoleAssignAuthorizationPathReqBodyBuilder) AssignedOrganizationItems(assignedOrganizationItems [][]*AssignedOrganizationWithCode) *UpdateRoleAssignAuthorizationPathReqBodyBuilder {
+	builder.assignedOrganizationItems = assignedOrganizationItems
+	builder.assignedOrganizationItemsFlag = true
+	return builder
+}
+
+func (builder *UpdateRoleAssignAuthorizationPathReqBodyBuilder) Build() (*UpdateRoleAssignAuthorizationReqBody, error) {
+	req := &UpdateRoleAssignAuthorizationReqBody{}
+	if builder.assignedOrganizationItemsFlag {
+		req.AssignedOrganizationItems = builder.assignedOrganizationItems
+	}
+	return req, nil
+}
+
+type UpdateRoleAssignAuthorizationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *UpdateRoleAssignAuthorizationReqBody
+}
+
+func NewUpdateRoleAssignAuthorizationReqBuilder() *UpdateRoleAssignAuthorizationReqBuilder {
+	builder := &UpdateRoleAssignAuthorizationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 雇员 ID
+//
+// 示例值：67489937334909845
+func (builder *UpdateRoleAssignAuthorizationReqBuilder) EmploymentId(employmentId string) *UpdateRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("employment_id", fmt.Sprint(employmentId))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：people_corehr_id
+func (builder *UpdateRoleAssignAuthorizationReqBuilder) UserIdType(userIdType string) *UpdateRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 角色 ID
+//
+// 示例值：67489937334909845
+func (builder *UpdateRoleAssignAuthorizationReqBuilder) RoleId(roleId string) *UpdateRoleAssignAuthorizationReqBuilder {
+	builder.apiReq.QueryParams.Set("role_id", fmt.Sprint(roleId))
+	return builder
+}
+
+// 覆盖更新组织类授权
+func (builder *UpdateRoleAssignAuthorizationReqBuilder) Body(body *UpdateRoleAssignAuthorizationReqBody) *UpdateRoleAssignAuthorizationReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *UpdateRoleAssignAuthorizationReqBuilder) Build() *UpdateRoleAssignAuthorizationReq {
+	req := &UpdateRoleAssignAuthorizationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type UpdateRoleAssignAuthorizationReqBody struct {
+	AssignedOrganizationItems [][]*AssignedOrganizationWithCode `json:"assigned_organization_items,omitempty"` // 授权
+}
+
+type UpdateRoleAssignAuthorizationReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *UpdateRoleAssignAuthorizationReqBody `body:""`
+}
+
+type UpdateRoleAssignAuthorizationRespData struct {
+	AssignId *string `json:"assign_id,omitempty"` // 授权id
+}
+
+type UpdateRoleAssignAuthorizationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *UpdateRoleAssignAuthorizationRespData `json:"data"` // 业务数据
+}
+
+func (resp *UpdateRoleAssignAuthorizationResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -25298,6 +25570,7 @@ func (m *P2DepartmentCreatedV1) RawReq(req *larkevent.EventReq) {
 
 type P2DepartmentDeletedV1Data struct {
 	DepartmentId *string `json:"department_id,omitempty"` // 被删除部门的 ID
+	Code         *string `json:"code,omitempty"`          // 部门编码
 }
 
 type P2DepartmentDeletedV1 struct {

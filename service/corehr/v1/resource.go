@@ -214,6 +214,32 @@ func (a *assignedUser) Search(ctx context.Context, req *SearchAssignedUserReq, o
 	return resp, err
 }
 
+// AddRoleAssign
+//
+// - 追加更新组织类授权
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=add_role_assign&project=corehr&resource=authorization&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv1/addRoleAssign_authorization.go
+func (a *authorization) AddRoleAssign(ctx context.Context, req *AddRoleAssignAuthorizationReq, options ...larkcore.RequestOptionFunc) (*AddRoleAssignAuthorizationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v1/authorizations/add_role_assign"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &AddRoleAssignAuthorizationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // GetByParam
 //
 // - 根据ID查询单个用户授权
@@ -285,6 +311,32 @@ func (a *authorization) RemoveRoleAssign(ctx context.Context, req *RemoveRoleAss
 	}
 	// 反序列响应结果
 	resp := &RemoveRoleAssignAuthorizationResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// UpdateRoleAssign
+//
+// - 覆盖更新组织类授权
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=update_role_assign&project=corehr&resource=authorization&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/corehrv1/updateRoleAssign_authorization.go
+func (a *authorization) UpdateRoleAssign(ctx context.Context, req *UpdateRoleAssignAuthorizationReq, options ...larkcore.RequestOptionFunc) (*UpdateRoleAssignAuthorizationResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/corehr/v1/authorizations/update_role_assign"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UpdateRoleAssignAuthorizationResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, a.config)
 	if err != nil {
 		return nil, err

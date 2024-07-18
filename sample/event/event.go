@@ -137,7 +137,7 @@ func main() {
 		fmt.Println(larkcore.Prettify(event))
 		fmt.Println(event.RequestId())
 		return nil
-	}).OnCustomizedEvent("custom_event_type", func(ctx context.Context, event *larkevent.EventReq) error {
+	}).OnCustomizedEvent("这里填入你要自定义订阅的 event 的 key,例如 out_approval", func(ctx context.Context, event *larkevent.EventReq) error {
 		// 原生消息体
 		fmt.Println(string(event.Body))
 		fmt.Println(larkcore.Prettify(event.Header))
