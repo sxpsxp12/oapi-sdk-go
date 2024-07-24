@@ -11,6 +11,7 @@ import (
 
 type V1 struct {
 	ApprovalInfo            *approvalInfo            // approval_info
+	ArchiveRule             *archiveRule             // archive_rule
 	File                    *file                    // 文件
 	Group                   *group                   // 考勤组管理
 	LeaveAccrualRecord      *leaveAccrualRecord      // leave_accrual_record
@@ -30,6 +31,7 @@ type V1 struct {
 func New(config *larkcore.Config) *V1 {
 	return &V1{
 		ApprovalInfo:            &approvalInfo{config: config},
+		ArchiveRule:             &archiveRule{config: config},
 		File:                    &file{config: config},
 		Group:                   &group{config: config},
 		LeaveAccrualRecord:      &leaveAccrualRecord{config: config},
@@ -48,6 +50,9 @@ func New(config *larkcore.Config) *V1 {
 }
 
 type approvalInfo struct {
+	config *larkcore.Config
+}
+type archiveRule struct {
 	config *larkcore.Config
 }
 type file struct {
@@ -114,6 +119,66 @@ func (a *approvalInfo) Process(ctx context.Context, req *ProcessApprovalInfoReq,
 	}
 	// 反序列响应结果
 	resp := &ProcessApprovalInfoResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=attendance&resource=archive_rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/attendancev1/list_archiveRule.go
+func (a *archiveRule) List(ctx context.Context, req *ListArchiveRuleReq, options ...larkcore.RequestOptionFunc) (*ListArchiveRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/attendance/v1/archive_rule"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListArchiveRuleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+func (a *archiveRule) ListByIterator(ctx context.Context, req *ListArchiveRuleReq, options ...larkcore.RequestOptionFunc) (*ListArchiveRuleIterator, error) {
+	return &ListArchiveRuleIterator{
+		ctx:      ctx,
+		req:      req,
+		listFunc: a.List,
+		options:  options,
+		limit:    req.Limit}, nil
+}
+
+// UserStatsFieldsQuery
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=user_stats_fields_query&project=attendance&resource=archive_rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/attendancev1/userStatsFieldsQuery_archiveRule.go
+func (a *archiveRule) UserStatsFieldsQuery(ctx context.Context, req *UserStatsFieldsQueryArchiveRuleReq, options ...larkcore.RequestOptionFunc) (*UserStatsFieldsQueryArchiveRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/attendance/v1/archive_rule/user_stats_fields_query"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UserStatsFieldsQueryArchiveRuleResp{ApiResp: apiResp}
 	err = apiResp.JSONUnmarshalBody(resp, a.config)
 	if err != nil {
 		return nil, err

@@ -163,6 +163,12 @@ const (
 )
 
 const (
+	UserIdTypeBatchGetAppTableRecordUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeBatchGetAppTableRecordUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeBatchGetAppTableRecordOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
 	UserIdTypeBatchUpdateAppTableRecordUserId  = "user_id"  // 以user_id来识别用户
 	UserIdTypeBatchUpdateAppTableRecordUnionId = "union_id" // 以union_id来识别用户
 	UserIdTypeBatchUpdateAppTableRecordOpenId  = "open_id"  // 以open_id来识别用户
@@ -2365,6 +2371,7 @@ type AppTableRecord struct {
 	CreatedTime      *int64                 `json:"created_time,omitempty"`       // 该记录的创建时间
 	LastModifiedBy   *Person                `json:"last_modified_by,omitempty"`   // 该记录最新一次更新的修改人
 	LastModifiedTime *int64                 `json:"last_modified_time,omitempty"` // 该记录最近一次的更新时间
+	RecordUrl        *string                `json:"record_url,omitempty"`         // 记录链接
 }
 
 type AppTableRecordBuilder struct {
@@ -2380,6 +2387,8 @@ type AppTableRecordBuilder struct {
 	lastModifiedByFlag   bool
 	lastModifiedTime     int64 // 该记录最近一次的更新时间
 	lastModifiedTimeFlag bool
+	recordUrl            string // 记录链接
+	recordUrlFlag        bool
 }
 
 func NewAppTableRecordBuilder() *AppTableRecordBuilder {
@@ -2441,6 +2450,15 @@ func (builder *AppTableRecordBuilder) LastModifiedTime(lastModifiedTime int64) *
 	return builder
 }
 
+// 记录链接
+//
+// 示例值：https://www.example.com/record/WVoXrzIaqeorcJcHgzAcg8AQnNd
+func (builder *AppTableRecordBuilder) RecordUrl(recordUrl string) *AppTableRecordBuilder {
+	builder.recordUrl = recordUrl
+	builder.recordUrlFlag = true
+	return builder
+}
+
 func (builder *AppTableRecordBuilder) Build() *AppTableRecord {
 	req := &AppTableRecord{}
 	if builder.fieldsFlag {
@@ -2462,6 +2480,10 @@ func (builder *AppTableRecordBuilder) Build() *AppTableRecord {
 	}
 	if builder.lastModifiedTimeFlag {
 		req.LastModifiedTime = &builder.lastModifiedTime
+
+	}
+	if builder.recordUrlFlag {
+		req.RecordUrl = &builder.recordUrl
 
 	}
 	return req
@@ -6836,6 +6858,216 @@ type BatchDeleteAppTableRecordResp struct {
 }
 
 func (resp *BatchDeleteAppTableRecordResp) Success() bool {
+	return resp.Code == 0
+}
+
+type BatchGetAppTableRecordReqBodyBuilder struct {
+	recordIds           []string // 记录 id 列表
+	recordIdsFlag       bool
+	userIdType          string // 此次调用中使用的用户 id 的类型
+	userIdTypeFlag      bool
+	withSharedUrl       bool // 控制是否返回记录的分享链接，true 表示返回分享链接
+	withSharedUrlFlag   bool
+	automaticFields     bool // 控制是否返回自动计算的字段，true 表示返回
+	automaticFieldsFlag bool
+}
+
+func NewBatchGetAppTableRecordReqBodyBuilder() *BatchGetAppTableRecordReqBodyBuilder {
+	builder := &BatchGetAppTableRecordReqBodyBuilder{}
+	return builder
+}
+
+// 记录 id 列表
+//
+// 示例值：
+func (builder *BatchGetAppTableRecordReqBodyBuilder) RecordIds(recordIds []string) *BatchGetAppTableRecordReqBodyBuilder {
+	builder.recordIds = recordIds
+	builder.recordIdsFlag = true
+	return builder
+}
+
+// 此次调用中使用的用户 id 的类型
+//
+// 示例值：open_id
+func (builder *BatchGetAppTableRecordReqBodyBuilder) UserIdType(userIdType string) *BatchGetAppTableRecordReqBodyBuilder {
+	builder.userIdType = userIdType
+	builder.userIdTypeFlag = true
+	return builder
+}
+
+// 控制是否返回记录的分享链接，true 表示返回分享链接
+//
+// 示例值：
+func (builder *BatchGetAppTableRecordReqBodyBuilder) WithSharedUrl(withSharedUrl bool) *BatchGetAppTableRecordReqBodyBuilder {
+	builder.withSharedUrl = withSharedUrl
+	builder.withSharedUrlFlag = true
+	return builder
+}
+
+// 控制是否返回自动计算的字段，true 表示返回
+//
+// 示例值：
+func (builder *BatchGetAppTableRecordReqBodyBuilder) AutomaticFields(automaticFields bool) *BatchGetAppTableRecordReqBodyBuilder {
+	builder.automaticFields = automaticFields
+	builder.automaticFieldsFlag = true
+	return builder
+}
+
+func (builder *BatchGetAppTableRecordReqBodyBuilder) Build() *BatchGetAppTableRecordReqBody {
+	req := &BatchGetAppTableRecordReqBody{}
+	if builder.recordIdsFlag {
+		req.RecordIds = builder.recordIds
+	}
+	if builder.userIdTypeFlag {
+		req.UserIdType = &builder.userIdType
+	}
+	if builder.withSharedUrlFlag {
+		req.WithSharedUrl = &builder.withSharedUrl
+	}
+	if builder.automaticFieldsFlag {
+		req.AutomaticFields = &builder.automaticFields
+	}
+	return req
+}
+
+type BatchGetAppTableRecordPathReqBodyBuilder struct {
+	recordIds           []string
+	recordIdsFlag       bool
+	userIdType          string
+	userIdTypeFlag      bool
+	withSharedUrl       bool
+	withSharedUrlFlag   bool
+	automaticFields     bool
+	automaticFieldsFlag bool
+}
+
+func NewBatchGetAppTableRecordPathReqBodyBuilder() *BatchGetAppTableRecordPathReqBodyBuilder {
+	builder := &BatchGetAppTableRecordPathReqBodyBuilder{}
+	return builder
+}
+
+// 记录 id 列表
+//
+// 示例值：
+func (builder *BatchGetAppTableRecordPathReqBodyBuilder) RecordIds(recordIds []string) *BatchGetAppTableRecordPathReqBodyBuilder {
+	builder.recordIds = recordIds
+	builder.recordIdsFlag = true
+	return builder
+}
+
+// 此次调用中使用的用户 id 的类型
+//
+// 示例值：open_id
+func (builder *BatchGetAppTableRecordPathReqBodyBuilder) UserIdType(userIdType string) *BatchGetAppTableRecordPathReqBodyBuilder {
+	builder.userIdType = userIdType
+	builder.userIdTypeFlag = true
+	return builder
+}
+
+// 控制是否返回记录的分享链接，true 表示返回分享链接
+//
+// 示例值：
+func (builder *BatchGetAppTableRecordPathReqBodyBuilder) WithSharedUrl(withSharedUrl bool) *BatchGetAppTableRecordPathReqBodyBuilder {
+	builder.withSharedUrl = withSharedUrl
+	builder.withSharedUrlFlag = true
+	return builder
+}
+
+// 控制是否返回自动计算的字段，true 表示返回
+//
+// 示例值：
+func (builder *BatchGetAppTableRecordPathReqBodyBuilder) AutomaticFields(automaticFields bool) *BatchGetAppTableRecordPathReqBodyBuilder {
+	builder.automaticFields = automaticFields
+	builder.automaticFieldsFlag = true
+	return builder
+}
+
+func (builder *BatchGetAppTableRecordPathReqBodyBuilder) Build() (*BatchGetAppTableRecordReqBody, error) {
+	req := &BatchGetAppTableRecordReqBody{}
+	if builder.recordIdsFlag {
+		req.RecordIds = builder.recordIds
+	}
+	if builder.userIdTypeFlag {
+		req.UserIdType = &builder.userIdType
+	}
+	if builder.withSharedUrlFlag {
+		req.WithSharedUrl = &builder.withSharedUrl
+	}
+	if builder.automaticFieldsFlag {
+		req.AutomaticFields = &builder.automaticFields
+	}
+	return req, nil
+}
+
+type BatchGetAppTableRecordReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *BatchGetAppTableRecordReqBody
+}
+
+func NewBatchGetAppTableRecordReqBuilder() *BatchGetAppTableRecordReqBuilder {
+	builder := &BatchGetAppTableRecordReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 表格token
+//
+// 示例值：NQRxbRkBMa6OnZsjtERcxhNWnNh
+func (builder *BatchGetAppTableRecordReqBuilder) AppToken(appToken string) *BatchGetAppTableRecordReqBuilder {
+	builder.apiReq.PathParams.Set("app_token", fmt.Sprint(appToken))
+	return builder
+}
+
+// 表格id
+//
+// 示例值：tbl0xe5g8PP3U3cS
+func (builder *BatchGetAppTableRecordReqBuilder) TableId(tableId string) *BatchGetAppTableRecordReqBuilder {
+	builder.apiReq.PathParams.Set("table_id", fmt.Sprint(tableId))
+	return builder
+}
+
+// 批量获取多维表格记录
+func (builder *BatchGetAppTableRecordReqBuilder) Body(body *BatchGetAppTableRecordReqBody) *BatchGetAppTableRecordReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *BatchGetAppTableRecordReqBuilder) Build() *BatchGetAppTableRecordReq {
+	req := &BatchGetAppTableRecordReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type BatchGetAppTableRecordReqBody struct {
+	RecordIds       []string `json:"record_ids,omitempty"`       // 记录 id 列表
+	UserIdType      *string  `json:"user_id_type,omitempty"`     // 此次调用中使用的用户 id 的类型
+	WithSharedUrl   *bool    `json:"with_shared_url,omitempty"`  // 控制是否返回记录的分享链接，true 表示返回分享链接
+	AutomaticFields *bool    `json:"automatic_fields,omitempty"` // 控制是否返回自动计算的字段，true 表示返回
+}
+
+type BatchGetAppTableRecordReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *BatchGetAppTableRecordReqBody `body:""`
+}
+
+type BatchGetAppTableRecordRespData struct {
+	Records            []*AppTableRecord `json:"records,omitempty"`              // 记录列表
+	ForbiddenRecordIds []string          `json:"forbidden_record_ids,omitempty"` // 禁止访问的记录列表(针对开启了高级权限的文档)
+	AbsentRecordIds    []string          `json:"absent_record_ids,omitempty"`    // 不存在的记录列表
+}
+
+type BatchGetAppTableRecordResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *BatchGetAppTableRecordRespData `json:"data"` // 业务数据
+}
+
+func (resp *BatchGetAppTableRecordResp) Success() bool {
 	return resp.Code == 0
 }
 

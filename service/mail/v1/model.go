@@ -1224,6 +1224,7 @@ type Message struct {
 	MessageId     *string        `json:"message_id,omitempty"`      // 邮件id
 	BodyPlainText *string        `json:"body_plain_text,omitempty"` // 正文纯文本(base64url)
 	Attachments   []*Attachment  `json:"attachments,omitempty"`     // 邮件附件列表
+	ThreadId      *string        `json:"thread_id,omitempty"`       // 会话id
 }
 
 type MessageBuilder struct {
@@ -1253,6 +1254,8 @@ type MessageBuilder struct {
 	bodyPlainTextFlag bool
 	attachments       []*Attachment // 邮件附件列表
 	attachmentsFlag   bool
+	threadId          string // 会话id
+	threadIdFlag      bool
 }
 
 func NewMessageBuilder() *MessageBuilder {
@@ -1377,6 +1380,15 @@ func (builder *MessageBuilder) Attachments(attachments []*Attachment) *MessageBu
 	return builder
 }
 
+// 会话id
+//
+// 示例值：tfuh9N4WnzU6jdDw=
+func (builder *MessageBuilder) ThreadId(threadId string) *MessageBuilder {
+	builder.threadId = threadId
+	builder.threadIdFlag = true
+	return builder
+}
+
 func (builder *MessageBuilder) Build() *Message {
 	req := &Message{}
 	if builder.rawFlag {
@@ -1425,6 +1437,10 @@ func (builder *MessageBuilder) Build() *Message {
 	}
 	if builder.attachmentsFlag {
 		req.Attachments = builder.attachments
+	}
+	if builder.threadIdFlag {
+		req.ThreadId = &builder.threadId
+
 	}
 	return req
 }

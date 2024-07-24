@@ -28,7 +28,7 @@ func main() {
 	// 创建请求对象
 	req := larkhire.NewListLocationReqBuilder().
 		PageToken("eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==").
-		PageSize(100).
+		PageSize(10).
 		Usage("interview_location").
 		Build()
 	// 发起请求

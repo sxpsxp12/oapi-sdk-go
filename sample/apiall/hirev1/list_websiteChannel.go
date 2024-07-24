@@ -28,7 +28,7 @@ func main() {
 	// 创建请求对象
 	req := larkhire.NewListWebsiteChannelReqBuilder().
 		WebsiteId("1618209327096").
-		PageSize("100").
+		PageSize("10").
 		PageToken("eyJvZmZzZXQiOjEwLCJ0aW1NTUyMjM2NzIsImlkIjpudWxsfQ").
 		Build()
 	// 发起请求

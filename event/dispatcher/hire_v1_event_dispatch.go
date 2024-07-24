@@ -147,3 +147,17 @@ func (dispatcher *EventDispatcher) OnP2ReferralAccountAssetsUpdateV1(handler fun
 	dispatcher.eventType2EventHandler["hire.referral_account.assets_update_v1"] = larkhire.NewP2ReferralAccountAssetsUpdateV1Handler(handler)
 	return dispatcher
 }
+
+// 删除人才
+//
+// - 删除人才
+//
+// - 事件描述文档链接:https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent/events/deleted
+func (dispatcher *EventDispatcher) OnP2TalentDeletedV1(handler func(ctx context.Context, event *larkhire.P2TalentDeletedV1) error) *EventDispatcher {
+	_, existed := dispatcher.eventType2EventHandler["hire.talent.deleted_v1"]
+	if existed {
+		panic("event: multiple handler registrations for " + "hire.talent.deleted_v1")
+	}
+	dispatcher.eventType2EventHandler["hire.talent.deleted_v1"] = larkhire.NewP2TalentDeletedV1Handler(handler)
+	return dispatcher
+}

@@ -8800,6 +8800,271 @@ func (resp *ProcessApprovalInfoResp) Success() bool {
 	return resp.Code == 0
 }
 
+type ListArchiveRuleReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListArchiveRuleReqBuilder() *ListArchiveRuleReqBuilder {
+	builder := &ListArchiveRuleReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListArchiveRuleReqBuilder) Limit(limit int) *ListArchiveRuleReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 分页大小
+//
+// 示例值：10
+func (builder *ListArchiveRuleReqBuilder) PageSize(pageSize int) *ListArchiveRuleReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：xxx
+func (builder *ListArchiveRuleReqBuilder) PageToken(pageToken string) *ListArchiveRuleReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+func (builder *ListArchiveRuleReqBuilder) Build() *ListArchiveRuleReq {
+	req := &ListArchiveRuleReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListArchiveRuleReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListArchiveRuleRespData struct {
+	Items     []*ArchiveReportMeta `json:"items,omitempty"`      // 分页查询结果项
+	PageToken *string              `json:"page_token,omitempty"` // 分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+	HasMore   *bool                `json:"has_more,omitempty"`   // 是否有更多项
+}
+
+type ListArchiveRuleResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListArchiveRuleRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListArchiveRuleResp) Success() bool {
+	return resp.Code == 0
+}
+
+type UserStatsFieldsQueryArchiveRuleReqBodyBuilder struct {
+	locale            string // 语言类型
+	localeFlag        bool
+	month             string // 月份
+	monthFlag         bool
+	archiveRuleId     string // 归档规则id
+	archiveRuleIdFlag bool
+	operatorId        string // 操作者id
+	operatorIdFlag    bool
+}
+
+func NewUserStatsFieldsQueryArchiveRuleReqBodyBuilder() *UserStatsFieldsQueryArchiveRuleReqBodyBuilder {
+	builder := &UserStatsFieldsQueryArchiveRuleReqBodyBuilder{}
+	return builder
+}
+
+// 语言类型
+//
+// 示例值：zh
+func (builder *UserStatsFieldsQueryArchiveRuleReqBodyBuilder) Locale(locale string) *UserStatsFieldsQueryArchiveRuleReqBodyBuilder {
+	builder.locale = locale
+	builder.localeFlag = true
+	return builder
+}
+
+// 月份
+//
+// 示例值：202409
+func (builder *UserStatsFieldsQueryArchiveRuleReqBodyBuilder) Month(month string) *UserStatsFieldsQueryArchiveRuleReqBodyBuilder {
+	builder.month = month
+	builder.monthFlag = true
+	return builder
+}
+
+// 归档规则id
+//
+// 示例值：1
+func (builder *UserStatsFieldsQueryArchiveRuleReqBodyBuilder) ArchiveRuleId(archiveRuleId string) *UserStatsFieldsQueryArchiveRuleReqBodyBuilder {
+	builder.archiveRuleId = archiveRuleId
+	builder.archiveRuleIdFlag = true
+	return builder
+}
+
+// 操作者id
+//
+// 示例值：ax8ud
+func (builder *UserStatsFieldsQueryArchiveRuleReqBodyBuilder) OperatorId(operatorId string) *UserStatsFieldsQueryArchiveRuleReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+func (builder *UserStatsFieldsQueryArchiveRuleReqBodyBuilder) Build() *UserStatsFieldsQueryArchiveRuleReqBody {
+	req := &UserStatsFieldsQueryArchiveRuleReqBody{}
+	if builder.localeFlag {
+		req.Locale = &builder.locale
+	}
+	if builder.monthFlag {
+		req.Month = &builder.month
+	}
+	if builder.archiveRuleIdFlag {
+		req.ArchiveRuleId = &builder.archiveRuleId
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	return req
+}
+
+type UserStatsFieldsQueryArchiveRulePathReqBodyBuilder struct {
+	locale            string
+	localeFlag        bool
+	month             string
+	monthFlag         bool
+	archiveRuleId     string
+	archiveRuleIdFlag bool
+	operatorId        string
+	operatorIdFlag    bool
+}
+
+func NewUserStatsFieldsQueryArchiveRulePathReqBodyBuilder() *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder {
+	builder := &UserStatsFieldsQueryArchiveRulePathReqBodyBuilder{}
+	return builder
+}
+
+// 语言类型
+//
+// 示例值：zh
+func (builder *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder) Locale(locale string) *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder {
+	builder.locale = locale
+	builder.localeFlag = true
+	return builder
+}
+
+// 月份
+//
+// 示例值：202409
+func (builder *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder) Month(month string) *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder {
+	builder.month = month
+	builder.monthFlag = true
+	return builder
+}
+
+// 归档规则id
+//
+// 示例值：1
+func (builder *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder) ArchiveRuleId(archiveRuleId string) *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder {
+	builder.archiveRuleId = archiveRuleId
+	builder.archiveRuleIdFlag = true
+	return builder
+}
+
+// 操作者id
+//
+// 示例值：ax8ud
+func (builder *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder) OperatorId(operatorId string) *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+func (builder *UserStatsFieldsQueryArchiveRulePathReqBodyBuilder) Build() (*UserStatsFieldsQueryArchiveRuleReqBody, error) {
+	req := &UserStatsFieldsQueryArchiveRuleReqBody{}
+	if builder.localeFlag {
+		req.Locale = &builder.locale
+	}
+	if builder.monthFlag {
+		req.Month = &builder.month
+	}
+	if builder.archiveRuleIdFlag {
+		req.ArchiveRuleId = &builder.archiveRuleId
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	return req, nil
+}
+
+type UserStatsFieldsQueryArchiveRuleReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *UserStatsFieldsQueryArchiveRuleReqBody
+}
+
+func NewUserStatsFieldsQueryArchiveRuleReqBuilder() *UserStatsFieldsQueryArchiveRuleReqBuilder {
+	builder := &UserStatsFieldsQueryArchiveRuleReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 用户 ID 的类型
+//
+// 示例值：employee_id
+func (builder *UserStatsFieldsQueryArchiveRuleReqBuilder) EmployeeType(employeeType string) *UserStatsFieldsQueryArchiveRuleReqBuilder {
+	builder.apiReq.QueryParams.Set("employee_type", fmt.Sprint(employeeType))
+	return builder
+}
+
+func (builder *UserStatsFieldsQueryArchiveRuleReqBuilder) Body(body *UserStatsFieldsQueryArchiveRuleReqBody) *UserStatsFieldsQueryArchiveRuleReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *UserStatsFieldsQueryArchiveRuleReqBuilder) Build() *UserStatsFieldsQueryArchiveRuleReq {
+	req := &UserStatsFieldsQueryArchiveRuleReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type UserStatsFieldsQueryArchiveRuleReqBody struct {
+	Locale        *string `json:"locale,omitempty"`          // 语言类型
+	Month         *string `json:"month,omitempty"`           // 月份
+	ArchiveRuleId *string `json:"archive_rule_id,omitempty"` // 归档规则id
+	OperatorId    *string `json:"operator_id,omitempty"`     // 操作者id
+}
+
+type UserStatsFieldsQueryArchiveRuleReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *UserStatsFieldsQueryArchiveRuleReqBody `body:""`
+}
+
+type UserStatsFieldsQueryArchiveRuleRespData struct {
+	ArchiveReportFields []*ArchiveField `json:"archive_report_fields,omitempty"` // 统计数据表头
+}
+
+type UserStatsFieldsQueryArchiveRuleResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *UserStatsFieldsQueryArchiveRuleRespData `json:"data"` // 业务数据
+}
+
+func (resp *UserStatsFieldsQueryArchiveRuleResp) Success() bool {
+	return resp.Code == 0
+}
+
 type DownloadFileReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -13060,6 +13325,60 @@ type QueryUserAllowedRemedysUserTaskRemedyResp struct {
 
 func (resp *QueryUserAllowedRemedysUserTaskRemedyResp) Success() bool {
 	return resp.Code == 0
+}
+
+type ListArchiveRuleIterator struct {
+	nextPageToken *string
+	items         []*ArchiveReportMeta
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListArchiveRuleReq
+	listFunc      func(ctx context.Context, req *ListArchiveRuleReq, options ...larkcore.RequestOptionFunc) (*ListArchiveRuleResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListArchiveRuleIterator) Next() (bool, *ArchiveReportMeta, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListArchiveRuleIterator) NextPageToken() *string {
+	return iterator.nextPageToken
 }
 
 type ListGroupIterator struct {

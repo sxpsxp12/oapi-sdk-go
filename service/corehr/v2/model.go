@@ -347,6 +347,25 @@ const (
 )
 
 const (
+	StatusApproved = 2 // 拒绝
+	StatusRejected = 3 // 通过
+
+)
+
+const (
+	UserIdTypeUpdateProcessApproverOpenId         = "open_id"          // 标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。了解更多：如何获取 Open ID
+	UserIdTypeUpdateProcessApproverUnionId        = "union_id"         // 标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。了解更多：如何获取 Union ID？
+	UserIdTypeUpdateProcessApproverUserId         = "user_id"          // 标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。了解更多：如何获取 User ID？ 默认值：open_id 当值为 user_id，字段权限要求：获取用户 user ID（仅自建应用）
+	UserIdTypeUpdateProcessApproverPeopleCorehrId = "people_corehr_id" // 以飞书人事的 ID 来识别用户
+)
+
+const (
+	DepartmentIdTypeUpdateProcessApproverOpenDepartmentId         = "open_department_id"          // 以 open_department_id 来标识部门
+	DepartmentIdTypeUpdateProcessApproverDepartmentId             = "department_id"               // 以 department_id 来标识部门
+	DepartmentIdTypeUpdateProcessApproverPeopleCorehrDepartmentId = "people_corehr_department_id" // 以 people_corehr_department_id 来标识部门
+)
+
+const (
 	UserIdTypeGetProcessFormVariableDataOpenId         = "open_id"          // 标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。了解更多：如何获取 Open ID
 	UserIdTypeGetProcessFormVariableDataUnionId        = "union_id"         // 标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。了解更多：如何获取 Union ID？
 	UserIdTypeGetProcessFormVariableDataUserId         = "user_id"          // 标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。了解更多：如何获取 User ID？ 默认值：open_id 当值为 user_id，字段权限要求：获取用户 user ID（仅自建应用）
@@ -23942,6 +23961,7 @@ type PrehireCreate struct {
 	EducationInfo    []*EducationInfo  `json:"education_info,omitempty"`     // 教育经历
 	WorkExperience   []*WorkExperience `json:"work_experience,omitempty"`    // 工作经历
 	AtsApplicationId *string           `json:"ats_application_id,omitempty"` // 招聘应用ID
+	OutBizId         *string           `json:"out_biz_id,omitempty"`         // 外部业务唯一编码
 }
 
 type PrehireCreateBuilder struct {
@@ -23955,6 +23975,8 @@ type PrehireCreateBuilder struct {
 	workExperienceFlag   bool
 	atsApplicationId     string // 招聘应用ID
 	atsApplicationIdFlag bool
+	outBizId             string // 外部业务唯一编码
+	outBizIdFlag         bool
 }
 
 func NewPrehireCreateBuilder() *PrehireCreateBuilder {
@@ -24007,6 +24029,15 @@ func (builder *PrehireCreateBuilder) AtsApplicationId(atsApplicationId string) *
 	return builder
 }
 
+// 外部业务唯一编码
+//
+// 示例值：7140946969586010376
+func (builder *PrehireCreateBuilder) OutBizId(outBizId string) *PrehireCreateBuilder {
+	builder.outBizId = outBizId
+	builder.outBizIdFlag = true
+	return builder
+}
+
 func (builder *PrehireCreateBuilder) Build() *PrehireCreate {
 	req := &PrehireCreate{}
 	if builder.basicInfoFlag {
@@ -24023,6 +24054,10 @@ func (builder *PrehireCreateBuilder) Build() *PrehireCreate {
 	}
 	if builder.atsApplicationIdFlag {
 		req.AtsApplicationId = &builder.atsApplicationId
+
+	}
+	if builder.outBizIdFlag {
+		req.OutBizId = &builder.outBizId
 
 	}
 	return req
@@ -44481,6 +44516,86 @@ type ListProcessResp struct {
 }
 
 func (resp *ListProcessResp) Success() bool {
+	return resp.Code == 0
+}
+
+type UpdateProcessApproverReqBuilder struct {
+	apiReq          *larkcore.ApiReq
+	processApprover *ProcessApprover
+}
+
+func NewUpdateProcessApproverReqBuilder() *UpdateProcessApproverReqBuilder {
+	builder := &UpdateProcessApproverReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 流程实例id
+//
+// 示例值：7328345170959681068
+func (builder *UpdateProcessApproverReqBuilder) ProcessId(processId string) *UpdateProcessApproverReqBuilder {
+	builder.apiReq.PathParams.Set("process_id", fmt.Sprint(processId))
+	return builder
+}
+
+// 审批任务id
+//
+// 示例值：7328345235136726572
+func (builder *UpdateProcessApproverReqBuilder) ApproverId(approverId string) *UpdateProcessApproverReqBuilder {
+	builder.apiReq.PathParams.Set("approver_id", fmt.Sprint(approverId))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *UpdateProcessApproverReqBuilder) UserIdType(userIdType string) *UpdateProcessApproverReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 此次调用中使用的部门 ID 类型
+//
+// 示例值：open_department_id
+func (builder *UpdateProcessApproverReqBuilder) DepartmentIdType(departmentIdType string) *UpdateProcessApproverReqBuilder {
+	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
+	return builder
+}
+
+func (builder *UpdateProcessApproverReqBuilder) ProcessApprover(processApprover *ProcessApprover) *UpdateProcessApproverReqBuilder {
+	builder.processApprover = processApprover
+	return builder
+}
+
+func (builder *UpdateProcessApproverReqBuilder) Build() *UpdateProcessApproverReq {
+	req := &UpdateProcessApproverReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.processApprover
+	return req
+}
+
+type UpdateProcessApproverReq struct {
+	apiReq          *larkcore.ApiReq
+	ProcessApprover *ProcessApprover `body:""`
+}
+
+type UpdateProcessApproverRespData struct {
+	Code *int    `json:"code,omitempty"` // 错误码，非 0 表示失败
+	Msg  *string `json:"msg,omitempty"`  // 错误描述
+}
+
+type UpdateProcessApproverResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *UpdateProcessApproverRespData `json:"data"` // 业务数据
+}
+
+func (resp *UpdateProcessApproverResp) Success() bool {
 	return resp.Code == 0
 }
 

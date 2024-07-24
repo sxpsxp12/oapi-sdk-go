@@ -90,6 +90,18 @@ const (
 )
 
 const (
+	MessagePushOverviewApplicationAppUsageCycleTypeDay   = 1 // 日活
+	MessagePushOverviewApplicationAppUsageCycleTypeWeek  = 2 // 周活， date字段应该填自然周周一的日期
+	MessagePushOverviewApplicationAppUsageCycleTypeMonth = 3 // 月活， date字段应该填自然月1号的日期
+
+)
+
+const (
+	MessagePushOverviewApplicationAppUsageDepartmentIdTypeDepartmentId     = "department_id"      // 以自定义department_id来标识部门
+	MessagePushOverviewApplicationAppUsageDepartmentIdTypeOpenDepartmentId = "open_department_id" // 以open_department_id来标识部门
+)
+
+const (
 	CycleTypeOverviewApplicationAppUsageDay   = 1 // 日活
 	CycleTypeOverviewApplicationAppUsageWeek  = 2 // 周活， date字段应该填自然周周一的日期
 	CycleTypeOverviewApplicationAppUsageMonth = 3 // 月活， date字段应该填自然月1号的日期
@@ -7153,6 +7165,186 @@ type DepartmentOverviewApplicationAppUsageResp struct {
 }
 
 func (resp *DepartmentOverviewApplicationAppUsageResp) Success() bool {
+	return resp.Code == 0
+}
+
+type MessagePushOverviewApplicationAppUsageReqBodyBuilder struct {
+	date             string // 查询日期，若cycle_type为week，则输入的date必须为周一； 若cycle_type为month，则输入的date必须为每月1号
+	dateFlag         bool
+	cycleType        int // 枚举值：day，week，month；week指自然周，返回当前日期所在周的数据；不满一周则从周一到当前日期算。month指自然月，返回当前日期所在月的数据。
+	cycleTypeFlag    bool
+	departmentId     string // 需要查询的部门id，获取方法可参考[部门ID概述](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/field-overview);-  若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户）； ;-  若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id。返回当前部门的使用数据； 若不填写，则返回当前租户的使用数据
+	departmentIdFlag bool
+}
+
+func NewMessagePushOverviewApplicationAppUsageReqBodyBuilder() *MessagePushOverviewApplicationAppUsageReqBodyBuilder {
+	builder := &MessagePushOverviewApplicationAppUsageReqBodyBuilder{}
+	return builder
+}
+
+// 查询日期，若cycle_type为week，则输入的date必须为周一； 若cycle_type为month，则输入的date必须为每月1号
+//
+// 示例值：2021-07-08
+func (builder *MessagePushOverviewApplicationAppUsageReqBodyBuilder) Date(date string) *MessagePushOverviewApplicationAppUsageReqBodyBuilder {
+	builder.date = date
+	builder.dateFlag = true
+	return builder
+}
+
+// 枚举值：day，week，month；week指自然周，返回当前日期所在周的数据；不满一周则从周一到当前日期算。month指自然月，返回当前日期所在月的数据。
+//
+// 示例值：1
+func (builder *MessagePushOverviewApplicationAppUsageReqBodyBuilder) CycleType(cycleType int) *MessagePushOverviewApplicationAppUsageReqBodyBuilder {
+	builder.cycleType = cycleType
+	builder.cycleTypeFlag = true
+	return builder
+}
+
+// 需要查询的部门id，获取方法可参考[部门ID概述](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/field-overview);-  若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户）； ;-  若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id。返回当前部门的使用数据； 若不填写，则返回当前租户的使用数据
+//
+// 示例值：od-4e6ac4d14bcd5071a37a39de902c7141
+func (builder *MessagePushOverviewApplicationAppUsageReqBodyBuilder) DepartmentId(departmentId string) *MessagePushOverviewApplicationAppUsageReqBodyBuilder {
+	builder.departmentId = departmentId
+	builder.departmentIdFlag = true
+	return builder
+}
+
+func (builder *MessagePushOverviewApplicationAppUsageReqBodyBuilder) Build() *MessagePushOverviewApplicationAppUsageReqBody {
+	req := &MessagePushOverviewApplicationAppUsageReqBody{}
+	if builder.dateFlag {
+		req.Date = &builder.date
+	}
+	if builder.cycleTypeFlag {
+		req.CycleType = &builder.cycleType
+	}
+	if builder.departmentIdFlag {
+		req.DepartmentId = &builder.departmentId
+	}
+	return req
+}
+
+type MessagePushOverviewApplicationAppUsagePathReqBodyBuilder struct {
+	date             string
+	dateFlag         bool
+	cycleType        int
+	cycleTypeFlag    bool
+	departmentId     string
+	departmentIdFlag bool
+}
+
+func NewMessagePushOverviewApplicationAppUsagePathReqBodyBuilder() *MessagePushOverviewApplicationAppUsagePathReqBodyBuilder {
+	builder := &MessagePushOverviewApplicationAppUsagePathReqBodyBuilder{}
+	return builder
+}
+
+// 查询日期，若cycle_type为week，则输入的date必须为周一； 若cycle_type为month，则输入的date必须为每月1号
+//
+// 示例值：2021-07-08
+func (builder *MessagePushOverviewApplicationAppUsagePathReqBodyBuilder) Date(date string) *MessagePushOverviewApplicationAppUsagePathReqBodyBuilder {
+	builder.date = date
+	builder.dateFlag = true
+	return builder
+}
+
+// 枚举值：day，week，month；week指自然周，返回当前日期所在周的数据；不满一周则从周一到当前日期算。month指自然月，返回当前日期所在月的数据。
+//
+// 示例值：1
+func (builder *MessagePushOverviewApplicationAppUsagePathReqBodyBuilder) CycleType(cycleType int) *MessagePushOverviewApplicationAppUsagePathReqBodyBuilder {
+	builder.cycleType = cycleType
+	builder.cycleTypeFlag = true
+	return builder
+}
+
+// 需要查询的部门id，获取方法可参考[部门ID概述](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/field-overview);-  若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户）； ;-  若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id。返回当前部门的使用数据； 若不填写，则返回当前租户的使用数据
+//
+// 示例值：od-4e6ac4d14bcd5071a37a39de902c7141
+func (builder *MessagePushOverviewApplicationAppUsagePathReqBodyBuilder) DepartmentId(departmentId string) *MessagePushOverviewApplicationAppUsagePathReqBodyBuilder {
+	builder.departmentId = departmentId
+	builder.departmentIdFlag = true
+	return builder
+}
+
+func (builder *MessagePushOverviewApplicationAppUsagePathReqBodyBuilder) Build() (*MessagePushOverviewApplicationAppUsageReqBody, error) {
+	req := &MessagePushOverviewApplicationAppUsageReqBody{}
+	if builder.dateFlag {
+		req.Date = &builder.date
+	}
+	if builder.cycleTypeFlag {
+		req.CycleType = &builder.cycleType
+	}
+	if builder.departmentIdFlag {
+		req.DepartmentId = &builder.departmentId
+	}
+	return req, nil
+}
+
+type MessagePushOverviewApplicationAppUsageReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *MessagePushOverviewApplicationAppUsageReqBody
+}
+
+func NewMessagePushOverviewApplicationAppUsageReqBuilder() *MessagePushOverviewApplicationAppUsageReqBuilder {
+	builder := &MessagePushOverviewApplicationAppUsageReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 目标应用ID，支持自建应用
+//
+// 示例值：cli_9f115af860f7901b
+func (builder *MessagePushOverviewApplicationAppUsageReqBuilder) AppId(appId string) *MessagePushOverviewApplicationAppUsageReqBuilder {
+	builder.apiReq.PathParams.Set("app_id", fmt.Sprint(appId))
+	return builder
+}
+
+// 调用中使用的部门ID的类型
+//
+// 示例值：open_department_id
+func (builder *MessagePushOverviewApplicationAppUsageReqBuilder) DepartmentIdType(departmentIdType string) *MessagePushOverviewApplicationAppUsageReqBuilder {
+	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
+	return builder
+}
+
+// 目标：查看应用在某一天/某一周/某一个月的机器人消息推送数据，可以根据部门做筛选
+func (builder *MessagePushOverviewApplicationAppUsageReqBuilder) Body(body *MessagePushOverviewApplicationAppUsageReqBody) *MessagePushOverviewApplicationAppUsageReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *MessagePushOverviewApplicationAppUsageReqBuilder) Build() *MessagePushOverviewApplicationAppUsageReq {
+	req := &MessagePushOverviewApplicationAppUsageReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type MessagePushOverviewApplicationAppUsageReqBody struct {
+	Date         *string `json:"date,omitempty"`          // 查询日期，若cycle_type为week，则输入的date必须为周一； 若cycle_type为month，则输入的date必须为每月1号
+	CycleType    *int    `json:"cycle_type,omitempty"`    // 枚举值：day，week，month；week指自然周，返回当前日期所在周的数据；不满一周则从周一到当前日期算。month指自然月，返回当前日期所在月的数据。
+	DepartmentId *string `json:"department_id,omitempty"` // 需要查询的部门id，获取方法可参考[部门ID概述](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/field-overview);-  若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户）； ;-  若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id。返回当前部门的使用数据； 若不填写，则返回当前租户的使用数据
+}
+
+type MessagePushOverviewApplicationAppUsageReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *MessagePushOverviewApplicationAppUsageReqBody `body:""`
+}
+
+type MessagePushOverviewApplicationAppUsageRespData struct {
+	Items []*ApplicationAppUsage `json:"items,omitempty"` // 消息推送情况，指标值包括：send_msg_count：消息推送数、send_user_count：消息触达人数、read_in_1h_count：消息1h阅读量、read_in_12h_count：消息12h阅读量
+}
+
+type MessagePushOverviewApplicationAppUsageResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *MessagePushOverviewApplicationAppUsageRespData `json:"data"` // 业务数据
+}
+
+func (resp *MessagePushOverviewApplicationAppUsageResp) Success() bool {
 	return resp.Code == 0
 }
 

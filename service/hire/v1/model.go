@@ -14,20 +14,38 @@
 package larkhire
 
 import (
-	"fmt"
-
 	"context"
 	"errors"
-
-	"github.com/larksuite/oapi-sdk-go/v3/event"
+	"fmt"
 
 	"github.com/larksuite/oapi-sdk-go/v3/core"
+	"github.com/larksuite/oapi-sdk-go/v3/event"
 )
 
 const (
-	UserIdTypeUserId  = "user_id"  // 以user_id来识别用户
-	UserIdTypeUnionId = "union_id" // 以union_id来识别用户
-	UserIdTypeOpenId  = "open_id"  // 以open_id来识别用户
+	UserIdTypeUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypePeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	UserIdTypeProtectAgencyUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeProtectAgencyUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeProtectAgencyOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeProtectAgencyPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	UserIdTypeQueryAgencyUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeQueryAgencyUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeQueryAgencyOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
+	UserIdTypeCreateApplicationUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeCreateApplicationUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeCreateApplicationOpenId  = "open_id"  // 以open_id来识别用户
 )
 
 const (
@@ -113,6 +131,12 @@ const (
 	Type候选人作品 = 2 // 候选人作品
 	Type自定义附件 = 3 // 自定义附件
 
+)
+
+const (
+	UserIdTypeListBackgroundCheckOrderUserId  = "user_id"  // 以 user_id 来识别用户
+	UserIdTypeListBackgroundCheckOrderUnionId = "union_id" // 以 union_id 来识别用户
+	UserIdTypeListBackgroundCheckOrderOpenId  = "open_id"  // 以 open_id 来识别用户
 )
 
 const (
@@ -234,6 +258,40 @@ const (
 )
 
 const (
+	ActivityStatus待评估  = 1 // 待评估
+	ActivityStatus已评估  = 2 // 已评估
+	ActivityStatus无需评估 = 3 // 无需评估
+
+)
+
+const (
+	UserIdTypeListEvaluationTaskUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeListEvaluationTaskUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeListEvaluationTaskOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeListEvaluationTaskPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	UserIdTypeCreateExamUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeCreateExamUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeCreateExamOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeCreateExamPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	ActivityStatusListExamMarkingTask待阅卷 = 1 // 待阅卷
+	ActivityStatusListExamMarkingTask已阅卷 = 2 // 已阅卷
+
+)
+
+const (
+	UserIdTypeListExamMarkingTaskUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeListExamMarkingTaskUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeListExamMarkingTaskOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeListExamMarkingTaskPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
 	JobRecruitmentTypeSocialRecruitment = 1 // 社招
 	JobRecruitmentTypeCampusRecruitment = 2 // 校招
 
@@ -276,6 +334,47 @@ const (
 )
 
 const (
+	ConclusionPatchExternalInterviewAssessmentFail           = 1 // 不通过
+	ConclusionPatchExternalInterviewAssessmentPass           = 2 // 通过
+	ConclusionPatchExternalInterviewAssessmentToBeDetermined = 3 // 待定
+
+)
+
+const (
+	RuleTypeOnboard    = 1 // 入职奖励，候选人入职或转正后产生的奖励
+	RuleTypeProcesse   = 2 // 过程奖励，入职奖励外，若候选人有阶段性进展，则给予内推人对应的奖励
+	RuleTypeActive     = 3 // 活动奖励，额外奖励，用于支持内推周期性活动
+	RuleTypeOpenSource = 4 // 开源奖励，若内推候选人首次进入人才库，且在被推荐后一段时间内，入职了规则内的任意职位的奖励
+	RuleTypeOther      = 5 // 其他奖励，以上奖励无法覆盖的奖励
+
+)
+
+const (
+	StageToBeConfirmed = 1 // 待确认
+	StageConfirmed     = 2 // 已确认
+	StagePaid          = 3 // 已发放
+
+)
+
+const (
+	UserIdTypeCreateExternalReferralRewardUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeCreateExternalReferralRewardUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeCreateExternalReferralRewardOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
+	UserIdTypeGetByTalentInterviewUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeGetByTalentInterviewUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeGetByTalentInterviewOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeGetByTalentInterviewPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	JobLevelIdTypeGetByTalentInterviewPeopleAdminJobLevelId = "people_admin_job_level_id" // 「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。
+	JobLevelIdTypeGetByTalentInterviewJobLevelId            = "job_level_id"              // 「飞书管理后台」适用的职级 ID，通过「获取租户职级列表」接口获取
+)
+
+const (
 	JobLevelIdTypeListInterviewPeopleAdminJobLevelId = "people_admin_job_level_id" // 「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。
 	JobLevelIdTypeListInterviewJobLevelId            = "job_level_id"              // 「飞书管理后台」适用的职级 ID，通过「获取租户职级列表」接口获取
 )
@@ -284,6 +383,45 @@ const (
 	UserIdTypeListInterviewUserId  = "user_id"  // 以user_id来识别用户
 	UserIdTypeListInterviewUnionId = "union_id" // 以union_id来识别用户
 	UserIdTypeListInterviewOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
+	UserIdTypeGetInterviewRecordUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeGetInterviewRecordUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeGetInterviewRecordOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
+	UserIdTypeListInterviewRecordUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeListInterviewRecordUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeListInterviewRecordOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
+	LanguageZh = 1 // 中文
+	LanguageEn = 2 // 英文
+
+)
+
+const (
+	ProcessType社招流程 = 1 // 社招流程
+	ProcessType校招流程 = 2 // 校招流程
+
+)
+
+const (
+	ActivityStatusListInterviewTask未开始 = 1 // 未开始
+	ActivityStatusListInterviewTask未评价 = 2 // 未评价
+	ActivityStatusListInterviewTask已评价 = 3 // 已评价
+	ActivityStatusListInterviewTask已终止 = 5 // 已终止
+
+)
+
+const (
+	UserIdTypeListInterviewTaskUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeListInterviewTaskUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeListInterviewTaskOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeListInterviewTaskPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
 )
 
 const (
@@ -299,8 +437,8 @@ const (
 )
 
 const (
-	ProcessTypeSocialProcess = 1 // 社招
-	ProcessTypeCampusProcess = 2 // 校招
+	ProcessTypeCombinedCreateJobSocialProcess = 1 // 社招
+	ProcessTypeCombinedCreateJobCampusProcess = 2 // 校招
 
 )
 
@@ -459,10 +597,37 @@ const (
 )
 
 const (
+	UserIdTypeBatchUpdateJobManagerUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeBatchUpdateJobManagerUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeBatchUpdateJobManagerOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
 	UserIdTypeGetJobManagerUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeGetJobManagerUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeGetJobManagerOpenId        = "open_id"         // 以open_id来识别用户
 	UserIdTypeGetJobManagerPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	UserIdTypeSearchJobPublishRecordUserId  = "user_id"  // 以 user_id 来识别用户
+	UserIdTypeSearchJobPublishRecordUnionId = "union_id" // 以 union_id 来识别用户
+	UserIdTypeSearchJobPublishRecordOpenId  = "open_id"  // 以 open_id 来识别用户
+)
+
+const (
+	DepartmentIdTypeSearchJobPublishRecordOpenDepartmentId = "open_department_id" // 以 open_department_id 来标识部门
+	DepartmentIdTypeSearchJobPublishRecordDepartmentId     = "department_id"      // 以 department_id 来标识部门
+)
+
+const (
+	JobLevelIdTypeSearchJobPublishRecordPeopleAdminJobLevelId = "people_admin_job_level_id" // 「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。
+	JobLevelIdTypeSearchJobPublishRecordJobLevelId            = "job_level_id"              // 「飞书管理后台」适用的职级 ID，通过「获取租户职级列表」接口获取
+)
+
+const (
+	JobFamilyIdTypeSearchJobPublishRecordPeopleAdminJobCategoryId = "people_admin_job_category_id" // 「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。
+	JobFamilyIdTypeSearchJobPublishRecordJobFamilyId              = "job_family_id"                // 「飞书管理后台」适用的序列 ID，通过「获取租户序列列表」接口获取
 )
 
 const (
@@ -654,8 +819,15 @@ const (
 )
 
 const (
+	Scenario社招 = 1 // 社招
+	Scenario校招 = 2 // 校招
+
+)
+
+const (
 	UsagePositionLocation  = "position_location"  // 职位地点
 	UsageInterviewLocation = "interview_location" // 面试地点
+	UsageStoreLocation     = "store_location"     // 门店地点
 )
 
 const (
@@ -826,6 +998,12 @@ const (
 )
 
 const (
+	UserIdTypeSearchReferralUserId  = "user_id"  // 以 user_id 来识别用户
+	UserIdTypeSearchReferralUnionId = "union_id" // 以 union_id 来识别用户
+	UserIdTypeSearchReferralOpenId  = "open_id"  // 以 open_id 来识别用户
+)
+
+const (
 	UserIdTypeGetReferralWebsiteJobPostUserId  = "user_id"  // 以 user_id 来识别用户
 	UserIdTypeGetReferralWebsiteJobPostUnionId = "union_id" // 以 union_id 来识别用户
 	UserIdTypeGetReferralWebsiteJobPostOpenId  = "open_id"  // 以 open_id 来识别用户
@@ -864,9 +1042,9 @@ const (
 )
 
 const (
-	ScenarioInterviewRegistration  = 5  // 面试登记表
-	ScenarioOnboardRegistration    = 6  // 入职登记表
-	ScenarioInfoUpdateRegistration = 14 // 人才信息登记表
+	ScenarioListRegistrationSchemaInterviewRegistration  = 5  // 面试登记表
+	ScenarioListRegistrationSchemaOnboardRegistration    = 6  // 入职登记表
+	ScenarioListRegistrationSchemaInfoUpdateRegistration = 14 // 人才信息登记表
 
 )
 
@@ -890,6 +1068,19 @@ const (
 )
 
 const (
+	OperatorAccountType员工体系 = 1 // 员工体系
+	OperatorAccountType系统   = 3 // 系统
+
+)
+
+const (
+	UserIdTypeCombinedUpdateTalentUserId        = "user_id"         // 以user_id来识别用户
+	UserIdTypeCombinedUpdateTalentUnionId       = "union_id"        // 以union_id来识别用户
+	UserIdTypeCombinedUpdateTalentOpenId        = "open_id"         // 以open_id来识别用户
+	UserIdTypeCombinedUpdateTalentPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
 	UserIdTypeGetTalentUserId        = "user_id"         // 以 user_id 来识别用户
 	UserIdTypeGetTalentUnionId       = "union_id"        // 以 union_id 来识别用户
 	UserIdTypeGetTalentOpenId        = "open_id"         // 以 open_id 来识别用户
@@ -908,10 +1099,94 @@ const (
 )
 
 const (
+	OperationOnboardStatusTalentOnboard   = 1 // 入职
+	OperationOnboardStatusTalentOverboard = 2 // 离职
+
+)
+
+const (
 	UserIdTypeListTalentFolderUserId        = "user_id"         // 以user_id来识别用户
 	UserIdTypeListTalentFolderUnionId       = "union_id"        // 以union_id来识别用户
 	UserIdTypeListTalentFolderOpenId        = "open_id"         // 以open_id来识别用户
 	UserIdTypeListTalentFolderPeopleAdminId = "people_admin_id" // 以people_admin_id来识别用户
+)
+
+const (
+	UserIdTypeSearchTalentOperationLogUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeSearchTalentOperationLogUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeSearchTalentOperationLogOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
+	AddTypeOnlyAdd                = 1 // 仅加入指定人才库
+	AddTypeAddAndRemoveFromOrigin = 2 // 加入指定人才库并从所有原库移除
+
+)
+
+const (
+	UserIdTypeSearchTestUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeSearchTestUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeSearchTestOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
+	UserIdTypeListTodoUserId        = "user_id"         // 以 user_id 来识别用户
+	UserIdTypeListTodoUnionId       = "union_id"        // 以 union_id 来识别用户
+	UserIdTypeListTodoOpenId        = "open_id"         // 以 open_id 来识别用户
+	UserIdTypeListTodoPeopleAdminId = "people_admin_id" // 以 people_admin_id 来识别用户
+)
+
+const (
+	TypeListTodoEvaluation = "evaluation" // 评估待办
+	TypeListTodoOffer      = "offer"      // Offer 待办
+	TypeListTodoExam       = "exam"       // 笔试待办
+	TypeListTodoInterview  = "interview"  // 面试待办
+)
+
+const (
+	StateCreateTripartiteAgreementNotStarted            = 1 // 未开始
+	StateCreateTripartiteAgreementApplied               = 2 // 已申请
+	StateCreateTripartiteAgreementStudentProcessing     = 3 // 学生处理中
+	StateCreateTripartiteAgreementCompanyProcessing     = 4 // 公司处理中
+	StateCreateTripartiteAgreementSchoolProcessing      = 5 // 学校处理中
+	StateCreateTripartiteAgreementEnded                 = 6 // 已终止
+	StateCreateTripartiteAgreementCompleted             = 7 // 已完成
+	StateCreateTripartiteAgreementTerminationProcessing = 8 // 解约处理中
+	StateCreateTripartiteAgreementTerminated            = 9 // 已解约
+)
+
+const (
+	StateUpdateTripartiteAgreementNotStarted            = 1 // 未开始
+	StateUpdateTripartiteAgreementApplied               = 2 // 已申请
+	StateUpdateTripartiteAgreementStudentProcessing     = 3 // 学生处理中
+	StateUpdateTripartiteAgreementCompanyProcessing     = 4 // 公司处理中
+	StateUpdateTripartiteAgreementSchoolProcessing      = 5 // 学校处理中
+	StateUpdateTripartiteAgreementEnded                 = 6 // 已终止
+	StateUpdateTripartiteAgreementCompleted             = 7 // 已完成
+	StateUpdateTripartiteAgreementTerminationProcessing = 8 // 解约处理中
+	StateUpdateTripartiteAgreementTerminated            = 9 // 已解约
+)
+
+const (
+	UserIdTypeCreateByResumeWebsiteDeliveryUserId  = "user_id"  // 以user_id来识别用户
+	UserIdTypeCreateByResumeWebsiteDeliveryUnionId = "union_id" // 以union_id来识别用户
+	UserIdTypeCreateByResumeWebsiteDeliveryOpenId  = "open_id"  // 以open_id来识别用户
+)
+
+const (
+	UserIdTypeGetWebsiteJobPostUserId  = "user_id"  // 以 user_id 来识别用户
+	UserIdTypeGetWebsiteJobPostUnionId = "union_id" // 以 union_id 来识别用户
+	UserIdTypeGetWebsiteJobPostOpenId  = "open_id"  // 以 open_id 来识别用户
+)
+
+const (
+	DepartmentIdTypeGetWebsiteJobPostOpenDepartmentId = "open_department_id" // 以 open_department_id 来标识部门
+	DepartmentIdTypeGetWebsiteJobPostDepartmentId     = "department_id"      // 以 department_id 来标识部门
+)
+
+const (
+	JobLevelIdTypeGetWebsiteJobPostPeopleAdminJobLevelId = "people_admin_job_level_id" // 「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。
+	JobLevelIdTypeGetWebsiteJobPostJobLevelId            = "job_level_id"              // 「飞书管理后台」适用的职级 ID，通过「获取租户职级列表」接口获取
 )
 
 const (
@@ -24003,7 +24278,7 @@ type Offer struct {
 	JobInfo              *OfferJobInfo                   `json:"job_info,omitempty"`               // 职位信息
 	CustomizedModuleList []*ApplicationOfferCustomModule `json:"customized_module_list,omitempty"` // offer自定义模块列表
 	JobRequirementId     *string                         `json:"job_requirement_id,omitempty"`     // 招聘需求 ID
-
+	OfferSendRecordList  []*OfferSendRecord              `json:"offer_send_record_list,omitempty"` // offer 发送记录列表
 }
 
 type OfferBuilder struct {
@@ -24027,6 +24302,8 @@ type OfferBuilder struct {
 	customizedModuleListFlag bool
 	jobRequirementId         string // 招聘需求 ID
 	jobRequirementIdFlag     bool
+	offerSendRecordList      []*OfferSendRecord // offer 发送记录列表
+	offerSendRecordListFlag  bool
 }
 
 func NewOfferBuilder() *OfferBuilder {
@@ -24124,6 +24401,15 @@ func (builder *OfferBuilder) JobRequirementId(jobRequirementId string) *OfferBui
 	return builder
 }
 
+// offer 发送记录列表
+//
+// 示例值：
+func (builder *OfferBuilder) OfferSendRecordList(offerSendRecordList []*OfferSendRecord) *OfferBuilder {
+	builder.offerSendRecordList = offerSendRecordList
+	builder.offerSendRecordListFlag = true
+	return builder
+}
+
 func (builder *OfferBuilder) Build() *Offer {
 	req := &Offer{}
 	if builder.idFlag {
@@ -24162,7 +24448,9 @@ func (builder *OfferBuilder) Build() *Offer {
 		req.JobRequirementId = &builder.jobRequirementId
 
 	}
-
+	if builder.offerSendRecordListFlag {
+		req.OfferSendRecordList = builder.offerSendRecordList
+	}
 	return req
 }
 
@@ -25564,15 +25852,12 @@ func (builder *OfferCustomizedInfoBuilder) Build() *OfferCustomizedInfo {
 }
 
 type OfferEmailInfo struct {
-	SenderEmail       *string  `json:"sender_email,omitempty"`        // 邮件发送地址
 	CcEmailList       []string `json:"cc_email_list,omitempty"`       // 抄送人邮件列表
 	ReceiverEmailList []string `json:"receiver_email_list,omitempty"` // 接收人邮件列表
 	Content           *string  `json:"content,omitempty"`             // 邮件内容
 }
 
 type OfferEmailInfoBuilder struct {
-	senderEmail           string // 邮件发送地址
-	senderEmailFlag       bool
 	ccEmailList           []string // 抄送人邮件列表
 	ccEmailListFlag       bool
 	receiverEmailList     []string // 接收人邮件列表
@@ -25583,15 +25868,6 @@ type OfferEmailInfoBuilder struct {
 
 func NewOfferEmailInfoBuilder() *OfferEmailInfoBuilder {
 	builder := &OfferEmailInfoBuilder{}
-	return builder
-}
-
-// 邮件发送地址
-//
-// 示例值：no-reply@hire.mail.feishu.cn
-func (builder *OfferEmailInfoBuilder) SenderEmail(senderEmail string) *OfferEmailInfoBuilder {
-	builder.senderEmail = senderEmail
-	builder.senderEmailFlag = true
 	return builder
 }
 
@@ -25624,10 +25900,6 @@ func (builder *OfferEmailInfoBuilder) Content(content string) *OfferEmailInfoBui
 
 func (builder *OfferEmailInfoBuilder) Build() *OfferEmailInfo {
 	req := &OfferEmailInfo{}
-	if builder.senderEmailFlag {
-		req.SenderEmail = &builder.senderEmail
-
-	}
 	if builder.ccEmailListFlag {
 		req.CcEmailList = builder.ccEmailList
 	}
@@ -28453,7 +28725,7 @@ type ResumeSource struct {
 	ZhName           *string `json:"zh_name,omitempty"`            // 中文名
 	EnName           *string `json:"en_name,omitempty"`            // 英文名
 	ActiveStatus     *int    `json:"active_status,omitempty"`      // 启用状态
-	ResumeSourceType *int    `json:"resume_source_type,omitempty"` // 来源类型
+	ResumeSourceType *string `json:"resume_source_type,omitempty"` // 来源类型
 }
 
 type ResumeSourceBuilder struct {
@@ -28465,7 +28737,7 @@ type ResumeSourceBuilder struct {
 	enNameFlag           bool
 	activeStatus         int // 启用状态
 	activeStatusFlag     bool
-	resumeSourceType     int // 来源类型
+	resumeSourceType     string // 来源类型
 	resumeSourceTypeFlag bool
 }
 
@@ -28512,8 +28784,8 @@ func (builder *ResumeSourceBuilder) ActiveStatus(activeStatus int) *ResumeSource
 
 // 来源类型
 //
-// 示例值：1
-func (builder *ResumeSourceBuilder) ResumeSourceType(resumeSourceType int) *ResumeSourceBuilder {
+// 示例值：10001
+func (builder *ResumeSourceBuilder) ResumeSourceType(resumeSourceType string) *ResumeSourceBuilder {
 	builder.resumeSourceType = resumeSourceType
 	builder.resumeSourceTypeFlag = true
 	return builder
@@ -40294,6 +40566,640 @@ func (builder *WorksInfoBuilder) Build() *WorksInfo {
 	return req
 }
 
+type PublishAdvertisementReqBodyBuilder struct {
+	jobChannelId     string // 职位渠道 ID，选择要发布的招聘官网，单次仅可发布 1 个渠道，1. 内推平台提供对应的 id = 3，2. 官网渠道的 ID 通过接口「获取官网列表」获取
+	jobChannelIdFlag bool
+}
+
+func NewPublishAdvertisementReqBodyBuilder() *PublishAdvertisementReqBodyBuilder {
+	builder := &PublishAdvertisementReqBodyBuilder{}
+	return builder
+}
+
+// 职位渠道 ID，选择要发布的招聘官网，单次仅可发布 1 个渠道，1. 内推平台提供对应的 id = 3，2. 官网渠道的 ID 通过接口「获取官网列表」获取
+//
+// 示例值：6960663240925956631
+func (builder *PublishAdvertisementReqBodyBuilder) JobChannelId(jobChannelId string) *PublishAdvertisementReqBodyBuilder {
+	builder.jobChannelId = jobChannelId
+	builder.jobChannelIdFlag = true
+	return builder
+}
+
+func (builder *PublishAdvertisementReqBodyBuilder) Build() *PublishAdvertisementReqBody {
+	req := &PublishAdvertisementReqBody{}
+	if builder.jobChannelIdFlag {
+		req.JobChannelId = &builder.jobChannelId
+	}
+	return req
+}
+
+type PublishAdvertisementPathReqBodyBuilder struct {
+	jobChannelId     string
+	jobChannelIdFlag bool
+}
+
+func NewPublishAdvertisementPathReqBodyBuilder() *PublishAdvertisementPathReqBodyBuilder {
+	builder := &PublishAdvertisementPathReqBodyBuilder{}
+	return builder
+}
+
+// 职位渠道 ID，选择要发布的招聘官网，单次仅可发布 1 个渠道，1. 内推平台提供对应的 id = 3，2. 官网渠道的 ID 通过接口「获取官网列表」获取
+//
+// 示例值：6960663240925956631
+func (builder *PublishAdvertisementPathReqBodyBuilder) JobChannelId(jobChannelId string) *PublishAdvertisementPathReqBodyBuilder {
+	builder.jobChannelId = jobChannelId
+	builder.jobChannelIdFlag = true
+	return builder
+}
+
+func (builder *PublishAdvertisementPathReqBodyBuilder) Build() (*PublishAdvertisementReqBody, error) {
+	req := &PublishAdvertisementReqBody{}
+	if builder.jobChannelIdFlag {
+		req.JobChannelId = &builder.jobChannelId
+	}
+	return req, nil
+}
+
+type PublishAdvertisementReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *PublishAdvertisementReqBody
+}
+
+func NewPublishAdvertisementReqBuilder() *PublishAdvertisementReqBuilder {
+	builder := &PublishAdvertisementReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 职位广告 ID
+//
+// 示例值：6960663240925956660
+func (builder *PublishAdvertisementReqBuilder) AdvertisementId(advertisementId string) *PublishAdvertisementReqBuilder {
+	builder.apiReq.PathParams.Set("advertisement_id", fmt.Sprint(advertisementId))
+	return builder
+}
+
+// 支持把职位发布至招聘官网、内推平台
+func (builder *PublishAdvertisementReqBuilder) Body(body *PublishAdvertisementReqBody) *PublishAdvertisementReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *PublishAdvertisementReqBuilder) Build() *PublishAdvertisementReq {
+	req := &PublishAdvertisementReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type PublishAdvertisementReqBody struct {
+	JobChannelId *string `json:"job_channel_id,omitempty"` // 职位渠道 ID，选择要发布的招聘官网，单次仅可发布 1 个渠道，1. 内推平台提供对应的 id = 3，2. 官网渠道的 ID 通过接口「获取官网列表」获取
+}
+
+type PublishAdvertisementReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *PublishAdvertisementReqBody `body:""`
+}
+
+type PublishAdvertisementResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *PublishAdvertisementResp) Success() bool {
+	return resp.Code == 0
+}
+
+type GetAgencyReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetAgencyReqBuilder() *GetAgencyReqBuilder {
+	builder := &GetAgencyReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 猎头供应商ID
+//
+// 示例值：6898173495386147079
+func (builder *GetAgencyReqBuilder) AgencyId(agencyId string) *GetAgencyReqBuilder {
+	builder.apiReq.PathParams.Set("agency_id", fmt.Sprint(agencyId))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：open_id
+func (builder *GetAgencyReqBuilder) UserIdType(userIdType string) *GetAgencyReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *GetAgencyReqBuilder) Build() *GetAgencyReq {
+	req := &GetAgencyReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type GetAgencyReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetAgencyRespData struct {
+	Agency *Agency `json:"agency,omitempty"` // 数据
+}
+
+type GetAgencyResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetAgencyRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetAgencyResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ProtectAgencyReqBodyBuilder struct {
+	talentId              string // 人才ID
+	talentIdFlag          bool
+	supplierId            string // 供应商ID
+	supplierIdFlag        bool
+	consultantId          string // 猎头顾问ID
+	consultantIdFlag      bool
+	protectCreateTime     int // 保护期创建时间
+	protectCreateTimeFlag bool
+	protectExpireTime     int // 保护期过期时间
+	protectExpireTimeFlag bool
+	comment               string // 推荐语
+	commentFlag           bool
+	currentSalary         string // 当前薪资
+	currentSalaryFlag     bool
+	expectedSalary        string // 预期薪资
+	expectedSalaryFlag    bool
+}
+
+func NewProtectAgencyReqBodyBuilder() *ProtectAgencyReqBodyBuilder {
+	builder := &ProtectAgencyReqBodyBuilder{}
+	return builder
+}
+
+// 人才ID
+//
+// 示例值：6962051712422398239
+func (builder *ProtectAgencyReqBodyBuilder) TalentId(talentId string) *ProtectAgencyReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+// 供应商ID
+//
+// 示例值：6898173495386147079
+func (builder *ProtectAgencyReqBodyBuilder) SupplierId(supplierId string) *ProtectAgencyReqBodyBuilder {
+	builder.supplierId = supplierId
+	builder.supplierIdFlag = true
+	return builder
+}
+
+// 猎头顾问ID
+//
+// 示例值：ou_f476cb099ac9227c9bae09ce46112579
+func (builder *ProtectAgencyReqBodyBuilder) ConsultantId(consultantId string) *ProtectAgencyReqBodyBuilder {
+	builder.consultantId = consultantId
+	builder.consultantIdFlag = true
+	return builder
+}
+
+// 保护期创建时间
+//
+// 示例值：1610695587000
+func (builder *ProtectAgencyReqBodyBuilder) ProtectCreateTime(protectCreateTime int) *ProtectAgencyReqBodyBuilder {
+	builder.protectCreateTime = protectCreateTime
+	builder.protectCreateTimeFlag = true
+	return builder
+}
+
+// 保护期过期时间
+//
+// 示例值：1626333987000
+func (builder *ProtectAgencyReqBodyBuilder) ProtectExpireTime(protectExpireTime int) *ProtectAgencyReqBodyBuilder {
+	builder.protectExpireTime = protectExpireTime
+	builder.protectExpireTimeFlag = true
+	return builder
+}
+
+// 推荐语
+//
+// 示例值：此候选人非常优秀，建议录用。
+func (builder *ProtectAgencyReqBodyBuilder) Comment(comment string) *ProtectAgencyReqBodyBuilder {
+	builder.comment = comment
+	builder.commentFlag = true
+	return builder
+}
+
+// 当前薪资
+//
+// 示例值：15k * 13
+func (builder *ProtectAgencyReqBodyBuilder) CurrentSalary(currentSalary string) *ProtectAgencyReqBodyBuilder {
+	builder.currentSalary = currentSalary
+	builder.currentSalaryFlag = true
+	return builder
+}
+
+// 预期薪资
+//
+// 示例值：18k * 16
+func (builder *ProtectAgencyReqBodyBuilder) ExpectedSalary(expectedSalary string) *ProtectAgencyReqBodyBuilder {
+	builder.expectedSalary = expectedSalary
+	builder.expectedSalaryFlag = true
+	return builder
+}
+
+func (builder *ProtectAgencyReqBodyBuilder) Build() *ProtectAgencyReqBody {
+	req := &ProtectAgencyReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	if builder.supplierIdFlag {
+		req.SupplierId = &builder.supplierId
+	}
+	if builder.consultantIdFlag {
+		req.ConsultantId = &builder.consultantId
+	}
+	if builder.protectCreateTimeFlag {
+		req.ProtectCreateTime = &builder.protectCreateTime
+	}
+	if builder.protectExpireTimeFlag {
+		req.ProtectExpireTime = &builder.protectExpireTime
+	}
+	if builder.commentFlag {
+		req.Comment = &builder.comment
+	}
+	if builder.currentSalaryFlag {
+		req.CurrentSalary = &builder.currentSalary
+	}
+	if builder.expectedSalaryFlag {
+		req.ExpectedSalary = &builder.expectedSalary
+	}
+	return req
+}
+
+type ProtectAgencyPathReqBodyBuilder struct {
+	talentId              string
+	talentIdFlag          bool
+	supplierId            string
+	supplierIdFlag        bool
+	consultantId          string
+	consultantIdFlag      bool
+	protectCreateTime     int
+	protectCreateTimeFlag bool
+	protectExpireTime     int
+	protectExpireTimeFlag bool
+	comment               string
+	commentFlag           bool
+	currentSalary         string
+	currentSalaryFlag     bool
+	expectedSalary        string
+	expectedSalaryFlag    bool
+}
+
+func NewProtectAgencyPathReqBodyBuilder() *ProtectAgencyPathReqBodyBuilder {
+	builder := &ProtectAgencyPathReqBodyBuilder{}
+	return builder
+}
+
+// 人才ID
+//
+// 示例值：6962051712422398239
+func (builder *ProtectAgencyPathReqBodyBuilder) TalentId(talentId string) *ProtectAgencyPathReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+// 供应商ID
+//
+// 示例值：6898173495386147079
+func (builder *ProtectAgencyPathReqBodyBuilder) SupplierId(supplierId string) *ProtectAgencyPathReqBodyBuilder {
+	builder.supplierId = supplierId
+	builder.supplierIdFlag = true
+	return builder
+}
+
+// 猎头顾问ID
+//
+// 示例值：ou_f476cb099ac9227c9bae09ce46112579
+func (builder *ProtectAgencyPathReqBodyBuilder) ConsultantId(consultantId string) *ProtectAgencyPathReqBodyBuilder {
+	builder.consultantId = consultantId
+	builder.consultantIdFlag = true
+	return builder
+}
+
+// 保护期创建时间
+//
+// 示例值：1610695587000
+func (builder *ProtectAgencyPathReqBodyBuilder) ProtectCreateTime(protectCreateTime int) *ProtectAgencyPathReqBodyBuilder {
+	builder.protectCreateTime = protectCreateTime
+	builder.protectCreateTimeFlag = true
+	return builder
+}
+
+// 保护期过期时间
+//
+// 示例值：1626333987000
+func (builder *ProtectAgencyPathReqBodyBuilder) ProtectExpireTime(protectExpireTime int) *ProtectAgencyPathReqBodyBuilder {
+	builder.protectExpireTime = protectExpireTime
+	builder.protectExpireTimeFlag = true
+	return builder
+}
+
+// 推荐语
+//
+// 示例值：此候选人非常优秀，建议录用。
+func (builder *ProtectAgencyPathReqBodyBuilder) Comment(comment string) *ProtectAgencyPathReqBodyBuilder {
+	builder.comment = comment
+	builder.commentFlag = true
+	return builder
+}
+
+// 当前薪资
+//
+// 示例值：15k * 13
+func (builder *ProtectAgencyPathReqBodyBuilder) CurrentSalary(currentSalary string) *ProtectAgencyPathReqBodyBuilder {
+	builder.currentSalary = currentSalary
+	builder.currentSalaryFlag = true
+	return builder
+}
+
+// 预期薪资
+//
+// 示例值：18k * 16
+func (builder *ProtectAgencyPathReqBodyBuilder) ExpectedSalary(expectedSalary string) *ProtectAgencyPathReqBodyBuilder {
+	builder.expectedSalary = expectedSalary
+	builder.expectedSalaryFlag = true
+	return builder
+}
+
+func (builder *ProtectAgencyPathReqBodyBuilder) Build() (*ProtectAgencyReqBody, error) {
+	req := &ProtectAgencyReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	if builder.supplierIdFlag {
+		req.SupplierId = &builder.supplierId
+	}
+	if builder.consultantIdFlag {
+		req.ConsultantId = &builder.consultantId
+	}
+	if builder.protectCreateTimeFlag {
+		req.ProtectCreateTime = &builder.protectCreateTime
+	}
+	if builder.protectExpireTimeFlag {
+		req.ProtectExpireTime = &builder.protectExpireTime
+	}
+	if builder.commentFlag {
+		req.Comment = &builder.comment
+	}
+	if builder.currentSalaryFlag {
+		req.CurrentSalary = &builder.currentSalary
+	}
+	if builder.expectedSalaryFlag {
+		req.ExpectedSalary = &builder.expectedSalary
+	}
+	return req, nil
+}
+
+type ProtectAgencyReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *ProtectAgencyReqBody
+}
+
+func NewProtectAgencyReqBuilder() *ProtectAgencyReqBuilder {
+	builder := &ProtectAgencyReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：open_id
+func (builder *ProtectAgencyReqBuilder) UserIdType(userIdType string) *ProtectAgencyReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 设置猎头保护期
+func (builder *ProtectAgencyReqBuilder) Body(body *ProtectAgencyReqBody) *ProtectAgencyReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *ProtectAgencyReqBuilder) Build() *ProtectAgencyReq {
+	req := &ProtectAgencyReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type ProtectAgencyReqBody struct {
+	TalentId          *string `json:"talent_id,omitempty"`           // 人才ID
+	SupplierId        *string `json:"supplier_id,omitempty"`         // 供应商ID
+	ConsultantId      *string `json:"consultant_id,omitempty"`       // 猎头顾问ID
+	ProtectCreateTime *int    `json:"protect_create_time,omitempty"` // 保护期创建时间
+	ProtectExpireTime *int    `json:"protect_expire_time,omitempty"` // 保护期过期时间
+	Comment           *string `json:"comment,omitempty"`             // 推荐语
+	CurrentSalary     *string `json:"current_salary,omitempty"`      // 当前薪资
+	ExpectedSalary    *string `json:"expected_salary,omitempty"`     // 预期薪资
+}
+
+type ProtectAgencyReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *ProtectAgencyReqBody `body:""`
+}
+
+type ProtectAgencyResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *ProtectAgencyResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ProtectSearchAgencyReqBodyBuilder struct {
+	talentId     string // 人才id
+	talentIdFlag bool
+}
+
+func NewProtectSearchAgencyReqBodyBuilder() *ProtectSearchAgencyReqBodyBuilder {
+	builder := &ProtectSearchAgencyReqBodyBuilder{}
+	return builder
+}
+
+// 人才id
+//
+// 示例值：6930815272790114324
+func (builder *ProtectSearchAgencyReqBodyBuilder) TalentId(talentId string) *ProtectSearchAgencyReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+func (builder *ProtectSearchAgencyReqBodyBuilder) Build() *ProtectSearchAgencyReqBody {
+	req := &ProtectSearchAgencyReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	return req
+}
+
+type ProtectSearchAgencyPathReqBodyBuilder struct {
+	talentId     string
+	talentIdFlag bool
+}
+
+func NewProtectSearchAgencyPathReqBodyBuilder() *ProtectSearchAgencyPathReqBodyBuilder {
+	builder := &ProtectSearchAgencyPathReqBodyBuilder{}
+	return builder
+}
+
+// 人才id
+//
+// 示例值：6930815272790114324
+func (builder *ProtectSearchAgencyPathReqBodyBuilder) TalentId(talentId string) *ProtectSearchAgencyPathReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+func (builder *ProtectSearchAgencyPathReqBodyBuilder) Build() (*ProtectSearchAgencyReqBody, error) {
+	req := &ProtectSearchAgencyReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	return req, nil
+}
+
+type ProtectSearchAgencyReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *ProtectSearchAgencyReqBody
+}
+
+func NewProtectSearchAgencyReqBuilder() *ProtectSearchAgencyReqBuilder {
+	builder := &ProtectSearchAgencyReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+func (builder *ProtectSearchAgencyReqBuilder) Body(body *ProtectSearchAgencyReqBody) *ProtectSearchAgencyReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *ProtectSearchAgencyReqBuilder) Build() *ProtectSearchAgencyReq {
+	req := &ProtectSearchAgencyReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type ProtectSearchAgencyReqBody struct {
+	TalentId *string `json:"talent_id,omitempty"` // 人才id
+}
+
+type ProtectSearchAgencyReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *ProtectSearchAgencyReqBody `body:""`
+}
+
+type ProtectSearchAgencyRespData struct {
+	IsOnboarded           *bool               `json:"is_onboarded,omitempty"`            // 是否已入职
+	OnboardedInProtection *bool               `json:"onboarded_in_protection,omitempty"` // 是否在猎头保护期内入职
+	OnboardedProtection   *AgencyProtection   `json:"onboarded_protection,omitempty"`    // 入职所在保护期
+	ProtectionList        []*AgencyProtection `json:"protection_list,omitempty"`         // 人才保护信息
+}
+
+type ProtectSearchAgencyResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ProtectSearchAgencyRespData `json:"data"` // 业务数据
+}
+
+func (resp *ProtectSearchAgencyResp) Success() bool {
+	return resp.Code == 0
+}
+
+type QueryAgencyReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewQueryAgencyReqBuilder() *QueryAgencyReqBuilder {
+	builder := &QueryAgencyReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 猎头供应商名称
+//
+// 示例值：超越猎头公司
+func (builder *QueryAgencyReqBuilder) Name(name string) *QueryAgencyReqBuilder {
+	builder.apiReq.QueryParams.Set("name", fmt.Sprint(name))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *QueryAgencyReqBuilder) UserIdType(userIdType string) *QueryAgencyReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *QueryAgencyReqBuilder) Build() *QueryAgencyReq {
+	req := &QueryAgencyReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type QueryAgencyReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type QueryAgencyRespData struct {
+	Items []*Agency `json:"items,omitempty"` // 数据
+}
+
+type QueryAgencyResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *QueryAgencyRespData `json:"data"` // 业务数据
+}
+
+func (resp *QueryAgencyResp) Success() bool {
+	return resp.Code == 0
+}
+
 type CreateApplicationReqBodyBuilder struct {
 	talentId                             string // 人才ID
 	talentIdFlag                         bool
@@ -41409,6 +42315,114 @@ func (resp *TransferOnboardApplicationResp) Success() bool {
 	return resp.Code == 0
 }
 
+type TransferStageApplicationReqBodyBuilder struct {
+	stageId     string // 要转移到的阶段 ID，可通过「获取招聘流程信息」接口获取阶段 ID 枚举
+	stageIdFlag bool
+}
+
+func NewTransferStageApplicationReqBodyBuilder() *TransferStageApplicationReqBodyBuilder {
+	builder := &TransferStageApplicationReqBodyBuilder{}
+	return builder
+}
+
+// 要转移到的阶段 ID，可通过「获取招聘流程信息」接口获取阶段 ID 枚举
+//
+// 示例值：6960663240925956402
+func (builder *TransferStageApplicationReqBodyBuilder) StageId(stageId string) *TransferStageApplicationReqBodyBuilder {
+	builder.stageId = stageId
+	builder.stageIdFlag = true
+	return builder
+}
+
+func (builder *TransferStageApplicationReqBodyBuilder) Build() *TransferStageApplicationReqBody {
+	req := &TransferStageApplicationReqBody{}
+	if builder.stageIdFlag {
+		req.StageId = &builder.stageId
+	}
+	return req
+}
+
+type TransferStageApplicationPathReqBodyBuilder struct {
+	stageId     string
+	stageIdFlag bool
+}
+
+func NewTransferStageApplicationPathReqBodyBuilder() *TransferStageApplicationPathReqBodyBuilder {
+	builder := &TransferStageApplicationPathReqBodyBuilder{}
+	return builder
+}
+
+// 要转移到的阶段 ID，可通过「获取招聘流程信息」接口获取阶段 ID 枚举
+//
+// 示例值：6960663240925956402
+func (builder *TransferStageApplicationPathReqBodyBuilder) StageId(stageId string) *TransferStageApplicationPathReqBodyBuilder {
+	builder.stageId = stageId
+	builder.stageIdFlag = true
+	return builder
+}
+
+func (builder *TransferStageApplicationPathReqBodyBuilder) Build() (*TransferStageApplicationReqBody, error) {
+	req := &TransferStageApplicationReqBody{}
+	if builder.stageIdFlag {
+		req.StageId = &builder.stageId
+	}
+	return req, nil
+}
+
+type TransferStageApplicationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *TransferStageApplicationReqBody
+}
+
+func NewTransferStageApplicationReqBuilder() *TransferStageApplicationReqBuilder {
+	builder := &TransferStageApplicationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 投递 ID
+//
+// 示例值：6960663240925956401
+func (builder *TransferStageApplicationReqBuilder) ApplicationId(applicationId string) *TransferStageApplicationReqBuilder {
+	builder.apiReq.PathParams.Set("application_id", fmt.Sprint(applicationId))
+	return builder
+}
+
+// 转移投递阶段
+func (builder *TransferStageApplicationReqBuilder) Body(body *TransferStageApplicationReqBody) *TransferStageApplicationReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *TransferStageApplicationReqBuilder) Build() *TransferStageApplicationReq {
+	req := &TransferStageApplicationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type TransferStageApplicationReqBody struct {
+	StageId *string `json:"stage_id,omitempty"` // 要转移到的阶段 ID，可通过「获取招聘流程信息」接口获取阶段 ID 枚举
+}
+
+type TransferStageApplicationReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *TransferStageApplicationReqBody `body:""`
+}
+
+type TransferStageApplicationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *TransferStageApplicationResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ListApplicationInterviewReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -41602,6 +42616,94 @@ type PreviewAttachmentResp struct {
 }
 
 func (resp *PreviewAttachmentResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListBackgroundCheckOrderReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewListBackgroundCheckOrderReqBuilder() *ListBackgroundCheckOrderReqBuilder {
+	builder := &ListBackgroundCheckOrderReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *ListBackgroundCheckOrderReqBuilder) UserIdType(userIdType string) *ListBackgroundCheckOrderReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 页码标识，获取第一页传空，每次查询会返回下一页的page_token
+//
+// 示例值：eyJvZmZzZXQiOjEsInRpbWVzdGFtcCI6MTY0MDc2NTYzMjA4OCwiaWQiOm51bGx9
+func (builder *ListBackgroundCheckOrderReqBuilder) PageToken(pageToken string) *ListBackgroundCheckOrderReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：100
+func (builder *ListBackgroundCheckOrderReqBuilder) PageSize(pageSize int) *ListBackgroundCheckOrderReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 投递 ID
+//
+// 示例值：6985833807195212076
+func (builder *ListBackgroundCheckOrderReqBuilder) ApplicationId(applicationId string) *ListBackgroundCheckOrderReqBuilder {
+	builder.apiReq.QueryParams.Set("application_id", fmt.Sprint(applicationId))
+	return builder
+}
+
+// 最早更新时间，毫秒级时间戳
+//
+// 示例值：1638848468868
+func (builder *ListBackgroundCheckOrderReqBuilder) UpdateStartTime(updateStartTime string) *ListBackgroundCheckOrderReqBuilder {
+	builder.apiReq.QueryParams.Set("update_start_time", fmt.Sprint(updateStartTime))
+	return builder
+}
+
+// 最晚更新时间，毫秒级时间戳
+//
+// 示例值：1638848468869
+func (builder *ListBackgroundCheckOrderReqBuilder) UpdateEndTime(updateEndTime string) *ListBackgroundCheckOrderReqBuilder {
+	builder.apiReq.QueryParams.Set("update_end_time", fmt.Sprint(updateEndTime))
+	return builder
+}
+
+func (builder *ListBackgroundCheckOrderReqBuilder) Build() *ListBackgroundCheckOrderReq {
+	req := &ListBackgroundCheckOrderReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListBackgroundCheckOrderReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type ListBackgroundCheckOrderRespData struct {
+	HasMore   *bool                   `json:"has_more,omitempty"`   // 是否有下一页
+	PageToken *string                 `json:"page_token,omitempty"` // 下一页页码
+	Items     []*BackgroundCheckOrder `json:"items,omitempty"`      // 背调信息列表
+}
+
+type ListBackgroundCheckOrderResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListBackgroundCheckOrderRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListBackgroundCheckOrderResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -43763,6 +44865,421 @@ func (resp *ListEvaluationResp) Success() bool {
 	return resp.Code == 0
 }
 
+type ListEvaluationTaskReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListEvaluationTaskReqBuilder() *ListEvaluationTaskReqBuilder {
+	builder := &ListEvaluationTaskReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListEvaluationTaskReqBuilder) Limit(limit int) *ListEvaluationTaskReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 分页大小, 默认10，不能超过 20
+//
+// 示例值：10
+func (builder *ListEvaluationTaskReqBuilder) PageSize(pageSize int) *ListEvaluationTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListEvaluationTaskReqBuilder) PageToken(pageToken string) *ListEvaluationTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 用户 ID
+//
+// 示例值：ou_e6139117c300506837def50545420c6a
+func (builder *ListEvaluationTaskReqBuilder) UserId(userId string) *ListEvaluationTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id", fmt.Sprint(userId))
+	return builder
+}
+
+// 任务状态
+//
+// 示例值：1
+func (builder *ListEvaluationTaskReqBuilder) ActivityStatus(activityStatus int) *ListEvaluationTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("activity_status", fmt.Sprint(activityStatus))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *ListEvaluationTaskReqBuilder) UserIdType(userIdType string) *ListEvaluationTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *ListEvaluationTaskReqBuilder) Build() *ListEvaluationTaskReq {
+	req := &ListEvaluationTaskReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListEvaluationTaskReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListEvaluationTaskRespData struct {
+	HasMore   *bool             `json:"has_more,omitempty"`   // 是否还有更多项
+	PageToken *string           `json:"page_token,omitempty"` // 分页标记，当 has_more 为 true 时，会同时返回新的 page_token，否则不返回 page_token
+	Items     []*EvaluationTask `json:"items,omitempty"`      // 列表
+}
+
+type ListEvaluationTaskResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListEvaluationTaskRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListEvaluationTaskResp) Success() bool {
+	return resp.Code == 0
+}
+
+type CreateExamReqBodyBuilder struct {
+	applicationId        string // 投递 ID
+	applicationIdFlag    bool
+	examResourceName     string // 试卷名称
+	examResourceNameFlag bool
+	score                float64 // 笔试分数
+	scoreFlag            bool
+	uuid                 string // 报告附件，使用[创建附件](https://open.feishu.cn/document/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment)上传，获取附件ID，支持的文件格式：JPG、JPEG、PNG、PDF，不超过 100MB。
+	uuidFlag             bool
+	operatorId           string // 添加人 ID
+	operatorIdFlag       bool
+}
+
+func NewCreateExamReqBodyBuilder() *CreateExamReqBodyBuilder {
+	builder := &CreateExamReqBodyBuilder{}
+	return builder
+}
+
+// 投递 ID
+//
+// 示例值：6891565253964859661
+func (builder *CreateExamReqBodyBuilder) ApplicationId(applicationId string) *CreateExamReqBodyBuilder {
+	builder.applicationId = applicationId
+	builder.applicationIdFlag = true
+	return builder
+}
+
+// 试卷名称
+//
+// 示例值：笔试试卷
+func (builder *CreateExamReqBodyBuilder) ExamResourceName(examResourceName string) *CreateExamReqBodyBuilder {
+	builder.examResourceName = examResourceName
+	builder.examResourceNameFlag = true
+	return builder
+}
+
+// 笔试分数
+//
+// 示例值：100
+func (builder *CreateExamReqBodyBuilder) Score(score float64) *CreateExamReqBodyBuilder {
+	builder.score = score
+	builder.scoreFlag = true
+	return builder
+}
+
+// 报告附件，使用[创建附件](https://open.feishu.cn/document/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment)上传，获取附件ID，支持的文件格式：JPG、JPEG、PNG、PDF，不超过 100MB。
+//
+// 示例值：6949805467799537964
+func (builder *CreateExamReqBodyBuilder) Uuid(uuid string) *CreateExamReqBodyBuilder {
+	builder.uuid = uuid
+	builder.uuidFlag = true
+	return builder
+}
+
+// 添加人 ID
+//
+// 示例值：ou_f476cb099ac9227c9bae09ce46112579
+func (builder *CreateExamReqBodyBuilder) OperatorId(operatorId string) *CreateExamReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+func (builder *CreateExamReqBodyBuilder) Build() *CreateExamReqBody {
+	req := &CreateExamReqBody{}
+	if builder.applicationIdFlag {
+		req.ApplicationId = &builder.applicationId
+	}
+	if builder.examResourceNameFlag {
+		req.ExamResourceName = &builder.examResourceName
+	}
+	if builder.scoreFlag {
+		req.Score = &builder.score
+	}
+	if builder.uuidFlag {
+		req.Uuid = &builder.uuid
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	return req
+}
+
+type CreateExamPathReqBodyBuilder struct {
+	applicationId        string
+	applicationIdFlag    bool
+	examResourceName     string
+	examResourceNameFlag bool
+	score                float64
+	scoreFlag            bool
+	uuid                 string
+	uuidFlag             bool
+	operatorId           string
+	operatorIdFlag       bool
+}
+
+func NewCreateExamPathReqBodyBuilder() *CreateExamPathReqBodyBuilder {
+	builder := &CreateExamPathReqBodyBuilder{}
+	return builder
+}
+
+// 投递 ID
+//
+// 示例值：6891565253964859661
+func (builder *CreateExamPathReqBodyBuilder) ApplicationId(applicationId string) *CreateExamPathReqBodyBuilder {
+	builder.applicationId = applicationId
+	builder.applicationIdFlag = true
+	return builder
+}
+
+// 试卷名称
+//
+// 示例值：笔试试卷
+func (builder *CreateExamPathReqBodyBuilder) ExamResourceName(examResourceName string) *CreateExamPathReqBodyBuilder {
+	builder.examResourceName = examResourceName
+	builder.examResourceNameFlag = true
+	return builder
+}
+
+// 笔试分数
+//
+// 示例值：100
+func (builder *CreateExamPathReqBodyBuilder) Score(score float64) *CreateExamPathReqBodyBuilder {
+	builder.score = score
+	builder.scoreFlag = true
+	return builder
+}
+
+// 报告附件，使用[创建附件](https://open.feishu.cn/document/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment)上传，获取附件ID，支持的文件格式：JPG、JPEG、PNG、PDF，不超过 100MB。
+//
+// 示例值：6949805467799537964
+func (builder *CreateExamPathReqBodyBuilder) Uuid(uuid string) *CreateExamPathReqBodyBuilder {
+	builder.uuid = uuid
+	builder.uuidFlag = true
+	return builder
+}
+
+// 添加人 ID
+//
+// 示例值：ou_f476cb099ac9227c9bae09ce46112579
+func (builder *CreateExamPathReqBodyBuilder) OperatorId(operatorId string) *CreateExamPathReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+func (builder *CreateExamPathReqBodyBuilder) Build() (*CreateExamReqBody, error) {
+	req := &CreateExamReqBody{}
+	if builder.applicationIdFlag {
+		req.ApplicationId = &builder.applicationId
+	}
+	if builder.examResourceNameFlag {
+		req.ExamResourceName = &builder.examResourceName
+	}
+	if builder.scoreFlag {
+		req.Score = &builder.score
+	}
+	if builder.uuidFlag {
+		req.Uuid = &builder.uuid
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	return req, nil
+}
+
+type CreateExamReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *CreateExamReqBody
+}
+
+func NewCreateExamReqBuilder() *CreateExamReqBuilder {
+	builder := &CreateExamReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *CreateExamReqBuilder) UserIdType(userIdType string) *CreateExamReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 根据投递 ID 添加该投递下的笔试结果
+func (builder *CreateExamReqBuilder) Body(body *CreateExamReqBody) *CreateExamReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *CreateExamReqBuilder) Build() *CreateExamReq {
+	req := &CreateExamReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type CreateExamReqBody struct {
+	ApplicationId    *string  `json:"application_id,omitempty"`     // 投递 ID
+	ExamResourceName *string  `json:"exam_resource_name,omitempty"` // 试卷名称
+	Score            *float64 `json:"score,omitempty"`              // 笔试分数
+	Uuid             *string  `json:"uuid,omitempty"`               // 报告附件，使用[创建附件](https://open.feishu.cn/document/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment)上传，获取附件ID，支持的文件格式：JPG、JPEG、PNG、PDF，不超过 100MB。
+	OperatorId       *string  `json:"operator_id,omitempty"`        // 添加人 ID
+}
+
+type CreateExamReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *CreateExamReqBody `body:""`
+}
+
+type CreateExamRespData struct {
+	ExamId           *string  `json:"exam_id,omitempty"`            // 笔试 ID
+	ApplicationId    *string  `json:"application_id,omitempty"`     // 投递 ID
+	ExamResourceName *string  `json:"exam_resource_name,omitempty"` // 试卷名称
+	Score            *float64 `json:"score,omitempty"`              // 笔试分数
+	Uuid             *string  `json:"uuid,omitempty"`               // 附件ID
+	OperatorId       *string  `json:"operator_id,omitempty"`        // 操作人 ID
+	OperateTime      *string  `json:"operate_time,omitempty"`       // 操作时间
+}
+
+type CreateExamResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateExamRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateExamResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListExamMarkingTaskReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListExamMarkingTaskReqBuilder() *ListExamMarkingTaskReqBuilder {
+	builder := &ListExamMarkingTaskReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListExamMarkingTaskReqBuilder) Limit(limit int) *ListExamMarkingTaskReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 分页大小, 默认10，不能超过 20
+//
+// 示例值：10
+func (builder *ListExamMarkingTaskReqBuilder) PageSize(pageSize int) *ListExamMarkingTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListExamMarkingTaskReqBuilder) PageToken(pageToken string) *ListExamMarkingTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 用户 ID
+//
+// 示例值：ou_e6139117c300506837def50545420c6a
+func (builder *ListExamMarkingTaskReqBuilder) UserId(userId string) *ListExamMarkingTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id", fmt.Sprint(userId))
+	return builder
+}
+
+// 任务状态
+//
+// 示例值：1
+func (builder *ListExamMarkingTaskReqBuilder) ActivityStatus(activityStatus int) *ListExamMarkingTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("activity_status", fmt.Sprint(activityStatus))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *ListExamMarkingTaskReqBuilder) UserIdType(userIdType string) *ListExamMarkingTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *ListExamMarkingTaskReqBuilder) Build() *ListExamMarkingTaskReq {
+	req := &ListExamMarkingTaskReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListExamMarkingTaskReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListExamMarkingTaskRespData struct {
+	HasMore   *bool              `json:"has_more,omitempty"`   // 是否还有更多项
+	PageToken *string            `json:"page_token,omitempty"` // 分页标记，当 has_more 为 true 时，会同时返回新的 page_token，否则不返回 page_token
+	Items     []*ExamMarkingTask `json:"items,omitempty"`      // 列表
+}
+
+type ListExamMarkingTaskResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListExamMarkingTaskRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListExamMarkingTaskResp) Success() bool {
+	return resp.Code == 0
+}
+
 type CreateExternalApplicationReqBuilder struct {
 	apiReq              *larkcore.ApiReq
 	externalApplication *ExternalApplication
@@ -43861,6 +45378,80 @@ type DeleteExternalApplicationResp struct {
 }
 
 func (resp *DeleteExternalApplicationResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListExternalApplicationReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListExternalApplicationReqBuilder() *ListExternalApplicationReqBuilder {
+	builder := &ListExternalApplicationReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListExternalApplicationReqBuilder) Limit(limit int) *ListExternalApplicationReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 人才ID
+//
+// 示例值：6960663240925956660
+func (builder *ListExternalApplicationReqBuilder) TalentId(talentId string) *ListExternalApplicationReqBuilder {
+	builder.apiReq.QueryParams.Set("talent_id", fmt.Sprint(talentId))
+	return builder
+}
+
+// 分页大小
+//
+// 示例值：10
+func (builder *ListExternalApplicationReqBuilder) PageSize(pageSize int) *ListExternalApplicationReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListExternalApplicationReqBuilder) PageToken(pageToken string) *ListExternalApplicationReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+func (builder *ListExternalApplicationReqBuilder) Build() *ListExternalApplicationReq {
+	req := &ListExternalApplicationReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListExternalApplicationReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListExternalApplicationRespData struct {
+	Items     []*ExternalApplication `json:"items,omitempty"`      // 外部投递列表
+	HasMore   *bool                  `json:"has_more,omitempty"`   // 是否还有更多项
+	PageToken *string                `json:"page_token,omitempty"` // 分页标记，当 has_more 为 true 时，会同时返回新的 page_token，否则不返回 page_token
+}
+
+type ListExternalApplicationResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListExternalApplicationRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListExternalApplicationResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -44057,6 +45648,217 @@ func (resp *CreateExternalInterviewAssessmentResp) Success() bool {
 	return resp.Code == 0
 }
 
+type PatchExternalInterviewAssessmentReqBuilder struct {
+	apiReq                      *larkcore.ApiReq
+	externalInterviewAssessment *ExternalInterviewAssessment
+}
+
+func NewPatchExternalInterviewAssessmentReqBuilder() *PatchExternalInterviewAssessmentReqBuilder {
+	builder := &PatchExternalInterviewAssessmentReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 外部面评 ID
+//
+// 示例值：6930815272790114324
+func (builder *PatchExternalInterviewAssessmentReqBuilder) ExternalInterviewAssessmentId(externalInterviewAssessmentId string) *PatchExternalInterviewAssessmentReqBuilder {
+	builder.apiReq.PathParams.Set("external_interview_assessment_id", fmt.Sprint(externalInterviewAssessmentId))
+	return builder
+}
+
+func (builder *PatchExternalInterviewAssessmentReqBuilder) ExternalInterviewAssessment(externalInterviewAssessment *ExternalInterviewAssessment) *PatchExternalInterviewAssessmentReqBuilder {
+	builder.externalInterviewAssessment = externalInterviewAssessment
+	return builder
+}
+
+func (builder *PatchExternalInterviewAssessmentReqBuilder) Build() *PatchExternalInterviewAssessmentReq {
+	req := &PatchExternalInterviewAssessmentReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.externalInterviewAssessment
+	return req
+}
+
+type PatchExternalInterviewAssessmentReq struct {
+	apiReq                      *larkcore.ApiReq
+	ExternalInterviewAssessment *ExternalInterviewAssessment `body:""`
+}
+
+type PatchExternalInterviewAssessmentRespData struct {
+	ExternalInterviewAssessment *ExternalInterviewAssessment `json:"external_interview_assessment,omitempty"` //
+}
+
+type PatchExternalInterviewAssessmentResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *PatchExternalInterviewAssessmentRespData `json:"data"` // 业务数据
+}
+
+func (resp *PatchExternalInterviewAssessmentResp) Success() bool {
+	return resp.Code == 0
+}
+
+type CreateExternalReferralRewardReqBuilder struct {
+	apiReq         *larkcore.ApiReq
+	externalReward *ExternalReward
+}
+
+func NewCreateExternalReferralRewardReqBuilder() *CreateExternalReferralRewardReqBuilder {
+	builder := &CreateExternalReferralRewardReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *CreateExternalReferralRewardReqBuilder) UserIdType(userIdType string) *CreateExternalReferralRewardReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *CreateExternalReferralRewardReqBuilder) ExternalReward(externalReward *ExternalReward) *CreateExternalReferralRewardReqBuilder {
+	builder.externalReward = externalReward
+	return builder
+}
+
+func (builder *CreateExternalReferralRewardReqBuilder) Build() *CreateExternalReferralRewardReq {
+	req := &CreateExternalReferralRewardReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.externalReward
+	return req
+}
+
+type CreateExternalReferralRewardReq struct {
+	apiReq         *larkcore.ApiReq
+	ExternalReward *ExternalReward `body:""`
+}
+
+type CreateExternalReferralRewardRespData struct {
+	Id *string `json:"id,omitempty"` // 创建的内推奖励的id
+}
+
+type CreateExternalReferralRewardResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateExternalReferralRewardRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateExternalReferralRewardResp) Success() bool {
+	return resp.Code == 0
+}
+
+type DeleteExternalReferralRewardReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewDeleteExternalReferralRewardReqBuilder() *DeleteExternalReferralRewardReqBuilder {
+	builder := &DeleteExternalReferralRewardReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 内推奖励ID
+//
+// 示例值：6942778198054125570
+func (builder *DeleteExternalReferralRewardReqBuilder) ExternalReferralRewardId(externalReferralRewardId string) *DeleteExternalReferralRewardReqBuilder {
+	builder.apiReq.PathParams.Set("external_referral_reward_id", fmt.Sprint(externalReferralRewardId))
+	return builder
+}
+
+func (builder *DeleteExternalReferralRewardReqBuilder) Build() *DeleteExternalReferralRewardReq {
+	req := &DeleteExternalReferralRewardReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type DeleteExternalReferralRewardReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type DeleteExternalReferralRewardResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *DeleteExternalReferralRewardResp) Success() bool {
+	return resp.Code == 0
+}
+
+type GetByTalentInterviewReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetByTalentInterviewReqBuilder() *GetByTalentInterviewReqBuilder {
+	builder := &GetByTalentInterviewReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 人才 ID
+//
+// 示例值：6949805467799537964
+func (builder *GetByTalentInterviewReqBuilder) TalentId(talentId string) *GetByTalentInterviewReqBuilder {
+	builder.apiReq.QueryParams.Set("talent_id", fmt.Sprint(talentId))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *GetByTalentInterviewReqBuilder) UserIdType(userIdType string) *GetByTalentInterviewReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 此次调用中使用的「职级 ID」的类型
+//
+// 示例值：
+func (builder *GetByTalentInterviewReqBuilder) JobLevelIdType(jobLevelIdType string) *GetByTalentInterviewReqBuilder {
+	builder.apiReq.QueryParams.Set("job_level_id_type", fmt.Sprint(jobLevelIdType))
+	return builder
+}
+
+func (builder *GetByTalentInterviewReqBuilder) Build() *GetByTalentInterviewReq {
+	req := &GetByTalentInterviewReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type GetByTalentInterviewReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetByTalentInterviewRespData struct {
+	Items []*TalentInterview `json:"items,omitempty"` // 投递面试列表
+}
+
+type GetByTalentInterviewResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetByTalentInterviewRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetByTalentInterviewResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ListInterviewReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -44158,6 +45960,527 @@ type ListInterviewResp struct {
 }
 
 func (resp *ListInterviewResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListInterviewFeedbackFormReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListInterviewFeedbackFormReqBuilder() *ListInterviewFeedbackFormReqBuilder {
+	builder := &ListInterviewFeedbackFormReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListInterviewFeedbackFormReqBuilder) Limit(limit int) *ListInterviewFeedbackFormReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 面试评价表ID列表, 如果使用此字段则会忽略其他参数
+//
+// 示例值：
+func (builder *ListInterviewFeedbackFormReqBuilder) InterviewFeedbackFormIds(interviewFeedbackFormIds []string) *ListInterviewFeedbackFormReqBuilder {
+	for _, v := range interviewFeedbackFormIds {
+		builder.apiReq.QueryParams.Add("interview_feedback_form_ids", fmt.Sprint(v))
+	}
+	return builder
+}
+
+// 分页大小
+//
+// 示例值：
+func (builder *ListInterviewFeedbackFormReqBuilder) PageSize(pageSize int) *ListInterviewFeedbackFormReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：
+func (builder *ListInterviewFeedbackFormReqBuilder) PageToken(pageToken string) *ListInterviewFeedbackFormReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+func (builder *ListInterviewFeedbackFormReqBuilder) Build() *ListInterviewFeedbackFormReq {
+	req := &ListInterviewFeedbackFormReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListInterviewFeedbackFormReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListInterviewFeedbackFormRespData struct {
+	Items     []*InterviewFeedbackForm `json:"items,omitempty"`      //
+	PageToken *string                  `json:"page_token,omitempty"` //
+	HasMore   *bool                    `json:"has_more,omitempty"`   //
+}
+
+type ListInterviewFeedbackFormResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListInterviewFeedbackFormRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListInterviewFeedbackFormResp) Success() bool {
+	return resp.Code == 0
+}
+
+type GetInterviewRecordReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetInterviewRecordReqBuilder() *GetInterviewRecordReqBuilder {
+	builder := &GetInterviewRecordReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 记录 ID
+//
+// 示例值：1618209327096
+func (builder *GetInterviewRecordReqBuilder) InterviewRecordId(interviewRecordId string) *GetInterviewRecordReqBuilder {
+	builder.apiReq.PathParams.Set("interview_record_id", fmt.Sprint(interviewRecordId))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *GetInterviewRecordReqBuilder) UserIdType(userIdType string) *GetInterviewRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *GetInterviewRecordReqBuilder) Build() *GetInterviewRecordReq {
+	req := &GetInterviewRecordReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type GetInterviewRecordReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetInterviewRecordRespData struct {
+	InterviewRecord *InterviewRecord `json:"interview_record,omitempty"` // 数据
+}
+
+type GetInterviewRecordResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetInterviewRecordRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetInterviewRecordResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListInterviewRecordReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListInterviewRecordReqBuilder() *ListInterviewRecordReqBuilder {
+	builder := &ListInterviewRecordReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListInterviewRecordReqBuilder) Limit(limit int) *ListInterviewRecordReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 分页大小
+//
+// 示例值：
+func (builder *ListInterviewRecordReqBuilder) PageSize(pageSize int) *ListInterviewRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：
+func (builder *ListInterviewRecordReqBuilder) PageToken(pageToken string) *ListInterviewRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 面试评价ID列表，使用该筛选项时不会分页
+//
+// 示例值：
+func (builder *ListInterviewRecordReqBuilder) Ids(ids []string) *ListInterviewRecordReqBuilder {
+	for _, v := range ids {
+		builder.apiReq.QueryParams.Add("ids", fmt.Sprint(v))
+	}
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *ListInterviewRecordReqBuilder) UserIdType(userIdType string) *ListInterviewRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *ListInterviewRecordReqBuilder) Build() *ListInterviewRecordReq {
+	req := &ListInterviewRecordReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListInterviewRecordReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListInterviewRecordRespData struct {
+	Items     []*InterviewRecord `json:"items,omitempty"`      // 面试评价详细信息列表
+	PageToken *string            `json:"page_token,omitempty"` //
+	HasMore   *bool              `json:"has_more,omitempty"`   //
+}
+
+type ListInterviewRecordResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListInterviewRecordRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListInterviewRecordResp) Success() bool {
+	return resp.Code == 0
+}
+
+type GetInterviewRecordAttachmentReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetInterviewRecordAttachmentReqBuilder() *GetInterviewRecordAttachmentReqBuilder {
+	builder := &GetInterviewRecordAttachmentReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 投递 ID
+//
+// 示例值：6949805467799537964
+func (builder *GetInterviewRecordAttachmentReqBuilder) ApplicationId(applicationId string) *GetInterviewRecordAttachmentReqBuilder {
+	builder.apiReq.QueryParams.Set("application_id", fmt.Sprint(applicationId))
+	return builder
+}
+
+// 面试记录 ID
+//
+// 示例值：6969137186734393644
+func (builder *GetInterviewRecordAttachmentReqBuilder) InterviewRecordId(interviewRecordId string) *GetInterviewRecordAttachmentReqBuilder {
+	builder.apiReq.QueryParams.Set("interview_record_id", fmt.Sprint(interviewRecordId))
+	return builder
+}
+
+// 面试记录语言
+//
+// 示例值：
+func (builder *GetInterviewRecordAttachmentReqBuilder) Language(language int) *GetInterviewRecordAttachmentReqBuilder {
+	builder.apiReq.QueryParams.Set("language", fmt.Sprint(language))
+	return builder
+}
+
+func (builder *GetInterviewRecordAttachmentReqBuilder) Build() *GetInterviewRecordAttachmentReq {
+	req := &GetInterviewRecordAttachmentReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type GetInterviewRecordAttachmentReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetInterviewRecordAttachmentRespData struct {
+	Attachment *AttachmentInfo `json:"attachment,omitempty"` // 附件信息
+}
+
+type GetInterviewRecordAttachmentResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetInterviewRecordAttachmentRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetInterviewRecordAttachmentResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListInterviewRegistrationSchemaReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListInterviewRegistrationSchemaReqBuilder() *ListInterviewRegistrationSchemaReqBuilder {
+	builder := &ListInterviewRegistrationSchemaReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListInterviewRegistrationSchemaReqBuilder) Limit(limit int) *ListInterviewRegistrationSchemaReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 页码标识，获取第一页传空，每次查询会返回下一页的page_token
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListInterviewRegistrationSchemaReqBuilder) PageToken(pageToken string) *ListInterviewRegistrationSchemaReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：10
+func (builder *ListInterviewRegistrationSchemaReqBuilder) PageSize(pageSize int) *ListInterviewRegistrationSchemaReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+func (builder *ListInterviewRegistrationSchemaReqBuilder) Build() *ListInterviewRegistrationSchemaReq {
+	req := &ListInterviewRegistrationSchemaReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListInterviewRegistrationSchemaReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListInterviewRegistrationSchemaRespData struct {
+	Items     []*InterviewRegistrationSchema `json:"items,omitempty"`      // 列表
+	HasMore   *bool                          `json:"has_more,omitempty"`   // 是否有下一页
+	PageToken *string                        `json:"page_token,omitempty"` // 下一页页码
+}
+
+type ListInterviewRegistrationSchemaResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListInterviewRegistrationSchemaRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListInterviewRegistrationSchemaResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListInterviewRoundTypeReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewListInterviewRoundTypeReqBuilder() *ListInterviewRoundTypeReqBuilder {
+	builder := &ListInterviewRoundTypeReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 职位流程类型
+//
+// 示例值：1
+func (builder *ListInterviewRoundTypeReqBuilder) ProcessType(processType int) *ListInterviewRoundTypeReqBuilder {
+	builder.apiReq.QueryParams.Set("process_type", fmt.Sprint(processType))
+	return builder
+}
+
+func (builder *ListInterviewRoundTypeReqBuilder) Build() *ListInterviewRoundTypeReq {
+	req := &ListInterviewRoundTypeReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListInterviewRoundTypeReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type ListInterviewRoundTypeRespData struct {
+	ActiveStatus *int                  `json:"active_status,omitempty"` // 是否启用面试轮次类型
+	Items        []*InterviewRoundType `json:"items,omitempty"`         // 列表
+}
+
+type ListInterviewRoundTypeResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListInterviewRoundTypeRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListInterviewRoundTypeResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListInterviewTaskReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListInterviewTaskReqBuilder() *ListInterviewTaskReqBuilder {
+	builder := &ListInterviewTaskReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListInterviewTaskReqBuilder) Limit(limit int) *ListInterviewTaskReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 分页大小, 默认10，不能超过 20
+//
+// 示例值：10
+func (builder *ListInterviewTaskReqBuilder) PageSize(pageSize int) *ListInterviewTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListInterviewTaskReqBuilder) PageToken(pageToken string) *ListInterviewTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 用户 ID
+//
+// 示例值：ou_e6139117c300506837def50545420c6a
+func (builder *ListInterviewTaskReqBuilder) UserId(userId string) *ListInterviewTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id", fmt.Sprint(userId))
+	return builder
+}
+
+// 任务状态
+//
+// 示例值：1
+func (builder *ListInterviewTaskReqBuilder) ActivityStatus(activityStatus int) *ListInterviewTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("activity_status", fmt.Sprint(activityStatus))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *ListInterviewTaskReqBuilder) UserIdType(userIdType string) *ListInterviewTaskReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *ListInterviewTaskReqBuilder) Build() *ListInterviewTaskReq {
+	req := &ListInterviewTaskReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListInterviewTaskReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListInterviewTaskRespData struct {
+	HasMore   *bool            `json:"has_more,omitempty"`   // 是否还有更多项
+	PageToken *string          `json:"page_token,omitempty"` // 分页标记，当 has_more 为 true 时，会同时返回新的 page_token，否则不返回 page_token
+	Items     []*InterviewTask `json:"items,omitempty"`      // 列表
+}
+
+type ListInterviewTaskResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListInterviewTaskRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListInterviewTaskResp) Success() bool {
+	return resp.Code == 0
+}
+
+type CloseJobReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewCloseJobReqBuilder() *CloseJobReqBuilder {
+	builder := &CloseJobReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 职位 ID
+//
+// 示例值：6960663240925956555
+func (builder *CloseJobReqBuilder) JobId(jobId string) *CloseJobReqBuilder {
+	builder.apiReq.PathParams.Set("job_id", fmt.Sprint(jobId))
+	return builder
+}
+
+func (builder *CloseJobReqBuilder) Build() *CloseJobReq {
+	req := &CloseJobReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type CloseJobReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type CloseJobResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *CloseJobResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -44576,6 +46899,143 @@ func (resp *ListJobResp) Success() bool {
 	return resp.Code == 0
 }
 
+type OpenJobReqBodyBuilder struct {
+	expiryTime         int // 到期日期
+	expiryTimeFlag     bool
+	isNeverExpired     bool // 是否长期有效
+	isNeverExpiredFlag bool
+}
+
+func NewOpenJobReqBodyBuilder() *OpenJobReqBodyBuilder {
+	builder := &OpenJobReqBodyBuilder{}
+	return builder
+}
+
+// 到期日期
+//
+// 示例值：1598844859612
+func (builder *OpenJobReqBodyBuilder) ExpiryTime(expiryTime int) *OpenJobReqBodyBuilder {
+	builder.expiryTime = expiryTime
+	builder.expiryTimeFlag = true
+	return builder
+}
+
+// 是否长期有效
+//
+// 示例值：true
+func (builder *OpenJobReqBodyBuilder) IsNeverExpired(isNeverExpired bool) *OpenJobReqBodyBuilder {
+	builder.isNeverExpired = isNeverExpired
+	builder.isNeverExpiredFlag = true
+	return builder
+}
+
+func (builder *OpenJobReqBodyBuilder) Build() *OpenJobReqBody {
+	req := &OpenJobReqBody{}
+	if builder.expiryTimeFlag {
+		req.ExpiryTime = &builder.expiryTime
+	}
+	if builder.isNeverExpiredFlag {
+		req.IsNeverExpired = &builder.isNeverExpired
+	}
+	return req
+}
+
+type OpenJobPathReqBodyBuilder struct {
+	expiryTime         int
+	expiryTimeFlag     bool
+	isNeverExpired     bool
+	isNeverExpiredFlag bool
+}
+
+func NewOpenJobPathReqBodyBuilder() *OpenJobPathReqBodyBuilder {
+	builder := &OpenJobPathReqBodyBuilder{}
+	return builder
+}
+
+// 到期日期
+//
+// 示例值：1598844859612
+func (builder *OpenJobPathReqBodyBuilder) ExpiryTime(expiryTime int) *OpenJobPathReqBodyBuilder {
+	builder.expiryTime = expiryTime
+	builder.expiryTimeFlag = true
+	return builder
+}
+
+// 是否长期有效
+//
+// 示例值：true
+func (builder *OpenJobPathReqBodyBuilder) IsNeverExpired(isNeverExpired bool) *OpenJobPathReqBodyBuilder {
+	builder.isNeverExpired = isNeverExpired
+	builder.isNeverExpiredFlag = true
+	return builder
+}
+
+func (builder *OpenJobPathReqBodyBuilder) Build() (*OpenJobReqBody, error) {
+	req := &OpenJobReqBody{}
+	if builder.expiryTimeFlag {
+		req.ExpiryTime = &builder.expiryTime
+	}
+	if builder.isNeverExpiredFlag {
+		req.IsNeverExpired = &builder.isNeverExpired
+	}
+	return req, nil
+}
+
+type OpenJobReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *OpenJobReqBody
+}
+
+func NewOpenJobReqBuilder() *OpenJobReqBuilder {
+	builder := &OpenJobReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 职位 ID
+//
+// 示例值：6960663240925956555
+func (builder *OpenJobReqBuilder) JobId(jobId string) *OpenJobReqBuilder {
+	builder.apiReq.PathParams.Set("job_id", fmt.Sprint(jobId))
+	return builder
+}
+
+// 支持开启职位
+func (builder *OpenJobReqBuilder) Body(body *OpenJobReqBody) *OpenJobReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *OpenJobReqBuilder) Build() *OpenJobReq {
+	req := &OpenJobReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type OpenJobReqBody struct {
+	ExpiryTime     *int  `json:"expiry_time,omitempty"`      // 到期日期
+	IsNeverExpired *bool `json:"is_never_expired,omitempty"` // 是否长期有效
+}
+
+type OpenJobReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *OpenJobReqBody `body:""`
+}
+
+type OpenJobResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *OpenJobResp) Success() bool {
+	return resp.Code == 0
+}
+
 type RecruiterJobReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -44692,6 +47152,244 @@ type UpdateConfigJobResp struct {
 }
 
 func (resp *UpdateConfigJobResp) Success() bool {
+	return resp.Code == 0
+}
+
+type BatchUpdateJobManagerReqBodyBuilder struct {
+	recruiterId             string // 招聘负责人 ID
+	recruiterIdFlag         bool
+	assistantIdList         []string // 招聘协助人 ID
+	assistantIdListFlag     bool
+	hiringManagerIdList     []string // 用人经理 ID
+	hiringManagerIdListFlag bool
+	updateOptionList        []int // 更新的人员类型，可选值：1=招聘负责人; 2=招聘协助人; 3=用人经理；
+	updateOptionListFlag    bool
+	creatorId               string // 操作者 ID
+	creatorIdFlag           bool
+}
+
+func NewBatchUpdateJobManagerReqBodyBuilder() *BatchUpdateJobManagerReqBodyBuilder {
+	builder := &BatchUpdateJobManagerReqBodyBuilder{}
+	return builder
+}
+
+// 招聘负责人 ID
+//
+// 示例值：ou_e6139117c300506837def50545420c6a
+func (builder *BatchUpdateJobManagerReqBodyBuilder) RecruiterId(recruiterId string) *BatchUpdateJobManagerReqBodyBuilder {
+	builder.recruiterId = recruiterId
+	builder.recruiterIdFlag = true
+	return builder
+}
+
+// 招聘协助人 ID
+//
+// 示例值：ou_efk39117c300506837def50545420c6a
+func (builder *BatchUpdateJobManagerReqBodyBuilder) AssistantIdList(assistantIdList []string) *BatchUpdateJobManagerReqBodyBuilder {
+	builder.assistantIdList = assistantIdList
+	builder.assistantIdListFlag = true
+	return builder
+}
+
+// 用人经理 ID
+//
+// 示例值：ou_efk39117c300506837def50545420c6a
+func (builder *BatchUpdateJobManagerReqBodyBuilder) HiringManagerIdList(hiringManagerIdList []string) *BatchUpdateJobManagerReqBodyBuilder {
+	builder.hiringManagerIdList = hiringManagerIdList
+	builder.hiringManagerIdListFlag = true
+	return builder
+}
+
+// 更新的人员类型，可选值：1=招聘负责人; 2=招聘协助人; 3=用人经理；
+//
+// 示例值：1
+func (builder *BatchUpdateJobManagerReqBodyBuilder) UpdateOptionList(updateOptionList []int) *BatchUpdateJobManagerReqBodyBuilder {
+	builder.updateOptionList = updateOptionList
+	builder.updateOptionListFlag = true
+	return builder
+}
+
+// 操作者 ID
+//
+// 示例值：ou_efk39117c300506837def50545420c6a
+func (builder *BatchUpdateJobManagerReqBodyBuilder) CreatorId(creatorId string) *BatchUpdateJobManagerReqBodyBuilder {
+	builder.creatorId = creatorId
+	builder.creatorIdFlag = true
+	return builder
+}
+
+func (builder *BatchUpdateJobManagerReqBodyBuilder) Build() *BatchUpdateJobManagerReqBody {
+	req := &BatchUpdateJobManagerReqBody{}
+	if builder.recruiterIdFlag {
+		req.RecruiterId = &builder.recruiterId
+	}
+	if builder.assistantIdListFlag {
+		req.AssistantIdList = builder.assistantIdList
+	}
+	if builder.hiringManagerIdListFlag {
+		req.HiringManagerIdList = builder.hiringManagerIdList
+	}
+	if builder.updateOptionListFlag {
+		req.UpdateOptionList = builder.updateOptionList
+	}
+	if builder.creatorIdFlag {
+		req.CreatorId = &builder.creatorId
+	}
+	return req
+}
+
+type BatchUpdateJobManagerPathReqBodyBuilder struct {
+	recruiterId             string
+	recruiterIdFlag         bool
+	assistantIdList         []string
+	assistantIdListFlag     bool
+	hiringManagerIdList     []string
+	hiringManagerIdListFlag bool
+	updateOptionList        []int
+	updateOptionListFlag    bool
+	creatorId               string
+	creatorIdFlag           bool
+}
+
+func NewBatchUpdateJobManagerPathReqBodyBuilder() *BatchUpdateJobManagerPathReqBodyBuilder {
+	builder := &BatchUpdateJobManagerPathReqBodyBuilder{}
+	return builder
+}
+
+// 招聘负责人 ID
+//
+// 示例值：ou_e6139117c300506837def50545420c6a
+func (builder *BatchUpdateJobManagerPathReqBodyBuilder) RecruiterId(recruiterId string) *BatchUpdateJobManagerPathReqBodyBuilder {
+	builder.recruiterId = recruiterId
+	builder.recruiterIdFlag = true
+	return builder
+}
+
+// 招聘协助人 ID
+//
+// 示例值：ou_efk39117c300506837def50545420c6a
+func (builder *BatchUpdateJobManagerPathReqBodyBuilder) AssistantIdList(assistantIdList []string) *BatchUpdateJobManagerPathReqBodyBuilder {
+	builder.assistantIdList = assistantIdList
+	builder.assistantIdListFlag = true
+	return builder
+}
+
+// 用人经理 ID
+//
+// 示例值：ou_efk39117c300506837def50545420c6a
+func (builder *BatchUpdateJobManagerPathReqBodyBuilder) HiringManagerIdList(hiringManagerIdList []string) *BatchUpdateJobManagerPathReqBodyBuilder {
+	builder.hiringManagerIdList = hiringManagerIdList
+	builder.hiringManagerIdListFlag = true
+	return builder
+}
+
+// 更新的人员类型，可选值：1=招聘负责人; 2=招聘协助人; 3=用人经理；
+//
+// 示例值：1
+func (builder *BatchUpdateJobManagerPathReqBodyBuilder) UpdateOptionList(updateOptionList []int) *BatchUpdateJobManagerPathReqBodyBuilder {
+	builder.updateOptionList = updateOptionList
+	builder.updateOptionListFlag = true
+	return builder
+}
+
+// 操作者 ID
+//
+// 示例值：ou_efk39117c300506837def50545420c6a
+func (builder *BatchUpdateJobManagerPathReqBodyBuilder) CreatorId(creatorId string) *BatchUpdateJobManagerPathReqBodyBuilder {
+	builder.creatorId = creatorId
+	builder.creatorIdFlag = true
+	return builder
+}
+
+func (builder *BatchUpdateJobManagerPathReqBodyBuilder) Build() (*BatchUpdateJobManagerReqBody, error) {
+	req := &BatchUpdateJobManagerReqBody{}
+	if builder.recruiterIdFlag {
+		req.RecruiterId = &builder.recruiterId
+	}
+	if builder.assistantIdListFlag {
+		req.AssistantIdList = builder.assistantIdList
+	}
+	if builder.hiringManagerIdListFlag {
+		req.HiringManagerIdList = builder.hiringManagerIdList
+	}
+	if builder.updateOptionListFlag {
+		req.UpdateOptionList = builder.updateOptionList
+	}
+	if builder.creatorIdFlag {
+		req.CreatorId = &builder.creatorId
+	}
+	return req, nil
+}
+
+type BatchUpdateJobManagerReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *BatchUpdateJobManagerReqBody
+}
+
+func NewBatchUpdateJobManagerReqBuilder() *BatchUpdateJobManagerReqBuilder {
+	builder := &BatchUpdateJobManagerReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 职位 ID
+//
+// 示例值：7096318853365369132
+func (builder *BatchUpdateJobManagerReqBuilder) JobId(jobId string) *BatchUpdateJobManagerReqBuilder {
+	builder.apiReq.PathParams.Set("job_id", fmt.Sprint(jobId))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *BatchUpdateJobManagerReqBuilder) UserIdType(userIdType string) *BatchUpdateJobManagerReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 更新职位相关人员
+func (builder *BatchUpdateJobManagerReqBuilder) Body(body *BatchUpdateJobManagerReqBody) *BatchUpdateJobManagerReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *BatchUpdateJobManagerReqBuilder) Build() *BatchUpdateJobManagerReq {
+	req := &BatchUpdateJobManagerReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type BatchUpdateJobManagerReqBody struct {
+	RecruiterId         *string  `json:"recruiter_id,omitempty"`           // 招聘负责人 ID
+	AssistantIdList     []string `json:"assistant_id_list,omitempty"`      // 招聘协助人 ID
+	HiringManagerIdList []string `json:"hiring_manager_id_list,omitempty"` // 用人经理 ID
+	UpdateOptionList    []int    `json:"update_option_list,omitempty"`     // 更新的人员类型，可选值：1=招聘负责人; 2=招聘协助人; 3=用人经理；
+	CreatorId           *string  `json:"creator_id,omitempty"`             // 操作者 ID
+}
+
+type BatchUpdateJobManagerReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *BatchUpdateJobManagerReqBody `body:""`
+}
+
+type BatchUpdateJobManagerRespData struct {
+	JobManager *JobManager `json:"job_manager,omitempty"` // 职位负责人
+}
+
+type BatchUpdateJobManagerResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *BatchUpdateJobManagerRespData `json:"data"` // 业务数据
+}
+
+func (resp *BatchUpdateJobManagerResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -44877,6 +47575,161 @@ type ListJobProcessResp struct {
 }
 
 func (resp *ListJobProcessResp) Success() bool {
+	return resp.Code == 0
+}
+
+type SearchJobPublishRecordReqBodyBuilder struct {
+	jobChannelId     string // 渠道 ID
+	jobChannelIdFlag bool
+}
+
+func NewSearchJobPublishRecordReqBodyBuilder() *SearchJobPublishRecordReqBodyBuilder {
+	builder := &SearchJobPublishRecordReqBodyBuilder{}
+	return builder
+}
+
+// 渠道 ID
+//
+// 示例值：7047318856652261676
+func (builder *SearchJobPublishRecordReqBodyBuilder) JobChannelId(jobChannelId string) *SearchJobPublishRecordReqBodyBuilder {
+	builder.jobChannelId = jobChannelId
+	builder.jobChannelIdFlag = true
+	return builder
+}
+
+func (builder *SearchJobPublishRecordReqBodyBuilder) Build() *SearchJobPublishRecordReqBody {
+	req := &SearchJobPublishRecordReqBody{}
+	if builder.jobChannelIdFlag {
+		req.JobChannelId = &builder.jobChannelId
+	}
+	return req
+}
+
+type SearchJobPublishRecordPathReqBodyBuilder struct {
+	jobChannelId     string
+	jobChannelIdFlag bool
+}
+
+func NewSearchJobPublishRecordPathReqBodyBuilder() *SearchJobPublishRecordPathReqBodyBuilder {
+	builder := &SearchJobPublishRecordPathReqBodyBuilder{}
+	return builder
+}
+
+// 渠道 ID
+//
+// 示例值：7047318856652261676
+func (builder *SearchJobPublishRecordPathReqBodyBuilder) JobChannelId(jobChannelId string) *SearchJobPublishRecordPathReqBodyBuilder {
+	builder.jobChannelId = jobChannelId
+	builder.jobChannelIdFlag = true
+	return builder
+}
+
+func (builder *SearchJobPublishRecordPathReqBodyBuilder) Build() (*SearchJobPublishRecordReqBody, error) {
+	req := &SearchJobPublishRecordReqBody{}
+	if builder.jobChannelIdFlag {
+		req.JobChannelId = &builder.jobChannelId
+	}
+	return req, nil
+}
+
+type SearchJobPublishRecordReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *SearchJobPublishRecordReqBody
+}
+
+func NewSearchJobPublishRecordReqBuilder() *SearchJobPublishRecordReqBuilder {
+	builder := &SearchJobPublishRecordReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *SearchJobPublishRecordReqBuilder) PageToken(pageToken string) *SearchJobPublishRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：10
+func (builder *SearchJobPublishRecordReqBuilder) PageSize(pageSize int) *SearchJobPublishRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *SearchJobPublishRecordReqBuilder) UserIdType(userIdType string) *SearchJobPublishRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 此次调用中使用的部门 ID 的类型
+//
+// 示例值：
+func (builder *SearchJobPublishRecordReqBuilder) DepartmentIdType(departmentIdType string) *SearchJobPublishRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
+	return builder
+}
+
+// 此次调用中使用的「职级 ID」的类型
+//
+// 示例值：
+func (builder *SearchJobPublishRecordReqBuilder) JobLevelIdType(jobLevelIdType string) *SearchJobPublishRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("job_level_id_type", fmt.Sprint(jobLevelIdType))
+	return builder
+}
+
+// 此次调用中使用的「序列 ID」的类型
+//
+// 示例值：
+func (builder *SearchJobPublishRecordReqBuilder) JobFamilyIdType(jobFamilyIdType string) *SearchJobPublishRecordReqBuilder {
+	builder.apiReq.QueryParams.Set("job_family_id_type", fmt.Sprint(jobFamilyIdType))
+	return builder
+}
+
+// 获取职位广告发布记录
+func (builder *SearchJobPublishRecordReqBuilder) Body(body *SearchJobPublishRecordReqBody) *SearchJobPublishRecordReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *SearchJobPublishRecordReqBuilder) Build() *SearchJobPublishRecordReq {
+	req := &SearchJobPublishRecordReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type SearchJobPublishRecordReqBody struct {
+	JobChannelId *string `json:"job_channel_id,omitempty"` // 渠道 ID
+}
+
+type SearchJobPublishRecordReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *SearchJobPublishRecordReqBody `body:""`
+}
+
+type SearchJobPublishRecordRespData struct {
+	Items     []*WebsiteJobPost `json:"items,omitempty"`      // 列表
+	HasMore   *bool             `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string           `json:"page_token,omitempty"` // 下一页页码
+}
+
+type SearchJobPublishRecordResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *SearchJobPublishRecordRespData `json:"data"` // 业务数据
+}
+
+func (resp *SearchJobPublishRecordResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -45433,6 +48286,70 @@ type ListJobRequirementSchemaResp struct {
 }
 
 func (resp *ListJobRequirementSchemaResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListJobSchemaReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewListJobSchemaReqBuilder() *ListJobSchemaReqBuilder {
+	builder := &ListJobSchemaReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 页码标识，获取第一页传空，每次查询会返回下一页的page_token
+//
+// 示例值：1231231987
+func (builder *ListJobSchemaReqBuilder) PageToken(pageToken string) *ListJobSchemaReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：100
+func (builder *ListJobSchemaReqBuilder) PageSize(pageSize int) *ListJobSchemaReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 职位模板类型
+//
+// 示例值：1
+func (builder *ListJobSchemaReqBuilder) Scenario(scenario int) *ListJobSchemaReqBuilder {
+	builder.apiReq.QueryParams.Set("scenario", fmt.Sprint(scenario))
+	return builder
+}
+
+func (builder *ListJobSchemaReqBuilder) Build() *ListJobSchemaReq {
+	req := &ListJobSchemaReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListJobSchemaReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type ListJobSchemaRespData struct {
+	Items     []*JobSchema `json:"items,omitempty"`      // 数据列表
+	HasMore   *bool        `json:"has_more,omitempty"`   // 是否有下一页
+	PageToken *string      `json:"page_token,omitempty"` // 下一页页码
+}
+
+type ListJobSchemaResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListJobSchemaRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListJobSchemaResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -46769,6 +49686,158 @@ func (resp *UpdateOfferResp) Success() bool {
 	return resp.Code == 0
 }
 
+type GetOfferApplicationFormReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetOfferApplicationFormReqBuilder() *GetOfferApplicationFormReqBuilder {
+	builder := &GetOfferApplicationFormReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// offer申请表 ID
+//
+// 示例值：237186812432
+func (builder *GetOfferApplicationFormReqBuilder) OfferApplicationFormId(offerApplicationFormId string) *GetOfferApplicationFormReqBuilder {
+	builder.apiReq.PathParams.Set("offer_application_form_id", fmt.Sprint(offerApplicationFormId))
+	return builder
+}
+
+func (builder *GetOfferApplicationFormReqBuilder) Build() *GetOfferApplicationFormReq {
+	req := &GetOfferApplicationFormReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type GetOfferApplicationFormReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetOfferApplicationFormRespData struct {
+	OfferApplyForm *OfferApplyFormInfo `json:"offer_apply_form,omitempty"` // Offer 申请表详情
+}
+
+type GetOfferApplicationFormResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetOfferApplicationFormRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetOfferApplicationFormResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListOfferApplicationFormReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewListOfferApplicationFormReqBuilder() *ListOfferApplicationFormReqBuilder {
+	builder := &ListOfferApplicationFormReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 页码标识，获取第一页传空，每次查询会返回下一页的page_token
+//
+// 示例值：1231231987
+func (builder *ListOfferApplicationFormReqBuilder) PageToken(pageToken string) *ListOfferApplicationFormReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：100
+func (builder *ListOfferApplicationFormReqBuilder) PageSize(pageSize int) *ListOfferApplicationFormReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+func (builder *ListOfferApplicationFormReqBuilder) Build() *ListOfferApplicationFormReq {
+	req := &ListOfferApplicationFormReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListOfferApplicationFormReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type ListOfferApplicationFormRespData struct {
+	HasMore   *bool             `json:"has_more,omitempty"`   // 是否有下一页
+	PageToken *string           `json:"page_token,omitempty"` // 下一页页码
+	Items     []*OfferApplyForm `json:"items,omitempty"`      // Offer 申请表列表
+}
+
+type ListOfferApplicationFormResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListOfferApplicationFormRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListOfferApplicationFormResp) Success() bool {
+	return resp.Code == 0
+}
+
+type UpdateOfferCustomFieldReqBuilder struct {
+	apiReq           *larkcore.ApiReq
+	offerCustomField *OfferCustomField
+}
+
+func NewUpdateOfferCustomFieldReqBuilder() *UpdateOfferCustomFieldReqBuilder {
+	builder := &UpdateOfferCustomFieldReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// Offer 申请表自定义字段 ID，可通过接口「获取 Offer 申请表模板信息」获取
+//
+// 示例值：6906755946257615112
+func (builder *UpdateOfferCustomFieldReqBuilder) OfferCustomFieldId(offerCustomFieldId string) *UpdateOfferCustomFieldReqBuilder {
+	builder.apiReq.PathParams.Set("offer_custom_field_id", fmt.Sprint(offerCustomFieldId))
+	return builder
+}
+
+// - 本文档支持通过接口更新「飞书招聘」-「设置」-「Offer 申请表设置」中 Offer 申请表的自定义字段配置；;- 当前修改申请表信息（包括更新自定义字段）后，所有申请表的 schema_id 均会更新，即所有申请表均会新增一个版本，申请表的 schema_id 会在创建 offer、更新 offer 中使用；;- 「飞书招聘」中 Offer 申请表自定义字段创建后，不支持修改字段类型，本接口亦不支持更新字段类型；;- 当前字段类型为「公式」的，不支持通过接口更新
+func (builder *UpdateOfferCustomFieldReqBuilder) OfferCustomField(offerCustomField *OfferCustomField) *UpdateOfferCustomFieldReqBuilder {
+	builder.offerCustomField = offerCustomField
+	return builder
+}
+
+func (builder *UpdateOfferCustomFieldReqBuilder) Build() *UpdateOfferCustomFieldReq {
+	req := &UpdateOfferCustomFieldReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.offerCustomField
+	return req
+}
+
+type UpdateOfferCustomFieldReq struct {
+	apiReq           *larkcore.ApiReq
+	OfferCustomField *OfferCustomField `body:""`
+}
+
+type UpdateOfferCustomFieldResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *UpdateOfferCustomFieldResp) Success() bool {
+	return resp.Code == 0
+}
+
 type GetOfferSchemaReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -46957,6 +50026,176 @@ type GetByApplicationReferralResp struct {
 }
 
 func (resp *GetByApplicationReferralResp) Success() bool {
+	return resp.Code == 0
+}
+
+type SearchReferralReqBodyBuilder struct {
+	talentId      string // 人才id
+	talentIdFlag  bool
+	startTime     string // 投递起始时间，若不填，默认为全部，但最多返回200条
+	startTimeFlag bool
+	endTime       string // 投递终止时间，若不填，默认为全部，但最多返回200条
+	endTimeFlag   bool
+}
+
+func NewSearchReferralReqBodyBuilder() *SearchReferralReqBodyBuilder {
+	builder := &SearchReferralReqBodyBuilder{}
+	return builder
+}
+
+// 人才id
+//
+// 示例值：6930815272790114324
+func (builder *SearchReferralReqBodyBuilder) TalentId(talentId string) *SearchReferralReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+// 投递起始时间，若不填，默认为全部，但最多返回200条
+//
+// 示例值：
+func (builder *SearchReferralReqBodyBuilder) StartTime(startTime string) *SearchReferralReqBodyBuilder {
+	builder.startTime = startTime
+	builder.startTimeFlag = true
+	return builder
+}
+
+// 投递终止时间，若不填，默认为全部，但最多返回200条
+//
+// 示例值：
+func (builder *SearchReferralReqBodyBuilder) EndTime(endTime string) *SearchReferralReqBodyBuilder {
+	builder.endTime = endTime
+	builder.endTimeFlag = true
+	return builder
+}
+
+func (builder *SearchReferralReqBodyBuilder) Build() *SearchReferralReqBody {
+	req := &SearchReferralReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	if builder.startTimeFlag {
+		req.StartTime = &builder.startTime
+	}
+	if builder.endTimeFlag {
+		req.EndTime = &builder.endTime
+	}
+	return req
+}
+
+type SearchReferralPathReqBodyBuilder struct {
+	talentId      string
+	talentIdFlag  bool
+	startTime     string
+	startTimeFlag bool
+	endTime       string
+	endTimeFlag   bool
+}
+
+func NewSearchReferralPathReqBodyBuilder() *SearchReferralPathReqBodyBuilder {
+	builder := &SearchReferralPathReqBodyBuilder{}
+	return builder
+}
+
+// 人才id
+//
+// 示例值：6930815272790114324
+func (builder *SearchReferralPathReqBodyBuilder) TalentId(talentId string) *SearchReferralPathReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+// 投递起始时间，若不填，默认为全部，但最多返回200条
+//
+// 示例值：
+func (builder *SearchReferralPathReqBodyBuilder) StartTime(startTime string) *SearchReferralPathReqBodyBuilder {
+	builder.startTime = startTime
+	builder.startTimeFlag = true
+	return builder
+}
+
+// 投递终止时间，若不填，默认为全部，但最多返回200条
+//
+// 示例值：
+func (builder *SearchReferralPathReqBodyBuilder) EndTime(endTime string) *SearchReferralPathReqBodyBuilder {
+	builder.endTime = endTime
+	builder.endTimeFlag = true
+	return builder
+}
+
+func (builder *SearchReferralPathReqBodyBuilder) Build() (*SearchReferralReqBody, error) {
+	req := &SearchReferralReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	if builder.startTimeFlag {
+		req.StartTime = &builder.startTime
+	}
+	if builder.endTimeFlag {
+		req.EndTime = &builder.endTime
+	}
+	return req, nil
+}
+
+type SearchReferralReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *SearchReferralReqBody
+}
+
+func NewSearchReferralReqBuilder() *SearchReferralReqBuilder {
+	builder := &SearchReferralReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *SearchReferralReqBuilder) UserIdType(userIdType string) *SearchReferralReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+func (builder *SearchReferralReqBuilder) Body(body *SearchReferralReqBody) *SearchReferralReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *SearchReferralReqBuilder) Build() *SearchReferralReq {
+	req := &SearchReferralReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type SearchReferralReqBody struct {
+	TalentId  *string `json:"talent_id,omitempty"`  // 人才id
+	StartTime *string `json:"start_time,omitempty"` // 投递起始时间，若不填，默认为全部，但最多返回200条
+	EndTime   *string `json:"end_time,omitempty"`   // 投递终止时间，若不填，默认为全部，但最多返回200条
+}
+
+type SearchReferralReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *SearchReferralReqBody `body:""`
+}
+
+type SearchReferralRespData struct {
+	Items []*ReferralInfo `json:"items,omitempty"` // 内推信息列表
+}
+
+type SearchReferralResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *SearchReferralRespData `json:"data"` // 业务数据
+}
+
+func (resp *SearchReferralResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -48870,6 +52109,585 @@ func (resp *CombinedCreateTalentResp) Success() bool {
 	return resp.Code == 0
 }
 
+type CombinedUpdateTalentReqBodyBuilder struct {
+	talentId                  string // 人才 ID
+	talentIdFlag              bool
+	initSourceId              string // 简历来源 ID，可通过[获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口查询
+	initSourceIdFlag          bool
+	folderIdList              []string // 文件夹 ID 列表
+	folderIdListFlag          bool
+	operatorId                string // 更新人 ID
+	operatorIdFlag            bool
+	operatorAccountType       int // 更新人类型
+	operatorAccountTypeFlag   bool
+	resumeAttachmentId        string // 简历附件id
+	resumeAttachmentIdFlag    bool
+	basicInfo                 *TalentCombinedBasicInfo // 基础信息
+	basicInfoFlag             bool
+	educationList             []*TalentCombinedEducationInfo // 教育经历
+	educationListFlag         bool
+	careerList                []*TalentCombinedCareerInfo // 工作经历
+	careerListFlag            bool
+	projectList               []*TalentCombinedProjectInfo // 项目经历
+	projectListFlag           bool
+	worksList                 []*TalentCombinedWorkInfo // 作品
+	worksListFlag             bool
+	awardList                 []*TalentCombinedAwardInfo // 获奖
+	awardListFlag             bool
+	languageList              []*TalentCombinedLanguageInfo // 语言能力
+	languageListFlag          bool
+	snsList                   []*TalentCombinedSnsInfo // 社交账号
+	snsListFlag               bool
+	preferredCityCodeList     []string // 偏好城市
+	preferredCityCodeListFlag bool
+	selfEvaluation            *TalentSelfEvaluation // 自我评价
+	selfEvaluationFlag        bool
+	customizedData            []*TalentCustomizedDataObjectValue // 自定义模块
+	customizedDataFlag        bool
+}
+
+func NewCombinedUpdateTalentReqBodyBuilder() *CombinedUpdateTalentReqBodyBuilder {
+	builder := &CombinedUpdateTalentReqBodyBuilder{}
+	return builder
+}
+
+// 人才 ID
+//
+// 示例值：1
+func (builder *CombinedUpdateTalentReqBodyBuilder) TalentId(talentId string) *CombinedUpdateTalentReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+// 简历来源 ID，可通过[获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口查询
+//
+// 示例值：1
+func (builder *CombinedUpdateTalentReqBodyBuilder) InitSourceId(initSourceId string) *CombinedUpdateTalentReqBodyBuilder {
+	builder.initSourceId = initSourceId
+	builder.initSourceIdFlag = true
+	return builder
+}
+
+// 文件夹 ID 列表
+//
+// 示例值：["702551782317613290"]
+func (builder *CombinedUpdateTalentReqBodyBuilder) FolderIdList(folderIdList []string) *CombinedUpdateTalentReqBodyBuilder {
+	builder.folderIdList = folderIdList
+	builder.folderIdListFlag = true
+	return builder
+}
+
+// 更新人 ID
+//
+// 示例值：ou_xxx
+func (builder *CombinedUpdateTalentReqBodyBuilder) OperatorId(operatorId string) *CombinedUpdateTalentReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 更新人类型
+//
+// 示例值：1
+func (builder *CombinedUpdateTalentReqBodyBuilder) OperatorAccountType(operatorAccountType int) *CombinedUpdateTalentReqBodyBuilder {
+	builder.operatorAccountType = operatorAccountType
+	builder.operatorAccountTypeFlag = true
+	return builder
+}
+
+// 简历附件id
+//
+// 示例值：12345
+func (builder *CombinedUpdateTalentReqBodyBuilder) ResumeAttachmentId(resumeAttachmentId string) *CombinedUpdateTalentReqBodyBuilder {
+	builder.resumeAttachmentId = resumeAttachmentId
+	builder.resumeAttachmentIdFlag = true
+	return builder
+}
+
+// 基础信息
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) BasicInfo(basicInfo *TalentCombinedBasicInfo) *CombinedUpdateTalentReqBodyBuilder {
+	builder.basicInfo = basicInfo
+	builder.basicInfoFlag = true
+	return builder
+}
+
+// 教育经历
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) EducationList(educationList []*TalentCombinedEducationInfo) *CombinedUpdateTalentReqBodyBuilder {
+	builder.educationList = educationList
+	builder.educationListFlag = true
+	return builder
+}
+
+// 工作经历
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) CareerList(careerList []*TalentCombinedCareerInfo) *CombinedUpdateTalentReqBodyBuilder {
+	builder.careerList = careerList
+	builder.careerListFlag = true
+	return builder
+}
+
+// 项目经历
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) ProjectList(projectList []*TalentCombinedProjectInfo) *CombinedUpdateTalentReqBodyBuilder {
+	builder.projectList = projectList
+	builder.projectListFlag = true
+	return builder
+}
+
+// 作品
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) WorksList(worksList []*TalentCombinedWorkInfo) *CombinedUpdateTalentReqBodyBuilder {
+	builder.worksList = worksList
+	builder.worksListFlag = true
+	return builder
+}
+
+// 获奖
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) AwardList(awardList []*TalentCombinedAwardInfo) *CombinedUpdateTalentReqBodyBuilder {
+	builder.awardList = awardList
+	builder.awardListFlag = true
+	return builder
+}
+
+// 语言能力
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) LanguageList(languageList []*TalentCombinedLanguageInfo) *CombinedUpdateTalentReqBodyBuilder {
+	builder.languageList = languageList
+	builder.languageListFlag = true
+	return builder
+}
+
+// 社交账号
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) SnsList(snsList []*TalentCombinedSnsInfo) *CombinedUpdateTalentReqBodyBuilder {
+	builder.snsList = snsList
+	builder.snsListFlag = true
+	return builder
+}
+
+// 偏好城市
+//
+// 示例值：["CT_2"]
+func (builder *CombinedUpdateTalentReqBodyBuilder) PreferredCityCodeList(preferredCityCodeList []string) *CombinedUpdateTalentReqBodyBuilder {
+	builder.preferredCityCodeList = preferredCityCodeList
+	builder.preferredCityCodeListFlag = true
+	return builder
+}
+
+// 自我评价
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) SelfEvaluation(selfEvaluation *TalentSelfEvaluation) *CombinedUpdateTalentReqBodyBuilder {
+	builder.selfEvaluation = selfEvaluation
+	builder.selfEvaluationFlag = true
+	return builder
+}
+
+// 自定义模块
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBodyBuilder) CustomizedData(customizedData []*TalentCustomizedDataObjectValue) *CombinedUpdateTalentReqBodyBuilder {
+	builder.customizedData = customizedData
+	builder.customizedDataFlag = true
+	return builder
+}
+
+func (builder *CombinedUpdateTalentReqBodyBuilder) Build() *CombinedUpdateTalentReqBody {
+	req := &CombinedUpdateTalentReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	if builder.initSourceIdFlag {
+		req.InitSourceId = &builder.initSourceId
+	}
+	if builder.folderIdListFlag {
+		req.FolderIdList = builder.folderIdList
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	if builder.operatorAccountTypeFlag {
+		req.OperatorAccountType = &builder.operatorAccountType
+	}
+	if builder.resumeAttachmentIdFlag {
+		req.ResumeAttachmentId = &builder.resumeAttachmentId
+	}
+	if builder.basicInfoFlag {
+		req.BasicInfo = builder.basicInfo
+	}
+	if builder.educationListFlag {
+		req.EducationList = builder.educationList
+	}
+	if builder.careerListFlag {
+		req.CareerList = builder.careerList
+	}
+	if builder.projectListFlag {
+		req.ProjectList = builder.projectList
+	}
+	if builder.worksListFlag {
+		req.WorksList = builder.worksList
+	}
+	if builder.awardListFlag {
+		req.AwardList = builder.awardList
+	}
+	if builder.languageListFlag {
+		req.LanguageList = builder.languageList
+	}
+	if builder.snsListFlag {
+		req.SnsList = builder.snsList
+	}
+	if builder.preferredCityCodeListFlag {
+		req.PreferredCityCodeList = builder.preferredCityCodeList
+	}
+	if builder.selfEvaluationFlag {
+		req.SelfEvaluation = builder.selfEvaluation
+	}
+	if builder.customizedDataFlag {
+		req.CustomizedData = builder.customizedData
+	}
+	return req
+}
+
+type CombinedUpdateTalentPathReqBodyBuilder struct {
+	talentId                  string
+	talentIdFlag              bool
+	initSourceId              string
+	initSourceIdFlag          bool
+	folderIdList              []string
+	folderIdListFlag          bool
+	operatorId                string
+	operatorIdFlag            bool
+	operatorAccountType       int
+	operatorAccountTypeFlag   bool
+	resumeAttachmentId        string
+	resumeAttachmentIdFlag    bool
+	basicInfo                 *TalentCombinedBasicInfo
+	basicInfoFlag             bool
+	educationList             []*TalentCombinedEducationInfo
+	educationListFlag         bool
+	careerList                []*TalentCombinedCareerInfo
+	careerListFlag            bool
+	projectList               []*TalentCombinedProjectInfo
+	projectListFlag           bool
+	worksList                 []*TalentCombinedWorkInfo
+	worksListFlag             bool
+	awardList                 []*TalentCombinedAwardInfo
+	awardListFlag             bool
+	languageList              []*TalentCombinedLanguageInfo
+	languageListFlag          bool
+	snsList                   []*TalentCombinedSnsInfo
+	snsListFlag               bool
+	preferredCityCodeList     []string
+	preferredCityCodeListFlag bool
+	selfEvaluation            *TalentSelfEvaluation
+	selfEvaluationFlag        bool
+	customizedData            []*TalentCustomizedDataObjectValue
+	customizedDataFlag        bool
+}
+
+func NewCombinedUpdateTalentPathReqBodyBuilder() *CombinedUpdateTalentPathReqBodyBuilder {
+	builder := &CombinedUpdateTalentPathReqBodyBuilder{}
+	return builder
+}
+
+// 人才 ID
+//
+// 示例值：1
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) TalentId(talentId string) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+// 简历来源 ID，可通过[获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口查询
+//
+// 示例值：1
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) InitSourceId(initSourceId string) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.initSourceId = initSourceId
+	builder.initSourceIdFlag = true
+	return builder
+}
+
+// 文件夹 ID 列表
+//
+// 示例值：["702551782317613290"]
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) FolderIdList(folderIdList []string) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.folderIdList = folderIdList
+	builder.folderIdListFlag = true
+	return builder
+}
+
+// 更新人 ID
+//
+// 示例值：ou_xxx
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) OperatorId(operatorId string) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 更新人类型
+//
+// 示例值：1
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) OperatorAccountType(operatorAccountType int) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.operatorAccountType = operatorAccountType
+	builder.operatorAccountTypeFlag = true
+	return builder
+}
+
+// 简历附件id
+//
+// 示例值：12345
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) ResumeAttachmentId(resumeAttachmentId string) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.resumeAttachmentId = resumeAttachmentId
+	builder.resumeAttachmentIdFlag = true
+	return builder
+}
+
+// 基础信息
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) BasicInfo(basicInfo *TalentCombinedBasicInfo) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.basicInfo = basicInfo
+	builder.basicInfoFlag = true
+	return builder
+}
+
+// 教育经历
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) EducationList(educationList []*TalentCombinedEducationInfo) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.educationList = educationList
+	builder.educationListFlag = true
+	return builder
+}
+
+// 工作经历
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) CareerList(careerList []*TalentCombinedCareerInfo) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.careerList = careerList
+	builder.careerListFlag = true
+	return builder
+}
+
+// 项目经历
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) ProjectList(projectList []*TalentCombinedProjectInfo) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.projectList = projectList
+	builder.projectListFlag = true
+	return builder
+}
+
+// 作品
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) WorksList(worksList []*TalentCombinedWorkInfo) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.worksList = worksList
+	builder.worksListFlag = true
+	return builder
+}
+
+// 获奖
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) AwardList(awardList []*TalentCombinedAwardInfo) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.awardList = awardList
+	builder.awardListFlag = true
+	return builder
+}
+
+// 语言能力
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) LanguageList(languageList []*TalentCombinedLanguageInfo) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.languageList = languageList
+	builder.languageListFlag = true
+	return builder
+}
+
+// 社交账号
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) SnsList(snsList []*TalentCombinedSnsInfo) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.snsList = snsList
+	builder.snsListFlag = true
+	return builder
+}
+
+// 偏好城市
+//
+// 示例值：["CT_2"]
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) PreferredCityCodeList(preferredCityCodeList []string) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.preferredCityCodeList = preferredCityCodeList
+	builder.preferredCityCodeListFlag = true
+	return builder
+}
+
+// 自我评价
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) SelfEvaluation(selfEvaluation *TalentSelfEvaluation) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.selfEvaluation = selfEvaluation
+	builder.selfEvaluationFlag = true
+	return builder
+}
+
+// 自定义模块
+//
+// 示例值：
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) CustomizedData(customizedData []*TalentCustomizedDataObjectValue) *CombinedUpdateTalentPathReqBodyBuilder {
+	builder.customizedData = customizedData
+	builder.customizedDataFlag = true
+	return builder
+}
+
+func (builder *CombinedUpdateTalentPathReqBodyBuilder) Build() (*CombinedUpdateTalentReqBody, error) {
+	req := &CombinedUpdateTalentReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	if builder.initSourceIdFlag {
+		req.InitSourceId = &builder.initSourceId
+	}
+	if builder.folderIdListFlag {
+		req.FolderIdList = builder.folderIdList
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	if builder.operatorAccountTypeFlag {
+		req.OperatorAccountType = &builder.operatorAccountType
+	}
+	if builder.resumeAttachmentIdFlag {
+		req.ResumeAttachmentId = &builder.resumeAttachmentId
+	}
+	if builder.basicInfoFlag {
+		req.BasicInfo = builder.basicInfo
+	}
+	if builder.educationListFlag {
+		req.EducationList = builder.educationList
+	}
+	if builder.careerListFlag {
+		req.CareerList = builder.careerList
+	}
+	if builder.projectListFlag {
+		req.ProjectList = builder.projectList
+	}
+	if builder.worksListFlag {
+		req.WorksList = builder.worksList
+	}
+	if builder.awardListFlag {
+		req.AwardList = builder.awardList
+	}
+	if builder.languageListFlag {
+		req.LanguageList = builder.languageList
+	}
+	if builder.snsListFlag {
+		req.SnsList = builder.snsList
+	}
+	if builder.preferredCityCodeListFlag {
+		req.PreferredCityCodeList = builder.preferredCityCodeList
+	}
+	if builder.selfEvaluationFlag {
+		req.SelfEvaluation = builder.selfEvaluation
+	}
+	if builder.customizedDataFlag {
+		req.CustomizedData = builder.customizedData
+	}
+	return req, nil
+}
+
+type CombinedUpdateTalentReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *CombinedUpdateTalentReqBody
+}
+
+func NewCombinedUpdateTalentReqBuilder() *CombinedUpdateTalentReqBuilder {
+	builder := &CombinedUpdateTalentReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *CombinedUpdateTalentReqBuilder) UserIdType(userIdType string) *CombinedUpdateTalentReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 用于在企业内更新一个人才。姓名为系统预设的必填字段，邮箱/电话字段请在飞书招聘标准简历模板设置中确认是否必填。可配合[获取人才字段](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口获取自定义字段信息。
+func (builder *CombinedUpdateTalentReqBuilder) Body(body *CombinedUpdateTalentReqBody) *CombinedUpdateTalentReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *CombinedUpdateTalentReqBuilder) Build() *CombinedUpdateTalentReq {
+	req := &CombinedUpdateTalentReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type CombinedUpdateTalentReqBody struct {
+	TalentId              *string                            `json:"talent_id,omitempty"`                // 人才 ID
+	InitSourceId          *string                            `json:"init_source_id,omitempty"`           // 简历来源 ID，可通过[获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_object/query)接口查询
+	FolderIdList          []string                           `json:"folder_id_list,omitempty"`           // 文件夹 ID 列表
+	OperatorId            *string                            `json:"operator_id,omitempty"`              // 更新人 ID
+	OperatorAccountType   *int                               `json:"operator_account_type,omitempty"`    // 更新人类型
+	ResumeAttachmentId    *string                            `json:"resume_attachment_id,omitempty"`     // 简历附件id
+	BasicInfo             *TalentCombinedBasicInfo           `json:"basic_info,omitempty"`               // 基础信息
+	EducationList         []*TalentCombinedEducationInfo     `json:"education_list,omitempty"`           // 教育经历
+	CareerList            []*TalentCombinedCareerInfo        `json:"career_list,omitempty"`              // 工作经历
+	ProjectList           []*TalentCombinedProjectInfo       `json:"project_list,omitempty"`             // 项目经历
+	WorksList             []*TalentCombinedWorkInfo          `json:"works_list,omitempty"`               // 作品
+	AwardList             []*TalentCombinedAwardInfo         `json:"award_list,omitempty"`               // 获奖
+	LanguageList          []*TalentCombinedLanguageInfo      `json:"language_list,omitempty"`            // 语言能力
+	SnsList               []*TalentCombinedSnsInfo           `json:"sns_list,omitempty"`                 // 社交账号
+	PreferredCityCodeList []string                           `json:"preferred_city_code_list,omitempty"` // 偏好城市
+	SelfEvaluation        *TalentSelfEvaluation              `json:"self_evaluation,omitempty"`          // 自我评价
+	CustomizedData        []*TalentCustomizedDataObjectValue `json:"customized_data,omitempty"`          // 自定义模块
+}
+
+type CombinedUpdateTalentReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *CombinedUpdateTalentReqBody `body:""`
+}
+
+type CombinedUpdateTalentRespData struct {
+	TalentId            *string `json:"talent_id,omitempty"`             // 人才 ID
+	OperatorId          *string `json:"operator_id,omitempty"`           // 更新人 ID
+	OperatorAccountType *int    `json:"operator_account_type,omitempty"` // 更新人类型
+}
+
+type CombinedUpdateTalentResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CombinedUpdateTalentRespData `json:"data"` // 业务数据
+}
+
+func (resp *CombinedUpdateTalentResp) Success() bool {
+	return resp.Code == 0
+}
+
 type GetTalentReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -49013,6 +52831,397 @@ func (resp *ListTalentResp) Success() bool {
 	return resp.Code == 0
 }
 
+type OnboardStatusTalentReqBodyBuilder struct {
+	operation         int // 操作类型 1:入职 2:离职
+	operationFlag     bool
+	onboardTime       string // 毫秒时间戳
+	onboardTimeFlag   bool
+	overboardTime     string // 毫秒时间戳
+	overboardTimeFlag bool
+}
+
+func NewOnboardStatusTalentReqBodyBuilder() *OnboardStatusTalentReqBodyBuilder {
+	builder := &OnboardStatusTalentReqBodyBuilder{}
+	return builder
+}
+
+// 操作类型 1:入职 2:离职
+//
+// 示例值：1
+func (builder *OnboardStatusTalentReqBodyBuilder) Operation(operation int) *OnboardStatusTalentReqBodyBuilder {
+	builder.operation = operation
+	builder.operationFlag = true
+	return builder
+}
+
+// 毫秒时间戳
+//
+// 示例值：1676548784889
+func (builder *OnboardStatusTalentReqBodyBuilder) OnboardTime(onboardTime string) *OnboardStatusTalentReqBodyBuilder {
+	builder.onboardTime = onboardTime
+	builder.onboardTimeFlag = true
+	return builder
+}
+
+// 毫秒时间戳
+//
+// 示例值：1676548784890
+func (builder *OnboardStatusTalentReqBodyBuilder) OverboardTime(overboardTime string) *OnboardStatusTalentReqBodyBuilder {
+	builder.overboardTime = overboardTime
+	builder.overboardTimeFlag = true
+	return builder
+}
+
+func (builder *OnboardStatusTalentReqBodyBuilder) Build() *OnboardStatusTalentReqBody {
+	req := &OnboardStatusTalentReqBody{}
+	if builder.operationFlag {
+		req.Operation = &builder.operation
+	}
+	if builder.onboardTimeFlag {
+		req.OnboardTime = &builder.onboardTime
+	}
+	if builder.overboardTimeFlag {
+		req.OverboardTime = &builder.overboardTime
+	}
+	return req
+}
+
+type OnboardStatusTalentPathReqBodyBuilder struct {
+	operation         int
+	operationFlag     bool
+	onboardTime       string
+	onboardTimeFlag   bool
+	overboardTime     string
+	overboardTimeFlag bool
+}
+
+func NewOnboardStatusTalentPathReqBodyBuilder() *OnboardStatusTalentPathReqBodyBuilder {
+	builder := &OnboardStatusTalentPathReqBodyBuilder{}
+	return builder
+}
+
+// 操作类型 1:入职 2:离职
+//
+// 示例值：1
+func (builder *OnboardStatusTalentPathReqBodyBuilder) Operation(operation int) *OnboardStatusTalentPathReqBodyBuilder {
+	builder.operation = operation
+	builder.operationFlag = true
+	return builder
+}
+
+// 毫秒时间戳
+//
+// 示例值：1676548784889
+func (builder *OnboardStatusTalentPathReqBodyBuilder) OnboardTime(onboardTime string) *OnboardStatusTalentPathReqBodyBuilder {
+	builder.onboardTime = onboardTime
+	builder.onboardTimeFlag = true
+	return builder
+}
+
+// 毫秒时间戳
+//
+// 示例值：1676548784890
+func (builder *OnboardStatusTalentPathReqBodyBuilder) OverboardTime(overboardTime string) *OnboardStatusTalentPathReqBodyBuilder {
+	builder.overboardTime = overboardTime
+	builder.overboardTimeFlag = true
+	return builder
+}
+
+func (builder *OnboardStatusTalentPathReqBodyBuilder) Build() (*OnboardStatusTalentReqBody, error) {
+	req := &OnboardStatusTalentReqBody{}
+	if builder.operationFlag {
+		req.Operation = &builder.operation
+	}
+	if builder.onboardTimeFlag {
+		req.OnboardTime = &builder.onboardTime
+	}
+	if builder.overboardTimeFlag {
+		req.OverboardTime = &builder.overboardTime
+	}
+	return req, nil
+}
+
+type OnboardStatusTalentReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *OnboardStatusTalentReqBody
+}
+
+func NewOnboardStatusTalentReqBuilder() *OnboardStatusTalentReqBuilder {
+	builder := &OnboardStatusTalentReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 人才ID
+//
+// 示例值：6960663240925956661
+func (builder *OnboardStatusTalentReqBuilder) TalentId(talentId string) *OnboardStatusTalentReqBuilder {
+	builder.apiReq.PathParams.Set("talent_id", fmt.Sprint(talentId))
+	return builder
+}
+
+func (builder *OnboardStatusTalentReqBuilder) Body(body *OnboardStatusTalentReqBody) *OnboardStatusTalentReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *OnboardStatusTalentReqBuilder) Build() *OnboardStatusTalentReq {
+	req := &OnboardStatusTalentReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type OnboardStatusTalentReqBody struct {
+	Operation     *int    `json:"operation,omitempty"`      // 操作类型 1:入职 2:离职
+	OnboardTime   *string `json:"onboard_time,omitempty"`   // 毫秒时间戳
+	OverboardTime *string `json:"overboard_time,omitempty"` // 毫秒时间戳
+}
+
+type OnboardStatusTalentReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *OnboardStatusTalentReqBody `body:""`
+}
+
+type OnboardStatusTalentResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *OnboardStatusTalentResp) Success() bool {
+	return resp.Code == 0
+}
+
+type CreateTalentExternalInfoReqBodyBuilder struct {
+	externalCreateTime     string // 人才在外部系统创建时间
+	externalCreateTimeFlag bool
+}
+
+func NewCreateTalentExternalInfoReqBodyBuilder() *CreateTalentExternalInfoReqBodyBuilder {
+	builder := &CreateTalentExternalInfoReqBodyBuilder{}
+	return builder
+}
+
+// 人才在外部系统创建时间
+//
+// 示例值：1639992265035
+func (builder *CreateTalentExternalInfoReqBodyBuilder) ExternalCreateTime(externalCreateTime string) *CreateTalentExternalInfoReqBodyBuilder {
+	builder.externalCreateTime = externalCreateTime
+	builder.externalCreateTimeFlag = true
+	return builder
+}
+
+func (builder *CreateTalentExternalInfoReqBodyBuilder) Build() *CreateTalentExternalInfoReqBody {
+	req := &CreateTalentExternalInfoReqBody{}
+	if builder.externalCreateTimeFlag {
+		req.ExternalCreateTime = &builder.externalCreateTime
+	}
+	return req
+}
+
+type CreateTalentExternalInfoPathReqBodyBuilder struct {
+	externalCreateTime     string
+	externalCreateTimeFlag bool
+}
+
+func NewCreateTalentExternalInfoPathReqBodyBuilder() *CreateTalentExternalInfoPathReqBodyBuilder {
+	builder := &CreateTalentExternalInfoPathReqBodyBuilder{}
+	return builder
+}
+
+// 人才在外部系统创建时间
+//
+// 示例值：1639992265035
+func (builder *CreateTalentExternalInfoPathReqBodyBuilder) ExternalCreateTime(externalCreateTime string) *CreateTalentExternalInfoPathReqBodyBuilder {
+	builder.externalCreateTime = externalCreateTime
+	builder.externalCreateTimeFlag = true
+	return builder
+}
+
+func (builder *CreateTalentExternalInfoPathReqBodyBuilder) Build() (*CreateTalentExternalInfoReqBody, error) {
+	req := &CreateTalentExternalInfoReqBody{}
+	if builder.externalCreateTimeFlag {
+		req.ExternalCreateTime = &builder.externalCreateTime
+	}
+	return req, nil
+}
+
+type CreateTalentExternalInfoReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *CreateTalentExternalInfoReqBody
+}
+
+func NewCreateTalentExternalInfoReqBuilder() *CreateTalentExternalInfoReqBuilder {
+	builder := &CreateTalentExternalInfoReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 人才 ID
+//
+// 示例值：7043758982146345223
+func (builder *CreateTalentExternalInfoReqBuilder) TalentId(talentId string) *CreateTalentExternalInfoReqBuilder {
+	builder.apiReq.PathParams.Set("talent_id", fmt.Sprint(talentId))
+	return builder
+}
+
+// 创建人才外部信息
+func (builder *CreateTalentExternalInfoReqBuilder) Body(body *CreateTalentExternalInfoReqBody) *CreateTalentExternalInfoReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *CreateTalentExternalInfoReqBuilder) Build() *CreateTalentExternalInfoReq {
+	req := &CreateTalentExternalInfoReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type CreateTalentExternalInfoReqBody struct {
+	ExternalCreateTime *string `json:"external_create_time,omitempty"` // 人才在外部系统创建时间
+}
+
+type CreateTalentExternalInfoReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *CreateTalentExternalInfoReqBody `body:""`
+}
+
+type CreateTalentExternalInfoRespData struct {
+	ExternalInfo *TalentExternalInfo `json:"external_info,omitempty"` // 人才外部信息
+}
+
+type CreateTalentExternalInfoResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateTalentExternalInfoRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateTalentExternalInfoResp) Success() bool {
+	return resp.Code == 0
+}
+
+type UpdateTalentExternalInfoReqBodyBuilder struct {
+	externalCreateTime     string // 人才在外部系统创建时间
+	externalCreateTimeFlag bool
+}
+
+func NewUpdateTalentExternalInfoReqBodyBuilder() *UpdateTalentExternalInfoReqBodyBuilder {
+	builder := &UpdateTalentExternalInfoReqBodyBuilder{}
+	return builder
+}
+
+// 人才在外部系统创建时间
+//
+// 示例值：1639992265035
+func (builder *UpdateTalentExternalInfoReqBodyBuilder) ExternalCreateTime(externalCreateTime string) *UpdateTalentExternalInfoReqBodyBuilder {
+	builder.externalCreateTime = externalCreateTime
+	builder.externalCreateTimeFlag = true
+	return builder
+}
+
+func (builder *UpdateTalentExternalInfoReqBodyBuilder) Build() *UpdateTalentExternalInfoReqBody {
+	req := &UpdateTalentExternalInfoReqBody{}
+	if builder.externalCreateTimeFlag {
+		req.ExternalCreateTime = &builder.externalCreateTime
+	}
+	return req
+}
+
+type UpdateTalentExternalInfoPathReqBodyBuilder struct {
+	externalCreateTime     string
+	externalCreateTimeFlag bool
+}
+
+func NewUpdateTalentExternalInfoPathReqBodyBuilder() *UpdateTalentExternalInfoPathReqBodyBuilder {
+	builder := &UpdateTalentExternalInfoPathReqBodyBuilder{}
+	return builder
+}
+
+// 人才在外部系统创建时间
+//
+// 示例值：1639992265035
+func (builder *UpdateTalentExternalInfoPathReqBodyBuilder) ExternalCreateTime(externalCreateTime string) *UpdateTalentExternalInfoPathReqBodyBuilder {
+	builder.externalCreateTime = externalCreateTime
+	builder.externalCreateTimeFlag = true
+	return builder
+}
+
+func (builder *UpdateTalentExternalInfoPathReqBodyBuilder) Build() (*UpdateTalentExternalInfoReqBody, error) {
+	req := &UpdateTalentExternalInfoReqBody{}
+	if builder.externalCreateTimeFlag {
+		req.ExternalCreateTime = &builder.externalCreateTime
+	}
+	return req, nil
+}
+
+type UpdateTalentExternalInfoReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *UpdateTalentExternalInfoReqBody
+}
+
+func NewUpdateTalentExternalInfoReqBuilder() *UpdateTalentExternalInfoReqBuilder {
+	builder := &UpdateTalentExternalInfoReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 人才 ID
+//
+// 示例值：7043758982146345223
+func (builder *UpdateTalentExternalInfoReqBuilder) TalentId(talentId string) *UpdateTalentExternalInfoReqBuilder {
+	builder.apiReq.PathParams.Set("talent_id", fmt.Sprint(talentId))
+	return builder
+}
+
+// 更新人才外部信息
+func (builder *UpdateTalentExternalInfoReqBuilder) Body(body *UpdateTalentExternalInfoReqBody) *UpdateTalentExternalInfoReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *UpdateTalentExternalInfoReqBuilder) Build() *UpdateTalentExternalInfoReq {
+	req := &UpdateTalentExternalInfoReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type UpdateTalentExternalInfoReqBody struct {
+	ExternalCreateTime *string `json:"external_create_time,omitempty"` // 人才在外部系统创建时间
+}
+
+type UpdateTalentExternalInfoReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *UpdateTalentExternalInfoReqBody `body:""`
+}
+
+type UpdateTalentExternalInfoRespData struct {
+	ExternalInfo *TalentExternalInfo `json:"external_info,omitempty"` // 人才外部信息
+}
+
+type UpdateTalentExternalInfoResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *UpdateTalentExternalInfoRespData `json:"data"` // 业务数据
+}
+
+func (resp *UpdateTalentExternalInfoResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ListTalentFolderReqBuilder struct {
 	apiReq *larkcore.ApiReq
 	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
@@ -49101,6 +53310,413 @@ func (resp *QueryTalentObjectResp) Success() bool {
 	return resp.Code == 0
 }
 
+type SearchTalentOperationLogReqBodyBuilder struct {
+	jobIdList          []string // 职位 ID 列表
+	jobIdListFlag      bool
+	operatorIdList     []string // 操作人 ID 列表
+	operatorIdListFlag bool
+	operationList      []int // 操作类型 ID 列表
+	operationListFlag  bool
+}
+
+func NewSearchTalentOperationLogReqBodyBuilder() *SearchTalentOperationLogReqBodyBuilder {
+	builder := &SearchTalentOperationLogReqBodyBuilder{}
+	return builder
+}
+
+// 职位 ID 列表
+//
+// 示例值：6949805467799537964
+func (builder *SearchTalentOperationLogReqBodyBuilder) JobIdList(jobIdList []string) *SearchTalentOperationLogReqBodyBuilder {
+	builder.jobIdList = jobIdList
+	builder.jobIdListFlag = true
+	return builder
+}
+
+// 操作人 ID 列表
+//
+// 示例值：ou_e6139117c300506837def50545420c6a
+func (builder *SearchTalentOperationLogReqBodyBuilder) OperatorIdList(operatorIdList []string) *SearchTalentOperationLogReqBodyBuilder {
+	builder.operatorIdList = operatorIdList
+	builder.operatorIdListFlag = true
+	return builder
+}
+
+// 操作类型 ID 列表
+//
+// 示例值："3001"
+func (builder *SearchTalentOperationLogReqBodyBuilder) OperationList(operationList []int) *SearchTalentOperationLogReqBodyBuilder {
+	builder.operationList = operationList
+	builder.operationListFlag = true
+	return builder
+}
+
+func (builder *SearchTalentOperationLogReqBodyBuilder) Build() *SearchTalentOperationLogReqBody {
+	req := &SearchTalentOperationLogReqBody{}
+	if builder.jobIdListFlag {
+		req.JobIdList = builder.jobIdList
+	}
+	if builder.operatorIdListFlag {
+		req.OperatorIdList = builder.operatorIdList
+	}
+	if builder.operationListFlag {
+		req.OperationList = builder.operationList
+	}
+	return req
+}
+
+type SearchTalentOperationLogPathReqBodyBuilder struct {
+	jobIdList          []string
+	jobIdListFlag      bool
+	operatorIdList     []string
+	operatorIdListFlag bool
+	operationList      []int
+	operationListFlag  bool
+}
+
+func NewSearchTalentOperationLogPathReqBodyBuilder() *SearchTalentOperationLogPathReqBodyBuilder {
+	builder := &SearchTalentOperationLogPathReqBodyBuilder{}
+	return builder
+}
+
+// 职位 ID 列表
+//
+// 示例值：6949805467799537964
+func (builder *SearchTalentOperationLogPathReqBodyBuilder) JobIdList(jobIdList []string) *SearchTalentOperationLogPathReqBodyBuilder {
+	builder.jobIdList = jobIdList
+	builder.jobIdListFlag = true
+	return builder
+}
+
+// 操作人 ID 列表
+//
+// 示例值：ou_e6139117c300506837def50545420c6a
+func (builder *SearchTalentOperationLogPathReqBodyBuilder) OperatorIdList(operatorIdList []string) *SearchTalentOperationLogPathReqBodyBuilder {
+	builder.operatorIdList = operatorIdList
+	builder.operatorIdListFlag = true
+	return builder
+}
+
+// 操作类型 ID 列表
+//
+// 示例值："3001"
+func (builder *SearchTalentOperationLogPathReqBodyBuilder) OperationList(operationList []int) *SearchTalentOperationLogPathReqBodyBuilder {
+	builder.operationList = operationList
+	builder.operationListFlag = true
+	return builder
+}
+
+func (builder *SearchTalentOperationLogPathReqBodyBuilder) Build() (*SearchTalentOperationLogReqBody, error) {
+	req := &SearchTalentOperationLogReqBody{}
+	if builder.jobIdListFlag {
+		req.JobIdList = builder.jobIdList
+	}
+	if builder.operatorIdListFlag {
+		req.OperatorIdList = builder.operatorIdList
+	}
+	if builder.operationListFlag {
+		req.OperationList = builder.operationList
+	}
+	return req, nil
+}
+
+type SearchTalentOperationLogReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *SearchTalentOperationLogReqBody
+}
+
+func NewSearchTalentOperationLogReqBuilder() *SearchTalentOperationLogReqBuilder {
+	builder := &SearchTalentOperationLogReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *SearchTalentOperationLogReqBuilder) PageToken(pageToken string) *SearchTalentOperationLogReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：10
+func (builder *SearchTalentOperationLogReqBuilder) PageSize(pageSize int) *SearchTalentOperationLogReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：open_id
+func (builder *SearchTalentOperationLogReqBuilder) UserIdType(userIdType string) *SearchTalentOperationLogReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 查询操作人对人才的操作记录
+func (builder *SearchTalentOperationLogReqBuilder) Body(body *SearchTalentOperationLogReqBody) *SearchTalentOperationLogReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *SearchTalentOperationLogReqBuilder) Build() *SearchTalentOperationLogReq {
+	req := &SearchTalentOperationLogReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type SearchTalentOperationLogReqBody struct {
+	JobIdList      []string `json:"job_id_list,omitempty"`      // 职位 ID 列表
+	OperatorIdList []string `json:"operator_id_list,omitempty"` // 操作人 ID 列表
+	OperationList  []int    `json:"operation_list,omitempty"`   // 操作类型 ID 列表
+}
+
+type SearchTalentOperationLogReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *SearchTalentOperationLogReqBody `body:""`
+}
+
+type SearchTalentOperationLogRespData struct {
+	Items     []*TalentOperationLog `json:"items,omitempty"`      // 列表
+	HasMore   *bool                 `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string               `json:"page_token,omitempty"` // 下一页页码
+}
+
+type SearchTalentOperationLogResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *SearchTalentOperationLogRespData `json:"data"` // 业务数据
+}
+
+func (resp *SearchTalentOperationLogResp) Success() bool {
+	return resp.Code == 0
+}
+
+type MoveTalentTalentPoolReqBodyBuilder struct {
+	talentId     string // 人才ID
+	talentIdFlag bool
+	addType      int // 操作类型
+	addTypeFlag  bool
+}
+
+func NewMoveTalentTalentPoolReqBodyBuilder() *MoveTalentTalentPoolReqBodyBuilder {
+	builder := &MoveTalentTalentPoolReqBodyBuilder{}
+	return builder
+}
+
+// 人才ID
+//
+// 示例值：6930815272790114324
+func (builder *MoveTalentTalentPoolReqBodyBuilder) TalentId(talentId string) *MoveTalentTalentPoolReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+// 操作类型
+//
+// 示例值：
+func (builder *MoveTalentTalentPoolReqBodyBuilder) AddType(addType int) *MoveTalentTalentPoolReqBodyBuilder {
+	builder.addType = addType
+	builder.addTypeFlag = true
+	return builder
+}
+
+func (builder *MoveTalentTalentPoolReqBodyBuilder) Build() *MoveTalentTalentPoolReqBody {
+	req := &MoveTalentTalentPoolReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	if builder.addTypeFlag {
+		req.AddType = &builder.addType
+	}
+	return req
+}
+
+type MoveTalentTalentPoolPathReqBodyBuilder struct {
+	talentId     string
+	talentIdFlag bool
+	addType      int
+	addTypeFlag  bool
+}
+
+func NewMoveTalentTalentPoolPathReqBodyBuilder() *MoveTalentTalentPoolPathReqBodyBuilder {
+	builder := &MoveTalentTalentPoolPathReqBodyBuilder{}
+	return builder
+}
+
+// 人才ID
+//
+// 示例值：6930815272790114324
+func (builder *MoveTalentTalentPoolPathReqBodyBuilder) TalentId(talentId string) *MoveTalentTalentPoolPathReqBodyBuilder {
+	builder.talentId = talentId
+	builder.talentIdFlag = true
+	return builder
+}
+
+// 操作类型
+//
+// 示例值：
+func (builder *MoveTalentTalentPoolPathReqBodyBuilder) AddType(addType int) *MoveTalentTalentPoolPathReqBodyBuilder {
+	builder.addType = addType
+	builder.addTypeFlag = true
+	return builder
+}
+
+func (builder *MoveTalentTalentPoolPathReqBodyBuilder) Build() (*MoveTalentTalentPoolReqBody, error) {
+	req := &MoveTalentTalentPoolReqBody{}
+	if builder.talentIdFlag {
+		req.TalentId = &builder.talentId
+	}
+	if builder.addTypeFlag {
+		req.AddType = &builder.addType
+	}
+	return req, nil
+}
+
+type MoveTalentTalentPoolReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *MoveTalentTalentPoolReqBody
+}
+
+func NewMoveTalentTalentPoolReqBuilder() *MoveTalentTalentPoolReqBuilder {
+	builder := &MoveTalentTalentPoolReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 人才库ID
+//
+// 示例值：6930815272790114325
+func (builder *MoveTalentTalentPoolReqBuilder) TalentPoolId(talentPoolId string) *MoveTalentTalentPoolReqBuilder {
+	builder.apiReq.PathParams.Set("talent_pool_id", fmt.Sprint(talentPoolId))
+	return builder
+}
+
+func (builder *MoveTalentTalentPoolReqBuilder) Body(body *MoveTalentTalentPoolReqBody) *MoveTalentTalentPoolReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *MoveTalentTalentPoolReqBuilder) Build() *MoveTalentTalentPoolReq {
+	req := &MoveTalentTalentPoolReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type MoveTalentTalentPoolReqBody struct {
+	TalentId *string `json:"talent_id,omitempty"` // 人才ID
+	AddType  *int    `json:"add_type,omitempty"`  // 操作类型
+}
+
+type MoveTalentTalentPoolReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *MoveTalentTalentPoolReqBody `body:""`
+}
+
+type MoveTalentTalentPoolRespData struct {
+	TalentPoolId *string `json:"talent_pool_id,omitempty"` // 人才库ID
+	TalentId     *string `json:"talent_id,omitempty"`      // 人才ID
+}
+
+type MoveTalentTalentPoolResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *MoveTalentTalentPoolRespData `json:"data"` // 业务数据
+}
+
+func (resp *MoveTalentTalentPoolResp) Success() bool {
+	return resp.Code == 0
+}
+
+type SearchTalentPoolReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewSearchTalentPoolReqBuilder() *SearchTalentPoolReqBuilder {
+	builder := &SearchTalentPoolReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *SearchTalentPoolReqBuilder) Limit(limit int) *SearchTalentPoolReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 分页大小
+//
+// 示例值：100
+func (builder *SearchTalentPoolReqBuilder) PageSize(pageSize int) *SearchTalentPoolReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *SearchTalentPoolReqBuilder) PageToken(pageToken string) *SearchTalentPoolReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 人才库ID列表
+//
+// 示例值：
+func (builder *SearchTalentPoolReqBuilder) IdList(idList []string) *SearchTalentPoolReqBuilder {
+	for _, v := range idList {
+		builder.apiReq.QueryParams.Add("id_list", fmt.Sprint(v))
+	}
+	return builder
+}
+
+func (builder *SearchTalentPoolReqBuilder) Build() *SearchTalentPoolReq {
+	req := &SearchTalentPoolReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type SearchTalentPoolReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type SearchTalentPoolRespData struct {
+	Items     []*TalentPool `json:"items,omitempty"`      // 人才库列表
+	PageToken *string       `json:"page_token,omitempty"` // 分页标记
+	HasMore   *bool         `json:"has_more,omitempty"`   // 是否有剩余数据
+}
+
+type SearchTalentPoolResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *SearchTalentPoolRespData `json:"data"` // 业务数据
+}
+
+func (resp *SearchTalentPoolResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ListTerminationReasonReqBuilder struct {
 	apiReq *larkcore.ApiReq
 	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
@@ -49164,6 +53780,515 @@ type ListTerminationReasonResp struct {
 }
 
 func (resp *ListTerminationReasonResp) Success() bool {
+	return resp.Code == 0
+}
+
+type SearchTestReqBodyBuilder struct {
+	applicationIdList     []string // 投递 ID 列表，最多 100 个，默认查询全部投递
+	applicationIdListFlag bool
+	testStartTimeMin      string // 笔试开始时间晚于等于的时间
+	testStartTimeMinFlag  bool
+	testStartTimeMax      string // 笔试开始时间早于等于的时间
+	testStartTimeMaxFlag  bool
+}
+
+func NewSearchTestReqBodyBuilder() *SearchTestReqBodyBuilder {
+	builder := &SearchTestReqBodyBuilder{}
+	return builder
+}
+
+// 投递 ID 列表，最多 100 个，默认查询全部投递
+//
+// 示例值：7018467800193304840
+func (builder *SearchTestReqBodyBuilder) ApplicationIdList(applicationIdList []string) *SearchTestReqBodyBuilder {
+	builder.applicationIdList = applicationIdList
+	builder.applicationIdListFlag = true
+	return builder
+}
+
+// 笔试开始时间晚于等于的时间
+//
+// 示例值：1608725989000
+func (builder *SearchTestReqBodyBuilder) TestStartTimeMin(testStartTimeMin string) *SearchTestReqBodyBuilder {
+	builder.testStartTimeMin = testStartTimeMin
+	builder.testStartTimeMinFlag = true
+	return builder
+}
+
+// 笔试开始时间早于等于的时间
+//
+// 示例值：1608726989000
+func (builder *SearchTestReqBodyBuilder) TestStartTimeMax(testStartTimeMax string) *SearchTestReqBodyBuilder {
+	builder.testStartTimeMax = testStartTimeMax
+	builder.testStartTimeMaxFlag = true
+	return builder
+}
+
+func (builder *SearchTestReqBodyBuilder) Build() *SearchTestReqBody {
+	req := &SearchTestReqBody{}
+	if builder.applicationIdListFlag {
+		req.ApplicationIdList = builder.applicationIdList
+	}
+	if builder.testStartTimeMinFlag {
+		req.TestStartTimeMin = &builder.testStartTimeMin
+	}
+	if builder.testStartTimeMaxFlag {
+		req.TestStartTimeMax = &builder.testStartTimeMax
+	}
+	return req
+}
+
+type SearchTestPathReqBodyBuilder struct {
+	applicationIdList     []string
+	applicationIdListFlag bool
+	testStartTimeMin      string
+	testStartTimeMinFlag  bool
+	testStartTimeMax      string
+	testStartTimeMaxFlag  bool
+}
+
+func NewSearchTestPathReqBodyBuilder() *SearchTestPathReqBodyBuilder {
+	builder := &SearchTestPathReqBodyBuilder{}
+	return builder
+}
+
+// 投递 ID 列表，最多 100 个，默认查询全部投递
+//
+// 示例值：7018467800193304840
+func (builder *SearchTestPathReqBodyBuilder) ApplicationIdList(applicationIdList []string) *SearchTestPathReqBodyBuilder {
+	builder.applicationIdList = applicationIdList
+	builder.applicationIdListFlag = true
+	return builder
+}
+
+// 笔试开始时间晚于等于的时间
+//
+// 示例值：1608725989000
+func (builder *SearchTestPathReqBodyBuilder) TestStartTimeMin(testStartTimeMin string) *SearchTestPathReqBodyBuilder {
+	builder.testStartTimeMin = testStartTimeMin
+	builder.testStartTimeMinFlag = true
+	return builder
+}
+
+// 笔试开始时间早于等于的时间
+//
+// 示例值：1608726989000
+func (builder *SearchTestPathReqBodyBuilder) TestStartTimeMax(testStartTimeMax string) *SearchTestPathReqBodyBuilder {
+	builder.testStartTimeMax = testStartTimeMax
+	builder.testStartTimeMaxFlag = true
+	return builder
+}
+
+func (builder *SearchTestPathReqBodyBuilder) Build() (*SearchTestReqBody, error) {
+	req := &SearchTestReqBody{}
+	if builder.applicationIdListFlag {
+		req.ApplicationIdList = builder.applicationIdList
+	}
+	if builder.testStartTimeMinFlag {
+		req.TestStartTimeMin = &builder.testStartTimeMin
+	}
+	if builder.testStartTimeMaxFlag {
+		req.TestStartTimeMax = &builder.testStartTimeMax
+	}
+	return req, nil
+}
+
+type SearchTestReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *SearchTestReqBody
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewSearchTestReqBuilder() *SearchTestReqBuilder {
+	builder := &SearchTestReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *SearchTestReqBuilder) Limit(limit int) *SearchTestReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *SearchTestReqBuilder) PageToken(pageToken string) *SearchTestReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：10
+func (builder *SearchTestReqBuilder) PageSize(pageSize int) *SearchTestReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *SearchTestReqBuilder) UserIdType(userIdType string) *SearchTestReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 批量获取人才在某投递流程中的笔试信息，如作答状态、笔试得分等。（目前仅支持获取 1w 条数据，若数据量较大，可通过控制 test_start_time 查询条件分批次获取全量数据）
+func (builder *SearchTestReqBuilder) Body(body *SearchTestReqBody) *SearchTestReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *SearchTestReqBuilder) Build() *SearchTestReq {
+	req := &SearchTestReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type SearchTestReqBody struct {
+	ApplicationIdList []string `json:"application_id_list,omitempty"` // 投递 ID 列表，最多 100 个，默认查询全部投递
+	TestStartTimeMin  *string  `json:"test_start_time_min,omitempty"` // 笔试开始时间晚于等于的时间
+	TestStartTimeMax  *string  `json:"test_start_time_max,omitempty"` // 笔试开始时间早于等于的时间
+}
+
+type SearchTestReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *SearchTestReqBody `body:""`
+	Limit  int                // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type SearchTestRespData struct {
+	Items     []*Test `json:"items,omitempty"`      // 笔试列表
+	HasMore   *bool   `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string `json:"page_token,omitempty"` // 下一页页码
+}
+
+type SearchTestResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *SearchTestRespData `json:"data"` // 业务数据
+}
+
+func (resp *SearchTestResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListTodoReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListTodoReqBuilder() *ListTodoReqBuilder {
+	builder := &ListTodoReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListTodoReqBuilder) Limit(limit int) *ListTodoReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 下一页页码
+//
+// 示例值：eyJvZmZzZXQiOjEwLCJ0aW1lc3RhbXAiOjE2Mjc1NTUyMjM2NzIsImlkIjpudWxsfQ==
+func (builder *ListTodoReqBuilder) PageToken(pageToken string) *ListTodoReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 每页获取记录数量，最大100
+//
+// 示例值：100
+func (builder *ListTodoReqBuilder) PageSize(pageSize string) *ListTodoReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 用户 ID，当 token 为租户 token 时，必须传入该字段，当 token 为用户 token 时，不传该字段
+//
+// 示例值：ou_xxx
+func (builder *ListTodoReqBuilder) UserId(userId string) *ListTodoReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id", fmt.Sprint(userId))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *ListTodoReqBuilder) UserIdType(userIdType string) *ListTodoReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 待办类型
+//
+// 示例值：interview
+func (builder *ListTodoReqBuilder) Type(type_ string) *ListTodoReqBuilder {
+	builder.apiReq.QueryParams.Set("type", fmt.Sprint(type_))
+	return builder
+}
+
+func (builder *ListTodoReqBuilder) Build() *ListTodoReq {
+	req := &ListTodoReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListTodoReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListTodoRespData struct {
+	Items     []*Todo `json:"items,omitempty"`      // 待办信息
+	HasMore   *bool   `json:"has_more,omitempty"`   // 是否还有下一页数据
+	PageToken *string `json:"page_token,omitempty"` // 下一页页码
+}
+
+type ListTodoResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListTodoRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListTodoResp) Success() bool {
+	return resp.Code == 0
+}
+
+type CreateTripartiteAgreementReqBuilder struct {
+	apiReq                  *larkcore.ApiReq
+	tripartiteAgreementInfo *TripartiteAgreementInfo
+}
+
+func NewCreateTripartiteAgreementReqBuilder() *CreateTripartiteAgreementReqBuilder {
+	builder := &CreateTripartiteAgreementReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+func (builder *CreateTripartiteAgreementReqBuilder) TripartiteAgreementInfo(tripartiteAgreementInfo *TripartiteAgreementInfo) *CreateTripartiteAgreementReqBuilder {
+	builder.tripartiteAgreementInfo = tripartiteAgreementInfo
+	return builder
+}
+
+func (builder *CreateTripartiteAgreementReqBuilder) Build() *CreateTripartiteAgreementReq {
+	req := &CreateTripartiteAgreementReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.Body = builder.tripartiteAgreementInfo
+	return req
+}
+
+type CreateTripartiteAgreementReq struct {
+	apiReq                  *larkcore.ApiReq
+	TripartiteAgreementInfo *TripartiteAgreementInfo `body:""`
+}
+
+type CreateTripartiteAgreementRespData struct {
+	Id *string `json:"id,omitempty"` // 创建的三方协议的 id
+}
+
+type CreateTripartiteAgreementResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateTripartiteAgreementRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateTripartiteAgreementResp) Success() bool {
+	return resp.Code == 0
+}
+
+type DeleteTripartiteAgreementReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewDeleteTripartiteAgreementReqBuilder() *DeleteTripartiteAgreementReqBuilder {
+	builder := &DeleteTripartiteAgreementReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 三方协议ID
+//
+// 示例值：6942778198054125570
+func (builder *DeleteTripartiteAgreementReqBuilder) TripartiteAgreementId(tripartiteAgreementId string) *DeleteTripartiteAgreementReqBuilder {
+	builder.apiReq.PathParams.Set("tripartite_agreement_id", fmt.Sprint(tripartiteAgreementId))
+	return builder
+}
+
+func (builder *DeleteTripartiteAgreementReqBuilder) Build() *DeleteTripartiteAgreementReq {
+	req := &DeleteTripartiteAgreementReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type DeleteTripartiteAgreementReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type DeleteTripartiteAgreementResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *DeleteTripartiteAgreementResp) Success() bool {
+	return resp.Code == 0
+}
+
+type ListTripartiteAgreementReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
+}
+
+func NewListTripartiteAgreementReqBuilder() *ListTripartiteAgreementReqBuilder {
+	builder := &ListTripartiteAgreementReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 最大返回多少记录，当使用迭代器访问时才有效
+func (builder *ListTripartiteAgreementReqBuilder) Limit(limit int) *ListTripartiteAgreementReqBuilder {
+	builder.limit = limit
+	return builder
+}
+
+// 分页大小
+//
+// 示例值：
+func (builder *ListTripartiteAgreementReqBuilder) PageSize(pageSize int) *ListTripartiteAgreementReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：
+func (builder *ListTripartiteAgreementReqBuilder) PageToken(pageToken string) *ListTripartiteAgreementReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+// 投递 ID，必填投递 id 与三方协议 ID 其中之一
+//
+// 示例值：6930815272790114324
+func (builder *ListTripartiteAgreementReqBuilder) ApplicationId(applicationId string) *ListTripartiteAgreementReqBuilder {
+	builder.apiReq.QueryParams.Set("application_id", fmt.Sprint(applicationId))
+	return builder
+}
+
+// 三方协议 ID，必填投递 id 与三方协议 ID 其中之一
+//
+// 示例值：6930815272790114325
+func (builder *ListTripartiteAgreementReqBuilder) TripartiteAgreementId(tripartiteAgreementId string) *ListTripartiteAgreementReqBuilder {
+	builder.apiReq.QueryParams.Set("tripartite_agreement_id", fmt.Sprint(tripartiteAgreementId))
+	return builder
+}
+
+func (builder *ListTripartiteAgreementReqBuilder) Build() *ListTripartiteAgreementReq {
+	req := &ListTripartiteAgreementReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.Limit = builder.limit
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListTripartiteAgreementReq struct {
+	apiReq *larkcore.ApiReq
+	Limit  int // 最多返回多少记录，只有在使用迭代器访问时，才有效
+
+}
+
+type ListTripartiteAgreementRespData struct {
+	Items     []*TripartiteAgreementInfo `json:"items,omitempty"`      //
+	PageToken *string                    `json:"page_token,omitempty"` //
+	HasMore   *bool                      `json:"has_more,omitempty"`   //
+}
+
+type ListTripartiteAgreementResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListTripartiteAgreementRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListTripartiteAgreementResp) Success() bool {
+	return resp.Code == 0
+}
+
+type UpdateTripartiteAgreementReqBuilder struct {
+	apiReq                  *larkcore.ApiReq
+	tripartiteAgreementInfo *TripartiteAgreementInfo
+}
+
+func NewUpdateTripartiteAgreementReqBuilder() *UpdateTripartiteAgreementReqBuilder {
+	builder := &UpdateTripartiteAgreementReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 示例值：
+func (builder *UpdateTripartiteAgreementReqBuilder) TripartiteAgreementId(tripartiteAgreementId string) *UpdateTripartiteAgreementReqBuilder {
+	builder.apiReq.PathParams.Set("tripartite_agreement_id", fmt.Sprint(tripartiteAgreementId))
+	return builder
+}
+
+func (builder *UpdateTripartiteAgreementReqBuilder) TripartiteAgreementInfo(tripartiteAgreementInfo *TripartiteAgreementInfo) *UpdateTripartiteAgreementReqBuilder {
+	builder.tripartiteAgreementInfo = tripartiteAgreementInfo
+	return builder
+}
+
+func (builder *UpdateTripartiteAgreementReqBuilder) Build() *UpdateTripartiteAgreementReq {
+	req := &UpdateTripartiteAgreementReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.Body = builder.tripartiteAgreementInfo
+	return req
+}
+
+type UpdateTripartiteAgreementReq struct {
+	apiReq                  *larkcore.ApiReq
+	TripartiteAgreementInfo *TripartiteAgreementInfo `body:""`
+}
+
+type UpdateTripartiteAgreementRespData struct {
+	TripartiteAgreement *TripartiteAgreementInfo `json:"tripartite_agreement,omitempty"` // 三方协议信息
+}
+
+type UpdateTripartiteAgreementResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *UpdateTripartiteAgreementRespData `json:"data"` // 业务数据
+}
+
+func (resp *UpdateTripartiteAgreementResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -49642,6 +54767,70 @@ func (resp *CreateByAttachmentWebsiteDeliveryResp) Success() bool {
 	return resp.Code == 0
 }
 
+type CreateByResumeWebsiteDeliveryReqBuilder struct {
+	apiReq          *larkcore.ApiReq
+	websiteDelivery *WebsiteDelivery
+}
+
+func NewCreateByResumeWebsiteDeliveryReqBuilder() *CreateByResumeWebsiteDeliveryReqBuilder {
+	builder := &CreateByResumeWebsiteDeliveryReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：1618209327096
+func (builder *CreateByResumeWebsiteDeliveryReqBuilder) WebsiteId(websiteId string) *CreateByResumeWebsiteDeliveryReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 此次调用中使用的用户ID的类型
+//
+// 示例值：
+func (builder *CreateByResumeWebsiteDeliveryReqBuilder) UserIdType(userIdType string) *CreateByResumeWebsiteDeliveryReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 创建官网投递。
+func (builder *CreateByResumeWebsiteDeliveryReqBuilder) WebsiteDelivery(websiteDelivery *WebsiteDelivery) *CreateByResumeWebsiteDeliveryReqBuilder {
+	builder.websiteDelivery = websiteDelivery
+	return builder
+}
+
+func (builder *CreateByResumeWebsiteDeliveryReqBuilder) Build() *CreateByResumeWebsiteDeliveryReq {
+	req := &CreateByResumeWebsiteDeliveryReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.websiteDelivery
+	return req
+}
+
+type CreateByResumeWebsiteDeliveryReq struct {
+	apiReq          *larkcore.ApiReq
+	WebsiteDelivery *WebsiteDelivery `body:""`
+}
+
+type CreateByResumeWebsiteDeliveryRespData struct {
+	Delivery *WebsiteDeliveryDto `json:"delivery,omitempty"` // 官网投递信息
+}
+
+type CreateByResumeWebsiteDeliveryResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *CreateByResumeWebsiteDeliveryRespData `json:"data"` // 业务数据
+}
+
+func (resp *CreateByResumeWebsiteDeliveryResp) Success() bool {
+	return resp.Code == 0
+}
+
 type GetWebsiteDeliveryTaskReqBuilder struct {
 	apiReq *larkcore.ApiReq
 }
@@ -49696,6 +54885,85 @@ type GetWebsiteDeliveryTaskResp struct {
 }
 
 func (resp *GetWebsiteDeliveryTaskResp) Success() bool {
+	return resp.Code == 0
+}
+
+type GetWebsiteJobPostReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewGetWebsiteJobPostReqBuilder() *GetWebsiteJobPostReqBuilder {
+	builder := &GetWebsiteJobPostReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 官网 ID
+//
+// 示例值：111
+func (builder *GetWebsiteJobPostReqBuilder) WebsiteId(websiteId string) *GetWebsiteJobPostReqBuilder {
+	builder.apiReq.PathParams.Set("website_id", fmt.Sprint(websiteId))
+	return builder
+}
+
+// 职位广告 ID
+//
+// 示例值：111
+func (builder *GetWebsiteJobPostReqBuilder) JobPostId(jobPostId string) *GetWebsiteJobPostReqBuilder {
+	builder.apiReq.PathParams.Set("job_post_id", fmt.Sprint(jobPostId))
+	return builder
+}
+
+// 用户 ID 类型
+//
+// 示例值：open_id
+func (builder *GetWebsiteJobPostReqBuilder) UserIdType(userIdType string) *GetWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("user_id_type", fmt.Sprint(userIdType))
+	return builder
+}
+
+// 此次调用中使用的部门 ID 的类型
+//
+// 示例值：
+func (builder *GetWebsiteJobPostReqBuilder) DepartmentIdType(departmentIdType string) *GetWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
+	return builder
+}
+
+// 此次调用中使用的「职级 ID」的类型
+//
+// 示例值：
+func (builder *GetWebsiteJobPostReqBuilder) JobLevelIdType(jobLevelIdType string) *GetWebsiteJobPostReqBuilder {
+	builder.apiReq.QueryParams.Set("job_level_id_type", fmt.Sprint(jobLevelIdType))
+	return builder
+}
+
+func (builder *GetWebsiteJobPostReqBuilder) Build() *GetWebsiteJobPostReq {
+	req := &GetWebsiteJobPostReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type GetWebsiteJobPostReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type GetWebsiteJobPostRespData struct {
+	JobPost *WebsiteJobPost `json:"job_post,omitempty"` // 职位广告信息
+}
+
+type GetWebsiteJobPostResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *GetWebsiteJobPostRespData `json:"data"` // 业务数据
+}
+
+func (resp *GetWebsiteJobPostResp) Success() bool {
 	return resp.Code == 0
 }
 
@@ -50457,6 +55725,20 @@ func (m *P2ReferralAccountAssetsUpdateV1) RawReq(req *larkevent.EventReq) {
 	m.EventReq = req
 }
 
+type P2TalentDeletedV1Data struct {
+	TalentId *string `json:"talent_id,omitempty"` // 人才 ID
+}
+
+type P2TalentDeletedV1 struct {
+	*larkevent.EventV2Base                        // 事件基础数据
+	*larkevent.EventReq                           // 请求原生数据
+	Event                  *P2TalentDeletedV1Data `json:"event"` // 事件内容
+}
+
+func (m *P2TalentDeletedV1) RawReq(req *larkevent.EventReq) {
+	m.EventReq = req
+}
+
 type ListEvaluationIterator struct {
 	nextPageToken *string
 	items         []*Evaluation
@@ -50508,6 +55790,384 @@ func (iterator *ListEvaluationIterator) Next() (bool, *Evaluation, error) {
 }
 
 func (iterator *ListEvaluationIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListEvaluationTaskIterator struct {
+	nextPageToken *string
+	items         []*EvaluationTask
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListEvaluationTaskReq
+	listFunc      func(ctx context.Context, req *ListEvaluationTaskReq, options ...larkcore.RequestOptionFunc) (*ListEvaluationTaskResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListEvaluationTaskIterator) Next() (bool, *EvaluationTask, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListEvaluationTaskIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListExamMarkingTaskIterator struct {
+	nextPageToken *string
+	items         []*ExamMarkingTask
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListExamMarkingTaskReq
+	listFunc      func(ctx context.Context, req *ListExamMarkingTaskReq, options ...larkcore.RequestOptionFunc) (*ListExamMarkingTaskResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListExamMarkingTaskIterator) Next() (bool, *ExamMarkingTask, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListExamMarkingTaskIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListExternalApplicationIterator struct {
+	nextPageToken *string
+	items         []*ExternalApplication
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListExternalApplicationReq
+	listFunc      func(ctx context.Context, req *ListExternalApplicationReq, options ...larkcore.RequestOptionFunc) (*ListExternalApplicationResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListExternalApplicationIterator) Next() (bool, *ExternalApplication, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListExternalApplicationIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListInterviewFeedbackFormIterator struct {
+	nextPageToken *string
+	items         []*InterviewFeedbackForm
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListInterviewFeedbackFormReq
+	listFunc      func(ctx context.Context, req *ListInterviewFeedbackFormReq, options ...larkcore.RequestOptionFunc) (*ListInterviewFeedbackFormResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListInterviewFeedbackFormIterator) Next() (bool, *InterviewFeedbackForm, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListInterviewFeedbackFormIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListInterviewRecordIterator struct {
+	nextPageToken *string
+	items         []*InterviewRecord
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListInterviewRecordReq
+	listFunc      func(ctx context.Context, req *ListInterviewRecordReq, options ...larkcore.RequestOptionFunc) (*ListInterviewRecordResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListInterviewRecordIterator) Next() (bool, *InterviewRecord, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListInterviewRecordIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListInterviewRegistrationSchemaIterator struct {
+	nextPageToken *string
+	items         []*InterviewRegistrationSchema
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListInterviewRegistrationSchemaReq
+	listFunc      func(ctx context.Context, req *ListInterviewRegistrationSchemaReq, options ...larkcore.RequestOptionFunc) (*ListInterviewRegistrationSchemaResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListInterviewRegistrationSchemaIterator) Next() (bool, *InterviewRegistrationSchema, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListInterviewRegistrationSchemaIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListInterviewTaskIterator struct {
+	nextPageToken *string
+	items         []*InterviewTask
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListInterviewTaskReq
+	listFunc      func(ctx context.Context, req *ListInterviewTaskReq, options ...larkcore.RequestOptionFunc) (*ListInterviewTaskResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListInterviewTaskIterator) Next() (bool, *InterviewTask, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListInterviewTaskIterator) NextPageToken() *string {
 	return iterator.nextPageToken
 }
 
@@ -50943,6 +56603,60 @@ func (iterator *ListTalentFolderIterator) NextPageToken() *string {
 	return iterator.nextPageToken
 }
 
+type SearchTalentPoolIterator struct {
+	nextPageToken *string
+	items         []*TalentPool
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *SearchTalentPoolReq
+	listFunc      func(ctx context.Context, req *SearchTalentPoolReq, options ...larkcore.RequestOptionFunc) (*SearchTalentPoolResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *SearchTalentPoolIterator) Next() (bool, *TalentPool, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *SearchTalentPoolIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
 type ListTerminationReasonIterator struct {
 	nextPageToken *string
 	items         []*TerminationReason
@@ -50994,6 +56708,168 @@ func (iterator *ListTerminationReasonIterator) Next() (bool, *TerminationReason,
 }
 
 func (iterator *ListTerminationReasonIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type SearchTestIterator struct {
+	nextPageToken *string
+	items         []*Test
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *SearchTestReq
+	listFunc      func(ctx context.Context, req *SearchTestReq, options ...larkcore.RequestOptionFunc) (*SearchTestResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *SearchTestIterator) Next() (bool, *Test, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *SearchTestIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListTodoIterator struct {
+	nextPageToken *string
+	items         []*Todo
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListTodoReq
+	listFunc      func(ctx context.Context, req *ListTodoReq, options ...larkcore.RequestOptionFunc) (*ListTodoResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListTodoIterator) Next() (bool, *Todo, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListTodoIterator) NextPageToken() *string {
+	return iterator.nextPageToken
+}
+
+type ListTripartiteAgreementIterator struct {
+	nextPageToken *string
+	items         []*TripartiteAgreementInfo
+	index         int
+	limit         int
+	ctx           context.Context
+	req           *ListTripartiteAgreementReq
+	listFunc      func(ctx context.Context, req *ListTripartiteAgreementReq, options ...larkcore.RequestOptionFunc) (*ListTripartiteAgreementResp, error)
+	options       []larkcore.RequestOptionFunc
+	curlNum       int
+}
+
+func (iterator *ListTripartiteAgreementIterator) Next() (bool, *TripartiteAgreementInfo, error) {
+	// 达到最大量，则返回
+	if iterator.limit > 0 && iterator.curlNum >= iterator.limit {
+		return false, nil, nil
+	}
+
+	// 为0则拉取数据
+	if iterator.index == 0 || iterator.index >= len(iterator.items) {
+		if iterator.index != 0 && iterator.nextPageToken == nil {
+			return false, nil, nil
+		}
+		if iterator.nextPageToken != nil {
+			iterator.req.apiReq.QueryParams.Set("page_token", *iterator.nextPageToken)
+		}
+		resp, err := iterator.listFunc(iterator.ctx, iterator.req, iterator.options...)
+		if err != nil {
+			return false, nil, err
+		}
+
+		if resp.Code != 0 {
+			return false, nil, errors.New(fmt.Sprintf("Code:%d,Msg:%s", resp.Code, resp.Msg))
+		}
+
+		if len(resp.Data.Items) == 0 {
+			return false, nil, nil
+		}
+
+		iterator.nextPageToken = resp.Data.PageToken
+		iterator.items = resp.Data.Items
+		iterator.index = 0
+	}
+
+	block := iterator.items[iterator.index]
+	iterator.index++
+	iterator.curlNum++
+	return true, block, nil
+}
+
+func (iterator *ListTripartiteAgreementIterator) NextPageToken() *string {
 	return iterator.nextPageToken
 }
 

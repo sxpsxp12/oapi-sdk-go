@@ -216,3 +216,23 @@ func (h *P2ReferralAccountAssetsUpdateV1Handler) Event() interface{} {
 func (h *P2ReferralAccountAssetsUpdateV1Handler) Handle(ctx context.Context, event interface{}) error {
 	return h.handler(ctx, event.(*P2ReferralAccountAssetsUpdateV1))
 }
+
+// 消息处理器定义
+type P2TalentDeletedV1Handler struct {
+	handler func(context.Context, *P2TalentDeletedV1) error
+}
+
+func NewP2TalentDeletedV1Handler(handler func(context.Context, *P2TalentDeletedV1) error) *P2TalentDeletedV1Handler {
+	h := &P2TalentDeletedV1Handler{handler: handler}
+	return h
+}
+
+// 返回事件的消息体的实例，用于反序列化用
+func (h *P2TalentDeletedV1Handler) Event() interface{} {
+	return &P2TalentDeletedV1{}
+}
+
+// 回调开发者注册的handle
+func (h *P2TalentDeletedV1Handler) Handle(ctx context.Context, event interface{}) error {
+	return h.handler(ctx, event.(*P2TalentDeletedV1))
+}

@@ -267,6 +267,34 @@ func (a *applicationAppUsage) DepartmentOverview(ctx context.Context, req *Depar
 	return resp, err
 }
 
+// MessagePushOverview 获取消息推送概览（灰度租户可见）
+//
+// - 目标：查看应用在某一天/某一周/某一个月的机器人消息推送数据，可以根据部门做筛选
+//
+// - 1. 仅支持企业版/旗舰版租户使用;2. 一般每天早上10点产出两天前的数据。;3. 已经支持的指标包括：消息推送给用户的次数、消息触达的人数、消息1小时阅读量、消息12小时阅读量;4. 按照部门查看数据时，会展示当前部门以及其子部门的整体使用情况;5. 调用频控为100次/分
+//
+// - 官网API文档链接:https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/application-v6/application-app_usage/message_push_overview
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/applicationv6/messagePushOverview_applicationAppUsage.go
+func (a *applicationAppUsage) MessagePushOverview(ctx context.Context, req *MessagePushOverviewApplicationAppUsageReq, options ...larkcore.RequestOptionFunc) (*MessagePushOverviewApplicationAppUsageResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/application/v6/applications/:app_id/app_usage/message_push_overview"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &MessagePushOverviewApplicationAppUsageResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Overview 获取应用使用概览
 //
 // - 查看应用在某一天/某一周/某一个月的使用数据，可以查看租户整体对应用的使用情况，也可以分部门查看。

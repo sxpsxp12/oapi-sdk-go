@@ -80,7 +80,7 @@ func NewVerificationBuilder() *VerificationBuilder {
 
 // 企业主体名称
 //
-// 示例值：
+// 示例值：无限未来科技公司
 func (builder *VerificationBuilder) Name(name string) *VerificationBuilder {
 	builder.name = name
 	builder.nameFlag = true
@@ -104,6 +104,150 @@ func (builder *VerificationBuilder) Build() *Verification {
 	}
 	if builder.hasVerificationFlag {
 		req.HasVerification = &builder.hasVerification
+
+	}
+	return req
+}
+
+type VerificationDetail struct {
+	VerificationType   *int    `json:"verification_type,omitempty"`   // 认证类型
+	VerificationSource *int    `json:"verification_source,omitempty"` // 认证方式
+	OrgName            *string `json:"org_name,omitempty"`            // 工商名称
+	Usci               *string `json:"usci,omitempty"`                // 统一工商信用代码
+	OrgType            *int    `json:"org_type,omitempty"`            // 企业类型
+	LegalPersonName    *string `json:"legal_person_name,omitempty"`   // 法人姓名
+	EnterpriseLicense  *string `json:"enterprise_license,omitempty"`  // 企业经营许可证
+	VerificationLetter *string `json:"verification_letter,omitempty"` // 认证公函
+}
+
+type VerificationDetailBuilder struct {
+	verificationType       int // 认证类型
+	verificationTypeFlag   bool
+	verificationSource     int // 认证方式
+	verificationSourceFlag bool
+	orgName                string // 工商名称
+	orgNameFlag            bool
+	usci                   string // 统一工商信用代码
+	usciFlag               bool
+	orgType                int // 企业类型
+	orgTypeFlag            bool
+	legalPersonName        string // 法人姓名
+	legalPersonNameFlag    bool
+	enterpriseLicense      string // 企业经营许可证
+	enterpriseLicenseFlag  bool
+	verificationLetter     string // 认证公函
+	verificationLetterFlag bool
+}
+
+func NewVerificationDetailBuilder() *VerificationDetailBuilder {
+	builder := &VerificationDetailBuilder{}
+	return builder
+}
+
+// 认证类型
+//
+// 示例值：
+func (builder *VerificationDetailBuilder) VerificationType(verificationType int) *VerificationDetailBuilder {
+	builder.verificationType = verificationType
+	builder.verificationTypeFlag = true
+	return builder
+}
+
+// 认证方式
+//
+// 示例值：
+func (builder *VerificationDetailBuilder) VerificationSource(verificationSource int) *VerificationDetailBuilder {
+	builder.verificationSource = verificationSource
+	builder.verificationSourceFlag = true
+	return builder
+}
+
+// 工商名称
+//
+// 示例值：未来有限公司
+func (builder *VerificationDetailBuilder) OrgName(orgName string) *VerificationDetailBuilder {
+	builder.orgName = orgName
+	builder.orgNameFlag = true
+	return builder
+}
+
+// 统一工商信用代码
+//
+// 示例值：xxxx
+func (builder *VerificationDetailBuilder) Usci(usci string) *VerificationDetailBuilder {
+	builder.usci = usci
+	builder.usciFlag = true
+	return builder
+}
+
+// 企业类型
+//
+// 示例值：
+func (builder *VerificationDetailBuilder) OrgType(orgType int) *VerificationDetailBuilder {
+	builder.orgType = orgType
+	builder.orgTypeFlag = true
+	return builder
+}
+
+// 法人姓名
+//
+// 示例值：张三
+func (builder *VerificationDetailBuilder) LegalPersonName(legalPersonName string) *VerificationDetailBuilder {
+	builder.legalPersonName = legalPersonName
+	builder.legalPersonNameFlag = true
+	return builder
+}
+
+// 企业经营许可证
+//
+// 示例值：https://xxx
+func (builder *VerificationDetailBuilder) EnterpriseLicense(enterpriseLicense string) *VerificationDetailBuilder {
+	builder.enterpriseLicense = enterpriseLicense
+	builder.enterpriseLicenseFlag = true
+	return builder
+}
+
+// 认证公函
+//
+// 示例值：https://xxx
+func (builder *VerificationDetailBuilder) VerificationLetter(verificationLetter string) *VerificationDetailBuilder {
+	builder.verificationLetter = verificationLetter
+	builder.verificationLetterFlag = true
+	return builder
+}
+
+func (builder *VerificationDetailBuilder) Build() *VerificationDetail {
+	req := &VerificationDetail{}
+	if builder.verificationTypeFlag {
+		req.VerificationType = &builder.verificationType
+
+	}
+	if builder.verificationSourceFlag {
+		req.VerificationSource = &builder.verificationSource
+
+	}
+	if builder.orgNameFlag {
+		req.OrgName = &builder.orgName
+
+	}
+	if builder.usciFlag {
+		req.Usci = &builder.usci
+
+	}
+	if builder.orgTypeFlag {
+		req.OrgType = &builder.orgType
+
+	}
+	if builder.legalPersonNameFlag {
+		req.LegalPersonName = &builder.legalPersonName
+
+	}
+	if builder.enterpriseLicenseFlag {
+		req.EnterpriseLicense = &builder.enterpriseLicense
+
+	}
+	if builder.verificationLetterFlag {
+		req.VerificationLetter = &builder.verificationLetter
 
 	}
 	return req
