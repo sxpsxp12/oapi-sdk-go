@@ -27,7 +27,7 @@ func main() {
 	client := lark.NewClient("appID", "appSecret")
 	// 创建请求对象
 	req := larkhire.NewListInterviewRecordReqBuilder().
-		PageSize(0).
+		PageSize(10).
 		PageToken("").
 		Ids([]string{}).
 		UserIdType("user_id").

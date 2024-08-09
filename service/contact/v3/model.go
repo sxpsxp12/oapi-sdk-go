@@ -991,6 +991,100 @@ func (builder *CustomAttrOptionsBuilder) Build() *CustomAttrOptions {
 	return req
 }
 
+type DeparmentCount struct {
+	DepartmentId          *string `json:"department_id,omitempty"`           //
+	DirectDepartmentCount *int    `json:"direct_department_count,omitempty"` // 部门下的直属部门数量
+	DirectUserCount       *int    `json:"direct_user_count,omitempty"`       // 部门下的直属成员数量，包含部门负责人
+	DepartmentCount       *int    `json:"department_count,omitempty"`        // 部门下所有部门的数量，包含递归的子部门
+	UserCount             *int    `json:"user_count,omitempty"`              // 部门下所有成员数，包含递归子部门的成员，包含部门负责人
+}
+
+type DeparmentCountBuilder struct {
+	departmentId              string //
+	departmentIdFlag          bool
+	directDepartmentCount     int // 部门下的直属部门数量
+	directDepartmentCountFlag bool
+	directUserCount           int // 部门下的直属成员数量，包含部门负责人
+	directUserCountFlag       bool
+	departmentCount           int // 部门下所有部门的数量，包含递归的子部门
+	departmentCountFlag       bool
+	userCount                 int // 部门下所有成员数，包含递归子部门的成员，包含部门负责人
+	userCountFlag             bool
+}
+
+func NewDeparmentCountBuilder() *DeparmentCountBuilder {
+	builder := &DeparmentCountBuilder{}
+	return builder
+}
+
+// 示例值：
+func (builder *DeparmentCountBuilder) DepartmentId(departmentId string) *DeparmentCountBuilder {
+	builder.departmentId = departmentId
+	builder.departmentIdFlag = true
+	return builder
+}
+
+// 部门下的直属部门数量
+//
+// 示例值：
+func (builder *DeparmentCountBuilder) DirectDepartmentCount(directDepartmentCount int) *DeparmentCountBuilder {
+	builder.directDepartmentCount = directDepartmentCount
+	builder.directDepartmentCountFlag = true
+	return builder
+}
+
+// 部门下的直属成员数量，包含部门负责人
+//
+// 示例值：
+func (builder *DeparmentCountBuilder) DirectUserCount(directUserCount int) *DeparmentCountBuilder {
+	builder.directUserCount = directUserCount
+	builder.directUserCountFlag = true
+	return builder
+}
+
+// 部门下所有部门的数量，包含递归的子部门
+//
+// 示例值：
+func (builder *DeparmentCountBuilder) DepartmentCount(departmentCount int) *DeparmentCountBuilder {
+	builder.departmentCount = departmentCount
+	builder.departmentCountFlag = true
+	return builder
+}
+
+// 部门下所有成员数，包含递归子部门的成员，包含部门负责人
+//
+// 示例值：
+func (builder *DeparmentCountBuilder) UserCount(userCount int) *DeparmentCountBuilder {
+	builder.userCount = userCount
+	builder.userCountFlag = true
+	return builder
+}
+
+func (builder *DeparmentCountBuilder) Build() *DeparmentCount {
+	req := &DeparmentCount{}
+	if builder.departmentIdFlag {
+		req.DepartmentId = &builder.departmentId
+
+	}
+	if builder.directDepartmentCountFlag {
+		req.DirectDepartmentCount = &builder.directDepartmentCount
+
+	}
+	if builder.directUserCountFlag {
+		req.DirectUserCount = &builder.directUserCount
+
+	}
+	if builder.departmentCountFlag {
+		req.DepartmentCount = &builder.departmentCount
+
+	}
+	if builder.userCountFlag {
+		req.UserCount = &builder.userCount
+
+	}
+	return req
+}
+
 type Department struct {
 	Name                   *string             `json:"name,omitempty"`                      // 部门名称
 	I18nName               *DepartmentI18nName `json:"i18n_name,omitempty"`                 // 国际化的部门名称
@@ -3358,6 +3452,54 @@ func (builder *ProductI18nNameBuilder) Build() *ProductI18nName {
 	}
 	if builder.enUsFlag {
 		req.EnUs = &builder.enUs
+
+	}
+	return req
+}
+
+type ResourceAccept struct {
+	ProcessingType *string `json:"processing_type,omitempty"`  // 资源处理类型
+	AcceptorUserId *string `json:"acceptor_user_id,omitempty"` // 转移资源时，资源接收者
+}
+
+type ResourceAcceptBuilder struct {
+	processingType     string // 资源处理类型
+	processingTypeFlag bool
+	acceptorUserId     string // 转移资源时，资源接收者
+	acceptorUserIdFlag bool
+}
+
+func NewResourceAcceptBuilder() *ResourceAcceptBuilder {
+	builder := &ResourceAcceptBuilder{}
+	return builder
+}
+
+// 资源处理类型
+//
+// 示例值：
+func (builder *ResourceAcceptBuilder) ProcessingType(processingType string) *ResourceAcceptBuilder {
+	builder.processingType = processingType
+	builder.processingTypeFlag = true
+	return builder
+}
+
+// 转移资源时，资源接收者
+//
+// 示例值：
+func (builder *ResourceAcceptBuilder) AcceptorUserId(acceptorUserId string) *ResourceAcceptBuilder {
+	builder.acceptorUserId = acceptorUserId
+	builder.acceptorUserIdFlag = true
+	return builder
+}
+
+func (builder *ResourceAcceptBuilder) Build() *ResourceAccept {
+	req := &ResourceAccept{}
+	if builder.processingTypeFlag {
+		req.ProcessingType = &builder.processingType
+
+	}
+	if builder.acceptorUserIdFlag {
+		req.AcceptorUserId = &builder.acceptorUserId
 
 	}
 	return req

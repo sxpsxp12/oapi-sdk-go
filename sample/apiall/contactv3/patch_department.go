@@ -36,7 +36,6 @@ func main() {
 			ParentDepartmentId("D067").
 			LeaderUserId("ou_7dab8a3d3cdcc9da365777c7ad535d62").
 			Order("100").
-			UnitIds([]string{}).
 			CreateGroupChat(false).
 			Leaders([]*larkcontact.DepartmentLeader{larkcontact.NewDepartmentLeaderBuilder().Build()}).
 			GroupChatEmployeeTypes([]int{}).

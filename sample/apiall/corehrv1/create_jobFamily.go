@@ -33,7 +33,6 @@ func main() {
 			Active(true).
 			ParentId("4698020757495316313").
 			EffectiveTime("2020-05-01 00:00:00").
-			ExpirationTime("2020-05-02 00:00:00").
 			Code("123456").
 			CustomFields([]*larkcorehr.ObjectFieldData{larkcorehr.NewObjectFieldDataBuilder().Build()}).
 			Build()).

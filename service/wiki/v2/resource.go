@@ -218,6 +218,32 @@ func (s *spaceMember) Delete(ctx context.Context, req *DeleteSpaceMemberReq, opt
 	return resp, err
 }
 
+// List
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=list&project=wiki&resource=space.member&version=v2
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/wikiv2/list_spaceMember.go
+func (s *spaceMember) List(ctx context.Context, req *ListSpaceMemberReq, options ...larkcore.RequestOptionFunc) (*ListSpaceMemberResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/wiki/v2/spaces/:space_id/members"
+	apiReq.HttpMethod = http.MethodGet
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, s.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &ListSpaceMemberResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, s.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // Copy 创建知识空间节点副本
 //
 // - 此接口用于在知识空间创建节点副本到指定位置。

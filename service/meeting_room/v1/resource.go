@@ -3,7 +3,7 @@
 package larkmeeting_room
 
 import (
-	"github.com/larksuite/oapi-sdk-go/v3/core"
+	larkcore "github.com/larksuite/oapi-sdk-go/v3/core"
 )
 
 type V1 struct {

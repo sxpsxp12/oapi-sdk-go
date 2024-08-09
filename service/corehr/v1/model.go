@@ -15025,6 +15025,8 @@ type SecurityGroup struct {
 	Name          *Name            `json:"name,omitempty"`           // 角色名称
 	ActiveStatus  *int             `json:"active_status,omitempty"`  // 状态，1 = Inactive / 停用，;2 = Active / 启用，3 = TobeActivated / 待启用
 	Description   *Name            `json:"description,omitempty"`    // 角色描述
+	GroupType     *int             `json:"group_type,omitempty"`     // 角色类型
+	CreatedBy     *string          `json:"created_by,omitempty"`     // 创建人
 	UpdateTime    *string          `json:"update_time,omitempty"`    // 更新时间
 	OrgTruncation []*OrgTruncation `json:"org_truncation,omitempty"` // 组织管理维度
 }
@@ -15040,6 +15042,10 @@ type SecurityGroupBuilder struct {
 	activeStatusFlag  bool
 	description       *Name // 角色描述
 	descriptionFlag   bool
+	groupType         int // 角色类型
+	groupTypeFlag     bool
+	createdBy         string // 创建人
+	createdByFlag     bool
 	updateTime        string // 更新时间
 	updateTimeFlag    bool
 	orgTruncation     []*OrgTruncation // 组织管理维度
@@ -15096,6 +15102,24 @@ func (builder *SecurityGroupBuilder) Description(description *Name) *SecurityGro
 	return builder
 }
 
+// 角色类型
+//
+// 示例值：1
+func (builder *SecurityGroupBuilder) GroupType(groupType int) *SecurityGroupBuilder {
+	builder.groupType = groupType
+	builder.groupTypeFlag = true
+	return builder
+}
+
+// 创建人
+//
+// 示例值：6967639606963471902
+func (builder *SecurityGroupBuilder) CreatedBy(createdBy string) *SecurityGroupBuilder {
+	builder.createdBy = createdBy
+	builder.createdByFlag = true
+	return builder
+}
+
 // 更新时间
 //
 // 示例值：1
@@ -15133,6 +15157,14 @@ func (builder *SecurityGroupBuilder) Build() *SecurityGroup {
 	}
 	if builder.descriptionFlag {
 		req.Description = builder.description
+	}
+	if builder.groupTypeFlag {
+		req.GroupType = &builder.groupType
+
+	}
+	if builder.createdByFlag {
+		req.CreatedBy = &builder.createdBy
+
 	}
 	if builder.updateTimeFlag {
 		req.UpdateTime = &builder.updateTime
@@ -21384,6 +21416,14 @@ func (builder *PatchJobDataReqBuilder) UserIdType(userIdType string) *PatchJobDa
 // 示例值：open_department_id
 func (builder *PatchJobDataReqBuilder) DepartmentIdType(departmentIdType string) *PatchJobDataReqBuilder {
 	builder.apiReq.QueryParams.Set("department_id_type", fmt.Sprint(departmentIdType))
+	return builder
+}
+
+// 是否强校验。值为 true 时，会对入参进行业务校验，并产生异动记录、发送异动事件。;- 默认值：false;- 仅在新增任职版本时生效，当 version_id 不为空时该字段不生效
+//
+// 示例值：false
+func (builder *PatchJobDataReqBuilder) StrictVerify(strictVerify string) *PatchJobDataReqBuilder {
+	builder.apiReq.QueryParams.Set("strict_verify", fmt.Sprint(strictVerify))
 	return builder
 }
 

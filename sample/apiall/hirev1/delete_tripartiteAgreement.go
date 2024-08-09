@@ -27,7 +27,7 @@ func main() {
 	client := lark.NewClient("appID", "appSecret")
 	// 创建请求对象
 	req := larkhire.NewDeleteTripartiteAgreementReqBuilder().
-		TripartiteAgreementId("6942778198054125570").
+		TripartiteAgreementId("").
 		Build()
 	// 发起请求
 	resp, err := client.Hire.V1.TripartiteAgreement.Delete(context.Background(), req)

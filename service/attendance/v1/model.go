@@ -101,7 +101,6 @@ const (
 )
 
 const (
-	EmployeeTypeGetUserFlowOpenId     = "open_id"     // 开放openID
 	EmployeeTypeGetUserFlowEmployeeId = "employee_id" // 员工employeeId
 	EmployeeTypeGetUserFlowEmployeeNo = "employee_no" // 员工工号
 )
@@ -8800,6 +8799,200 @@ func (resp *ProcessApprovalInfoResp) Success() bool {
 	return resp.Code == 0
 }
 
+type DelReportArchiveRuleReqBodyBuilder struct {
+	month             string // 月份
+	monthFlag         bool
+	operatorId        string // 操作者ID
+	operatorIdFlag    bool
+	archiveRuleId     string // 归档规则id
+	archiveRuleIdFlag bool
+	userIds           []string // 用户id
+	userIdsFlag       bool
+}
+
+func NewDelReportArchiveRuleReqBodyBuilder() *DelReportArchiveRuleReqBodyBuilder {
+	builder := &DelReportArchiveRuleReqBodyBuilder{}
+	return builder
+}
+
+// 月份
+//
+// 示例值：202409
+func (builder *DelReportArchiveRuleReqBodyBuilder) Month(month string) *DelReportArchiveRuleReqBodyBuilder {
+	builder.month = month
+	builder.monthFlag = true
+	return builder
+}
+
+// 操作者ID
+//
+// 示例值：a111xd
+func (builder *DelReportArchiveRuleReqBodyBuilder) OperatorId(operatorId string) *DelReportArchiveRuleReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 归档规则id
+//
+// 示例值：1
+func (builder *DelReportArchiveRuleReqBodyBuilder) ArchiveRuleId(archiveRuleId string) *DelReportArchiveRuleReqBodyBuilder {
+	builder.archiveRuleId = archiveRuleId
+	builder.archiveRuleIdFlag = true
+	return builder
+}
+
+// 用户id
+//
+// 示例值：
+func (builder *DelReportArchiveRuleReqBodyBuilder) UserIds(userIds []string) *DelReportArchiveRuleReqBodyBuilder {
+	builder.userIds = userIds
+	builder.userIdsFlag = true
+	return builder
+}
+
+func (builder *DelReportArchiveRuleReqBodyBuilder) Build() *DelReportArchiveRuleReqBody {
+	req := &DelReportArchiveRuleReqBody{}
+	if builder.monthFlag {
+		req.Month = &builder.month
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	if builder.archiveRuleIdFlag {
+		req.ArchiveRuleId = &builder.archiveRuleId
+	}
+	if builder.userIdsFlag {
+		req.UserIds = builder.userIds
+	}
+	return req
+}
+
+type DelReportArchiveRulePathReqBodyBuilder struct {
+	month             string
+	monthFlag         bool
+	operatorId        string
+	operatorIdFlag    bool
+	archiveRuleId     string
+	archiveRuleIdFlag bool
+	userIds           []string
+	userIdsFlag       bool
+}
+
+func NewDelReportArchiveRulePathReqBodyBuilder() *DelReportArchiveRulePathReqBodyBuilder {
+	builder := &DelReportArchiveRulePathReqBodyBuilder{}
+	return builder
+}
+
+// 月份
+//
+// 示例值：202409
+func (builder *DelReportArchiveRulePathReqBodyBuilder) Month(month string) *DelReportArchiveRulePathReqBodyBuilder {
+	builder.month = month
+	builder.monthFlag = true
+	return builder
+}
+
+// 操作者ID
+//
+// 示例值：a111xd
+func (builder *DelReportArchiveRulePathReqBodyBuilder) OperatorId(operatorId string) *DelReportArchiveRulePathReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 归档规则id
+//
+// 示例值：1
+func (builder *DelReportArchiveRulePathReqBodyBuilder) ArchiveRuleId(archiveRuleId string) *DelReportArchiveRulePathReqBodyBuilder {
+	builder.archiveRuleId = archiveRuleId
+	builder.archiveRuleIdFlag = true
+	return builder
+}
+
+// 用户id
+//
+// 示例值：
+func (builder *DelReportArchiveRulePathReqBodyBuilder) UserIds(userIds []string) *DelReportArchiveRulePathReqBodyBuilder {
+	builder.userIds = userIds
+	builder.userIdsFlag = true
+	return builder
+}
+
+func (builder *DelReportArchiveRulePathReqBodyBuilder) Build() (*DelReportArchiveRuleReqBody, error) {
+	req := &DelReportArchiveRuleReqBody{}
+	if builder.monthFlag {
+		req.Month = &builder.month
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	if builder.archiveRuleIdFlag {
+		req.ArchiveRuleId = &builder.archiveRuleId
+	}
+	if builder.userIdsFlag {
+		req.UserIds = builder.userIds
+	}
+	return req, nil
+}
+
+type DelReportArchiveRuleReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *DelReportArchiveRuleReqBody
+}
+
+func NewDelReportArchiveRuleReqBuilder() *DelReportArchiveRuleReqBuilder {
+	builder := &DelReportArchiveRuleReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 员工工号类型
+//
+// 示例值：employee_id
+func (builder *DelReportArchiveRuleReqBuilder) EmployeeType(employeeType string) *DelReportArchiveRuleReqBuilder {
+	builder.apiReq.QueryParams.Set("employee_type", fmt.Sprint(employeeType))
+	return builder
+}
+
+func (builder *DelReportArchiveRuleReqBuilder) Body(body *DelReportArchiveRuleReqBody) *DelReportArchiveRuleReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *DelReportArchiveRuleReqBuilder) Build() *DelReportArchiveRuleReq {
+	req := &DelReportArchiveRuleReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type DelReportArchiveRuleReqBody struct {
+	Month         *string  `json:"month,omitempty"`           // 月份
+	OperatorId    *string  `json:"operator_id,omitempty"`     // 操作者ID
+	ArchiveRuleId *string  `json:"archive_rule_id,omitempty"` // 归档规则id
+	UserIds       []string `json:"user_ids,omitempty"`        // 用户id
+}
+
+type DelReportArchiveRuleReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *DelReportArchiveRuleReqBody `body:""`
+}
+
+type DelReportArchiveRuleResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+}
+
+func (resp *DelReportArchiveRuleResp) Success() bool {
+	return resp.Code == 0
+}
+
 type ListArchiveRuleReqBuilder struct {
 	apiReq *larkcore.ApiReq
 	limit  int // 最大返回多少记录，当使用迭代器访问时才有效
@@ -8863,6 +9056,206 @@ type ListArchiveRuleResp struct {
 }
 
 func (resp *ListArchiveRuleResp) Success() bool {
+	return resp.Code == 0
+}
+
+type UploadReportArchiveRuleReqBodyBuilder struct {
+	month                  string // 月份
+	monthFlag              bool
+	operatorId             string // 操作者ID
+	operatorIdFlag         bool
+	archiveReportDatas     []*ArchiveReportData // 归档报表内容(不超过50个)
+	archiveReportDatasFlag bool
+	archiveRuleId          string // 归档规则id
+	archiveRuleIdFlag      bool
+}
+
+func NewUploadReportArchiveRuleReqBodyBuilder() *UploadReportArchiveRuleReqBodyBuilder {
+	builder := &UploadReportArchiveRuleReqBodyBuilder{}
+	return builder
+}
+
+// 月份
+//
+// 示例值：202409
+func (builder *UploadReportArchiveRuleReqBodyBuilder) Month(month string) *UploadReportArchiveRuleReqBodyBuilder {
+	builder.month = month
+	builder.monthFlag = true
+	return builder
+}
+
+// 操作者ID
+//
+// 示例值：ax11d
+func (builder *UploadReportArchiveRuleReqBodyBuilder) OperatorId(operatorId string) *UploadReportArchiveRuleReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 归档报表内容(不超过50个)
+//
+// 示例值：
+func (builder *UploadReportArchiveRuleReqBodyBuilder) ArchiveReportDatas(archiveReportDatas []*ArchiveReportData) *UploadReportArchiveRuleReqBodyBuilder {
+	builder.archiveReportDatas = archiveReportDatas
+	builder.archiveReportDatasFlag = true
+	return builder
+}
+
+// 归档规则id
+//
+// 示例值：1
+func (builder *UploadReportArchiveRuleReqBodyBuilder) ArchiveRuleId(archiveRuleId string) *UploadReportArchiveRuleReqBodyBuilder {
+	builder.archiveRuleId = archiveRuleId
+	builder.archiveRuleIdFlag = true
+	return builder
+}
+
+func (builder *UploadReportArchiveRuleReqBodyBuilder) Build() *UploadReportArchiveRuleReqBody {
+	req := &UploadReportArchiveRuleReqBody{}
+	if builder.monthFlag {
+		req.Month = &builder.month
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	if builder.archiveReportDatasFlag {
+		req.ArchiveReportDatas = builder.archiveReportDatas
+	}
+	if builder.archiveRuleIdFlag {
+		req.ArchiveRuleId = &builder.archiveRuleId
+	}
+	return req
+}
+
+type UploadReportArchiveRulePathReqBodyBuilder struct {
+	month                  string
+	monthFlag              bool
+	operatorId             string
+	operatorIdFlag         bool
+	archiveReportDatas     []*ArchiveReportData
+	archiveReportDatasFlag bool
+	archiveRuleId          string
+	archiveRuleIdFlag      bool
+}
+
+func NewUploadReportArchiveRulePathReqBodyBuilder() *UploadReportArchiveRulePathReqBodyBuilder {
+	builder := &UploadReportArchiveRulePathReqBodyBuilder{}
+	return builder
+}
+
+// 月份
+//
+// 示例值：202409
+func (builder *UploadReportArchiveRulePathReqBodyBuilder) Month(month string) *UploadReportArchiveRulePathReqBodyBuilder {
+	builder.month = month
+	builder.monthFlag = true
+	return builder
+}
+
+// 操作者ID
+//
+// 示例值：ax11d
+func (builder *UploadReportArchiveRulePathReqBodyBuilder) OperatorId(operatorId string) *UploadReportArchiveRulePathReqBodyBuilder {
+	builder.operatorId = operatorId
+	builder.operatorIdFlag = true
+	return builder
+}
+
+// 归档报表内容(不超过50个)
+//
+// 示例值：
+func (builder *UploadReportArchiveRulePathReqBodyBuilder) ArchiveReportDatas(archiveReportDatas []*ArchiveReportData) *UploadReportArchiveRulePathReqBodyBuilder {
+	builder.archiveReportDatas = archiveReportDatas
+	builder.archiveReportDatasFlag = true
+	return builder
+}
+
+// 归档规则id
+//
+// 示例值：1
+func (builder *UploadReportArchiveRulePathReqBodyBuilder) ArchiveRuleId(archiveRuleId string) *UploadReportArchiveRulePathReqBodyBuilder {
+	builder.archiveRuleId = archiveRuleId
+	builder.archiveRuleIdFlag = true
+	return builder
+}
+
+func (builder *UploadReportArchiveRulePathReqBodyBuilder) Build() (*UploadReportArchiveRuleReqBody, error) {
+	req := &UploadReportArchiveRuleReqBody{}
+	if builder.monthFlag {
+		req.Month = &builder.month
+	}
+	if builder.operatorIdFlag {
+		req.OperatorId = &builder.operatorId
+	}
+	if builder.archiveReportDatasFlag {
+		req.ArchiveReportDatas = builder.archiveReportDatas
+	}
+	if builder.archiveRuleIdFlag {
+		req.ArchiveRuleId = &builder.archiveRuleId
+	}
+	return req, nil
+}
+
+type UploadReportArchiveRuleReqBuilder struct {
+	apiReq *larkcore.ApiReq
+	body   *UploadReportArchiveRuleReqBody
+}
+
+func NewUploadReportArchiveRuleReqBuilder() *UploadReportArchiveRuleReqBuilder {
+	builder := &UploadReportArchiveRuleReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 用户 ID 的类型
+//
+// 示例值：employee_id
+func (builder *UploadReportArchiveRuleReqBuilder) EmployeeType(employeeType string) *UploadReportArchiveRuleReqBuilder {
+	builder.apiReq.QueryParams.Set("employee_type", fmt.Sprint(employeeType))
+	return builder
+}
+
+func (builder *UploadReportArchiveRuleReqBuilder) Body(body *UploadReportArchiveRuleReqBody) *UploadReportArchiveRuleReqBuilder {
+	builder.body = body
+	return builder
+}
+
+func (builder *UploadReportArchiveRuleReqBuilder) Build() *UploadReportArchiveRuleReq {
+	req := &UploadReportArchiveRuleReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	req.apiReq.Body = builder.body
+	return req
+}
+
+type UploadReportArchiveRuleReqBody struct {
+	Month              *string              `json:"month,omitempty"`                // 月份
+	OperatorId         *string              `json:"operator_id,omitempty"`          // 操作者ID
+	ArchiveReportDatas []*ArchiveReportData `json:"archive_report_datas,omitempty"` // 归档报表内容(不超过50个)
+	ArchiveRuleId      *string              `json:"archive_rule_id,omitempty"`      // 归档规则id
+}
+
+type UploadReportArchiveRuleReq struct {
+	apiReq *larkcore.ApiReq
+	Body   *UploadReportArchiveRuleReqBody `body:""`
+}
+
+type UploadReportArchiveRuleRespData struct {
+	InvalidCode     []string `json:"invalid_code,omitempty"`      // 无效的code
+	InvalidMemberId []string `json:"invalid_member_id,omitempty"` // 无效的member_id
+}
+
+type UploadReportArchiveRuleResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *UploadReportArchiveRuleRespData `json:"data"` // 业务数据
+}
+
+func (resp *UploadReportArchiveRuleResp) Success() bool {
 	return resp.Code == 0
 }
 

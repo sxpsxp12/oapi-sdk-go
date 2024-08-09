@@ -4531,6 +4531,7 @@ type Contract struct {
 	ContractStatus      *Enum   `json:"contract_status,omitempty"`        // 合同协议状态，枚举值可通过文档【飞书人事枚举常量】合同协议状态（contract_status）枚举定义部分获得
 	RenewalStatus       *Enum   `json:"renewal_status,omitempty"`         // 续签状态，枚举值可通过文档【飞书人事枚举常量】续签状态（renewal_status）枚举定义部分获得
 	SigningTimes        *int    `json:"signing_times,omitempty"`          // 第几次签署
+	OriginalContract    *string `json:"original_contract,omitempty"`      // 原合同ID
 }
 
 type ContractBuilder struct {
@@ -4562,6 +4563,8 @@ type ContractBuilder struct {
 	renewalStatusFlag       bool
 	signingTimes            int // 第几次签署
 	signingTimesFlag        bool
+	originalContract        string // 原合同ID
+	originalContractFlag    bool
 }
 
 func NewContractBuilder() *ContractBuilder {
@@ -4695,6 +4698,15 @@ func (builder *ContractBuilder) SigningTimes(signingTimes int) *ContractBuilder 
 	return builder
 }
 
+// 原合同ID
+//
+// 示例值：7147527056140813828
+func (builder *ContractBuilder) OriginalContract(originalContract string) *ContractBuilder {
+	builder.originalContract = originalContract
+	builder.originalContractFlag = true
+	return builder
+}
+
 func (builder *ContractBuilder) Build() *Contract {
 	req := &Contract{}
 	if builder.idFlag {
@@ -4746,6 +4758,10 @@ func (builder *ContractBuilder) Build() *Contract {
 	}
 	if builder.signingTimesFlag {
 		req.SigningTimes = &builder.signingTimes
+
+	}
+	if builder.originalContractFlag {
+		req.OriginalContract = &builder.originalContract
 
 	}
 	return req
@@ -5349,6 +5365,54 @@ func (builder *CountryRegionSubdivisionBuilder) Build() *CountryRegionSubdivisio
 	return req
 }
 
+type CreateEmpCustomOrg struct {
+	Id   *string  `json:"id,omitempty"`   // 自定义组织ID
+	Rate *float64 `json:"rate,omitempty"` // 比例 如果是非比例的可不填写
+}
+
+type CreateEmpCustomOrgBuilder struct {
+	id       string // 自定义组织ID
+	idFlag   bool
+	rate     float64 // 比例 如果是非比例的可不填写
+	rateFlag bool
+}
+
+func NewCreateEmpCustomOrgBuilder() *CreateEmpCustomOrgBuilder {
+	builder := &CreateEmpCustomOrgBuilder{}
+	return builder
+}
+
+// 自定义组织ID
+//
+// 示例值：7260357352426782739
+func (builder *CreateEmpCustomOrgBuilder) Id(id string) *CreateEmpCustomOrgBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 比例 如果是非比例的可不填写
+//
+// 示例值：50.1
+func (builder *CreateEmpCustomOrgBuilder) Rate(rate float64) *CreateEmpCustomOrgBuilder {
+	builder.rate = rate
+	builder.rateFlag = true
+	return builder
+}
+
+func (builder *CreateEmpCustomOrgBuilder) Build() *CreateEmpCustomOrg {
+	req := &CreateEmpCustomOrg{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.rateFlag {
+		req.Rate = &builder.rate
+
+	}
+	return req
+}
+
 type Currency struct {
 	CurrencyId          *string  `json:"currency_id,omitempty"`            // 货币 ID
 	CountryRegionIdList []string `json:"country_region_id_list,omitempty"` // 货币所属国家/地区 ID 列表，详细信息可通过[查询国家/地区信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-country_region/search)接口查询获得
@@ -5928,6 +5992,69 @@ func (builder *CustomOrgCreateBuilder) Build() *CustomOrgCreate {
 	return req
 }
 
+type CustomOrgList struct {
+	CustomOrgName *I18nV2 `json:"custom_org_name,omitempty"` // 自定义组织名称
+	CustomOrgId   *string `json:"custom_org_id,omitempty"`   // 自定义组织ID
+	Rate          *string `json:"rate,omitempty"`            // 比例
+}
+
+type CustomOrgListBuilder struct {
+	customOrgName     *I18nV2 // 自定义组织名称
+	customOrgNameFlag bool
+	customOrgId       string // 自定义组织ID
+	customOrgIdFlag   bool
+	rate              string // 比例
+	rateFlag          bool
+}
+
+func NewCustomOrgListBuilder() *CustomOrgListBuilder {
+	builder := &CustomOrgListBuilder{}
+	return builder
+}
+
+// 自定义组织名称
+//
+// 示例值：编制单元
+func (builder *CustomOrgListBuilder) CustomOrgName(customOrgName *I18nV2) *CustomOrgListBuilder {
+	builder.customOrgName = customOrgName
+	builder.customOrgNameFlag = true
+	return builder
+}
+
+// 自定义组织ID
+//
+// 示例值：7293641346149138452
+func (builder *CustomOrgListBuilder) CustomOrgId(customOrgId string) *CustomOrgListBuilder {
+	builder.customOrgId = customOrgId
+	builder.customOrgIdFlag = true
+	return builder
+}
+
+// 比例
+//
+// 示例值：42.98
+func (builder *CustomOrgListBuilder) Rate(rate string) *CustomOrgListBuilder {
+	builder.rate = rate
+	builder.rateFlag = true
+	return builder
+}
+
+func (builder *CustomOrgListBuilder) Build() *CustomOrgList {
+	req := &CustomOrgList{}
+	if builder.customOrgNameFlag {
+		req.CustomOrgName = builder.customOrgName
+	}
+	if builder.customOrgIdFlag {
+		req.CustomOrgId = &builder.customOrgId
+
+	}
+	if builder.rateFlag {
+		req.Rate = &builder.rate
+
+	}
+	return req
+}
+
 type CustomOrgUpdate struct {
 	ObjectApiName *string          `json:"object_api_name,omitempty"` // 组织类型编码
 	Names         []*I18n          `json:"names,omitempty"`           // 组织名称
@@ -6068,6 +6195,54 @@ func (builder *CustomOrgUpdateBuilder) Build() *CustomOrgUpdate {
 	return req
 }
 
+type CustomOrgWithRate struct {
+	Id   *string `json:"id,omitempty"`   // 自定义组织id
+	Rate *string `json:"rate,omitempty"` // 比例
+}
+
+type CustomOrgWithRateBuilder struct {
+	id       string // 自定义组织id
+	idFlag   bool
+	rate     string // 比例
+	rateFlag bool
+}
+
+func NewCustomOrgWithRateBuilder() *CustomOrgWithRateBuilder {
+	builder := &CustomOrgWithRateBuilder{}
+	return builder
+}
+
+// 自定义组织id
+//
+// 示例值：7382048365313261588
+func (builder *CustomOrgWithRateBuilder) Id(id string) *CustomOrgWithRateBuilder {
+	builder.id = id
+	builder.idFlag = true
+	return builder
+}
+
+// 比例
+//
+// 示例值：50.01
+func (builder *CustomOrgWithRateBuilder) Rate(rate string) *CustomOrgWithRateBuilder {
+	builder.rate = rate
+	builder.rateFlag = true
+	return builder
+}
+
+func (builder *CustomOrgWithRateBuilder) Build() *CustomOrgWithRate {
+	req := &CustomOrgWithRate{}
+	if builder.idFlag {
+		req.Id = &builder.id
+
+	}
+	if builder.rateFlag {
+		req.Rate = &builder.rate
+
+	}
+	return req
+}
+
 type CustomValue struct {
 	ValueBoolean *bool   `json:"value_boolean,omitempty"` // 布尔类型的字段值
 	ValueEnumId  *string `json:"value_enum_id,omitempty"` // 枚举类型的字段的枚举值 ID
@@ -6182,6 +6357,7 @@ type Department struct {
 	Description        []*I18n            `json:"description,omitempty"`          // 描述
 	CustomFields       []*CustomFieldData `json:"custom_fields,omitempty"`        // 自定义字段
 	StaffingModel      *Enum              `json:"staffing_model,omitempty"`       // 是否使用职务
+	CostCenterId       *string            `json:"cost_center_id,omitempty"`       // 成本中心id
 }
 
 type DepartmentBuilder struct {
@@ -6219,6 +6395,8 @@ type DepartmentBuilder struct {
 	customFieldsFlag       bool
 	staffingModel          *Enum // 是否使用职务
 	staffingModelFlag      bool
+	costCenterId           string // 成本中心id
+	costCenterIdFlag       bool
 }
 
 func NewDepartmentBuilder() *DepartmentBuilder {
@@ -6379,6 +6557,15 @@ func (builder *DepartmentBuilder) StaffingModel(staffingModel *Enum) *Department
 	return builder
 }
 
+// 成本中心id
+//
+// 示例值：7142384817131652652
+func (builder *DepartmentBuilder) CostCenterId(costCenterId string) *DepartmentBuilder {
+	builder.costCenterId = costCenterId
+	builder.costCenterIdFlag = true
+	return builder
+}
+
 func (builder *DepartmentBuilder) Build() *Department {
 	req := &Department{}
 	if builder.idFlag {
@@ -6443,6 +6630,10 @@ func (builder *DepartmentBuilder) Build() *Department {
 	}
 	if builder.staffingModelFlag {
 		req.StaffingModel = builder.staffingModel
+	}
+	if builder.costCenterIdFlag {
+		req.CostCenterId = &builder.costCenterId
+
 	}
 	return req
 }
@@ -8637,6 +8828,133 @@ func (builder *EmergencyContactForUpdateBuilder) Build() *EmergencyContactForUpd
 	return req
 }
 
+type EmpCustomOrgList struct {
+	CustomOrgList      []*CustomOrgList `json:"custom_org_list,omitempty"`        // 自定义组织列表
+	EffectiveTime      *string          `json:"effective_time,omitempty"`         // 生效时间
+	StartReason        *string          `json:"start_reason,omitempty"`           // 变动原因
+	JobDataCustomOrgId *string          `json:"job_data_custom_org_id,omitempty"` // ID
+	VersionId          *string          `json:"version_id,omitempty"`             // 版本号
+	ObjectApiName      *string          `json:"object_api_name,omitempty"`        // 自定义组织类型
+	UserId             *string          `json:"user_id,omitempty"`                // 用户id
+}
+
+type EmpCustomOrgListBuilder struct {
+	customOrgList          []*CustomOrgList // 自定义组织列表
+	customOrgListFlag      bool
+	effectiveTime          string // 生效时间
+	effectiveTimeFlag      bool
+	startReason            string // 变动原因
+	startReasonFlag        bool
+	jobDataCustomOrgId     string // ID
+	jobDataCustomOrgIdFlag bool
+	versionId              string // 版本号
+	versionIdFlag          bool
+	objectApiName          string // 自定义组织类型
+	objectApiNameFlag      bool
+	userId                 string // 用户id
+	userIdFlag             bool
+}
+
+func NewEmpCustomOrgListBuilder() *EmpCustomOrgListBuilder {
+	builder := &EmpCustomOrgListBuilder{}
+	return builder
+}
+
+// 自定义组织列表
+//
+// 示例值：
+func (builder *EmpCustomOrgListBuilder) CustomOrgList(customOrgList []*CustomOrgList) *EmpCustomOrgListBuilder {
+	builder.customOrgList = customOrgList
+	builder.customOrgListFlag = true
+	return builder
+}
+
+// 生效时间
+//
+// 示例值：2024-06-13 00:00:00
+func (builder *EmpCustomOrgListBuilder) EffectiveTime(effectiveTime string) *EmpCustomOrgListBuilder {
+	builder.effectiveTime = effectiveTime
+	builder.effectiveTimeFlag = true
+	return builder
+}
+
+// 变动原因
+//
+// 示例值：自动打标
+func (builder *EmpCustomOrgListBuilder) StartReason(startReason string) *EmpCustomOrgListBuilder {
+	builder.startReason = startReason
+	builder.startReasonFlag = true
+	return builder
+}
+
+// ID
+//
+// 示例值：7260357352426782739
+func (builder *EmpCustomOrgListBuilder) JobDataCustomOrgId(jobDataCustomOrgId string) *EmpCustomOrgListBuilder {
+	builder.jobDataCustomOrgId = jobDataCustomOrgId
+	builder.jobDataCustomOrgIdFlag = true
+	return builder
+}
+
+// 版本号
+//
+// 示例值：7260357352426782749
+func (builder *EmpCustomOrgListBuilder) VersionId(versionId string) *EmpCustomOrgListBuilder {
+	builder.versionId = versionId
+	builder.versionIdFlag = true
+	return builder
+}
+
+// 自定义组织类型
+//
+// 示例值：custom_org_03
+func (builder *EmpCustomOrgListBuilder) ObjectApiName(objectApiName string) *EmpCustomOrgListBuilder {
+	builder.objectApiName = objectApiName
+	builder.objectApiNameFlag = true
+	return builder
+}
+
+// 用户id
+//
+// 示例值：7352797725202581036
+func (builder *EmpCustomOrgListBuilder) UserId(userId string) *EmpCustomOrgListBuilder {
+	builder.userId = userId
+	builder.userIdFlag = true
+	return builder
+}
+
+func (builder *EmpCustomOrgListBuilder) Build() *EmpCustomOrgList {
+	req := &EmpCustomOrgList{}
+	if builder.customOrgListFlag {
+		req.CustomOrgList = builder.customOrgList
+	}
+	if builder.effectiveTimeFlag {
+		req.EffectiveTime = &builder.effectiveTime
+
+	}
+	if builder.startReasonFlag {
+		req.StartReason = &builder.startReason
+
+	}
+	if builder.jobDataCustomOrgIdFlag {
+		req.JobDataCustomOrgId = &builder.jobDataCustomOrgId
+
+	}
+	if builder.versionIdFlag {
+		req.VersionId = &builder.versionId
+
+	}
+	if builder.objectApiNameFlag {
+		req.ObjectApiName = &builder.objectApiName
+
+	}
+	if builder.userIdFlag {
+		req.UserId = &builder.userId
+
+	}
+	return req
+}
+
 type Employee struct {
 	EmploymentId         *string            `json:"employment_id,omitempty"`          // 雇佣 ID
 	AtsApplicationId     *string            `json:"ats_application_id,omitempty"`     // 招聘投递 ID ，详细信息可以通过【获取投递信息】接口查询获得
@@ -8700,6 +9018,7 @@ type Employee struct {
 	CompensationType *Enum   `json:"compensation_type,omitempty"` // 薪资类型
 	WorkShift        *Enum   `json:"work_shift,omitempty"`        // 排班类型
 
+	CustomOrgStr *string `json:"custom_org_str,omitempty"` // 自定义组织
 }
 
 type EmployeeBuilder struct {
@@ -8823,6 +9142,9 @@ type EmployeeBuilder struct {
 	compensationTypeFlag bool
 	workShift            *Enum // 排班类型
 	workShiftFlag        bool
+
+	customOrgStr     string // 自定义组织
+	customOrgStrFlag bool
 }
 
 func NewEmployeeBuilder() *EmployeeBuilder {
@@ -9361,6 +9683,15 @@ func (builder *EmployeeBuilder) WorkShift(workShift *Enum) *EmployeeBuilder {
 	return builder
 }
 
+// 自定义组织
+//
+// 示例值：{"custom_org_02":[{"id":"1","rate":"99"}]}
+func (builder *EmployeeBuilder) CustomOrgStr(customOrgStr string) *EmployeeBuilder {
+	builder.customOrgStr = customOrgStr
+	builder.customOrgStrFlag = true
+	return builder
+}
+
 func (builder *EmployeeBuilder) Build() *Employee {
 	req := &Employee{}
 	if builder.employmentIdFlag {
@@ -9583,6 +9914,10 @@ func (builder *EmployeeBuilder) Build() *Employee {
 		req.WorkShift = builder.workShift
 	}
 
+	if builder.customOrgStrFlag {
+		req.CustomOrgStr = &builder.customOrgStr
+
+	}
 	return req
 }
 
@@ -11874,6 +12209,7 @@ type FieldVariableValueTo struct {
 	RecordValue     *FieldVariableValueToRecord `json:"record_value,omitempty"`     // 记录类型字段值
 	EmploymentValue *string                     `json:"employment_value,omitempty"` // 员工类型字段值，为用户id，根据入参选择返回的用户id
 	ListValues      []string                    `json:"list_values,omitempty"`      // 数组类型值，里面包含多个值，每个元素都对应subValues中的数组下标
+	FileValue       *FieldVariableValueToFile   `json:"file_value,omitempty"`       // 文件类型字段值，可通过主数据的文件下载Open API下载
 }
 
 type FieldVariableValueToBuilder struct {
@@ -11903,6 +12239,8 @@ type FieldVariableValueToBuilder struct {
 	employmentValueFlag bool
 	listValues          []string // 数组类型值，里面包含多个值，每个元素都对应subValues中的数组下标
 	listValuesFlag      bool
+	fileValue           *FieldVariableValueToFile // 文件类型字段值，可通过主数据的文件下载Open API下载
+	fileValueFlag       bool
 }
 
 func NewFieldVariableValueToBuilder() *FieldVariableValueToBuilder {
@@ -12027,6 +12365,15 @@ func (builder *FieldVariableValueToBuilder) ListValues(listValues []string) *Fie
 	return builder
 }
 
+// 文件类型字段值，可通过主数据的文件下载Open API下载
+//
+// 示例值：
+func (builder *FieldVariableValueToBuilder) FileValue(fileValue *FieldVariableValueToFile) *FieldVariableValueToBuilder {
+	builder.fileValue = fileValue
+	builder.fileValueFlag = true
+	return builder
+}
+
 func (builder *FieldVariableValueToBuilder) Build() *FieldVariableValueTo {
 	req := &FieldVariableValueTo{}
 	if builder.textValueFlag {
@@ -12077,6 +12424,9 @@ func (builder *FieldVariableValueToBuilder) Build() *FieldVariableValueTo {
 	if builder.listValuesFlag {
 		req.ListValues = builder.listValues
 	}
+	if builder.fileValueFlag {
+		req.FileValue = builder.fileValue
+	}
 	return req
 }
 
@@ -12123,6 +12473,86 @@ func (builder *FieldVariableValueToEnumBuilder) Build() *FieldVariableValueToEnu
 	}
 	if builder.nameFlag {
 		req.Name = builder.name
+	}
+	return req
+}
+
+type FieldVariableValueToFile struct {
+	OpenFileId *string `json:"open_file_id,omitempty"` // 用于主数据文件下载接口的id
+	FileName   *string `json:"file_name,omitempty"`    // 文件名称
+	Length     *string `json:"length,omitempty"`       // 文件大小，单位：Byte
+	MimeType   *string `json:"mime_type,omitempty"`    // 文件类型，如`application/pdf`
+}
+
+type FieldVariableValueToFileBuilder struct {
+	openFileId     string // 用于主数据文件下载接口的id
+	openFileIdFlag bool
+	fileName       string // 文件名称
+	fileNameFlag   bool
+	length         string // 文件大小，单位：Byte
+	lengthFlag     bool
+	mimeType       string // 文件类型，如`application/pdf`
+	mimeTypeFlag   bool
+}
+
+func NewFieldVariableValueToFileBuilder() *FieldVariableValueToFileBuilder {
+	builder := &FieldVariableValueToFileBuilder{}
+	return builder
+}
+
+// 用于主数据文件下载接口的id
+//
+// 示例值：66867ed00740ddd4a0bad4a5_c99b5322dc744fe4b99b76426ffe5d53
+func (builder *FieldVariableValueToFileBuilder) OpenFileId(openFileId string) *FieldVariableValueToFileBuilder {
+	builder.openFileId = openFileId
+	builder.openFileIdFlag = true
+	return builder
+}
+
+// 文件名称
+//
+// 示例值：file_name
+func (builder *FieldVariableValueToFileBuilder) FileName(fileName string) *FieldVariableValueToFileBuilder {
+	builder.fileName = fileName
+	builder.fileNameFlag = true
+	return builder
+}
+
+// 文件大小，单位：Byte
+//
+// 示例值：65535
+func (builder *FieldVariableValueToFileBuilder) Length(length string) *FieldVariableValueToFileBuilder {
+	builder.length = length
+	builder.lengthFlag = true
+	return builder
+}
+
+// 文件类型，如`application/pdf`
+//
+// 示例值：application/pdf
+func (builder *FieldVariableValueToFileBuilder) MimeType(mimeType string) *FieldVariableValueToFileBuilder {
+	builder.mimeType = mimeType
+	builder.mimeTypeFlag = true
+	return builder
+}
+
+func (builder *FieldVariableValueToFileBuilder) Build() *FieldVariableValueToFile {
+	req := &FieldVariableValueToFile{}
+	if builder.openFileIdFlag {
+		req.OpenFileId = &builder.openFileId
+
+	}
+	if builder.fileNameFlag {
+		req.FileName = &builder.fileName
+
+	}
+	if builder.lengthFlag {
+		req.Length = &builder.length
+
+	}
+	if builder.mimeTypeFlag {
+		req.MimeType = &builder.mimeType
+
 	}
 	return req
 }
@@ -14821,6 +15251,85 @@ func (builder *JobDataCostCenterBuilder) Build() *JobDataCostCenter {
 	}
 	if builder.rateFlag {
 		req.Rate = &builder.rate
+
+	}
+	return req
+}
+
+type JobDataCustomOrg struct {
+	EffectiveTime      *string               `json:"effective_time,omitempty"`        // 生效时间
+	StartReason        *string               `json:"start_reason,omitempty"`          // 原因
+	CustomOrgWithRates []*CreateEmpCustomOrg `json:"custom_org_with_rates,omitempty"` // 自定义组织列表
+	ObjectApiName      *string               `json:"object_api_name,omitempty"`       // 自定义组织类型
+}
+
+type JobDataCustomOrgBuilder struct {
+	effectiveTime          string // 生效时间
+	effectiveTimeFlag      bool
+	startReason            string // 原因
+	startReasonFlag        bool
+	customOrgWithRates     []*CreateEmpCustomOrg // 自定义组织列表
+	customOrgWithRatesFlag bool
+	objectApiName          string // 自定义组织类型
+	objectApiNameFlag      bool
+}
+
+func NewJobDataCustomOrgBuilder() *JobDataCustomOrgBuilder {
+	builder := &JobDataCustomOrgBuilder{}
+	return builder
+}
+
+// 生效时间
+//
+// 示例值：2024-07-02
+func (builder *JobDataCustomOrgBuilder) EffectiveTime(effectiveTime string) *JobDataCustomOrgBuilder {
+	builder.effectiveTime = effectiveTime
+	builder.effectiveTimeFlag = true
+	return builder
+}
+
+// 原因
+//
+// 示例值：新增人员
+func (builder *JobDataCustomOrgBuilder) StartReason(startReason string) *JobDataCustomOrgBuilder {
+	builder.startReason = startReason
+	builder.startReasonFlag = true
+	return builder
+}
+
+// 自定义组织列表
+//
+// 示例值：
+func (builder *JobDataCustomOrgBuilder) CustomOrgWithRates(customOrgWithRates []*CreateEmpCustomOrg) *JobDataCustomOrgBuilder {
+	builder.customOrgWithRates = customOrgWithRates
+	builder.customOrgWithRatesFlag = true
+	return builder
+}
+
+// 自定义组织类型
+//
+// 示例值：custom_org_01
+func (builder *JobDataCustomOrgBuilder) ObjectApiName(objectApiName string) *JobDataCustomOrgBuilder {
+	builder.objectApiName = objectApiName
+	builder.objectApiNameFlag = true
+	return builder
+}
+
+func (builder *JobDataCustomOrgBuilder) Build() *JobDataCustomOrg {
+	req := &JobDataCustomOrg{}
+	if builder.effectiveTimeFlag {
+		req.EffectiveTime = &builder.effectiveTime
+
+	}
+	if builder.startReasonFlag {
+		req.StartReason = &builder.startReason
+
+	}
+	if builder.customOrgWithRatesFlag {
+		req.CustomOrgWithRates = builder.customOrgWithRates
+	}
+	if builder.objectApiNameFlag {
+		req.ObjectApiName = &builder.objectApiName
 
 	}
 	return req
@@ -25441,6 +25950,288 @@ func (builder *ProcessLinkBuilder) Build() *ProcessLink {
 	return req
 }
 
+type ProcessSystemDoneItem struct {
+	ApproverId       *string         `json:"approver_id,omitempty"`        // 单据ID
+	Type             *int            `json:"type,omitempty"`               // 单据类型
+	Status           *int            `json:"status,omitempty"`             // 单据状态
+	Links            *ProcessLink    `json:"links,omitempty"`              // 单据地址
+	OperatorName     *DataengineI18n `json:"operator_name,omitempty"`      // 操作人姓名
+	NodeName         *DataengineI18n `json:"node_name,omitempty"`          // 节点名称
+	CreateTime       *string         `json:"create_time,omitempty"`        // 创建时间，Unix毫秒时间戳
+	CompleteTime     *string         `json:"complete_time,omitempty"`      // 完成时间，Unix毫秒时间戳
+	NodeDefinitionId *string         `json:"node_definition_id,omitempty"` // 节点定义ID（注：在回退场景，同一个节点会对应多个节点实例）
+}
+
+type ProcessSystemDoneItemBuilder struct {
+	approverId           string // 单据ID
+	approverIdFlag       bool
+	type_                int // 单据类型
+	typeFlag             bool
+	status               int // 单据状态
+	statusFlag           bool
+	links                *ProcessLink // 单据地址
+	linksFlag            bool
+	operatorName         *DataengineI18n // 操作人姓名
+	operatorNameFlag     bool
+	nodeName             *DataengineI18n // 节点名称
+	nodeNameFlag         bool
+	createTime           string // 创建时间，Unix毫秒时间戳
+	createTimeFlag       bool
+	completeTime         string // 完成时间，Unix毫秒时间戳
+	completeTimeFlag     bool
+	nodeDefinitionId     string // 节点定义ID（注：在回退场景，同一个节点会对应多个节点实例）
+	nodeDefinitionIdFlag bool
+}
+
+func NewProcessSystemDoneItemBuilder() *ProcessSystemDoneItemBuilder {
+	builder := &ProcessSystemDoneItemBuilder{}
+	return builder
+}
+
+// 单据ID
+//
+// 示例值：7278949005675988535
+func (builder *ProcessSystemDoneItemBuilder) ApproverId(approverId string) *ProcessSystemDoneItemBuilder {
+	builder.approverId = approverId
+	builder.approverIdFlag = true
+	return builder
+}
+
+// 单据类型
+//
+// 示例值：1
+func (builder *ProcessSystemDoneItemBuilder) Type(type_ int) *ProcessSystemDoneItemBuilder {
+	builder.type_ = type_
+	builder.typeFlag = true
+	return builder
+}
+
+// 单据状态
+//
+// 示例值：3
+func (builder *ProcessSystemDoneItemBuilder) Status(status int) *ProcessSystemDoneItemBuilder {
+	builder.status = status
+	builder.statusFlag = true
+	return builder
+}
+
+// 单据地址
+//
+// 示例值：
+func (builder *ProcessSystemDoneItemBuilder) Links(links *ProcessLink) *ProcessSystemDoneItemBuilder {
+	builder.links = links
+	builder.linksFlag = true
+	return builder
+}
+
+// 操作人姓名
+//
+// 示例值：7124991993901827628
+func (builder *ProcessSystemDoneItemBuilder) OperatorName(operatorName *DataengineI18n) *ProcessSystemDoneItemBuilder {
+	builder.operatorName = operatorName
+	builder.operatorNameFlag = true
+	return builder
+}
+
+// 节点名称
+//
+// 示例值：
+func (builder *ProcessSystemDoneItemBuilder) NodeName(nodeName *DataengineI18n) *ProcessSystemDoneItemBuilder {
+	builder.nodeName = nodeName
+	builder.nodeNameFlag = true
+	return builder
+}
+
+// 创建时间，Unix毫秒时间戳
+//
+// 示例值：1694769814036
+func (builder *ProcessSystemDoneItemBuilder) CreateTime(createTime string) *ProcessSystemDoneItemBuilder {
+	builder.createTime = createTime
+	builder.createTimeFlag = true
+	return builder
+}
+
+// 完成时间，Unix毫秒时间戳
+//
+// 示例值：1694769814036
+func (builder *ProcessSystemDoneItemBuilder) CompleteTime(completeTime string) *ProcessSystemDoneItemBuilder {
+	builder.completeTime = completeTime
+	builder.completeTimeFlag = true
+	return builder
+}
+
+// 节点定义ID（注：在回退场景，同一个节点会对应多个节点实例）
+//
+// 示例值：approval_d25b5eddfef
+func (builder *ProcessSystemDoneItemBuilder) NodeDefinitionId(nodeDefinitionId string) *ProcessSystemDoneItemBuilder {
+	builder.nodeDefinitionId = nodeDefinitionId
+	builder.nodeDefinitionIdFlag = true
+	return builder
+}
+
+func (builder *ProcessSystemDoneItemBuilder) Build() *ProcessSystemDoneItem {
+	req := &ProcessSystemDoneItem{}
+	if builder.approverIdFlag {
+		req.ApproverId = &builder.approverId
+
+	}
+	if builder.typeFlag {
+		req.Type = &builder.type_
+
+	}
+	if builder.statusFlag {
+		req.Status = &builder.status
+
+	}
+	if builder.linksFlag {
+		req.Links = builder.links
+	}
+	if builder.operatorNameFlag {
+		req.OperatorName = builder.operatorName
+	}
+	if builder.nodeNameFlag {
+		req.NodeName = builder.nodeName
+	}
+	if builder.createTimeFlag {
+		req.CreateTime = &builder.createTime
+
+	}
+	if builder.completeTimeFlag {
+		req.CompleteTime = &builder.completeTime
+
+	}
+	if builder.nodeDefinitionIdFlag {
+		req.NodeDefinitionId = &builder.nodeDefinitionId
+
+	}
+	return req
+}
+
+type ProcessSystemTodoItem struct {
+	ApproverId       *string         `json:"approver_id,omitempty"`        // 单据ID
+	Type             *int            `json:"type,omitempty"`               // 单据类型
+	Links            *ProcessLink    `json:"links,omitempty"`              // 单据地址
+	OperatorName     *DataengineI18n `json:"operator_name,omitempty"`      // 操作人姓名
+	NodeName         *DataengineI18n `json:"node_name,omitempty"`          // 节点名称
+	CreateTime       *string         `json:"create_time,omitempty"`        // 创建时间，Unix毫秒时间戳
+	NodeDefinitionId *string         `json:"node_definition_id,omitempty"` // 节点定义ID（注：在回退场景，同一个节点会对应多个节点实例）
+}
+
+type ProcessSystemTodoItemBuilder struct {
+	approverId           string // 单据ID
+	approverIdFlag       bool
+	type_                int // 单据类型
+	typeFlag             bool
+	links                *ProcessLink // 单据地址
+	linksFlag            bool
+	operatorName         *DataengineI18n // 操作人姓名
+	operatorNameFlag     bool
+	nodeName             *DataengineI18n // 节点名称
+	nodeNameFlag         bool
+	createTime           string // 创建时间，Unix毫秒时间戳
+	createTimeFlag       bool
+	nodeDefinitionId     string // 节点定义ID（注：在回退场景，同一个节点会对应多个节点实例）
+	nodeDefinitionIdFlag bool
+}
+
+func NewProcessSystemTodoItemBuilder() *ProcessSystemTodoItemBuilder {
+	builder := &ProcessSystemTodoItemBuilder{}
+	return builder
+}
+
+// 单据ID
+//
+// 示例值：7278949005675988535
+func (builder *ProcessSystemTodoItemBuilder) ApproverId(approverId string) *ProcessSystemTodoItemBuilder {
+	builder.approverId = approverId
+	builder.approverIdFlag = true
+	return builder
+}
+
+// 单据类型
+//
+// 示例值：1
+func (builder *ProcessSystemTodoItemBuilder) Type(type_ int) *ProcessSystemTodoItemBuilder {
+	builder.type_ = type_
+	builder.typeFlag = true
+	return builder
+}
+
+// 单据地址
+//
+// 示例值：
+func (builder *ProcessSystemTodoItemBuilder) Links(links *ProcessLink) *ProcessSystemTodoItemBuilder {
+	builder.links = links
+	builder.linksFlag = true
+	return builder
+}
+
+// 操作人姓名
+//
+// 示例值：
+func (builder *ProcessSystemTodoItemBuilder) OperatorName(operatorName *DataengineI18n) *ProcessSystemTodoItemBuilder {
+	builder.operatorName = operatorName
+	builder.operatorNameFlag = true
+	return builder
+}
+
+// 节点名称
+//
+// 示例值：
+func (builder *ProcessSystemTodoItemBuilder) NodeName(nodeName *DataengineI18n) *ProcessSystemTodoItemBuilder {
+	builder.nodeName = nodeName
+	builder.nodeNameFlag = true
+	return builder
+}
+
+// 创建时间，Unix毫秒时间戳
+//
+// 示例值：1694769814036
+func (builder *ProcessSystemTodoItemBuilder) CreateTime(createTime string) *ProcessSystemTodoItemBuilder {
+	builder.createTime = createTime
+	builder.createTimeFlag = true
+	return builder
+}
+
+// 节点定义ID（注：在回退场景，同一个节点会对应多个节点实例）
+//
+// 示例值：approval_d25b5eddfef
+func (builder *ProcessSystemTodoItemBuilder) NodeDefinitionId(nodeDefinitionId string) *ProcessSystemTodoItemBuilder {
+	builder.nodeDefinitionId = nodeDefinitionId
+	builder.nodeDefinitionIdFlag = true
+	return builder
+}
+
+func (builder *ProcessSystemTodoItemBuilder) Build() *ProcessSystemTodoItem {
+	req := &ProcessSystemTodoItem{}
+	if builder.approverIdFlag {
+		req.ApproverId = &builder.approverId
+
+	}
+	if builder.typeFlag {
+		req.Type = &builder.type_
+
+	}
+	if builder.linksFlag {
+		req.Links = builder.links
+	}
+	if builder.operatorNameFlag {
+		req.OperatorName = builder.operatorName
+	}
+	if builder.nodeNameFlag {
+		req.NodeName = builder.nodeName
+	}
+	if builder.createTimeFlag {
+		req.CreateTime = &builder.createTime
+
+	}
+	if builder.nodeDefinitionIdFlag {
+		req.NodeDefinitionId = &builder.nodeDefinitionId
+
+	}
+	return req
+}
+
 type ProcessTodoItem struct {
 	ApproverId       *string         `json:"approver_id,omitempty"`        // 单据ID
 	Type             *int            `json:"type,omitempty"`               // 单据类型
@@ -26374,7 +27165,7 @@ func (builder *ProfileSettingCustomFieldBuilder) FieldName(fieldName string) *Pr
 
 // 字段值, 是 json 转义后的字符串，根据元数据定义不同，字段格式不同。使用方式可参考【操作手册】如何通过 OpenAPI 维护自定义字段
 //
-// 示例值：["custom_enum_0__c"]
+// 示例值：[\"custom_enum_0__c\"]
 func (builder *ProfileSettingCustomFieldBuilder) Value(value string) *ProfileSettingCustomFieldBuilder {
 	builder.value = value
 	builder.valueFlag = true
@@ -27408,6 +28199,7 @@ type ProfileSettingEmploymentInfo struct {
 	EmploymentRecord  *ProfileSettingEmploymentRecord    `json:"employment_record,omitempty"`   // 任职记录
 	EmpContractRecord *ProfileSettingEmpContractRecord   `json:"emp_contract_record,omitempty"` // 合同记录
 	CustomGroups      []*ProfileSettingCustomGroup       `json:"custom_groups,omitempty"`       // 自定义分组
+	CustomOrgGroups   []*JobDataCustomOrg                `json:"custom_org_groups,omitempty"`   // 自定义组织记录
 }
 
 type ProfileSettingEmploymentInfoBuilder struct {
@@ -27421,6 +28213,8 @@ type ProfileSettingEmploymentInfoBuilder struct {
 	empContractRecordFlag bool
 	customGroups          []*ProfileSettingCustomGroup // 自定义分组
 	customGroupsFlag      bool
+	customOrgGroups       []*JobDataCustomOrg // 自定义组织记录
+	customOrgGroupsFlag   bool
 }
 
 func NewProfileSettingEmploymentInfoBuilder() *ProfileSettingEmploymentInfoBuilder {
@@ -27473,6 +28267,15 @@ func (builder *ProfileSettingEmploymentInfoBuilder) CustomGroups(customGroups []
 	return builder
 }
 
+// 自定义组织记录
+//
+// 示例值：
+func (builder *ProfileSettingEmploymentInfoBuilder) CustomOrgGroups(customOrgGroups []*JobDataCustomOrg) *ProfileSettingEmploymentInfoBuilder {
+	builder.customOrgGroups = customOrgGroups
+	builder.customOrgGroupsFlag = true
+	return builder
+}
+
 func (builder *ProfileSettingEmploymentInfoBuilder) Build() *ProfileSettingEmploymentInfo {
 	req := &ProfileSettingEmploymentInfo{}
 	if builder.basicInfoFlag {
@@ -27489,6 +28292,9 @@ func (builder *ProfileSettingEmploymentInfoBuilder) Build() *ProfileSettingEmplo
 	}
 	if builder.customGroupsFlag {
 		req.CustomGroups = builder.customGroups
+	}
+	if builder.customOrgGroupsFlag {
+		req.CustomOrgGroups = builder.customOrgGroups
 	}
 	return req
 }
@@ -30492,6 +31298,7 @@ type SignatureFile struct {
 	CreateTime         *string `json:"create_time,omitempty"`          // 创建时间
 	UpdateTime         *string `json:"update_time,omitempty"`          // 更新时间
 	EmploymentId       *string `json:"employment_id,omitempty"`        // 雇员 id
+	PreHireId          *string `json:"pre_hire_id,omitempty"`          // 待入职 id
 	SignatureFileState *Enum   `json:"signature_file_state,omitempty"` // 电子签文件状态，枚举值可通过文档【飞书人事枚举常量】电子签文件状态（signature_file_state）枚举定义部分获得
 	ContractCode       *string `json:"contract_code,omitempty"`        // 供应商侧的合同编号，作为幂等key
 	EffectiveDate      *string `json:"effective_date,omitempty"`       // 电子签文件生效日期
@@ -30509,6 +31316,8 @@ type SignatureFileBuilder struct {
 	updateTimeFlag         bool
 	employmentId           string // 雇员 id
 	employmentIdFlag       bool
+	preHireId              string // 待入职 id
+	preHireIdFlag          bool
 	signatureFileState     *Enum // 电子签文件状态，枚举值可通过文档【飞书人事枚举常量】电子签文件状态（signature_file_state）枚举定义部分获得
 	signatureFileStateFlag bool
 	contractCode           string // 供应商侧的合同编号，作为幂等key
@@ -30562,10 +31371,19 @@ func (builder *SignatureFileBuilder) UpdateTime(updateTime string) *SignatureFil
 
 // 雇员 id
 //
-// 示例值：ou_a294793e8fa21529f2a60e3e9de45520
+// 示例值：7123132668099919891
 func (builder *SignatureFileBuilder) EmploymentId(employmentId string) *SignatureFileBuilder {
 	builder.employmentId = employmentId
 	builder.employmentIdFlag = true
+	return builder
+}
+
+// 待入职 id
+//
+// 示例值：7123132668099919891
+func (builder *SignatureFileBuilder) PreHireId(preHireId string) *SignatureFileBuilder {
+	builder.preHireId = preHireId
+	builder.preHireIdFlag = true
 	return builder
 }
 
@@ -30624,6 +31442,10 @@ func (builder *SignatureFileBuilder) Build() *SignatureFile {
 	}
 	if builder.employmentIdFlag {
 		req.EmploymentId = &builder.employmentId
+
+	}
+	if builder.preHireIdFlag {
+		req.PreHireId = &builder.preHireId
 
 	}
 	if builder.signatureFileStateFlag {
@@ -30849,15 +31671,21 @@ func (builder *SignatureFolderBuilder) Build() *SignatureFolder {
 }
 
 type SignatureHumanInfo struct {
-	Id        *string `json:"id,omitempty"`         // 归属人ID
-	HumanType *Enum   `json:"human_type,omitempty"` // 归属人类型
+	EmployeeId *string `json:"employee_id,omitempty"`  // 在职员工ID
+	PreHireId  *string `json:"pre_hire_id,omitempty"`  // 员工待入职id
+	UserIdType *string `json:"user_id_type,omitempty"` // 用户 ID 类型，适用于employee_id
+	HumanType  *Enum   `json:"human_type,omitempty"`   // 归属人类型
 }
 
 type SignatureHumanInfoBuilder struct {
-	id            string // 归属人ID
-	idFlag        bool
-	humanType     *Enum // 归属人类型
-	humanTypeFlag bool
+	employeeId     string // 在职员工ID
+	employeeIdFlag bool
+	preHireId      string // 员工待入职id
+	preHireIdFlag  bool
+	userIdType     string // 用户 ID 类型，适用于employee_id
+	userIdTypeFlag bool
+	humanType      *Enum // 归属人类型
+	humanTypeFlag  bool
 }
 
 func NewSignatureHumanInfoBuilder() *SignatureHumanInfoBuilder {
@@ -30865,12 +31693,30 @@ func NewSignatureHumanInfoBuilder() *SignatureHumanInfoBuilder {
 	return builder
 }
 
-// 归属人ID
+// 在职员工ID
 //
-// 示例值：12312412413234
-func (builder *SignatureHumanInfoBuilder) Id(id string) *SignatureHumanInfoBuilder {
-	builder.id = id
-	builder.idFlag = true
+// 示例值：5ce6cd12
+func (builder *SignatureHumanInfoBuilder) EmployeeId(employeeId string) *SignatureHumanInfoBuilder {
+	builder.employeeId = employeeId
+	builder.employeeIdFlag = true
+	return builder
+}
+
+// 员工待入职id
+//
+// 示例值：7278880340130022956
+func (builder *SignatureHumanInfoBuilder) PreHireId(preHireId string) *SignatureHumanInfoBuilder {
+	builder.preHireId = preHireId
+	builder.preHireIdFlag = true
+	return builder
+}
+
+// 用户 ID 类型，适用于employee_id
+//
+// 示例值：people_corehr_id
+func (builder *SignatureHumanInfoBuilder) UserIdType(userIdType string) *SignatureHumanInfoBuilder {
+	builder.userIdType = userIdType
+	builder.userIdTypeFlag = true
 	return builder
 }
 
@@ -30885,8 +31731,16 @@ func (builder *SignatureHumanInfoBuilder) HumanType(humanType *Enum) *SignatureH
 
 func (builder *SignatureHumanInfoBuilder) Build() *SignatureHumanInfo {
 	req := &SignatureHumanInfo{}
-	if builder.idFlag {
-		req.Id = &builder.id
+	if builder.employeeIdFlag {
+		req.EmployeeId = &builder.employeeId
+
+	}
+	if builder.preHireIdFlag {
+		req.PreHireId = &builder.preHireId
+
+	}
+	if builder.userIdTypeFlag {
+		req.UserIdType = &builder.userIdType
 
 	}
 	if builder.humanTypeFlag {
@@ -30954,6 +31808,132 @@ func (builder *SignatureMetaInfoBuilder) Build() *SignatureMetaInfo {
 	}
 	if builder.labelFlag {
 		req.Label = builder.label
+	}
+	return req
+}
+
+type SignatureNode struct {
+	UserInfos   []*SignatureUserInfo    `json:"user_infos,omitempty"`   // 电子签节点列表
+	State       *string                 `json:"state,omitempty"`        // 电子签文件节点状态
+	FinishTime  *string                 `json:"finish_time,omitempty"`  // 节点完成时间
+	UpdatedTime *string                 `json:"updated_time,omitempty"` // 节点最近更新时间
+	IsOngoing   *bool                   `json:"is_ongoing,omitempty"`   // 当前节点是否为正在处理的节点
+	RoleLabel   *SignatureEnumInfoLabel `json:"role_label,omitempty"`   // 当前操作节点的角色名称
+	SignRole    *string                 `json:"sign_role,omitempty"`    // 签署角色
+}
+
+type SignatureNodeBuilder struct {
+	userInfos       []*SignatureUserInfo // 电子签节点列表
+	userInfosFlag   bool
+	state           string // 电子签文件节点状态
+	stateFlag       bool
+	finishTime      string // 节点完成时间
+	finishTimeFlag  bool
+	updatedTime     string // 节点最近更新时间
+	updatedTimeFlag bool
+	isOngoing       bool // 当前节点是否为正在处理的节点
+	isOngoingFlag   bool
+	roleLabel       *SignatureEnumInfoLabel // 当前操作节点的角色名称
+	roleLabelFlag   bool
+	signRole        string // 签署角色
+	signRoleFlag    bool
+}
+
+func NewSignatureNodeBuilder() *SignatureNodeBuilder {
+	builder := &SignatureNodeBuilder{}
+	return builder
+}
+
+// 电子签节点列表
+//
+// 示例值：
+func (builder *SignatureNodeBuilder) UserInfos(userInfos []*SignatureUserInfo) *SignatureNodeBuilder {
+	builder.userInfos = userInfos
+	builder.userInfosFlag = true
+	return builder
+}
+
+// 电子签文件节点状态
+//
+// 示例值：Initiated
+func (builder *SignatureNodeBuilder) State(state string) *SignatureNodeBuilder {
+	builder.state = state
+	builder.stateFlag = true
+	return builder
+}
+
+// 节点完成时间
+//
+// 示例值：2021-12-31 12:21:10
+func (builder *SignatureNodeBuilder) FinishTime(finishTime string) *SignatureNodeBuilder {
+	builder.finishTime = finishTime
+	builder.finishTimeFlag = true
+	return builder
+}
+
+// 节点最近更新时间
+//
+// 示例值：2021-12-31 12:21:10
+func (builder *SignatureNodeBuilder) UpdatedTime(updatedTime string) *SignatureNodeBuilder {
+	builder.updatedTime = updatedTime
+	builder.updatedTimeFlag = true
+	return builder
+}
+
+// 当前节点是否为正在处理的节点
+//
+// 示例值：
+func (builder *SignatureNodeBuilder) IsOngoing(isOngoing bool) *SignatureNodeBuilder {
+	builder.isOngoing = isOngoing
+	builder.isOngoingFlag = true
+	return builder
+}
+
+// 当前操作节点的角色名称
+//
+// 示例值：
+func (builder *SignatureNodeBuilder) RoleLabel(roleLabel *SignatureEnumInfoLabel) *SignatureNodeBuilder {
+	builder.roleLabel = roleLabel
+	builder.roleLabelFlag = true
+	return builder
+}
+
+// 签署角色
+//
+// 示例值：Initiator,发起人
+func (builder *SignatureNodeBuilder) SignRole(signRole string) *SignatureNodeBuilder {
+	builder.signRole = signRole
+	builder.signRoleFlag = true
+	return builder
+}
+
+func (builder *SignatureNodeBuilder) Build() *SignatureNode {
+	req := &SignatureNode{}
+	if builder.userInfosFlag {
+		req.UserInfos = builder.userInfos
+	}
+	if builder.stateFlag {
+		req.State = &builder.state
+
+	}
+	if builder.finishTimeFlag {
+		req.FinishTime = &builder.finishTime
+
+	}
+	if builder.updatedTimeFlag {
+		req.UpdatedTime = &builder.updatedTime
+
+	}
+	if builder.isOngoingFlag {
+		req.IsOngoing = &builder.isOngoing
+
+	}
+	if builder.roleLabelFlag {
+		req.RoleLabel = builder.roleLabel
+	}
+	if builder.signRoleFlag {
+		req.SignRole = &builder.signRole
+
 	}
 	return req
 }
@@ -44391,22 +45371,24 @@ type GetProcessReq struct {
 }
 
 type GetProcessRespData struct {
-	ProcessId          *string                `json:"process_id,omitempty"`           // 流程实例ID
-	Status             *int                   `json:"status,omitempty"`               // 流程状态
-	FlowTemplateId     *string                `json:"flow_template_id,omitempty"`     // 业务类型ID
-	FlowTemplateName   *DataengineI18n        `json:"flow_template_name,omitempty"`   // 业务类型名称
-	FlowDefinitionId   *string                `json:"flow_definition_id,omitempty"`   // 流程定义ID
-	FlowDefinitionName *DataengineI18n        `json:"flow_definition_name,omitempty"` // 流程定义名称
-	InitiatorId        *string                `json:"initiator_id,omitempty"`         // 流程发起人ID
-	InitiatorName      *DataengineI18n        `json:"initiator_name,omitempty"`       // 流程发起人姓名
-	CreateTime         *string                `json:"create_time,omitempty"`          // 流程发起时间，Unix毫秒时间戳
-	CompleteTime       *string                `json:"complete_time,omitempty"`        // 流程结束时间，Unix毫秒时间戳
-	StartLinks         *ProcessLink           `json:"start_links,omitempty"`          // 发起单据地址
-	Abstracts          []*ProcessAbstractItem `json:"abstracts,omitempty"`            // 流程摘要，会随着流程流转发生变化
-	Todos              []*ProcessTodoItem     `json:"todos,omitempty"`                // 待办列表
-	CcList             []*ProcessCcItem       `json:"cc_list,omitempty"`              // 抄送列表
-	DoneList           []*ProcessDoneItem     `json:"done_list,omitempty"`            // 已办列表
-	Properties         *int                   `json:"properties,omitempty"`           // 普通流程或撤销流程等
+	ProcessId          *string                  `json:"process_id,omitempty"`           // 流程实例ID
+	Status             *int                     `json:"status,omitempty"`               // 流程状态
+	FlowTemplateId     *string                  `json:"flow_template_id,omitempty"`     // 业务类型ID
+	FlowTemplateName   *DataengineI18n          `json:"flow_template_name,omitempty"`   // 业务类型名称
+	FlowDefinitionId   *string                  `json:"flow_definition_id,omitempty"`   // 流程定义ID
+	FlowDefinitionName *DataengineI18n          `json:"flow_definition_name,omitempty"` // 流程定义名称
+	InitiatorId        *string                  `json:"initiator_id,omitempty"`         // 流程发起人ID
+	InitiatorName      *DataengineI18n          `json:"initiator_name,omitempty"`       // 流程发起人姓名
+	CreateTime         *string                  `json:"create_time,omitempty"`          // 流程发起时间，Unix毫秒时间戳
+	CompleteTime       *string                  `json:"complete_time,omitempty"`        // 流程结束时间，Unix毫秒时间戳
+	StartLinks         *ProcessLink             `json:"start_links,omitempty"`          // 发起单据地址
+	Abstracts          []*ProcessAbstractItem   `json:"abstracts,omitempty"`            // 流程摘要，会随着流程流转发生变化
+	Todos              []*ProcessTodoItem       `json:"todos,omitempty"`                // 待办列表
+	CcList             []*ProcessCcItem         `json:"cc_list,omitempty"`              // 抄送列表
+	DoneList           []*ProcessDoneItem       `json:"done_list,omitempty"`            // 已办列表
+	Properties         *int                     `json:"properties,omitempty"`           // 普通流程或撤销流程等
+	SystemTodos        []*ProcessSystemTodoItem `json:"system_todos,omitempty"`         // 系统待办列表
+	SystemDoneList     []*ProcessSystemDoneItem `json:"system_done_list,omitempty"`     // 系统已办列表
 }
 
 type GetProcessResp struct {

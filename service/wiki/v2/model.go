@@ -1341,6 +1341,71 @@ func (resp *DeleteSpaceMemberResp) Success() bool {
 	return resp.Code == 0
 }
 
+type ListSpaceMemberReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewListSpaceMemberReqBuilder() *ListSpaceMemberReqBuilder {
+	builder := &ListSpaceMemberReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 知识空间id
+//
+// 示例值：7375263209671884820
+func (builder *ListSpaceMemberReqBuilder) SpaceId(spaceId string) *ListSpaceMemberReqBuilder {
+	builder.apiReq.PathParams.Set("space_id", fmt.Sprint(spaceId))
+	return builder
+}
+
+// 分页大小
+//
+// 示例值：1
+func (builder *ListSpaceMemberReqBuilder) PageSize(pageSize int) *ListSpaceMemberReqBuilder {
+	builder.apiReq.QueryParams.Set("page_size", fmt.Sprint(pageSize))
+	return builder
+}
+
+// 分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果
+//
+// 示例值：ou_12345
+func (builder *ListSpaceMemberReqBuilder) PageToken(pageToken string) *ListSpaceMemberReqBuilder {
+	builder.apiReq.QueryParams.Set("page_token", fmt.Sprint(pageToken))
+	return builder
+}
+
+func (builder *ListSpaceMemberReqBuilder) Build() *ListSpaceMemberReq {
+	req := &ListSpaceMemberReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	req.apiReq.QueryParams = builder.apiReq.QueryParams
+	return req
+}
+
+type ListSpaceMemberReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type ListSpaceMemberRespData struct {
+	Members   []*Member `json:"members,omitempty"`    // 空间成员列表
+	PageToken *string   `json:"page_token,omitempty"` // 分页标记
+	HasMore   *bool     `json:"has_more,omitempty"`   // 是否有下一页
+}
+
+type ListSpaceMemberResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	Data *ListSpaceMemberRespData `json:"data"` // 业务数据
+}
+
+func (resp *ListSpaceMemberResp) Success() bool {
+	return resp.Code == 0
+}
+
 type CopySpaceNodeReqBodyBuilder struct {
 	targetParentToken     string // 目标父节点token
 	targetParentTokenFlag bool

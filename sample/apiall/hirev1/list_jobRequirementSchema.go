@@ -28,7 +28,7 @@ func main() {
 	// 创建请求对象
 	req := larkhire.NewListJobRequirementSchemaReqBuilder().
 		PageToken("1231231987").
-		PageSize(100).
+		PageSize(10).
 		Build()
 	// 发起请求
 	resp, err := client.Hire.V1.JobRequirementSchema.List(context.Background(), req)

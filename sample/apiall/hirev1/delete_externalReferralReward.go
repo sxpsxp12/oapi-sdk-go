@@ -27,7 +27,7 @@ func main() {
 	client := lark.NewClient("appID", "appSecret")
 	// 创建请求对象
 	req := larkhire.NewDeleteExternalReferralRewardReqBuilder().
-		ExternalReferralRewardId("6942778198054125570").
+		ExternalReferralRewardId("").
 		Build()
 	// 发起请求
 	resp, err := client.Hire.V1.ExternalReferralReward.Delete(context.Background(), req)

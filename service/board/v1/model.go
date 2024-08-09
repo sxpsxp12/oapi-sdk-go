@@ -14,6 +14,10 @@
 package larkboard
 
 import (
+	"io"
+
+	"io/ioutil"
+
 	"fmt"
 
 	"github.com/larksuite/oapi-sdk-go/v3/core"
@@ -1051,6 +1055,62 @@ func (builder *WhiteboardNodeBuilder) Build() *WhiteboardNode {
 		req.MindMap = builder.mindMap
 	}
 	return req
+}
+
+type DownloadAsImageWhiteboardReqBuilder struct {
+	apiReq *larkcore.ApiReq
+}
+
+func NewDownloadAsImageWhiteboardReqBuilder() *DownloadAsImageWhiteboardReqBuilder {
+	builder := &DownloadAsImageWhiteboardReqBuilder{}
+	builder.apiReq = &larkcore.ApiReq{
+		PathParams:  larkcore.PathParams{},
+		QueryParams: larkcore.QueryParams{},
+	}
+	return builder
+}
+
+// 画板唯一标识
+//
+// 示例值：Ru8nwrWFOhEmaFbEU2VbPRsHcxb
+func (builder *DownloadAsImageWhiteboardReqBuilder) WhiteboardId(whiteboardId string) *DownloadAsImageWhiteboardReqBuilder {
+	builder.apiReq.PathParams.Set("whiteboard_id", fmt.Sprint(whiteboardId))
+	return builder
+}
+
+func (builder *DownloadAsImageWhiteboardReqBuilder) Build() *DownloadAsImageWhiteboardReq {
+	req := &DownloadAsImageWhiteboardReq{}
+	req.apiReq = &larkcore.ApiReq{}
+	req.apiReq.PathParams = builder.apiReq.PathParams
+	return req
+}
+
+type DownloadAsImageWhiteboardReq struct {
+	apiReq *larkcore.ApiReq
+}
+
+type DownloadAsImageWhiteboardResp struct {
+	*larkcore.ApiResp `json:"-"`
+	larkcore.CodeError
+	File     io.Reader `json:"-"`
+	FileName string    `json:"-"`
+}
+
+func (resp *DownloadAsImageWhiteboardResp) Success() bool {
+	return resp.Code == 0
+}
+
+func (resp *DownloadAsImageWhiteboardResp) WriteFile(fileName string) error {
+	bs, err := ioutil.ReadAll(resp.File)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(fileName, bs, 0666)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 type ListWhiteboardNodeReqBuilder struct {

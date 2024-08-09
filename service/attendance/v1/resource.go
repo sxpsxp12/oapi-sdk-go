@@ -126,6 +126,32 @@ func (a *approvalInfo) Process(ctx context.Context, req *ProcessApprovalInfoReq,
 	return resp, err
 }
 
+// DelReport
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=del_report&project=attendance&resource=archive_rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/attendancev1/delReport_archiveRule.go
+func (a *archiveRule) DelReport(ctx context.Context, req *DelReportArchiveRuleReq, options ...larkcore.RequestOptionFunc) (*DelReportArchiveRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/attendance/v1/archive_rule/del_report"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &DelReportArchiveRuleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
 // List
 //
 // -
@@ -158,6 +184,32 @@ func (a *archiveRule) ListByIterator(ctx context.Context, req *ListArchiveRuleRe
 		listFunc: a.List,
 		options:  options,
 		limit:    req.Limit}, nil
+}
+
+// UploadReport
+//
+// -
+//
+// - 官网API文档链接:https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=upload_report&project=attendance&resource=archive_rule&version=v1
+//
+// - 使用Demo链接:https://github.com/larksuite/oapi-sdk-go/tree/v3_main/sample/apiall/attendancev1/uploadReport_archiveRule.go
+func (a *archiveRule) UploadReport(ctx context.Context, req *UploadReportArchiveRuleReq, options ...larkcore.RequestOptionFunc) (*UploadReportArchiveRuleResp, error) {
+	// 发起请求
+	apiReq := req.apiReq
+	apiReq.ApiPath = "/open-apis/attendance/v1/archive_rule/upload_report"
+	apiReq.HttpMethod = http.MethodPost
+	apiReq.SupportedAccessTokenTypes = []larkcore.AccessTokenType{larkcore.AccessTokenTypeTenant, larkcore.AccessTokenTypeUser}
+	apiResp, err := larkcore.Request(ctx, apiReq, a.config, options...)
+	if err != nil {
+		return nil, err
+	}
+	// 反序列响应结果
+	resp := &UploadReportArchiveRuleResp{ApiResp: apiResp}
+	err = apiResp.JSONUnmarshalBody(resp, a.config)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
 }
 
 // UserStatsFieldsQuery

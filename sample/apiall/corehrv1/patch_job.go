@@ -39,7 +39,6 @@ func main() {
 			JobLevelIdList([]string{}).
 			WorkingHoursTypeId("6890452208593372679").
 			EffectiveTime("2020-01-01 00:00:00").
-			ExpirationTime("2021-01-01 00:00:00").
 			CustomFields([]*larkcorehr.ObjectFieldData{larkcorehr.NewObjectFieldDataBuilder().Build()}).
 			Build()).
 		Build()
